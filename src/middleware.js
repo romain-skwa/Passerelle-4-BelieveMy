@@ -8,7 +8,7 @@ export function middleware(request) {
 
     if(!isAuthenticated) { // Quand c'est le contraire de false, c'est true. Donc :
         const url = request.nextUrl.clone(); // On clone l'url qui arrive
-        url.pathname = "/login"; // Et on va remplacer le pathname par /login
+        url.pathname = "/"; // Et on va remplacer le pathname par / (la page d'accueil)
         return NextResponse.redirect(url); // Et on redirige
     }
 
@@ -19,7 +19,8 @@ export function middleware(request) {
     // Pour palier à ce problème, il faut exporter la configuration.
 
     export const config = {
-        matcher: ["/"] // matcher est utilisé pour spécifier les URL qui doivent être prises en compte par la configuration de routage international définie dans l'objet config.
+        matcher: ["/private-page", "/autre-page-restreinte"], // matcher est utilisé pour spécifier les URL qui doivent être prises en compte par la configuration de routage international définie dans l'objet config.
+        // Ici, ce sont les pages censées être inaccessibles aux utilisateurs non connectés
     }
 
 /*
