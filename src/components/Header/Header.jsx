@@ -43,7 +43,7 @@ export default function Header() {
             <div
               className="mr-2 lg:mr-4" /* Petite marge externe ajoutée quand on est sur un écran pc. Le margin créé un espace vide entre les div. un padding aurait agrandit la zone cliquable*/
             >
-              <Link href="../../visitors/login">Se connecter</Link>
+              <Link href="../../creators/login">Se connecter</Link>
             </div>
             <div>
               <Link href="../../creators/register">S'inscrire</Link>
@@ -74,7 +74,7 @@ export default function Header() {
         <div className="text-center order-last lg:order-none m-2 lg:m-0 bg-orange-400 lg:w-2/5">
           <input type="text" />
         </div>
-        <div className="text-center p-2 border xl:w-2/5 ">
+        <div className="text-center p-2 border xl:w-1/5 ">
           Comment présenter votre jeu ?
         </div>
       </section>
