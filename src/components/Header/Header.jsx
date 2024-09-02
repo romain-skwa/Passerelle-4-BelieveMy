@@ -68,13 +68,13 @@ export default function Header() {
       {/* ------------------------------------------------------------------------------------------- */}
 
       <section className="flex flex-col lg:flex-row justify-between mx-2 lg:mx-8 mt-2 border items-center">
-        <div className="border w-1/5">
+        <div className="border w-1/5 text-center lg:text-left">
           <Link href="../../">Accueil</Link>
         </div>
-        <div className="text-center order-last lg:order-none m-2 lg:m-0 bg-orange-400 lg:w-3/5">
+        <div className="text-center order-last lg:order-none m-2 lg:m-0 bg-orange-400 lg:w-2/5">
           <input type="text" />
         </div>
-        <div className="text-center p-2 border lg:w-1/5">
+        <div className="text-center p-2 border xl:w-2/5 ">
           Comment présenter votre jeu ?
         </div>
       </section>
