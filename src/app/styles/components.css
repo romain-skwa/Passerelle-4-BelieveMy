@@ -1,5 +1,7 @@
 .input-register-section {
-
     @apply flex justify-center w-11/12 md:w-96 my-2 mx-auto border flex-col items-center py-4 px-6 bg-white rounded shadow-md;
-  
   }
+
+.password-requirement {
+  @apply w-11/12 md:w-96 my-2 mx-auto
+}
