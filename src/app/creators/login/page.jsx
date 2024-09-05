@@ -1,16 +1,58 @@
 "use client";
 
 import ButtonForm from "@/components/Button/ButtonForm";
-import '../../styles/components.css';
+import "../../styles/components.css";
+import Link from "next/link";
+import { toast } from "react-toastify";
+import { checkEmail } from "@/utils/check-email-syntax";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
-    // Function
-    const prepareLogin = async (formData) => {
-        const email = formData.get("email");
-        const password = formData.get("password");
+  // Variable
+  const router = useRouter();
 
-        console.log(`Dans le formulaire de CONNEXION de compte : `, email, password);
+  // Function
+  const prepareLogin = async (formData) => {
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    // if a field is empty
+    if(!email || !password){
+      return toast.error("Veuillez remplir tous les champs du formulaire");
     }
+
+    // Check if the email is valid
+    if(!checkEmail(email)) {
+      return toast.error("Veuillez entrer un courriel valide")
+    }
+
+    // Connect the user
+    try { // Credentials est un provider : un service tiers utilisé pour l'dientification des utilisateurs
+      const response = await signIn("credentials"/* Ne jamais mettre de majuscule dans ce nom */, {
+        email,
+        password,
+        redirect: false
+      })
+      if (response.error) {
+        return toast.error(response.error);
+      }
+    } catch (error) {
+      return toast.error(error.message);
+    }
+
+    // Success
+    toast.success("Vous êtes connecté");
+
+    // Redirect
+    router.replace("/");
+
+    console.log(
+      `Dans le formulaire de CONNEXION de compte : `,
+      email,
+      password
+    );
+  };
   return (
     <form action={prepareLogin}>
       <input
@@ -30,6 +72,12 @@ export default function Login() {
       {/*----------------------*/}
       <div className="flex justify-center">
         <ButtonForm>Se connecter</ButtonForm>
+      </div>
+
+      <div className="flex justify-center">
+        <Link href="../../creators/register">
+          <ButtonForm formButton>S'inscrire</ButtonForm>
+        </Link>
       </div>
     </form>
   );

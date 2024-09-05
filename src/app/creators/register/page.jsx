@@ -68,23 +68,32 @@ export default function Register() {
         {/* Form */}
         <form action={registerNewCreator}>
             <input type="text" name="username" placeholder="Nom d'utilisateur" className="input-register-section" required/>
+            
             <input type="email" name='email'  placeholder='Courriel' className="input-register-section" required />
+            
             <div className='password-requirement border'>
                 <div className='text-center bg-slate-200 font-semibold'>Mot de passe</div>
                 <div className='text-sm md:text-base'> 8 caractères minimum ; (au moins 1 chiffre et 1 lettre)</div>
             </div>
+            
             <input type="password" name='password' placeholder='Mot de passe' className="input-register-section" required />
+            
             <input type="password" name='passwordconfirm' placeholder='Confirmation du mot de passe' className="input-register-section" required />
+            
             {/*----------------------*/}
+            
             <div className='flex justify-center'>
-                <ButtonForm>Lancer l'inscription</ButtonForm>
+                <ButtonForm formButton>S'inscrire</ButtonForm>            
             </div>
+            
             {/*----------------------------------------------------------------*/}
+            
             <div className='flex justify-center'>
                 <Link href="../../creators/login">
                     <ButtonForm>Se connecter</ButtonForm>                
                 </Link>
             </div>
+
         </form>
         </section>
     )
