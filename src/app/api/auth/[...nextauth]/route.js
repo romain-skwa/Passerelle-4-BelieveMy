@@ -59,7 +59,6 @@ export const authOptions = {
                 }
             }
         })
-        //"email", // Ici, c'est l'email qui servira à s'identifier. Non finalement.
     ],
     session: {
         strategy: "jwt" // La stratégie du JSon Web Token pour créer le cookie et identifier l'utilisateur
@@ -68,14 +67,21 @@ export const authOptions = {
     pages: { // déterminer où se situe notre formulaire de connexion
         signIn: "/src/app/creators/login"
     },
-    callbacks: {
-
+    callbacks: { // ce sont des fonctions qui sont appelés quand on détecte un JSon Web Token
+        async jwt({token, user}) {
+            user && (token.user = user);// Si user existe et si le user correspond à celui du token
+            return token; // On retourne ce token et on va s'en servir après
+        },
+        async session({session, user, token}) {
+            session.user = token.user;
+            return session;
+        }
     },
 };
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST};
+export { handler as GET, handler as POST };
 
 /* Le secret dans l'objet authOptions est une clé secrète utilisée pour signer les JSON Web Tokens (JWT) créés par 
 NextAuth. Cette clé est utilisée pour crypter et décrypter les tokens d'accès, ce qui permet de vérifier l

@@ -1,6 +1,8 @@
+import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+
 export default function Index() {
   return (
-    <div>
+    <GeneralLayout>
       Accueil
-    </div>)
+    </GeneralLayout>)
 }

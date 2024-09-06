@@ -1,8 +1,7 @@
-import Header from "@/components/Header/Header";
 import "./globals.css";
-import Footer from "@/components/Footer/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthProvider } from "./Providers";
 
 export const metadata = {
   title: "This is my game",
@@ -10,14 +9,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="fr">
-      <body className="bg-slate-400 flex flex-col h-screen">
-        <Header />
-        <main className="flex-grow">
+      <body className="bg-slate-400 ">
+        <AuthProvider>
           {children}
-        </main>
-        <Footer />
+        </AuthProvider>
         <ToastContainer position="bottom-right" />
       </body>
     </html>

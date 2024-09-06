@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 
 export default function Login() {
   // Variable
@@ -54,6 +55,7 @@ export default function Login() {
     );
   };
   return (
+    <GeneralLayout>
     <form action={prepareLogin}>
       <input
         type="email"
@@ -80,5 +82,6 @@ export default function Login() {
         </Link>
       </div>
     </form>
+    </GeneralLayout>
   );
 }

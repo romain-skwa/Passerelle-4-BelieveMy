@@ -5,31 +5,35 @@ import logoTwitch from "../../../public/logo/twitch_logo.png";
 import flagBG from "../../../public/flag/drapeau_uk.jpg";
 import flagFrance from "../../../public/flag/Flag_France.png";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Header() {
+  const { data: session } = useSession();
+
   return (
     <header>
       <section className="flex justify-between mx-2 lg:mx-8 mt-2 border">
         <div
-          className="mt-4 lg:w-48 border " /* on ne met pas de flex parce que ça allonge la hauteur des logos */
+          className="lg:mt-4 lg:w-48 border border-b-orange-300 relative" /* on ne met pas de flex parce que ça allonge la hauteur des logos */
         >
-          <Image
-            src={logoInstagram}
-            alt="Logo instagram"
-            className="inline-block w-8"
-          />
+          <div className="flex">
+            <Image
+              src={logoInstagram}
+              alt="Logo instagram"
+              className="w-8 h-8"
+            />
 
-          <Image
-            src={logoFacebook}
-            alt="Logo facebook"
-            className="inline-block w-8 mx-2"
-          />
-
-          <Image
-            src={logoTwitch}
-            alt="Logo twitch"
-            className="inline-block w-8"
-          />
+            <Image
+              src={logoFacebook}
+              alt="Logo facebook"
+              className="w-8 h-8 mx-2"
+            />
+<br></br>
+            <Image src={logoTwitch} alt="Logo twitch" className="w-8 h-8" />
+          </div>
+          <div className="lg:hidden text-center w-full  bg-orange-400 absolute bottom-0">
+            <Link href="../../">Accueil</Link>
+          </div>
         </div>
 
         {/* ------------------------------------------------------------------------------------------- */}
@@ -43,7 +47,11 @@ export default function Header() {
             <div
               className="mr-2 lg:mr-4" /* Petite marge externe ajoutée quand on est sur un écran pc. Le margin créé un espace vide entre les div. un padding aurait agrandit la zone cliquable*/
             >
-              <Link href="../../creators/login">Se connecter</Link>
+              {session?.user?.email ? (
+                <div>Se déconnecter</div>
+              ) : (
+                <Link href="../../creators/login">Se connecter</Link>
+              )}
             </div>
             <div>
               <Link href="../../creators/register">S'inscrire</Link>
@@ -68,7 +76,7 @@ export default function Header() {
       {/* ------------------------------------------------------------------------------------------- */}
 
       <section className="flex flex-col lg:flex-row justify-between mx-2 lg:mx-8 mt-2 border items-center">
-        <div className="border w-1/5 text-center lg:text-left">
+        <div className="border w-1/5 text-center lg:text-left hidden lg:block">
           <Link href="../../">Accueil</Link>
         </div>
         <div className="text-center order-last lg:order-none m-2 lg:m-0 bg-orange-400 lg:w-2/5">
