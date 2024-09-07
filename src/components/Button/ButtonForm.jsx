@@ -4,8 +4,6 @@ import { useFormStatus } from "react-dom"; // Pour connaitre le status actuel du
 
 export default function ButtonForm({
   children,
-  onClick,
-  withoutMarginTop,
   formButton,
   disabled,
 }) {

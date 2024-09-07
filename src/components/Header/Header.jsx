@@ -5,7 +5,7 @@ import logoTwitch from "../../../public/logo/twitch_logo.png";
 import flagBG from "../../../public/flag/drapeau_uk.jpg";
 import flagFrance from "../../../public/flag/Flag_France.png";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -28,7 +28,6 @@ export default function Header() {
               alt="Logo facebook"
               className="w-8 h-8 mx-2"
             />
-<br></br>
             <Image src={logoTwitch} alt="Logo twitch" className="w-8 h-8" />
           </div>
           <div className="lg:hidden text-center w-full  bg-orange-400 absolute bottom-0">
@@ -48,7 +47,7 @@ export default function Header() {
               className="mr-2 lg:mr-4" /* Petite marge externe ajoutée quand on est sur un écran pc. Le margin créé un espace vide entre les div. un padding aurait agrandit la zone cliquable*/
             >
               {session?.user?.email ? (
-                <div>Se déconnecter</div>
+                <div className="cursor-pointer" onClick={() => signOut()}>Se déconnecter</div>
               ) : (
                 <Link href="../../creators/login">Se connecter</Link>
               )}
@@ -80,11 +79,12 @@ export default function Header() {
           <Link href="../../">Accueil</Link>
         </div>
         <div className="text-center order-last lg:order-none m-2 lg:m-0 bg-orange-400 lg:w-2/5">
-          <input type="text" />
+          <input type="text" placeholder="Recherche"/>
         </div>
         <div className="text-center p-2 border xl:w-1/5 ">
           Comment présenter votre jeu ?
         </div>
+        {session?.user?.email ? ( <div className="cursor-pointer text-center xl:w-1/5"><Link href="../../creators/introducegame">Formulaire de présentation de votre jeu</Link></div> ) : ( <div></div> )}
       </section>
     </header>
   );

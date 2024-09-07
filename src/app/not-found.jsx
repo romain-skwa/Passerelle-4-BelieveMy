@@ -1,7 +1,9 @@
+import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+
 export default function NotFound() {
     return(
-        <div>
+        <GeneralLayout>
             <h1>Cette page n'existe pas ou a été supprimée</h1>
-        </div>
+        </GeneralLayout>
     )
 }

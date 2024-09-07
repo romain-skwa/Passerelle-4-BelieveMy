@@ -16,7 +16,7 @@ export default function GeneralLayout({ children }) {
     <section className="flex flex-col h-screen">
       <Header />
       {session?.user?.email ? (
-        <div>L'utilisateur est maintenant CONNECTE</div>
+        <div>{session?.user.username} est maintenant CONNECTE</div>
       ) : (
         <div>L'utilisateur n'est pas connecté</div>
       )}
