@@ -25,8 +25,11 @@ export const createIntroduction = async (formData) => {
     await db.collection("introduction-database").insertOne({
       username: session.user.username,
       content: formData.get("introductionOfTheGame"),
+      imageOne : formData.get("imageOne"),
       creation: new Date(),
     });
+
+
   } catch (e) {
     await client.close();
     throw new Error(e);
