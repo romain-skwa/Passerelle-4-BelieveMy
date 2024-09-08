@@ -1,12 +1,10 @@
-
-
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { MongoClient } from "mongodb";
 import Image from "next/image";
 import imageTwo from "../../../../public/presentation/mario&co.jpg";
 
 
-export default async function listgamesimages() {
+export default async function Allgamesimages() {
     let introductionsImages, client;
     try {
         // Connect to the MongoDB cluster

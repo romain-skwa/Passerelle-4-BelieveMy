@@ -23,6 +23,7 @@ export const createIntroduction = async (formData) => {
 
     // Add the post to the database
     await db.collection("introduction-database").insertOne({
+      email: session.user.email,
       username: session.user.username,
       content: formData.get("introductionOfTheGame"),
       imageOne : formData.get("imageOne"),
@@ -36,4 +37,5 @@ export const createIntroduction = async (formData) => {
   }
 
   await client.close();
+
 };

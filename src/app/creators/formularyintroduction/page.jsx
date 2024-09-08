@@ -4,14 +4,13 @@ import { createIntroduction } from "@/actions/create-post";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import imageOne from "../../../../public/presentation/mario&co.jpg";
 
 // FORMULARY used by a the creator to introduce one game
 
-export default function IntroduceGame() {
+export default function formularyintroduction() {
   // Variable
   const { data: session } = useSession();
 
