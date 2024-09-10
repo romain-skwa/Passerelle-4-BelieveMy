@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="fr">
-      <body className="bg-slate-400 ">
+      <body className="bg-dark-french-blue ">
         <AuthProvider>
           {children}
         </AuthProvider>

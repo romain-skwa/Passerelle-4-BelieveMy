@@ -5,6 +5,7 @@ import logoTwitch from "../../../public/logo/twitch_logo.png";
 import flagBG from "../../../public/flag/drapeau_uk.jpg";
 import flagFrance from "../../../public/flag/Flag_France.png";
 import homeIconWhite from "../../../public/logo/white-home-icon.png";
+import searchIconWhite from "../../../public/logo/Search-Button-White.png";
 
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
@@ -15,16 +16,17 @@ export default function Header() {
   return (
     <header>
       <section className="flex justify-between lg:px-8 bg-black pt-3">
-        <div className="flex w-1/3 h-10 ml-2 lg:ml-0 mt-2 lg:mt-0 ">
+        {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
+        <div className="flex w-1/3 h-10 ml-3 lg:ml-0 mt-2 ">
           <Image
             src={flagBG}
             alt="Drapeau Grande Bretagne"
-            className="inline-block mr-3 w-7 h-5 lg:w-10 lg:h-7 shadow shadow-white"
+            className="inline-block mr-3 w-7 h-5"
           />
           <Image
             src={flagFrance}
             alt="Drapeau France"
-            className="inline-block w-7 h-5 lg:w-10 lg:h-7 shadow shadow-white"
+            className="inline-block w-7 h-5"
           />
         </div>
 
@@ -50,7 +52,7 @@ export default function Header() {
 
         {/* -----------CONNEXION-----INSCRIPTION-------------------------------------------------------------- */}
 
-        <div className=" w-1/3 text-white text-sm lg:text-base h-10 uppercase flex flex-col lg:flex-row lg:justify-end lg:pt-1">
+        <div className=" w-1/3  text-sm lg:text-base h-10 uppercase flex flex-col lg:flex-row lg:justify-end lg:pt-1">
           <div
             className="mr-2 lg:mr-4 flex justify-end" /* Petite marge externe ajoutée quand on est sur un écran pc. Le margin créé un espace vide entre les div. un padding aurait agrandit la zone cliquable*/
           >
@@ -68,37 +70,51 @@ export default function Header() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------------------------------------------- */}
+      {/* ----------------LIGNE 2------------------------------------------------------------- */}
 
-      <section className="flex flex-col lg:flex-row justify-between px-2 lg:px-8 pt-2 items-center relative bg-gradient-to-b from-black to-dark-french-blue">
-        {" "}
-        <div>
+      <section className="flex flex-col lg:flex-row px-2 lg:px-8 pt-2 items-center relative bg-gradient-to-b from-black to-dark-french-blue">
+        <Link href="../../">
           <Image
             src={homeIconWhite}
             alt="Home Icon"
-            className="w-8 h-8 absolute top-1 left-0 lg:hidden"
+            className="w-7 h-7 opacity-70 absolute top-1 left-0 ml-4 mt-2 lg:hidden"
           />
-        </div>
-        <div className="border w-1/5 text-center lg:text-left hidden lg:block">
+        </Link>
+
+        <div className="border text-center lg:text-left hidden lg:block lg:w-2/5">
           <Link href="../../">Accueil</Link>
         </div>
-        <div className="text-center order-last lg:order-none m-2 lg:m-0 bg-orange-400 lg:w-2/5">
+
+        <div className="text-center m-2 lg:m-0 bg-orange-400 hidden lg:block flex-grow w-full">
           <input type="text" placeholder="Recherche" />
         </div>
-        <div className="text-center p-2 border xl:w-1/5 ">
-          Comment présenter votre jeu ?
-        </div>
-        {session?.user?.email ? (
-          <div className="cursor-pointer text-center xl:w-1/5">
-            <Link href="../../creators/formularyintroduction">
-              Formulaire de présentation de votre jeu
-            </Link>
+
+       <div className={`flex flex-col lg:flex-row lg:w-2/5 ${session?.user?.email ? "lg:w-3/5" : ""}`}>
+
+          {session?.user?.email ? (
+            <div className="cursor-pointer text-center pl-3 pb-2 lg:pb-0 lg:p-2 order-last lg:order-none">
+              <Link href="../../creators/formularyintroduction">
+                Formulaire de présentation de votre jeu
+              </Link>
+            </div>
+          ) : (
+            <div></div>
+          )} 
+
+          <div className={`text-center p-2 ml-3 ${!session?.user?.email ? "flex-grow" : ""}`}>
+            Comment présenter votre jeu ?
           </div>
-        ) : (
-          <div></div>
-        )}
+
+          <Image
+            src={searchIconWhite}
+            alt="Search Icon"
+            className="w-8 h-8 absolute top-1 right-0 mr-4 mt-2 lg:hidden"
+          />
+
+
+        </div>
       </section>
     </header>
   );
 }
-//        <div className="w-28 h-24 bg-red-900 text-white">LOGO</div>
+//        <div className="w-28 h-24 bg-red-900 ">LOGO</div>

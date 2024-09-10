@@ -14,6 +14,7 @@ module.exports = {
       },
       colors: {
         "dark-french-blue": "#002395",
+        red: "#FF0000",
       },
     },
     textTransform: {
