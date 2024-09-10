@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function GeneralLayout({ children }) {
   // Variables
@@ -16,7 +17,8 @@ export default function GeneralLayout({ children }) {
     <section className="flex flex-col h-screen">
       <Header />
       {session?.user?.email ? (
-        <div>{session?.user.username} est maintenant CONNECTE</div>
+        
+        <div><Link href={`/@${session?.user.username}`}>{session?.user.username}</Link> est maintenant CONNECTE</div>
       ) : (
         <div>L'utilisateur n'est pas connecté</div>
       )}
