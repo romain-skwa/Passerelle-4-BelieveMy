@@ -15,10 +15,10 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-<header class="text-white bg-gradient-to-b from-black via-black to-dark-french-blue">
-        <section className="flex justify-between lg:px-8 pt-3 relative">
+  <header className="text-white bg-gradient-to-b from-black via-black to-dark-french-blue">
+    <section className="flex justify-between laptop:px-8 pt-3 relative bg-black text-white">
         {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
-        <div className="flex h-10 ml-3 lg:ml-0 mt-2 lg:w-40">
+        <div className="flex h-10 ml-3 laptop:ml-0 mt-2 laptop:w-40">
           <Image
             src={flagBG}
             alt="Drapeau Grande Bretagne"
@@ -32,11 +32,11 @@ export default function Header() {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="uppercase text-4xl">This is my game</div>       
+        <div className="uppercase text-4xl h-20">This is my game</div>       
  
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
-        <div className="h-8 lg:flex mt-1">
+        <div className="h-8 laptop:flex mt-1">
           <div className="flex mb-3">
             <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7" />
             <Image src={logoFacebook}  alt="Logo facebook"  className="w-7 h-7 mx-3" />
@@ -51,24 +51,28 @@ export default function Header() {
       {/* ----------------LIGNE 2------------------------------------------------------------- */}
       {/* ------------------------------------------------------------------------------------ */}
 
-      <section className="flex flex-col lg:flex-row px-2 lg:px-8 pt-2 items-center lg:justify-between relative ">
+      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 pt-2 items-center laptop:justify-between relative ">
         <div className="flex" /* Part left */>
           {/* ----------------Accueil------------------------- */}
-          <div className="text-center hidden lg:block lg:mr-4">
-            <Link href="../../">Accueil</Link>
+          <div className="text-center hidden laptop:block laptop:mr-4 ">
+            <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
+                Accueil
+            </Link>
           </div>
           {/* ----------------Recherche------------------------- */}
-          <div className="text-center m-2 lg:m-0 hidden lg:block ">
-            Recherche
+          <div className="text-center m-2 laptop:m-0 hidden laptop:block ">
+            <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
+              Rechercher        
+            </Link>
           </div>
         </div>
 
 
         {/* ----------------Formulaire Présentation------------------------- */}
-        <div className="order-last lg:order-none"  /* Part Middle */>
-          <div className={`flex flex-col lg:flex-row pb-3 lg:pb-0`}>
+        <div className="order-last laptop:order-none"  /* Part Middle */>
+          <div className={`flex flex-col laptop:flex-row pb-3 laptop:pb-0`}>
             {session?.user?.email ? (
-              <div className="cursor-pointer text-center pl-3 pb-2 lg:pb-0 lg:p-2 order-last lg:order-none">
+              <div className="cursor-pointer text-center pl-3 pb-2 laptop:pb-0 laptop:p-2 order-last laptop:order-none">
                 <Link href="../../creators/formularyintroduction">
                   Formulaire de présentation de votre jeu
                 </Link>
@@ -91,9 +95,9 @@ export default function Header() {
 
         {/* -----------CONNEXION-----INSCRIPTION-------------------------------------------------------------- */}
 
-        <div className="text-sm lg:text-base h-10 uppercase flex lg:justify-end lg:pt-1">
+        <div className="text-sm laptop:text-base h-10 uppercase flex laptop:justify-end laptop:pt-1">
           <div
-            className="mr-2 lg:mr-4 flex justify-end"  /* Part right */
+            className="mr-2 laptop:mr-4 flex justify-end"  /* Part right */
           >
             {session?.user?.email ? (
               <div className="cursor-pointer" onClick={() => signOut()}>
@@ -111,14 +115,14 @@ export default function Header() {
           <Image
             src={homeIconWhite}
             alt="Home Icon"
-            className="w-7 h-7 opacity-70 absolute left-0 ml-4 top-1 lg:hidden"
+            className="w-7 h-7 opacity-70 absolute left-0 ml-4 top-1 laptop:hidden"
           />
         </Link>
                   {/* --------Icone Search visible sur écran mobiles------------ */}
         <Image
           src={searchIconWhite}
           alt="Search Icon"
-          className="w-8 h-8 absolute right-0 mr-4 top-1 lg:hidden"
+          className="w-8 h-8 absolute right-0 mr-4 top-1 laptop:hidden"
         />
         </div>
       </section>

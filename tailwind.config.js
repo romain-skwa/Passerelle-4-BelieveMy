@@ -17,7 +17,8 @@ module.exports = {
         red: "#FF0000",
       },
       screens: {
-        tablet: '600px',  
+        tablet: '600px',
+        laptop: '1280px',
       },
     },
     textTransform: {

@@ -1,12 +1,11 @@
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { MongoClient } from "mongodb";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Index() {
-  
   // Variable
 
-  
   let introductionsImages, client;
   try {
     // Connect to the MongoDB cluster
@@ -34,14 +33,22 @@ export default async function Index() {
 
   return (
     <GeneralLayout>
-      <section className="flex flex-wrap gap-4 sm:bg-slate-800 border justify-center lg:w-2/3 mx-auto">
+      <section className="flex flex-wrap gap-4 justify-center w-[95%] lg:w-2/3 mx-auto">
         {introductionsImages.map((post) => (
-          <div className="mt-2 w-[47%] tablet:w-[192px]">
-            <Image src={`/presentation/${post.imageOne}`} 
-              className="   lg:w-[192px] lg:h-[311px]" 
-              width={192} height={311} />
+          <div className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black">
+            <div className=" w-[100%] ">
+              <Link href={`dynamic/introduction/${post.nameofgame}`}>
+                <Image
+                  src={`/presentation/${post.imageOne}`}
+                  className="lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
+                  width={192}
+                  height={311}
+                />
+              </Link>
+            </div>
           </div>
         ))}
       </section>
-    </GeneralLayout>)
+    </GeneralLayout>
+  );
 }

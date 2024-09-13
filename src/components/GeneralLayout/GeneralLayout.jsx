@@ -16,9 +16,9 @@ export default function GeneralLayout({ children }) {
   return (
     <section className="flex flex-col h-screen">
       <Header />
-      <main className="flex-grow mx-3 border">      
+      <main className="flex-grow bg-sky-900">      
         {session?.user?.email ? (        
-        <div><Link href={`/@${session?.user.username}`}>{session?.user.username}</Link> est maintenant CONNECTE</div>
+        <div><Link href={`dynamic/profilecreators/@${session?.user.username}`}>{session?.user.username}</Link> est maintenant CONNECTE</div>
       ) : (
         <div>L'utilisateur n'est pas connecté</div>
       )}
