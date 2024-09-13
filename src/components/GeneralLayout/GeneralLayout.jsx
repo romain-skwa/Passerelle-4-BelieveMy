@@ -14,7 +14,7 @@ export default function GeneralLayout({ children }) {
   console.log(session);
 
   return (
-    <section className="flex flex-col h-screen text-white">
+    <section className="flex flex-col h-screen">
       <Header />
       <main className="flex-grow mx-3 border">      
         {session?.user?.email ? (        

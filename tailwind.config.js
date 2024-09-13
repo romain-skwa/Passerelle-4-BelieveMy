@@ -16,6 +16,9 @@ module.exports = {
         "dark-french-blue": "#002395",
         red: "#FF0000",
       },
+      screens: {
+        tablet: '600px',  
+      },
     },
     textTransform: {
       uppercase: "uppercase",

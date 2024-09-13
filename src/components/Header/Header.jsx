@@ -15,8 +15,8 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-    <header>
-      <section className="flex justify-between lg:px-8 bg-black pt-3 relative">
+<header class="text-white bg-gradient-to-b from-black via-black to-dark-french-blue">
+        <section className="flex justify-between lg:px-8 pt-3 relative">
         {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
         <div className="flex h-10 ml-3 lg:ml-0 mt-2 lg:w-40">
           <Image
@@ -32,7 +32,7 @@ export default function Header() {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <Image src={logowebsite} className="w-24 h-24" alt="Logo du site" />        
+        <div className="uppercase text-4xl">This is my game</div>       
  
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
@@ -51,7 +51,7 @@ export default function Header() {
       {/* ----------------LIGNE 2------------------------------------------------------------- */}
       {/* ------------------------------------------------------------------------------------ */}
 
-      <section className="flex flex-col lg:flex-row px-2 lg:px-8 pt-2 items-center lg:justify-between relative bg-gradient-to-b from-black to-dark-french-blue">
+      <section className="flex flex-col lg:flex-row px-2 lg:px-8 pt-2 items-center lg:justify-between relative ">
         <div className="flex" /* Part left */>
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden lg:block lg:mr-4">
