@@ -5,6 +5,7 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import "../../app/styles/background.css";
 
 export default function GeneralLayout({ children }) {
   // Variables
@@ -16,7 +17,7 @@ export default function GeneralLayout({ children }) {
   return (
     <section className="flex flex-col h-screen">
       <Header />
-      <main className="flex-grow bg-sky-900">      
+      <main className="flex-grow ">
         {session?.user?.email ? (        
         <div><Link href={`dynamic/profilecreators/@${session?.user.username}`}>{session?.user.username}</Link> est maintenant CONNECTE</div>
       ) : (

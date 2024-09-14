@@ -31,9 +31,10 @@ export default async function Allgamesimages() {
             Liste de tous les jeux ici : 
             {/* Images list*/}
             {introductionsImages.map(post => (
-                <div><p>{post.content}</p>
-                <p>{post.imageOne}</p>
-                <Image src={`/presentation/${post.imageOne}`} width={400} height={300} className="w-48" />
+                <div key={post._id}>
+                    <p>{post.content}</p>
+                    <p>{post.imageOne}</p>
+                    <Image src={`/presentation/${post.imageOne}`} width={400} height={300} className="w-48" />
                 </div>
             ))}
                   <Image src={imageTwo} className="w-48"></Image>

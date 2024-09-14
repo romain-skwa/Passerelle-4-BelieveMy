@@ -35,7 +35,7 @@ export default async function Index() {
     <GeneralLayout>
       <section className="flex flex-wrap gap-4 justify-center w-[95%] lg:w-2/3 mx-auto">
         {introductionsImages.map((post) => (
-          <div className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black">
+          <div key={post._id} className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black">
             <div className=" w-[100%] ">
               <Link href={`dynamic/introduction/${post.nameofgame}`}>
                 <Image

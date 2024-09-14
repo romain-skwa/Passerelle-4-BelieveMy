@@ -1,0 +1,6 @@
+.bg-villeretro2 {
+    background-image: url('../../../public/background/villeretro2.png');  
+    background-size: contain;  
+    background-position: top;
+    background-attachment: fixed;
+  }

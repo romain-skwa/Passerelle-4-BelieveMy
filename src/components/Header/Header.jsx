@@ -5,8 +5,7 @@ import logoTwitch from "../../../public/logo/twitch_logo.png";
 import flagBG from "../../../public/flag/drapeau_uk.jpg";
 import flagFrance from "../../../public/flag/Flag_France.png";
 import homeIconWhite from "../../../public/logo/white-home-icon.png";
-import searchIconWhite from "../../../public/logo/Search-Button-White.png";
-import logowebsite from "../../../public/logo/double.jpg";
+import searchIconWhite from "../../../public/logo/Search-icon.png";
 
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
@@ -15,8 +14,8 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-  <header className="text-white bg-gradient-to-b from-black via-black to-dark-french-blue">
-    <section className="flex justify-between laptop:px-8 pt-3 relative bg-black text-white">
+  <header className="text-white ">
+    <section className="flex justify-between laptop:px-8 pt-3 relative">
         {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
         <div className="flex h-10 ml-3 laptop:ml-0 mt-2 laptop:w-40">
           <Image
@@ -32,7 +31,7 @@ export default function Header() {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="uppercase text-4xl h-20">This is my game</div>       
+        <div className="uppercase text-2xl h-20">This is my game</div>       
  
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
@@ -51,7 +50,7 @@ export default function Header() {
       {/* ----------------LIGNE 2------------------------------------------------------------- */}
       {/* ------------------------------------------------------------------------------------ */}
 
-      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 pt-2 items-center laptop:justify-between relative ">
+      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative ">
         <div className="flex" /* Part left */>
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4 ">
@@ -72,7 +71,7 @@ export default function Header() {
         <div className="order-last laptop:order-none"  /* Part Middle */>
           <div className={`flex flex-col laptop:flex-row pb-3 laptop:pb-0`}>
             {session?.user?.email ? (
-              <div className="cursor-pointer text-center pl-3 pb-2 laptop:pb-0 laptop:p-2 order-last laptop:order-none">
+              <div className="cursor-pointer bg-black/30 mt-2 laptop:mt-0 text-center px-4 pt-[3px] ml-3 border rounded-2xl pl-3 pb-2 laptop:pb-0 laptop:p-2 order-last laptop:order-none">
                 <Link href="../../creators/formularyintroduction">
                   Formulaire de présentation de votre jeu
                 </Link>
@@ -83,7 +82,7 @@ export default function Header() {
 
             {/* ----------------Comment présenter------------------------- */}
             <div
-              className={`text-center p-2 ml-3 ${
+              className={`text-center mt-8 laptop:mt-0 bg-black/30 px-4 pb-1 pt-[3px] ml-3 border rounded-2xl ${
                 !session?.user?.email ? "flex-grow" : ""
               }`}
             >
@@ -95,35 +94,40 @@ export default function Header() {
 
         {/* -----------CONNEXION-----INSCRIPTION-------------------------------------------------------------- */}
 
-        <div className="text-sm laptop:text-base h-10 uppercase flex laptop:justify-end laptop:pt-1">
+        <div className="text-sm laptop:text-base uppercase flex laptop:justify-end laptop:pt-1">
           <div
             className="mr-2 laptop:mr-4 flex justify-end"  /* Part right */
           >
             {session?.user?.email ? (
-              <div className="cursor-pointer" onClick={() => signOut()}>
+              <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-2" onClick={() => signOut()}>
                 Se déconnecter
               </div>
             ) : (
+              <div className="border bg-black/70 rounded-2xl py-1 px-2">
               <Link href="../../creators/login">Se connecter</Link>
+              </div>
             )}
           </div>
-          <div className="pl-3 mr-2 flex justify-end">
+          <div className=" mr-2 flex justify-end border bg-black/70 rounded-2xl py-1 px-2">
             <Link href="../../creators/register">S'inscrire</Link>
           </div>
-                  {/* --------Icone Home visible sur écran mobiles------------ */}
-        <Link href="../../">
+        
+        {/* --------Icone HOME visible sur écran mobiles------------ */}
+        <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px]  opacity-100 absolute left-0 ml-4 top-[-4px] laptop:hidden">
           <Image
             src={homeIconWhite}
             alt="Home Icon"
-            className="w-7 h-7 opacity-70 absolute left-0 ml-4 top-1 laptop:hidden"
+            className="w-7 h-7 "
           />
         </Link>
-                  {/* --------Icone Search visible sur écran mobiles------------ */}
-        <Image
-          src={searchIconWhite}
-          alt="Search Icon"
-          className="w-8 h-8 absolute right-0 mr-4 top-1 laptop:hidden"
-        />
+        {/* --------Icone SEARCH visible sur écran mobiles------------ */}
+        <Link href="../../" className="absolute right-0 mr-4 top-[-3px] laptop:hidden border bg-black/70 rounded-2xl p-[8px] ">
+          <Image
+            src={searchIconWhite}
+            alt="Search Icon"
+            className="w-7 h-7"
+          />
+        </Link>
         </div>
       </section>
     </header>
