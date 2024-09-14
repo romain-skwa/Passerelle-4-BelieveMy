@@ -26,5 +26,5 @@
 
 /* dans formulaire d'inscription */
 .password-requirement {
-  @apply w-11/12 md:w-96 my-2 mx-auto
+  @apply w-11/12 md:w-[400px] my-2 mx-auto rounded-md 
 }

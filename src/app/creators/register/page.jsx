@@ -49,6 +49,9 @@ export default function Register() {
     if (!password.match(/.*[0-9].*/)) {
       return toast.error("Le mot de passe doit contenir au moins un chiffre");
     }
+    if (!password.match(/.*[a-zA-Z].*/)) {
+      return toast.error("Le mot de passe doit contenir au moins une lettre");
+    }
 
     try {
       newCreatorData(username, email, password, passwordconfirm);
@@ -69,48 +72,55 @@ export default function Register() {
 
         {/* Form */}
         <form action={registerNewCreator}>
-          <input
-            type="text"
-            name="username"
-            placeholder="Nom d'utilisateur"
-            className="input-register-section"
-            required
-          />
+          <div className="input-component">
+            <input
+              type="text"
+              name="username"
+              placeholder="Nom d'utilisateur"
+              className="input-register-section"
+              required
+            />
+          </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Courriel"
-            className="input-register-section"
-            required
-          />
+          <div className="input-component">
+            <input
+              type="email"
+              name="email"
+              placeholder="Courriel"
+              className="input-register-section"
+              required
+            />
+          </div>
 
           <div className="password-requirement border">
             <div className="text-center bg-slate-200 font-semibold">
               Mot de passe
             </div>
-            <div className="text-sm md:text-base">
+            <div className="text-sm md:text-base text-center bg-white pb-2">
               {" "}
-              8 caractères minimum ; (au moins 1 chiffre et 1 lettre)
+              8 caractères minimum incluant<br></br> au moins 1 chiffre et 1 lettre
             </div>
           </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            className="input-register-section"
-            required
-          />
+          <div className="input-component">
+            <input
+              type="password"
+              name="password"
+              placeholder="Mot de passe"
+              className="input-register-section"
+              required
+            />
+          </div>
 
-          <input
-            type="password"
-            name="passwordconfirm"
-            placeholder="Confirmation du mot de passe"
-            className="input-register-section"
-            required
-          />
-
+          <div className="input-component">
+            <input
+              type="password"
+              name="passwordconfirm"
+              placeholder="Confirmation du mot de passe"
+              className="input-register-section"
+              required
+            />
+          </div>
           {/*----------------------*/}
 
           <div className="flex justify-center">
