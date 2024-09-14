@@ -13,7 +13,7 @@ export default function ButtonForm({
     <button
       disabled={formButton && pending} // Quand on clique, pending == true, donc le bouton est désactivé. Il n'est plus cliquable.
       // La propriété formButton doit être présente dans les props du composant pour que disabled soit true.
-      className="bg-green-500 p-3 mx-auto w-40 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed"
+      className="text-white border p-3 mx-auto w-40 rounded-full m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed hover:bg-white hover:transition hover:duration-300 hover:text-black"
     >
       {children}
     </button>

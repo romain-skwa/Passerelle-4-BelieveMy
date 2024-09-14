@@ -1,7 +1,30 @@
-.input-register-section {
-    @apply flex justify-center w-11/12 md:w-96 my-2 mx-auto border flex-col items-center py-4 px-6 bg-white rounded shadow-md;
-  }
+/* contenant des input */
+.input-component{
+  @apply relative flex justify-center w-11/12 md:w-[420px] h-[80px] my-2 mx-auto border flex-col items-center bg-white rounded-full
+}
 
+/* focus sur le contenant des input */
+.input-component input.focused+label {
+  @apply top-[-1px] bg-white px-2 rounded;
+}
+
+/* texte à l'intérieur des input */
+.label{
+  @apply absolute left-8 text-xl
+}
+
+/* input */
+.input-register-section {
+    @apply  py-3 px-6 bg-white rounded w-11/12 md:w-96;
+}
+
+/* focus input */
+.input-component input:focus {
+  outline: solid 2px rgb(42, 42, 197);  
+}
+
+
+/* dans formulaire d'inscription */
 .password-requirement {
   @apply w-11/12 md:w-96 my-2 mx-auto
 }

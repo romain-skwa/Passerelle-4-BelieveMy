@@ -17,7 +17,7 @@ export default function GeneralLayout({ children }) {
   return (
     <section className="flex flex-col h-screen">
       <Header />
-      <main className="flex-grow ">
+      <main className="flex-grow">
         {session?.user?.email ? (        
         <div><Link href={`dynamic/profilecreators/@${session?.user.username}`}>{session?.user.username}</Link> est maintenant CONNECTE</div>
       ) : (

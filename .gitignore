@@ -38,3 +38,5 @@ next-env.d.ts
 # image
 /public/capture-temporaire
 /public/presentation
+/public/background
+/public/poubelle

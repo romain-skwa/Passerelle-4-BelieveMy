@@ -31,7 +31,7 @@ export default function Header() {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="uppercase text-2xl h-20">This is my game</div>       
+        <div className="uppercase text-2xl h-20 max-w-44 border">This is my game</div>       
  
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
@@ -94,21 +94,21 @@ export default function Header() {
 
         {/* -----------CONNEXION-----INSCRIPTION-------------------------------------------------------------- */}
 
-        <div className="text-sm laptop:text-base uppercase flex laptop:justify-end laptop:pt-1">
+        <div className="text-sm uppercase flex laptop:justify-end laptop:pt-1">
           <div
             className="mr-2 laptop:mr-4 flex justify-end"  /* Part right */
           >
             {session?.user?.email ? (
-              <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-2" onClick={() => signOut()}>
+              <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-2 laptop:bg-transparent" onClick={() => signOut()}>
                 Se déconnecter
               </div>
             ) : (
-              <div className="border bg-black/70 rounded-2xl py-1 px-2">
+              <div className="border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent">
               <Link href="../../creators/login">Se connecter</Link>
               </div>
             )}
           </div>
-          <div className=" mr-2 flex justify-end border bg-black/70 rounded-2xl py-1 px-2">
+          <div className=" mr-0 laptop:mr-2 flex justify-end border bg-black/70 laptop:bg-transparent rounded-2xl py-1 px-3">
             <Link href="../../creators/register">S'inscrire</Link>
           </div>
         
@@ -121,11 +121,11 @@ export default function Header() {
           />
         </Link>
         {/* --------Icone SEARCH visible sur écran mobiles------------ */}
-        <Link href="../../" className="absolute right-0 mr-4 top-[-3px] laptop:hidden border bg-black/70 rounded-2xl p-[8px] ">
+        <Link href="../../" className="absolute right-0 mr-4 top-[-3px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
           <Image
             src={searchIconWhite}
             alt="Search Icon"
-            className="w-7 h-7"
+            className="w-6 h-6"
           />
         </Link>
         </div>
