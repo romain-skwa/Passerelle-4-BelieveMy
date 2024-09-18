@@ -71,7 +71,23 @@ export default function Header() {
         <div className="order-last laptop:order-none"  /* Part Middle */>
           <div className={`flex flex-col laptop:flex-row pb-3 laptop:pb-0`}>
             {session?.user?.email ? (
-              <div className="cursor-pointer bg-black/30 mt-2 laptop:mt-0 text-center px-4 pt-[3px] ml-3 border rounded-2xl pl-3 pb-2 laptop:pb-0 laptop:p-2 order-last laptop:order-none">
+              <div className="
+              cursor-pointer
+              border 
+              text-center 
+              rounded-2xl 
+              bg-black/30 
+               mt-2 laptop:mt-0 
+               px-4 
+               pt-[3px] 
+               ml-3 
+               pl-3 
+               pb-2 
+               laptop:pb-0 
+                
+               order-last 
+               laptop:order-none
+               ">
                 <Link href="../../creators/formularyintroduction">
                   Formulaire de présentation de votre jeu
                 </Link>

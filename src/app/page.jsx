@@ -1,7 +1,10 @@
+import ConnectedUser from "@/components/ConnectedUser/ConnectedUser";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { MongoClient } from "mongodb";
 import Image from "next/image";
 import Link from "next/link";
+
+// HOME
 
 export default async function Index() {
   // Variable
@@ -33,6 +36,7 @@ export default async function Index() {
 
   return (
     <GeneralLayout>
+      <ConnectedUser/>
       <section className="flex flex-wrap gap-4 justify-center w-[95%] lg:w-2/3 mx-auto">
         {introductionsImages.map((post) => (
           <div key={post._id} className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black">
