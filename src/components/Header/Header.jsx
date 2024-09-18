@@ -81,7 +81,7 @@ export default function Header() {
                px-4 
                pt-[3px] 
                ml-3 
-               pl-3 
+               pl-4 
                pb-2 
                laptop:pb-0 
                 

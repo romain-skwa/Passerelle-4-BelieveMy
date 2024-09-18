@@ -8,11 +8,10 @@ import { toast } from "react-toastify";
 export default function Profile() {
   // Variable
   const params = useParams();
-  const pseudo = params.profilecreators.slice(3); // Important de mettre le nom du dossier [profilecreators]
-  //console.log(`On voit le contenu de pseudo : `, pseudo);
+  const pseudo = decodeURIComponent(params.profilecreators.slice(3)); // Important de mettre le nom du dossier [profilecreators]
+  console.log(pseudo);
   // State
   const [user, setUser] = useState({});
-  //console.log(`On voit le contenu de user : `, user);
 
   useEffect(() => {
     if (!pseudo) {
@@ -44,7 +43,6 @@ export default function Profile() {
 
     setUser(data.user);
   };
-  //console.log(params);
 
   return (
     <GeneralLayout>

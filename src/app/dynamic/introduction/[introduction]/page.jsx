@@ -8,11 +8,10 @@ import { useEffect, useState } from "react";
 export default function Profile() {
     // Variable
     const params = useParams();
-    const nameofgame = params.introduction; // Important de mettre le nom du dossier [profilecreators]
-    //console.log(`On voit le contenu de nameofgame : `, nameofgame);
+    const nameofgame = decodeURIComponent(params.introduction); // Important de mettre le nom du dossier [profilecreators]
+    
     // State
     const [game, setgame] = useState({});
-    console.log(`On voit le contenu de game : `, game);
   
     useEffect(() => {
       if (!nameofgame) {

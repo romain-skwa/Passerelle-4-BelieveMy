@@ -62,11 +62,6 @@ export default function Login() {
     // Redirect
     router.replace("/");
 
-    console.log(
-      `Dans le formulaire de CONNEXION de compte : `,
-      email,
-      password
-    );
   };
   return (
     <GeneralLayout>

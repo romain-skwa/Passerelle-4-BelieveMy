@@ -2,6 +2,8 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./Providers";
+import "/src/app/styles/background.css";
+
 
 export const metadata = {
   title: "This is my game",
@@ -12,7 +14,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="fr">
-      <body className="bg-villeretro2">
+      <body className="small:bg-villeretroSmall  laptop:bg-villeretro2">
         <AuthProvider>
           {children}
         </AuthProvider>

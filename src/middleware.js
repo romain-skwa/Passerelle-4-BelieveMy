@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 // middleware.js create one file to check if the user is logged in
 export function middleware(request) {
-    console.log(request.nextUrl);
 
     let isAuthenticated =  false; // Par défaut, c'est false.
 

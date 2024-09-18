@@ -8,8 +8,8 @@ export default function ConnectedUser() {
 
   return  (
     session?.user?.email ? (        
-    <div><Link href={`dynamic/profilecreators/@${session?.user.username}`}>{session?.user.username}</Link> est maintenant CONNECTE</div>
+    <div className="text-white"><Link href={`dynamic/profilecreators/@${session?.user.username}`}>{session?.user.username}</Link> est maintenant CONNECTE</div>
   ) : (
-    <div>L'utilisateur n'est pas connecté</div>
+    <div className="text-white">L'utilisateur n'est pas connecté</div>
   )
 );}

@@ -1,6 +1,18 @@
-.bg-villeretro2 {
-    background-image: url('../../../public/background/villeretro2.png');  
-    background-size: contain;  
+
+@media (max-width: 1280px) {
+  .small\:bg-villeretroSmall {
+    background-image: url("../../../public/background/villeretro2.png");
+    background-size: cover;
     background-position: top;
     background-attachment: fixed;
   }
+}
+@media (min-width: 1280px) {
+  .laptop\:bg-villeretro2 {
+    /* laptop */
+    background-image: url("../../../public/background/villeretro2.png");
+    background-size: contain;
+    background-position: top;
+    background-attachment: fixed;
+  }
+}

@@ -10,15 +10,10 @@ export default function GeneralLayout({ children }) {
   // Variables
   const pathname = usePathname();
 
-  //console.log(session);
-
   return (
     <section className="flex flex-col h-screen">
       <Header />
-      <main className="flex-grow">
-       
-      {children}
-      </main>
+      <main className="flex-grow">{children}</main>
       <Footer />
     </section>
   );
