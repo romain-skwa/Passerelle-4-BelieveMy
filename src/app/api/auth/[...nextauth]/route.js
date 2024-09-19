@@ -48,7 +48,7 @@ export const authOptions = {
 // Tout ce qu'on va stocker ici sera visible dans le cookie. Donc interdiction d'y stocker des données sensibles
                     createurs = createurs.map(createurs => ({
                         _id: createurs._id.toString(),
-                        username: createurs.username,
+                        username: decodeURIComponent(createurs.username),
                         email: createurs.email,
                         profile: createurs.profile,
                     }))[0];
@@ -74,6 +74,7 @@ export const authOptions = {
         },
         async session({session, user, token}) {
             session.user = token.user;
+            // session.user.username = decodeURIComponent(token.user.username); // Décode le username ici pour l'ensemble de la session
             return session;
         }
     },

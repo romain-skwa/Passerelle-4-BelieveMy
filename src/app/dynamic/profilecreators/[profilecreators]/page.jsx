@@ -8,8 +8,8 @@ import { toast } from "react-toastify";
 export default function Profile() {
   // Variable
   const params = useParams();
-  const pseudo = decodeURIComponent(params.profilecreators.slice(3)); // Important de mettre le nom du dossier [profilecreators]
-  console.log(pseudo);
+  const pseudo = params.profilecreators.slice(3); // Important de mettre le nom du dossier [profilecreators]
+console.log(`pseudo : `, pseudo);
   // State
   const [user, setUser] = useState({});
 
@@ -47,9 +47,9 @@ export default function Profile() {
   return (
     <GeneralLayout>
       <section className="text-white">
-        <div>Ceci est un profil {pseudo} </div>
+        <div>Ceci est un profil {decodeURIComponent(pseudo)} </div>
         <div>
-          Ici, on peut voir l'identifiant de l'utilisateur {user.username}{" "}
+          Ici, on peut voir l'identifiant de l'utilisateur {decodeURIComponent(user.username)} {" "}
         </div>
         <div>Et ceci est la bio : {user.bio}</div>
         <div>Site : {user.url}</div>

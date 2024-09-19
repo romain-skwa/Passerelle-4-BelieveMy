@@ -16,7 +16,7 @@ export default function Register() {
   // Function
   const registerNewCreator = async (formData) => {
     // We get the data from the form
-    const username = formData.get("username");
+    const username = encodeURIComponent(formData.get("username"));
     const email = formData.get("email");
     const password = formData.get("password");
     const passwordconfirm = formData.get("passwordconfirm");
