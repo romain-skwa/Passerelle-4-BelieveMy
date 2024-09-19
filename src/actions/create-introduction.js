@@ -13,6 +13,8 @@ export const createIntroduction = async (formData) => {
     throw new Error("Vous devez être connecté");
   }
 
+  /*********************************************************************/
+
   let client;
   try {
     // Connect to the MongoDB
@@ -25,8 +27,9 @@ export const createIntroduction = async (formData) => {
     await db.collection("introduction-database").insertOne({
       email: session.user.email,
       username: session.user.username,
+      nameofgame: formData.get("nameOfGame"),
       content: formData.get("introductionOfTheGame"),
-      imageOne : formData.get("imageOne"),
+      imageOne : formData.get("imageName"),
       creation: new Date(),
     });
 

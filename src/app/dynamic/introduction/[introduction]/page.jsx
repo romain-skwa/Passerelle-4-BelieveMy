@@ -46,10 +46,10 @@ export default function Profile() {
     return(
         <GeneralLayout>
             <section className="text-white">
-            <div>Ceci est la présentation du jeu {nameofgame}</div>
-            <div>Nom du jeu {game.nameofgame} </div>
-            <div>Le développeur {game.username} </div>
-            <div>Description du jeu : {game.content} </div>
+            <div>Ceci est la présentation du jeu {decodeURIComponent(nameofgame)}</div>
+            <div>Nom du jeu {decodeURIComponent(game.nameofgame)} </div>
+            <div>Le développeur {decodeURIComponent(game.username)} </div>
+            <div>Description du jeu : {decodeURIComponent(game.content)} </div>
             </section>
         </GeneralLayout>
     )
