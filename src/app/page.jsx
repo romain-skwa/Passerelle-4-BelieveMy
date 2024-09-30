@@ -47,6 +47,7 @@ export default async function Index() {
                   className="lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
                   width={192}
                   height={311}
+                  alt={`${post.imageOne}`}
                 />
               </Link>
             </div>
