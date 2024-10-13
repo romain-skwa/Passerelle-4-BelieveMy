@@ -41,7 +41,7 @@ export default async function Index() {
         {introductionsImages.map((post) => (
           <div key={post._id} className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black">
             <div className=" w-[100%] ">
-              <Link href={`dynamic/introduction/${post.nameofgame}`}>
+            <Link href={`dynamic/introduction/${encodeURIComponent(post.nameofgame)}`}>
                 <Image
                   src={`/presentation/${post.imageOne}`}
                   className="lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"

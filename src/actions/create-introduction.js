@@ -29,7 +29,7 @@ export const createIntroduction = async (formData) => {
       username: session.user.username,
       nameofgame: formData.get("nameOfGame"),
       content: formData.get("introductionOfTheGame"),
-      imageOne : formData.get("imageName"),
+      imageOne: formData.get("imageName"),
       creation: new Date(),
     });
 

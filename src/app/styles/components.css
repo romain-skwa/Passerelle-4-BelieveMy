@@ -4,27 +4,23 @@
 }
 
 /* focus sur le contenant des input */
-.input-component input.focused+label {
-  @apply top-[-1px] bg-white px-2 rounded;
+.input-component input.focused+label {  
+  animation: labelGetUp 0.5s forwards;
 }
+  @keyframes labelGetUp {
+    0% { @apply top-6; }
+    to { @apply text-sm top-[-1px] bg-white px-2 rounded; }
+  }
 
 /* texte à l'intérieur des input */
-.label{
-  @apply absolute left-8 text-xl
-}
+.label{ @apply absolute left-8 text-xl top-6; cursor: text;}
 
 /* input */
-.input-register-section {
-    @apply  py-3 px-6 bg-white rounded w-11/12 md:w-96;
-}
+.input-register-section { @apply  py-3 px-6 bg-white rounded w-11/12 md:w-96; }
 
 /* focus input */
-.input-component input:focus {
-  outline: solid 2px rgb(42, 42, 197);  
-}
+.input-component input:focus { outline: solid 2px rgb(42, 42, 197); }
 
 
 /* dans formulaire d'inscription */
-.password-requirement {
-  @apply w-11/12 md:w-[400px] my-2 mx-auto rounded-md 
-}
+.password-requirement { @apply w-11/12 md:w-[400px] my-2 mx-auto rounded-md }

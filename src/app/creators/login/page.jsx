@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useState } from "react";
+import { useRef } from 'react';
 
 export default function Login() {
   // Variable
@@ -21,6 +22,13 @@ export default function Login() {
       ...prevFocused,
       [event.target.name]: true,
     }));
+  };
+
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+
+  const handleLabelClick = (ref) => {
+    ref.current.focus();
   };
 
   // Function
@@ -72,9 +80,10 @@ export default function Login() {
             name="email"
             required
             onFocus={handleFocus}
+            ref={emailInputRef}
             className={focused.email ? "focused input-register-section" : "input-register-section"}
           />
-          <label for="password" className="label">
+          <label for="email" className="label" onClick={() => handleLabelClick(emailInputRef)}>
             Courriel
           </label>
         </div>
@@ -85,11 +94,12 @@ export default function Login() {
             name="password"
             required
             onFocus={handleFocus}
+            ref={passwordInputRef}
             className={focused.password ? "focused input-register-section" : "input-register-section"}
           />
 
-          <label for="password" className="label">
-            Mot de passe
+          <label for="password" className="label" onClick={() => handleLabelClick(passwordInputRef)}>
+              Mot de passe
           </label>
         </div>
 

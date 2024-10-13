@@ -3,11 +3,11 @@
 import { createIntroduction } from "@/actions/create-introduction";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import MyEditor from "@/components/MyEditor/MyEditor";
-
+import DOMPurify from 'dompurify';
+import he from 'he';
 // FORMULARY used by a the creator to introduce one game
 
 export default function formularyintroduction() {
@@ -39,9 +39,10 @@ export default function formularyintroduction() {
       const formData = new FormData();
       formData.append("imageOne", file);
       formData.append("imageName", file.name);
-      formData.append("nameOfGame", nameOfGame);
-      formData.append("introductionOfTheGame", introductionOfTheGame);
-
+      formData.append("nameOfGame", encodeURIComponent(nameOfGame));
+      //formData.append("introductionOfTheGame", encodeURIComponent(introductionOfTheGame));
+      formData.append("introductionOfTheGame",  he.encode(introductionOfTheGame));
+  
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
     } catch (error) {
