@@ -12,7 +12,7 @@ const MyEditor = ({ value, onChange }) => {
       apiKey="jwpduyj2wsgco2wubq610ogqntre0it79yiz6hx2cgpvq4j5"
       value={value}
       init={{
-        height: 500,
+        height: 200,
         menubar: false,
         plugins: [
           'advlist autolink lists link charmap print preview anchor',

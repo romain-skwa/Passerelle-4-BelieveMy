@@ -31,9 +31,17 @@
 
 .boutonGris {
   background-color: gray;
+  width: 35px; height: 35px;
   color: white;
-  padding: 5px 10px;
-  display: inline-block;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.longBoutonGris {
+  background-color: gray;
+  padding: 5px;
+  color: white;
+  display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer;
   margin-left: 10px;
 }
@@ -56,8 +64,33 @@ select option {
 }
 
 /***************************************************/
+.boutonTextColor{
+  background-color: gray;
+  width: 35px; height: 35px;
+  color: white;
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.textColorLetter{
+  color: black;
+  position: relative;
+  top: -3px;
+  font-weight: 700;
+  font-size: 20px;
+}
+.rectangleTextColor{
+  height: 18%; width: 70%;
+  border: 1px solid black;
+  position: relative;
+  top: -3px;
+}
+/***************************************************/
 .color-palette {
-  display: flex; /* Utilise le modèle de boîte flexible */
-  align-items: center; /* Aligne verticalement les éléments au centre */
-  flex-wrap: wrap; /* Permet aux éléments de passer à la ligne si nécessaire */
+  display: inline-block; /* or display: block; if you want to take full width */
+  width: 157px;
+  height: 165px;
+  overflow: auto; /* in case the content exceeds the container size */
+  padding: 4px; /* add some padding to make it look nicer */
+  border: 1px solid #ddd;
 }
