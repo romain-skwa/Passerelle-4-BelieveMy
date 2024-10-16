@@ -15,54 +15,67 @@ const MyEditor = ({ value, onChange }) => {
         height: 500,
         menubar: false,
         plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
+          'advlist autolink lists link charmap print preview anchor',
           'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table paste code help wordcount',
+          'insertdatetime table paste code help wordcount',
           'lists', // ajoutez ce plugin pour les listes
           'textcolor', // ajoutez ce plugin pour les couleurs de texte        
           'colorpicker', // ajoutez ce plugin pour la sélection de couleurs
           'format' // ajoutez ce plugin pour les formats de texte
         ],
         toolbar:
-          'undo redo | h3Button | fontsizeselect | fontselect | bold italic backcolor | \
+          'undo redo | h3Button h4Button | fontsize | fontfamily  | bold italic underline strikethrough forecolor backcolor | \
           alignleft aligncenter alignright alignjustify | \
           bullist numlist outdent indent | removeformat | help | \
           ',
+        font_size_formats: '8px 10px 12px 14px 16px 18px 24px 36px 48px',
+        font_family_formats: 'Oswald=oswald; Arial=arial,helvetica,sans-serif; Times New Roman=times new roman,times;',
+        content_style: '@import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");',
+        font_size_input_default_unit: "px",
+
         setup: function (editor) {
           // Remplacer l'icône du bouton H3 par du texte
           editor.ui.registry.addButton('h3Button', {
-              text: 'Titre',  // Texte à afficher
-              onAction: function () {
-                  editor.execCommand('FormatBlock', false, 'h3');
-              },
-              onSetup: function (buttonApi) {
-                  // Activer le bouton quand le format H3 est sélectionné
-                  const nodeChangeHandler = function () {
-                      const isActive = editor.queryCommandValue('FormatBlock') === 'h3';
-                      buttonApi.active = isActive;
-                    };
-                  editor.on('NodeChange', nodeChangeHandler);
-
-                  return function () {
-                      editor.off('NodeChange', nodeChangeHandler);
-                  };
-              }
+            text: 'Titre',  // Texte à afficher
+            onAction: function () {
+                editor.execCommand('FormatBlock', false, 'h3');
+            },
+            onSetup: function (buttonApi) {
+                // Activer le bouton quand le format H3 est sélectionné
+                const nodeChangeHandler = function () {
+                    const isActive = editor.queryCommandValue('FormatBlock') === 'h3';
+                    buttonApi.active = isActive;
+                };
+                editor.on('NodeChange', nodeChangeHandler);
+        
+                return function () {
+                    editor.off('NodeChange', nodeChangeHandler);
+                };
+            },
           });
-        },
-        /*
-        allow_conditional_comments: true, // Add this option
-        formats: {
-          alignleft: { selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img,audio,video', classes: 'left' },
-          aligncenter: { selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img,audio,video', classes: 'center' },
-          alignright: { selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img,audio,video', classes: 'right' },
-          bold: { inline: 'span', classes: 'bold' },
-          italic: { inline: 'span', classes: 'italic' },
-          underline: { inline: 'span', classes: 'underline', exact: true },
-          strikethrough: { inline: 'del' },
-          forecolor: { inline: 'span', classes: 'forecolor', styles: { color: '%value' } },
-          hilitecolor: { inline: 'span', classes: 'hilitecolor', styles: { backgroundColor: '%value' } },
-          custom_format: { block: 'h1', attributes: { title: 'Header' }, styles: { color: 'red' } }
-        }*/
+        
+          // Ajouter un nouveau bouton pour les h4
+          editor.ui.registry.addButton('h4Button', {
+            text: 'Sous-titre',  // Texte à afficher
+            onAction: function () {
+                editor.execCommand('FormatBlock', false, 'h4');
+            },
+            onSetup: function (buttonApi) {
+                // Activer le bouton quand le format H4 est sélectionné
+                const nodeChangeHandler = function () {
+                    const isActive = editor.queryCommandValue('FormatBlock') === 'h4';
+                    buttonApi.active = isActive;
+                };
+                editor.on('NodeChange', nodeChangeHandler);
+        
+                return function () {
+                    editor.off('NodeChange', nodeChangeHandler);
+                };
+            },
+          });
+        },  
+
+        content_style: 'h3 { font-size: 20px; font-weight: bold; } h4 { font-size: 18px; font-weight: bold; }',
       }}
       onEditorChange={handleEditorChange} 
     />

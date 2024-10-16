@@ -4,6 +4,7 @@ import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import he from 'he';
+import "../../../styles/TinyMce.css";
 
 export default function Profile() {
     // Variable
@@ -33,13 +34,9 @@ export default function Profile() {
   
       const data = await response.json();
   
-      if (!data) {
-        throw new Error("Invalid JSON response");
-      }
+      if (!data) {throw new Error("Invalid JSON response");}
   
-      if (!response.ok) {
-        toast.error("Une erreur est intervenue");
-      }
+      if (!response.ok) {toast.error("Une erreur est intervenue");}
   
       setgame(data.game);
     };

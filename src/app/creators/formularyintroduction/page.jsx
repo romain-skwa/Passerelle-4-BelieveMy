@@ -3,10 +3,10 @@
 import { createIntroduction } from "@/actions/create-introduction";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import MyEditor from "@/components/MyEditor/MyEditor";
-import DOMPurify from 'dompurify';
+import EditorPerso from "@/components/EditorPerso/EditorPerso";
 import he from 'he';
 // FORMULARY used by a the creator to introduce one game
 
@@ -51,6 +51,7 @@ export default function formularyintroduction() {
   };
   return (
     <GeneralLayout>
+      
       <p>
         Ici nous sommes dans la page de formulaire où les développeurs
         présenteront leurs jeux.
@@ -71,7 +72,7 @@ export default function formularyintroduction() {
         />
 
 <MyEditor value={introductionOfTheGame} onChange={(newContent) => setIntroductionOfTheGame(newContent)} />
-
+<EditorPerso />
         <input
           type="file"
           name="imageOne"

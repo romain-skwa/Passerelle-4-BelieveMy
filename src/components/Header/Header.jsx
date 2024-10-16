@@ -22,11 +22,14 @@ export default function Header() {
             src={flagBG}
             alt="Drapeau Grande Bretagne"
             className="inline-block mr-3 w-7 h-5"
+            loading="eager"
+            priority
           />
           <Image
             src={flagFrance}
             alt="Drapeau France"
             className="inline-block w-7 h-5"
+            loading="eager"
           />
         </div>
 
