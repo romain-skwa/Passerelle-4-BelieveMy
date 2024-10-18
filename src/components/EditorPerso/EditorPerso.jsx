@@ -7,7 +7,7 @@ function MyTextArea() {
   const [fontSize, setFontSize] = useState('12px'); // default font size
   const [undoStack, setUndoStack] = useState([]);  
   const [redoStack, setRedoStack] = useState([]); 
-  const [backgroundUnderA, setBackgroundUnderA] = useState([]); 
+  const [rectangleUnderA, setRectangleUnderA] = useState([]); 
   const [backgroundUnderPencil, setBackgroundUnderPencil] = useState([]); 
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false); // État pour la visibilité de la palette de couleurs
   const [isBackgroundColorPicker, setIsBackgroundColorPicker] = useState(false); // État pour la visibilité de la palette de couleurs
@@ -232,86 +232,96 @@ function MyTextArea() {
 
 /*********** Changer Couleur Texte ******************************************************************************** */
 
-  const handleColorChange = (newColorText) => {
-    if (newColorText === "") {
-      const textarea = document.getElementById('textareaDescriptionJeu');
-      const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-      const newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="color: [^"]*">([^<]+)<\/span>/g, '$1'));
-      setText(newText);
-      setBackgroundUnderA('#FFFFFF');
-    } else {
-      handleColorClick(newColorText);
-    }
-  };
-
-  const handleColorClick = (newColorText) => {
+const handleColorChange = (newColorText) => {
+  if (newColorText === "") { // Pour réinitialiser
     const textarea = document.getElementById('textareaDescriptionJeu');
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-
-    if (selectedText === '') {
-      return;  
-    }
+    console.log(`selectedText quand je tente une réinitialisation : `, selectedText);
     
-    // Recherche des balises <span style="color: ..."> existantes
-    const regex = new RegExp(`(<span style="background-color: [^"]*">)?(${selectedText})(<\/span>)?`, 'g');
-    const matches = textarea.value.match(regex);
-
-
-    let newText = textarea.value;
-    if (matches && matches.length > 0) {
-      // Remplace les balises <span style="color: ..."> existantes
-      matches.forEach((match) => {
-        const innerText = match.replace(/<span style="color: [^"]*">|<\/span>/g, '');
-        newText = newText.replace(match, `<span style="color: ${newColorText}">${innerText}</span>`);
-        setBackgroundUnderA(newColorText);
-      });
-    } else {
-      // Ajoute une nouvelle balise <span style="color: ..."> si aucune n'existe
-      newText = textarea.value.replace(selectedText, `<span style="color: ${newColorText}">${selectedText}</span>`);
-      setBackgroundUnderA(newColorText);
-    }
-
+    // Remplacer la balise <span style="color: ..."> et une balise de fermeture </span>
+    const newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, ''));
+    
+    console.log(`newText : ce qu'il reste après avoir supprimé les balises : `, newText);
     setText(newText);
-  };
+    setRectangleUnderA('#FFFFFF');
+  } else {
+    handleColorClick(newColorText);
+  }
+};
 
-  /*********** Changer Background Texte ************************************************************* */
-  const addBackgroundTag = (color) => {
+const handleColorClick = (newColorText) => {
+  const textarea = document.getElementById('textareaDescriptionJeu');
+  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+  console.log(`selectedText au changement de couleur : `, selectedText);
+
+  if (selectedText === '') { return; }
+  
+  // Recherche des balises <span style="color: ..."> existantes
+  const regex = new RegExp(`(<span style=" [^"]*">)?(${selectedText})(<\/span>)?`, 'g');
+  const matches = textarea.value.match(regex);
+
+  let newText = textarea.value;
+  if (matches && matches.length > 0) {
+    // Remplace "color: ..." à l'intérieur de la balise <span> existante
+    matches.forEach((match) => {
+      if (match.includes(` color:`) || match.includes(`,color:`) || match.includes(`"color:`)) {
+        // Si une balise <span style="color: ..."> existe déjà,
+        newText = newText.replace(match, match.replace(/(?<!-)(color:\s*[^;"]*)/, `color: ${newColorText}`));
+      } else {
+        // Sinon, ajoute une nouvelle balise <span style="color: ...">
+        newText = newText.replace(match, `<span style="color: ${newColorText}">${selectedText}</span>`);
+      }
+      setRectangleUnderA(newColorText);
+    });
+  } else { return }
+
+  setText(newText);
+};
+
+/*********** Changer Background Texte ************************************************************* */
+const handleBackgroundColorClick = (newColorBackgroundText) => {
+  if (newColorBackgroundText === "") {/* Pour réinitialiser */
     const textarea = document.getElementById('textareaDescriptionJeu');
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    
-    if (selectedText === '') { return; }
-  
-    // Recherche des balises <span style="background-color: ..."> existantes
-    const regex = new RegExp(`(<span style="background-color: [^"]*">)?(${selectedText})(<\/span>)?`, 'g');
-    const matches = textarea.value.match(regex);
-  
-    let newText = textarea.value;
-    if (matches && matches.length > 0) {
-      // Remplace les balises <span style="background-color: ..."> existantes
-      matches.forEach((match) => {
-        const innerText = match.replace(/<span style="background-color: [^"]*">|<\/span>/g, '');
-        newText = newText.replace(match, `<span style="background-color: ${color}">${innerText}</span>`);
-      });
-    } else {
-      // Ajoute une nouvelle balise <span style="background-color: ..."> si aucune n'existe
-      newText = textarea.value.replace(selectedText, `<span style="background-color: ${color}">${selectedText}</span>`);
-    }
-  
+    const newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="background-color: [^"]*">/, '').replace(/<\/span>/, ''));
     setText(newText);
-  };
+    setBackgroundUnderPencil('#ffff')
+    console.log('on est censé réinitialiser la couleur de fond');
+  } else {
+    addBackgroundTag(newColorBackgroundText);
+    setBackgroundUnderPencil(newColorBackgroundText)
+  }
+};
+
+const addBackgroundTag = (newColorBackgroundText) => {
+  const textarea = document.getElementById('textareaDescriptionJeu');
+  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
   
-  const handleBackgroundColorClick = (color) => {
-    if (color === "") {
-      const textarea = document.getElementById('textareaDescriptionJeu');
-      const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-      const newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="background-color: [^"]*">([^<]+)<\/span>/g, '$1'));
-      setText(newText);
-      setBackgroundUnderPencil('#ffff')
-    } else {
-      addBackgroundTag(color);
-      setBackgroundUnderPencil(color)
+  if (selectedText === '') { return; }
+
+  // Recherche des balises <span style="background-color: ..."> existantes
+  const regex = new RegExp(`(<span style=" [^"]*">)?(${selectedText})(<\/span>)?`, 'g');
+  const matches = textarea.value.match(regex);
+
+  let newText = textarea.value;
+    // Remplace "background-color: ..." à l'intérieur de la balise <span> existante
+    if (matches && matches.length > 0) {
+      // Remplace "background-color: ..." à l'intérieur de la balise <span> existante    
+      matches.forEach((match) => {    
+        if (match.includes(` background-color:`) || match.includes(`,background-color:`) || match.includes(`"background-color:`)) {
+              // Si une balise <span style="background-color: ..."> existe déjà,
+              newText = newText.replace(match, match.replace(/(background-color:\s*[^;"]*)/, `background-color: ${newColorBackgroundText}`));    
+        } else {    
+          // Sinon, ajoute une nouvelle balise <span style="background-color: ...">    
+          newText = newText.replace(match, `<span style="background-color: ${newColorBackgroundText}">${selectedText}</span>`);    
+        }    
+      });    
+    } else {     
+      return;    
     }
-  };
+
+  setText(newText);
+};
 
   /********* Alignement de la sélection ************************************************************************/
   const handleAlignLeft = () => {
@@ -380,7 +390,7 @@ function MyTextArea() {
         {/* Choisir la couleur du texte ------------------------------------------------------- */}
         <div className='boutonTextColor bouton' onClick={toggleColorPicker}>
           <div className='textColorLetter'>A</div>
-          <div className='rectangleTextColor' style={{ backgroundColor: backgroundUnderA }}></div>
+          <div className='rectangleTextColor' style={{ backgroundColor: rectangleUnderA }}></div>
 
           {isColorPickerVisible && (
           <div ref={refUseClickOutside} className="color-palette">

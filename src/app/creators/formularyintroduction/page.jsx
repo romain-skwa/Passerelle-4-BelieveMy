@@ -71,7 +71,7 @@ export default function formularyintroduction() {
           onChange={(e) => setNameOfGame(e.target.value)}
         />
 
-<MyEditor value={introductionOfTheGame} onChange={(newContent) => setIntroductionOfTheGame(newContent)} />
+{/*<MyEditor value={introductionOfTheGame} onChange={(newContent) => setIntroductionOfTheGame(newContent)} />*/}
 <EditorPerso />
         <input
           type="file"
