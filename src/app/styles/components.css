@@ -26,12 +26,12 @@
 .password-requirement { @apply w-11/12 md:w-[400px] my-2 mx-auto rounded-md }
 
 #textareaDescriptionJeu{
-  width: 49vw; height: 20vh;
+  width: 52vw; height: 20vh;
   padding: 0.5rem 1rem;
   border-radius: 0.7rem;
 }
 .entirety{
-  width: 50vw;
+  width: 53vw;
   margin-inline: auto;
   background-color: rgba(116, 173, 218, 0.645);
   padding: 0.5rem;
