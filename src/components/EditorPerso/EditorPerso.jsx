@@ -37,11 +37,10 @@ function MyTextArea() {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      setText('<br />'); // Ajoute un <br /> au texte
+      setText((prevText) => prevText + '<br /> \n' ); // Ajoute un <br /> au texte
     }
   };
 
-  // Les boutons "Annuler" et "Rétablir"
 
   const handleTextChange = (e) => {
     const newText = e.target.value;
@@ -50,6 +49,8 @@ function MyTextArea() {
     setRedoStack([]); // Réinitialise le stack de rétablissement  
   };
   
+  // Les boutons "Annuler" et "Rétablir"
+
   const handleUndo = () => {  
     if (undoStack.length > 0) {  
       const lastText = undoStack.pop();  
@@ -641,6 +642,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
         ref={textAreaRef}
         value={text}
         onChange={handleTextChange}
+        onKeyDown={handleKeyDown} 
         placeholder="Entrez votre texte ici..."
       />
 
@@ -648,7 +650,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
         <h3>Aperçu :</h3>
         <div 
           style={{ border: '1px solid #ccc', padding: '10px', minHeight: '50px', backgroundColor: 'white' }}
-          dangerouslySetInnerHTML={{ __html: text }}
+          dangerouslySetInnerHTML={{ __html: text }} 
         />
       </div>
     </div>
