@@ -18,6 +18,7 @@ export default function formularyintroduction() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
   const [lienImage, setLienImage] = useState("");
+  const [text, setText] = useState(""); 
 
 
   // Function
@@ -48,7 +49,7 @@ export default function formularyintroduction() {
     } catch (error) {
       return toast.error(error.message);
     }
-  };
+  };console.log("Texte pour l'aperçu dans la page principale:", text);
   return (
     <GeneralLayout>
       
@@ -72,7 +73,20 @@ export default function formularyintroduction() {
         />
 
 {/*<MyEditor value={introductionOfTheGame} onChange={(newContent) => setIntroductionOfTheGame(newContent)} />*/}
-<EditorPerso />
+        <EditorPerso 
+          setIntroductionOfTheGame={setIntroductionOfTheGame} 
+          onTextChange={(newText) => {setIntroductionOfTheGame(newText); }} 
+        />
+
+        {/* Section d'aperçu après le formulaire */}
+        <div className="w-[53vw] mx-auto bg-[rgba(116,173,218,0.645)] p-2">
+          <h3>Aperçu :</h3>
+          <div 
+            style={{ border: '1px solid #ccc', padding: '10px', minHeight: '50px', backgroundColor: 'white' }}
+            dangerouslySetInnerHTML={{ __html: introductionOfTheGame }} 
+          />
+        </div>
+
         <input
           type="file"
           name="imageOne"
@@ -86,6 +100,7 @@ export default function formularyintroduction() {
           Envoyer
         </button>
       </form>
+
     </GeneralLayout>
   );
 }

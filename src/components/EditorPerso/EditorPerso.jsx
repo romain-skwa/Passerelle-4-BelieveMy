@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import "../../app/styles/components.css";
 import { useClickOutside } from '@mantine/hooks';
 
-function MyTextArea() {
+function MyTextArea({onTextChange, setIntroductionOfTheGame }) {
   const [text, setText] = useState('');
   const [fontSize, setFontSize] = useState('12px'); // default font size
   const [undoStack, setUndoStack] = useState([]);  
@@ -15,23 +15,21 @@ function MyTextArea() {
   const refUseClickOutside2 = useClickOutside(() => setIsBackgroundColorPicker(false));
   const [alignment, setAlignment] = useState('left'); // État pour l'alignement du texte
   const textAreaRef = useRef(null);
-  const handleChange = (e) => { setText(e.target.value); };
+
+  useEffect(() => {
+    setIntroductionOfTheGame(text); // Synchronisation de l'état  
+  }, [text]); 
 
   // Couleur 
   const colors = [
-    "#FFFFFF", "#000000", "#FF0000", "#008000", "#00FF00", "#4CAF50", "#8BC34A", 
-    "#FFFF00", "#FFA500", "#800080", "#C0C0C0", "#808080", "#FFC0CB", "#FF69B4",
-    "#66CCCC", "#33CCCC", "#0099CC", "#0066CC", "#0033CC", "#0000FF",
+    "#FFFFFF", "#000000", "#FF0000", "#008000", "#00FF00", "#4CAF50", "#8BC34A", "#FFFF00", "#FFA500", "#800080",
+    "#C0C0C0", "#808080", "#FFC0CB", "#FF69B4", "#66CCCC", "#33CCCC", "#0099CC", "#0066CC", "#0033CC", "#0000FF",
     "#663300", "#996600", "#CC6600", "#FF9900"
   ];
 
-  const toggleColorPicker = () => {
-    setIsColorPickerVisible(prev => !prev); // Inverser la visibilité
-  };
+  const toggleColorPicker = () => { setIsColorPickerVisible(prev => !prev); }; // Inverser la visibilité
 
-  const toggleBackgroundColorPicker = () => {
-    setIsBackgroundColorPicker(prev => !prev); // Inverser la visibilité
-  };
+  const toggleBackgroundColorPicker = () => { setIsBackgroundColorPicker(prev => !prev); }; // Inverser la visibilité
 
   // Ajouter la balise automatiquement quand j'appuie sur "entrée"
   const handleKeyDown = (e) => {
@@ -41,16 +39,15 @@ function MyTextArea() {
     }
   };
 
-
   const handleTextChange = (e) => {
     const newText = e.target.value;
     setUndoStack([...undoStack, text]);  
     setText(newText);  
-    setRedoStack([]); // Réinitialise le stack de rétablissement  
+    setRedoStack([]); // Réinitialise le stack de rétablissement
+    onTextChange(e.target.value); 
   };
   
   // Les boutons "Annuler" et "Rétablir"
-
   const handleUndo = () => {  
     if (undoStack.length > 0) {  
       const lastText = undoStack.pop();  
@@ -69,7 +66,7 @@ function MyTextArea() {
     }  
   };
 
-  /*********** TITRE H2 ******************************************************************************** */
+/*********** TITRE H2 ******************************************************************************** */
   const handleH2Click = () => {
     const textarea = document.getElementById('textareaDescriptionJeu');
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
@@ -331,12 +328,10 @@ const handleColorChange = (newColorText) => {
   if (newColorText === "") { // Pour réinitialiser
     const textarea = document.getElementById('textareaDescriptionJeu');
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    console.log(`selectedText quand je tente une réinitialisation : `, selectedText);
     
     // Remplacer la balise <span style="color: ..."> et une balise de fermeture </span>
     const newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, ''));
     
-    console.log(`newText : ce qu'il reste après avoir supprimé les balises : `, newText);
     setText(newText);
     setRectangleUnderA('rgba(255, 255, 255, 0)');
   } else {
@@ -379,23 +374,33 @@ const handleColorClick = (newColorText) => {
 
 /*********** Changer Background Texte ******************************************************************* */
   /* -------- Réinitialisation ------------------*/
-const handleBackgroundColorClick = (newColorBackgroundText) => {
-  const textarea = document.getElementById('textareaDescriptionJeu');
-  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);  
-
-  if (newColorBackgroundText === "") { // Pour réinitialiser
-    if (selectedText === '') { return; }
-    // Retirer toutes les balises <span> autour du texte sélectionné
-    const newText = textarea.value.replace(/<span[^>]*>(.*?)<\/span>/g, '$1');
-    setText(newText);
-    setBackgroundUnderPencil('rgba(255, 255, 255, 0)');
-    console.log('Couleur de fond réinitialisée');
-  } else {
-    console.log(`Changement de couleur de fond en : ${newColorBackgroundText}`);
-    addBackgroundTag(newColorBackgroundText);
-    setBackgroundUnderPencil(newColorBackgroundText);
-  }
-};
+  const handleBackgroundColorClick = (newColorBackgroundText) => {
+    const textarea = document.getElementById('textareaDescriptionJeu');
+    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);  
+  
+    if (newColorBackgroundText === "") { // Pour réinitialiser
+      if (selectedText === '') { return; }
+      // Retirer uniquement les balises <span> avec background-color autour du texte sélectionné
+      const startIndex = textarea.selectionStart;
+      const endIndex = textarea.selectionEnd;
+  
+      // Utiliser une regex pour retirer uniquement les balises <span> avec background-color autour du texte sélectionné
+      const newText = textarea.value.replace(/<span[^>]*style="[^"]*background-color[^"]*"[^>]*>(.*?)<\/span>/g, (match, p1, offset) => {
+        if (offset >= startIndex && offset + match.length <= endIndex) {
+          return p1; // Retirer la balise <span> si elle entoure le texte sélectionné
+        }
+        return match; // Retourner l'original pour les autres occurrences
+      });
+  
+      setText(newText);
+      setBackgroundUnderPencil('rgba(255, 255, 255, 0)');
+      console.log('Couleur de fond réinitialisée');
+    } else {
+      console.log(`Changement de couleur de fond en : ${newColorBackgroundText}`);
+      addBackgroundTag(newColorBackgroundText);
+      setBackgroundUnderPencil(newColorBackgroundText);
+    }
+  };
 
   /* -------- On change la couleur de FOND du texte ------------------*/
 const addBackgroundTag = (newColorBackgroundText) => {
@@ -524,7 +529,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
       textarea.focus();
     }, 0);
   };
-
+  console.log("Texte formaté dans EditorPerso:", text); // Dans MyTextArea
   return (
     <div className='entirety'>
       
@@ -615,15 +620,15 @@ const addBackgroundTag = (newColorBackgroundText) => {
       />
 
       <div>
-        <h3>Aperçu :</h3>
-        <div 
-          style={{ border: '1px solid #ccc', padding: '10px', minHeight: '50px', backgroundColor: 'white' }}
-          dangerouslySetInnerHTML={{ __html: text }} 
-        />
+      <h3>Aperçu :</h3>
+      <div 
+        style={{ border: '1px solid #ccc', padding: '10px', minHeight: '50px', backgroundColor: 'white' }}
+        dangerouslySetInnerHTML={{ __html: text }} 
+      />
       </div>
-    </div>
+    </div>    
 
-    
+
   );
 }
 
