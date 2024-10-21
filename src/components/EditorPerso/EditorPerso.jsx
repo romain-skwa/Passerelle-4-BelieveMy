@@ -325,7 +325,7 @@ const handleStrikeThroughClick = () => {
 };
 
 
-/*********** Changer Couleur Texte *********************************************************************** */
+/*********** Changer Couleur Texte ******************************************************************************** */
   /* -------- Réinitialisation ------------------*/
 const handleColorChange = (newColorText) => {
   if (newColorText === "") { // Pour réinitialiser
@@ -333,22 +333,9 @@ const handleColorChange = (newColorText) => {
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
     console.log(`selectedText quand je tente une réinitialisation : `, selectedText);
     
-    // Trouver l'index de début de l'occurrence du texte sélectionné
-    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
+    // Remplacer la balise <span style="color: ..."> et une balise de fermeture </span>
+    const newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, ''));
     
-    if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
-
-    // Utiliser une regex pour trouver l'occurrence spécifique
-    const regex = new RegExp(`(${selectedText})`, 'g');
-    let newText = textarea.value.replace(regex, (match, p1, offset) => {
-      // Vérifier si c'est l'occurrence que nous voulons formater
-      if (offset === startIndex) {
-        // Remplacer la balise <span style="color: ..."> et une balise de fermeture </span>
-        return p1.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, '');
-      }
-      return p1; // Retourner le texte original pour les autres occurrences
-    });
-
     console.log(`newText : ce qu'il reste après avoir supprimé les balises : `, newText);
     setText(newText);
     setRectangleUnderA('rgba(255, 255, 255, 0)');
@@ -357,72 +344,54 @@ const handleColorChange = (newColorText) => {
   }
 };
 
-  /* -------- On change la couleur du texte ------------------*/
+/* -------- On change la couleur du texte ------------------*/
 const handleColorClick = (newColorText) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-  console.log(`selectedText au changement de couleur : `, selectedText);
-
   if (selectedText === '') { return; }
-  
-  // Trouver l'index de début de l'occurrence du texte sélectionné
+
   const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
   
-  if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+  if (startIndex === -1) {
+    return; // Si le texte sélectionné n'est pas trouvé
+  }
 
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
   let newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      // Recherche des balises <span style="color: ..."> existantes
-      const existingSpan = p1.match(/<span style="[^"]*">/);
-      
-      if (existingSpan) {
-        // Remplace "color: ..." à l'intérieur de la balise <span> existante
-        return p1.replace(/(?<!-)(color:\s*[^;"]*)/, `color: ${newColorText}`);
+      const isTextColorChanged = selectedText.includes('<span style="color:') && selectedText.includes('</span>');
+      if (isTextColorChanged) {
+        // Si une balise <span> existe déjà, remplacez la couleur de fond
+        return p1.replace(/(<span[^>]*style="color:).*?;/, `$1 ${newColorText};`);
       } else {
-        // Sinon, ajoute une nouvelle balise <span style="color: ...">
-        return `<span style="color: ${newColorText}">${p1}</span>`;
+        // Sinon, créez une nouvelle balise <span> avec la couleur de fond
+        return `<span style="color: ${newColorText};">${p1}</span>`;
       }
     }
-    return p1; // Retourner le texte original pour les autres occurrences
+    return  p1; // Retourner le texte original pour les autres occurrences
   });
 
-  console.log(`newText : le texte après avoir ajouté la couleur : `, newText);
+  // Met à jour le textarea avec le nouveau texte
   setText(newText);
-  setRectangleUnderA(newColorText);
 };
 
 /*********** Changer Background Texte ******************************************************************* */
   /* -------- Réinitialisation ------------------*/
 const handleBackgroundColorClick = (newColorBackgroundText) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
-  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);  
 
   if (newColorBackgroundText === "") { // Pour réinitialiser
-    console.log('on est censé réinitialiser la couleur de fond');
-    
-    if (selectedText === '') return; // Si aucun texte n'est sélectionné
-
-    // Trouver l'index de début de l'occurrence du texte sélectionné
-    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-    
-    if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
-
-    // Utiliser une regex pour trouver l'occurrence spécifique
-    const regex = new RegExp(`(${selectedText})`, 'g');
-    const newText = textarea.value.replace(regex, (match, p1, offset) => {
-      // Vérifier si c'est l'occurrence que nous voulons réinitialiser
-      if (offset === startIndex) {
-        return p1.replace(/<span style="background-color: [^"]*">/, '').replace(/<\/span>/, '');
-      }
-      return p1; // Retourner le texte original pour les autres occurrences
-    });
-
+    if (selectedText === '') { return; }
+    // Retirer toutes les balises <span> autour du texte sélectionné
+    const newText = textarea.value.replace(/<span[^>]*>(.*?)<\/span>/g, '$1');
     setText(newText);
     setBackgroundUnderPencil('rgba(255, 255, 255, 0)');
+    console.log('Couleur de fond réinitialisée');
   } else {
+    console.log(`Changement de couleur de fond en : ${newColorBackgroundText}`);
     addBackgroundTag(newColorBackgroundText);
     setBackgroundUnderPencil(newColorBackgroundText);
   }
@@ -432,33 +401,32 @@ const handleBackgroundColorClick = (newColorBackgroundText) => {
 const addBackgroundTag = (newColorBackgroundText) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+  if (selectedText === '') { return; }
 
-  if (selectedText === '') return; // Si aucun texte n'est sélectionné
-
-  // Trouver l'index de début de l'occurrence du texte sélectionné
   const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
   
-  if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+  if (startIndex === -1) {
+    return; // Si le texte sélectionné n'est pas trouvé
+  }
 
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
   let newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      // Recherche des balises <span style="background-color: ..."> existantes
-      const existingSpan = p1.match(/<span style="[^"]*">/);
-
-      if (existingSpan) {
-        // Remplace "background-color: ..." à l'intérieur de la balise <span> existante
-        return p1.replace(/(background-color:\s*[^;"]*)/, `background-color: ${newColorBackgroundText}`);
+      const isBackgroundColorChanged = selectedText.includes('<span style="background-color:') && selectedText.includes('</span>');
+      if (isBackgroundColorChanged) {
+        // Si une balise <span> existe déjà, remplacez la couleur de fond
+        return p1.replace(/(<span[^>]*style="background-color:).*?;/, `$1 ${newColorBackgroundText};`);
       } else {
-        // Sinon, ajoute une nouvelle balise <span style="background-color: ...">
-        return `<span style="background-color: ${newColorBackgroundText}">${p1}</span>`;
+        // Sinon, créez une nouvelle balise <span> avec la couleur de fond
+        return `<span style="background-color: ${newColorBackgroundText};">${p1}</span>`;
       }
     }
-    return p1; // Retourner le texte original pour les autres occurrences
+    return  p1; // Retourner le texte original pour les autres occurrences
   });
 
+  // Met à jour le textarea avec le nouveau texte
   setText(newText);
 };
 
