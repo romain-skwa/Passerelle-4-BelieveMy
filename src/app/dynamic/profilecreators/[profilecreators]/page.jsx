@@ -9,7 +9,7 @@ export default function Profile() {
   // Variable
   const params = useParams();
   const pseudo = params.profilecreators.slice(3); // Important de mettre le nom du dossier [profilecreators]
-console.log(`pseudo : `, pseudo);
+
   // State
   const [user, setUser] = useState({});
 

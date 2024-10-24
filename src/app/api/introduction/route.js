@@ -19,7 +19,7 @@ export async function POST(request) {
         let game = await db.collection("introduction-database").find( { nameofgame : nameofgame } ).limit(1).toArray();
 
         if(!game) {
-            throw new Error("Cet utilisateur n'existe pas");
+            throw new Error("Ce jeu n'existe pas");
         }
 
         // Formatting

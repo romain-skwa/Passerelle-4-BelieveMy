@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
-// Page including the links (images) to each on my introductions
+// Page including the links (images) to each introduction of my games
 
 export default async function Allmygamesintroductions() {
   // Variable

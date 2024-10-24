@@ -74,27 +74,24 @@ export default function Header() {
         <div className="order-last laptop:order-none"  /* Part Middle */>
           <div className={`flex flex-col laptop:flex-row pb-3 laptop:pb-0`}>
             {session?.user?.email ? (
-              <div className="
-              cursor-pointer
-              border 
-              text-center 
-              rounded-2xl 
-              bg-black/30 
-               mt-2 laptop:mt-0 
-               px-4 
-               pt-[3px] 
-               ml-3 
-               pl-4 
-               pb-2 
-               laptop:pb-0 
-                
-               order-last 
-               laptop:order-none
-               ">
-                <Link href="../../creators/formularyintroduction">
-                  Formulaire de présentation de votre jeu
-                </Link>
-              </div>
+              <>
+                <div className="
+                cursor-pointer border text-center rounded-2xl bg-black/30 mt-2 laptop:mt-0 px-4 pt-[3px] ml-3 
+                pl-4 pb-2 laptop:pb-0 order-last laptop:order-none
+                ">
+                  <Link href="../../creators/introduceYourselfForm">
+                    Présentez-vous
+                  </Link>
+                </div>
+                <div className="
+                cursor-pointer border text-center rounded-2xl bg-black/30 mt-2 laptop:mt-0 px-4 pt-[3px] ml-3 
+                pl-4 pb-2 laptop:pb-0 order-last laptop:order-none
+                ">
+                  <Link href="../../creators/introductionGameForm">
+                    Présentez votre jeu
+                  </Link>
+                </div>
+              </>
             ) : (
               <div></div>
             )}
@@ -122,14 +119,17 @@ export default function Header() {
                 Se déconnecter
               </div>
             ) : (
-              <div className="border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent">
-              <Link href="../../creators/login">Se connecter</Link>
-              </div>
+              <>
+                <div className="border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent">
+                  <Link href="../../creators/login">Se connecter</Link>
+                </div>
+                <div className="mr-0 laptop:mr-2 flex justify-end border bg-black/70 laptop:bg-transparent rounded-2xl py-1 px-3">
+                  <Link href="../../creators/register">S'inscrire</Link>
+                </div>
+              </>
             )}
           </div>
-          <div className=" mr-0 laptop:mr-2 flex justify-end border bg-black/70 laptop:bg-transparent rounded-2xl py-1 px-3">
-            <Link href="../../creators/register">S'inscrire</Link>
-          </div>
+          
         
         {/* --------Icone HOME visible sur écran mobiles------------ */}
         <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px]  opacity-100 absolute left-0 ml-4 top-[-4px] laptop:hidden">

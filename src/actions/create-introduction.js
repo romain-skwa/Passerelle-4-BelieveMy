@@ -1,5 +1,5 @@
 "use server";
-
+// Creation of the introduction of the game in the database
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { MongoClient } from "mongodb";
 import { getServerSession } from "next-auth";
@@ -30,6 +30,7 @@ export const createIntroduction = async (formData) => {
       nameofgame: formData.get("nameOfGame"),
       content: formData.get("introductionOfTheGame"),
       imageOne: formData.get("imageName"),
+      isDarkMode: formData.get("isDarkMode"),
       creation: new Date(),
     });
 

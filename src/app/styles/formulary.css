@@ -1,0 +1,25 @@
+.linksOtherGames input{
+    width: 60%;
+    margin-inline: auto;
+    padding: 0.5rem;
+}
+.social input{
+    width: 60%;
+    margin-inline: auto;
+    padding: 0.5rem;
+    border-radius: 1rem;
+}
+/*************************************************************/
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4CAF50; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    border-radius: 5px; /* Coins arrondis */
+  }
+  
+  .custom-file-upload input[type="file"] {
+    display: none; /* Masquer l'input de fichier par défaut */
+  }
+/*************************************************************/  

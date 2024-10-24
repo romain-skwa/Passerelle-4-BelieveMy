@@ -339,38 +339,39 @@ const handleColorChange = (newColorText) => {
   }
 };
 
-/* -------- On change la couleur du texte ------------------*/
-const handleColorClick = (newColorText) => {
-  const textarea = document.getElementById('textareaDescriptionJeu');
-  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-  if (selectedText === '') { return; }
+  /* -------- On change la couleur du texte ------------------*/
+  const handleColorClick = (newColorText) => {
+    const textarea = document.getElementById('textareaDescriptionJeu');
+    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+    if (selectedText === '') { return; }
 
-  const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-  
-  if (startIndex === -1) {
-    return; // Si le texte sélectionné n'est pas trouvé
-  }
-
-  // Utiliser une regex pour trouver l'occurrence spécifique
-  const regex = new RegExp(`(${selectedText})`, 'g');
-  let newText = textarea.value.replace(regex, (match, p1, offset) => {
-    // Vérifier si c'est l'occurrence que nous voulons formater
-    if (offset === startIndex) {
-      const isTextColorChanged = selectedText.includes('<span style="color:') && selectedText.includes('</span>');
-      if (isTextColorChanged) {
-        // Si une balise <span> existe déjà, remplacez la couleur de fond
-        return p1.replace(/(<span[^>]*style="color:).*?;/, `$1 ${newColorText};`);
-      } else {
-        // Sinon, créez une nouvelle balise <span> avec la couleur de fond
-        return `<span style="color: ${newColorText};">${p1}</span>`;
-      }
+    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
+    
+    if (startIndex === -1) {
+      return; // Si le texte sélectionné n'est pas trouvé
     }
-    return  p1; // Retourner le texte original pour les autres occurrences
-  });
 
-  // Met à jour le textarea avec le nouveau texte
-  setText(newText);
-};
+    // Utiliser une regex pour trouver l'occurrence spécifique
+    const regex = new RegExp(`(${selectedText})`, 'g');
+    let newText = textarea.value.replace(regex, (match, p1, offset) => {
+      // Vérifier si c'est l'occurrence que nous voulons formater
+      if (offset === startIndex) {
+        const isTextColorChanged = selectedText.includes('<span style="color:') && selectedText.includes('</span>');
+        if (isTextColorChanged) {
+          // Si une balise <span> existe déjà, remplacez la couleur de fond
+          return p1.replace(/(<span[^>]*style="color:).*?;/, `$1 ${newColorText};`);
+        } else {
+          // Sinon, créez une nouvelle balise <span> avec la couleur de fond
+          return `<span style="color: ${newColorText};">${p1}</span>`;
+        }
+      }
+      return  p1; // Retourner le texte original pour les autres occurrences
+    });
+
+    // Met à jour le textarea avec le nouveau texte
+    setRectangleUnderA(newColorText);
+    setText(newText);
+  };
 
 /*********** Changer Background Texte ******************************************************************* */
   /* -------- Réinitialisation ------------------*/
@@ -513,7 +514,6 @@ const addBackgroundTag = (newColorBackgroundText) => {
     setText(newText);
 };
   /********* Retour à la ligne ************************************************************************/
-
   const insertLineBreak = () => {
     const textarea = textAreaRef.current;
     const start = textarea.selectionStart;
@@ -529,10 +529,24 @@ const addBackgroundTag = (newColorBackgroundText) => {
       textarea.focus();
     }, 0);
   };
-  console.log("Texte formaté dans EditorPerso:", text); // Dans MyTextArea
+  
+  /********* Ajuster la hauteur du champ de texte ************************************************************************/
+  const adjustTextAreaHeight = () => {
+    const textArea = textAreaRef.current;
+    if (textArea) {
+      // Réinitialiser la hauteur pour calculer la nouvelle hauteur
+      textArea.style.height = 'auto';
+      // Ajuster la hauteur en fonction du scrollHeight
+      textArea.style.height = `${textArea.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustTextAreaHeight();
+  }, [text]);
+
   return (
-    <div className='entirety'>
-      
+    <div >      
       <section>
         <div className='boutonGris bouton' onClick={handleUndo}><img className='w-[80%]' src="/icons/undo-icon.png" alt="icon undo" /></div>
         <div className='boutonGris bouton' onClick={handleRedo}><img className='w-[80%]' src="/icons/redo-icon.png" alt="icon redo" /></div>
@@ -618,14 +632,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
         onKeyDown={handleKeyDown} 
         placeholder="Entrez votre texte ici..."
       />
-
-      <div>
-      <h3>Aperçu :</h3>
-      <div 
-        style={{ border: '1px solid #ccc', padding: '10px', minHeight: '50px', backgroundColor: 'white' }}
-        dangerouslySetInnerHTML={{ __html: text }} 
-      />
-      </div>
+      
     </div>    
 
 

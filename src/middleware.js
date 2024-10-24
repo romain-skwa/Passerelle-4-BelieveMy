@@ -21,18 +21,3 @@ export function middleware(request) {
         matcher: ["/private-page", "/autre-page-restreinte"], // matcher est utilisé pour spécifier les URL qui doivent être prises en compte par la configuration de routage international définie dans l'objet config.
         // Ici, ce sont les pages censées être inaccessibles aux utilisateurs non connectés
     }
-
-/*
-    Note pour moi : ici impossible d'utiliser Router.push ou router.replace car next/navigation s'exécute au niveau du client
-    Hors, le middleware s'exécutera toujours au niveau du serveur.
-
-    import { useRouter } from "next/navigation";
-
-    export function middleware(request) {
-        const router = useRouter();
-        router.push('/login');
-    }
-
-    Ici, on va profiter de la requête (request) pour rediriger l'utilisateur.
-    On va modifier la prochaine Url.
-*/

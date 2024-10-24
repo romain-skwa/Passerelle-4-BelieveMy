@@ -1,3 +1,4 @@
+
 /* contenant des input */
 .input-component{
   @apply relative flex justify-center w-11/12 md:w-[420px] h-[80px] my-2 mx-auto border flex-col items-center bg-white rounded-full
@@ -21,7 +22,21 @@
 /* focus input */
 .input-component input:focus { outline: solid 2px rgb(42, 42, 197); }
 
+/*********************************************************************************************************/
+/* Ensemble du formulaire avec fond transparent */
+h2{ font-size: 2rem;}
+h3{ font-size: 1.5rem;}
 
+.halfTransparentBlue{
+  @apply w-[53vw] mx-auto bg-[rgba(116,173,218,0.645)] p-2
+}
+.halfTransparentBlue section:nth-child(1) {
+  display: flex; align-items: center;
+  padding: 0.5rem 0;
+}
+.apercu{
+  @apply border border-gray-300 p-4 min-h-[50px]
+}
 /* dans formulaire d'inscription */
 .password-requirement { @apply w-11/12 md:w-[400px] my-2 mx-auto rounded-md }
 
@@ -36,10 +51,7 @@
   background-color: rgba(116, 173, 218, 0.645);
   padding: 0.5rem;
 }
-.entirety section{
-  display: flex; align-items: center;
-  padding: 0.5rem 0;
-}
+
 /******************************************************************************************************/
 .bouton{
   display: inline-flex; align-items: center; justify-content: center;
