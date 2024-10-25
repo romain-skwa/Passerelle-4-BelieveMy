@@ -2,6 +2,7 @@ import Image from "next/image";
 import logoInstagram from "../../../public/logo/instagram_logo.png";
 import logoFacebook from "../../../public/logo/facebook_logo.png";
 import logoTwitch from "../../../public/logo/twitch_logo.png";
+import logoDiscord from "../../../public/logo/discord-logo.png";
 import flagBG from "../../../public/flag/drapeau_uk.jpg";
 import flagFrance from "../../../public/flag/Flag_France.png";
 import homeIconWhite from "../../../public/logo/white-home-icon.png";
@@ -17,7 +18,7 @@ export default function Header() {
   <header className="text-white ">
     <section className="flex justify-between laptop:px-8 pt-3 relative">
         {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
-        <div className="flex h-10 ml-3 laptop:ml-0 mt-2 laptop:w-40">
+        <div className="flex w-[75px] h-10 ml-3 laptop:ml-0 mt-2 laptop:w-40">
           <Image
             src={flagBG}
             alt="Drapeau Grande Bretagne"
@@ -34,18 +35,18 @@ export default function Header() {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="uppercase text-2xl h-20 max-w-44 border">This is my game</div>       
+        <div className="uppercase text-2xl h-20 max-w-[110px]">This is my game</div>       
  
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
-        <div className="h-8 laptop:flex mt-1">
+        <div className="h-8 w-[75px] laptop:flex mt-1 mr-3">
           <div className="flex mb-3">
-            <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7" />
+            <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7 " />
             <Image src={logoFacebook}  alt="Logo facebook"  className="w-7 h-7 mx-3" />
           </div>
           <div className="flex">
             <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7 mr-3" />
-            <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7 mr-3" />
+            <Image src={logoDiscord} alt="Logo Discord" className="w-8 h-8 mr-3" />
           </div>
         </div>
       </section>
@@ -110,7 +111,7 @@ export default function Header() {
 
         {/* -----------CONNEXION-----INSCRIPTION-------------------------------------------------------------- */}
 
-        <div className="text-sm uppercase flex laptop:justify-end laptop:pt-1">
+        <div className="text-sm uppercase flex laptop:justify-end pt-2 laptop:pt-1">
           <div
             className="mr-2 laptop:mr-4 flex justify-end"  /* Part right */
           >
@@ -123,7 +124,7 @@ export default function Header() {
                 <div className="border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent">
                   <Link href="../../creators/login">Se connecter</Link>
                 </div>
-                <div className="mr-0 laptop:mr-2 flex justify-end border bg-black/70 laptop:bg-transparent rounded-2xl py-1 px-3">
+                <div className="ml-3 mr-0 laptop:mr-2 flex justify-end border bg-black/70 laptop:bg-transparent rounded-2xl py-1 px-3">
                   <Link href="../../creators/register">S'inscrire</Link>
                 </div>
               </>
@@ -132,19 +133,19 @@ export default function Header() {
           
         
         {/* --------Icone HOME visible sur écran mobiles------------ */}
-        <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px]  opacity-100 absolute left-0 ml-4 top-[-4px] laptop:hidden">
+        <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px]  opacity-100 absolute left-0 ml-4 top-[6px] laptop:hidden">
           <Image
             src={homeIconWhite}
             alt="Home Icon"
-            className="w-7 h-7 "
+            className="w-5 h-5"
           />
         </Link>
         {/* --------Icone SEARCH visible sur écran mobiles------------ */}
-        <Link href="../../" className="absolute right-0 mr-4 top-[-3px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
+        <Link href="../../" className="absolute right-0 mr-4 top-[7px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
           <Image
             src={searchIconWhite}
             alt="Search Icon"
-            className="w-6 h-6"
+            className="w-4 h-4"
           />
         </Link>
         </div>
