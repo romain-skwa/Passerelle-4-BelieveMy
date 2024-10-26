@@ -14,9 +14,8 @@ import logoTwitter from "../../../../public/logo/x__twitter-logo.png";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState('');
-  const [gamesAlreadyCreated, setGamesAlreadyCreated] = useState('');
   const [nameOtherGames1, setNameOtherGames1] = useState('');
-  const [linkOtherGame1, setLinkOtherGame1] = useState('');
+  const [linkOtherGame1, setLinkOtherGame1] = useState(''); 
   const [nameOtherGames2, setNameOtherGames2] = useState('');
   const [linkOtherGame2, setLinkOtherGame2] = useState('');
   const [nameOtherGames3, setNameOtherGames3] = useState('');
@@ -25,7 +24,7 @@ const introduceYourself = () => {
   const [linkOtherGame4, setLinkOtherGame4] = useState('');
   const [nameOtherGames5, setNameOtherGames5] = useState('');
   const [linkOtherGame5, setLinkOtherGame5] = useState('');
-  const [profileUrl, setProfileUrl] = useState('');
+  const [logoUser, setLogoUser] = useState('');
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [discordUrl, setDiscordUrl] = useState('');
   const [twitchUrl, setTwitchUrl] = useState('');
@@ -36,14 +35,15 @@ const introduceYourself = () => {
     event.preventDefault();
     try {
       // Appelez la fonction pour mettre à jour les informations de l'utilisateur
-      await updateUserInfo(bio, profileUrl, websiteUrl, discordUrl, twitchUrl, itchIoUrl);
+      await updateUserInfo(bio, logoUser, websiteUrl, discordUrl, twitchUrl, itchIoUrl,
+         twitterUrl, nameOtherGames1, linkOtherGame1, nameOtherGames2, linkOtherGame2,
+         nameOtherGames3, linkOtherGame3, nameOtherGames4, linkOtherGame4, nameOtherGames5, linkOtherGame5,);
       toast.success('Informations mises à jour avec succès !');
     } catch (error) {
       console.error(`error dans la page introduceYourself`, error); // Affichez l'erreur dans la console
       toast.error('Erreur lors de la mise à jour des informations');
     }
   };
-
   return (
     <GeneralLayout>
       <div className='introduceYourself w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border bg-black/30 text-center '>
@@ -78,7 +78,7 @@ const introduceYourself = () => {
               <label className="custom-file-upload">
                 <input 
                   type="file" 
-                  onChange={(event) => setProfileUrl(event.target.files[0])} 
+                  onChange={(event) => setLogoUser(event.target.files[0])} 
                   accept="image/*" 
                 />
                 Télécharger votre logo
