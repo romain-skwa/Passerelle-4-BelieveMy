@@ -1,5 +1,5 @@
 "use client";
-
+// introduction of a creator
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -33,7 +33,7 @@ export default function Profile() {
 
     const data = await response.json();
 
-    if (!data) { throw new Error("Invalid JSON response");}
+    if (!data) {throw new Error("Invalid JSON response");}
 
     if (!response.ok) {toast.error("Une erreur est intervenue");}
 

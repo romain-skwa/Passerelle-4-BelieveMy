@@ -2,10 +2,10 @@
 
 // introduceYourself.js
 import Image from "next/image";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
-import updateUserInfo from "@/actions/bioCreator";
+import updateBioCreator from "@/actions/updateBioCreator";
 import formulary from "../../styles/formulary.css";
 import logoDiscord from "../../../../public/logo/discord-logo.png";
 import logoTwitch from "../../../../public/logo/twitch_logo.png";
@@ -30,12 +30,69 @@ const introduceYourself = () => {
   const [twitchUrl, setTwitchUrl] = useState('');
   const [itchIoUrl, setItchIoUrl] = useState('');
   const [twitterUrl, setTwitterUrl] = useState('');
+  const [user, setUser ] = useState(null);
+  const [error, setError] = useState(null);
+  console.log(`Les données concernant user dans introduceYourself : `, user);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch('/api/getAllUserData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Si nécessaire, ajoutez le corps de la requête ici
+                body: JSON.stringify({ /* données si besoin */ }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Une erreur est survenue');
+            }
+
+            const data = await response.json();
+            setUser (data.user);
+
+        // Met à jour l'état avec les données de l'utilisateur
+
+        if (data.user.bio) { setBio(data.user.bio); }
+        if (data.user.nameOtherGames1) { setNameOtherGames1(data.user.nameOtherGames1); }
+        if (data.user.linkOtherGame1) { setLinkOtherGame1(data.user.linkOtherGame1); }
+        if (data.user.nameOtherGames2) { setNameOtherGames2(data.user.nameOtherGames2); }
+        if (data.user.linkOtherGame2) { setLinkOtherGame2(data.user.linkOtherGame2); }
+        if (data.user.nameOtherGames3) { setNameOtherGames3(data.user.nameOtherGames3); }
+        if (data.user.linkOtherGame3) {setLinkOtherGame3(data.user.linkOtherGame3);}
+        if (data.user.nameOtherGames4) { setNameOtherGames4(data.user.nameOtherGames4); }
+        if (data.user.linkOtherGame4) { setLinkOtherGame4(data.user.linkOtherGame4); }
+        if (data.user.nameOtherGames5) { setNameOtherGames5(data.user.nameOtherGames5); }
+        if (data.user.linkOtherGame5) { setLinkOtherGame5(data.user.linkOtherGame5); }
+        if (data.user.websiteUrl) { setWebsiteUrl(data.user.websiteUrl); }
+        if (data.user.discordUrl) { setDiscordUrl(data.user.discordUrl); }
+        if (data.user.twitchUrl) { setTwitchUrl(data.user.twitchUrl); }
+        if (data.user.itchIoUrl) { setItchIoUrl(data.user.itchIoUrl); }
+        if (data.user.twitterUrl) { setTwitterUrl(data.user.twitterUrl); }
+
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+      fetchUserData();
+  }, []);
+
+  if (error) {
+    return <div>Erreur: {error}</div>;
+  }
+
+  if (!user) {
+    return <div>Chargement...</div>;
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       // Appelez la fonction pour mettre à jour les informations de l'utilisateur
-      await updateUserInfo(bio, logoUser, websiteUrl, discordUrl, twitchUrl, itchIoUrl,
+      await updateBioCreator(bio, logoUser, websiteUrl, discordUrl, twitchUrl, itchIoUrl,
          twitterUrl, nameOtherGames1, linkOtherGame1, nameOtherGames2, linkOtherGame2,
          nameOtherGames3, linkOtherGame3, nameOtherGames4, linkOtherGame4, nameOtherGames5, linkOtherGame5,);
       toast.success('Informations mises à jour avec succès !');
@@ -44,6 +101,8 @@ const introduceYourself = () => {
       toast.error('Erreur lors de la mise à jour des informations');
     }
   };
+  /********************************************************************************************** */
+  
   return (
     <GeneralLayout>
       <div className='introduceYourself w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border bg-black/30 text-center '>

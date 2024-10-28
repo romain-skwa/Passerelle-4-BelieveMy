@@ -19,7 +19,7 @@ export async function POST(request) {
         let user = await db.collection("créateurs").find( { username: pseudo } ).limit(1).toArray();
 
         if(!user) {
-            throw new Error("Cet utilisateur n'existe pas");
+            throw new Error("Cet utilisateur n'existe pas"); 
         }
 
         // Formatting
@@ -27,7 +27,7 @@ export async function POST(request) {
             ...user,
             _id: user._id.toString()
         }))[0];
-
+        
         await client.close();
 
         return NextResponse.json({

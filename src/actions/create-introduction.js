@@ -1,8 +1,8 @@
 "use server";
 // Creation of the introduction of the game in the database
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { MongoClient } from "mongodb";
 import { getServerSession } from "next-auth";
+import { MongoClient } from "mongodb";
 
 export const createIntroduction = async (formData) => {
   // Variable
