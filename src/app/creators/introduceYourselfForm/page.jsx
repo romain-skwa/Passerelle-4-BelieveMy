@@ -32,7 +32,6 @@ const introduceYourself = () => {
   const [twitterUrl, setTwitterUrl] = useState('');
   const [user, setUser ] = useState(null);
   const [error, setError] = useState(null);
-  console.log(`Les données concernant user dans introduceYourself : `, user);
 
   useEffect(() => {
     const fetchUserData = async () => {

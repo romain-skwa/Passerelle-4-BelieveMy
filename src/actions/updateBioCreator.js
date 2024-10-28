@@ -24,44 +24,46 @@ const updateBioCreator = async (
   nameOtherGames5,
   linkOtherGame5
 ) => {
-  // Variable
   const session = await getServerSession(authOptions);
-
   const client = await MongoClient.connect(process.env.MONGODB_CLIENT);
   const db = client.db(process.env.MONGODB_DATABASE);
 
-  // If the user isn't connected
   if (!session.user) {
     throw new Error("Vous devez être connecté");
   }
 
+  // Créez un objet pour les mises à jour
+  const updateData = {
+    $set: {},
+    $unset: {}
+  };
+
+  // Ajoutez les champs non vides à $set et les champs vides à $unset
+  if (bio) { updateData.$set.bio = bio; } else { updateData.$unset.bio = ""; }
+  if (logoUser)        { updateData.$set.logo = logoUser ; } else { updateData.$unset.logo = ""; }
+  if (websiteUrl)      { updateData.$set.websiteUrl = websiteUrl; } else { updateData.$unset.websiteUrl = ""; }
+  if (discordUrl)      { updateData.$set.discordUrl = discordUrl; } else { updateData.$unset.discordUrl = ""; }
+  if (twitchUrl)       { updateData.$set.twitchUrl = twitchUrl; } else { updateData.$unset.twitchUrl = ""; }
+  if (itchIoUrl)       { updateData.$set.itchIoUrl = itchIoUrl; } else { updateData.$unset.itchIoUrl = ""; }
+  if (twitterUrl)      { updateData.$set.twitterUrl = twitterUrl; } else { updateData.$unset.twitterUrl = ""; }
+  if (nameOtherGames1) { updateData.$set.nameOtherGames1 = nameOtherGames1; } else { updateData.$unset.nameOtherGames1 = ""; }
+  if (linkOtherGame1)  { updateData.$set.linkOtherGame1 = linkOtherGame1; } else { updateData.$unset.linkOtherGame1 = ""; }
+  if (nameOtherGames2) { updateData.$set.nameOtherGames2 = nameOtherGames2; } else { updateData.$unset.nameOtherGames2 = ""; }
+  if (linkOtherGame2)  { updateData.$set.linkOtherGame2 = linkOtherGame2; } else { updateData.$unset.linkOtherGame2 = ""; }
+  if (nameOtherGames3) { updateData.$set.nameOtherGames3 = nameOtherGames3; } else { updateData.$unset.nameOtherGames3 = ""; }
+  if (linkOtherGame3)  { updateData.$set.linkOtherGame3 = linkOtherGame3; } else { updateData.$unset.linkOtherGame3 = ""; }
+  if (nameOtherGames4) { updateData.$set.nameOtherGames4 = nameOtherGames4; } else { updateData.$unset.nameOtherGames4 = ""; }
+  if (linkOtherGame4)  { updateData.$set.linkOtherGame4 = linkOtherGame4; } else { updateData.$unset.linkOtherGame4 = ""; }
+  if (nameOtherGames5) { updateData.$set.nameOtherGames5 = nameOtherGames5; } else { updateData.$unset.nameOtherGames5 = ""; }
+  if (linkOtherGame5)  { updateData.$set.linkOtherGame5 = linkOtherGame5; } else { updateData.$unset.linkOtherGame5 = ""; }
+
   try {
     await db.collection("créateurs").updateOne(
-      { email: session.user.email }, 
-      {
-        $set: {
-          bio,
-          logo: logoUser,
-          websiteUrl: websiteUrl,
-          discordUrl: discordUrl,
-          twitchUrl: twitchUrl,
-          itchIoUrl: itchIoUrl,
-          twitterUrl: twitterUrl,
-          nameOtherGames1: nameOtherGames1,
-          linkOtherGame1: linkOtherGame1,
-          nameOtherGames2: nameOtherGames2,
-          linkOtherGame2: linkOtherGame2,
-          nameOtherGames3: nameOtherGames3,
-          linkOtherGame3: linkOtherGame3,
-          nameOtherGames4: nameOtherGames4,
-          linkOtherGame4: linkOtherGame4,
-          nameOtherGames5: nameOtherGames5,
-          linkOtherGame5: linkOtherGame5,
-        },
-      }
+      { email: session.user.email },
+      updateData
     );
   } catch (error) {
-    console.error(`error dans la route updateBioCreator`, error); // Affichez l'erreur dans la console
+    console.error(`error dans la route updateBioCreator`, error);
     throw new Error(error);
   } finally {
     await client.close();

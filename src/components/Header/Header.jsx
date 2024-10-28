@@ -39,13 +39,13 @@ export default function Header() {
  
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
-        <div className="h-8 w-[75px] laptop:flex mt-1 mr-3">
+        <div className="h-8 w-[75px] laptop:w-[150px] laptop:flex mt-1 mr-3">
           <div className="flex mb-3">
             <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7 " />
             <Image src={logoFacebook}  alt="Logo facebook"  className="w-7 h-7 mx-3" />
           </div>
           <div className="flex">
-            <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7 mr-3" />
+            <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7 mr-2 laptop:ml-2" />
             <Image src={logoDiscord} alt="Logo Discord" className="w-8 h-8 mr-3" />
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function Header() {
           
         
         {/* --------Icone HOME visible sur écran mobiles------------ */}
-        <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px]  opacity-100 absolute left-0 ml-4 top-[6px] laptop:hidden">
+        <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px] opacity-100 absolute left-0 ml-4 top-[6px] laptop:hidden">
           <Image
             src={homeIconWhite}
             alt="Home Icon"
