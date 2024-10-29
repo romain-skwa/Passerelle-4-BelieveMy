@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import "../../app/styles/components.css";
+import "../../app/styles/formulary.css";
 import { useClickOutside } from '@mantine/hooks';
 
 function MyTextArea({onTextChange, setIntroductionOfTheGame }) {
@@ -547,7 +548,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
 
   return (
     <div >      
-      <section>
+      <section className='py-2 flex'>
         <div className='boutonGris bouton' onClick={handleUndo}><img className='w-[80%]' src="/icons/undo-icon.png" alt="icon undo" /></div>
         <div className='boutonGris bouton' onClick={handleRedo}><img className='w-[80%]' src="/icons/redo-icon.png" alt="icon redo" /></div>
         <div className='longBoutonGris bouton' onClick={handleH2Click} title='<h2>'>Titre</div>
@@ -555,7 +556,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
         <div className='longBoutonGris bouton' onClick={handleParagraphClick} title='<p>'>Paragraphe</div>
         <div className='longBoutonGris bouton' onClick={insertLineBreak} title='<br/>'>Retour ligne</div>
          {/* Choisir la taille du texte ------------------------------------------------------- */}
-         <select value={fontSize} onChange={handleFontSizeChange} style={{ marginRight: '10px' }}>
+         <select value={fontSize} className='p-1 border border-solid rounded' onChange={handleFontSizeChange} style={{ marginRight: '10px' }}>
           <option >Taille du texte</option>
           <option value="0.5rem">0.5rem</option>
           <option value="0.75rem">0.75rem</option>

@@ -44,8 +44,8 @@ export default function IntroductionGame() {
     // Déterminer les classes en fonction de isDarkMode
     const isDarkMode = game.isDarkMode !== undefined ? game.isDarkMode : false; // Récupérer la valeur
     const sectionClasses = isDarkMode 
-        ? "text-white bg-black w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4" 
-        : "text-black bg-white w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4";
+        ? "text-white bg-[rgba(0,0,0,0.90)] w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4" 
+        : "text-black bg-[rgba(255,255,225,0.90)] w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4";
 
     return(
         <GeneralLayout>

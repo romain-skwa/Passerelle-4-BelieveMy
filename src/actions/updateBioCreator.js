@@ -22,7 +22,8 @@ const updateBioCreator = async (
   nameOtherGames4,
   linkOtherGame4,
   nameOtherGames5,
-  linkOtherGame5
+  linkOtherGame5,
+  isDarkMode
 ) => {
   const session = await getServerSession(authOptions);
   const client = await MongoClient.connect(process.env.MONGODB_CLIENT);
@@ -39,8 +40,8 @@ const updateBioCreator = async (
   };
 
   // Ajoutez les champs non vides à $set et les champs vides à $unset
-  if (bio) { updateData.$set.bio = bio; } else { updateData.$unset.bio = ""; }
-  if (logoUser)        { updateData.$set.logo = logoUser ; } else { updateData.$unset.logo = ""; }
+  if (bio)             { updateData.$set.bio = bio; } else { updateData.$unset.bio = ""; }
+  if (logoUser)        { updateData.$set.logo = logoUser; } else { updateData.$unset.logo = ""; }
   if (websiteUrl)      { updateData.$set.websiteUrl = websiteUrl; } else { updateData.$unset.websiteUrl = ""; }
   if (discordUrl)      { updateData.$set.discordUrl = discordUrl; } else { updateData.$unset.discordUrl = ""; }
   if (twitchUrl)       { updateData.$set.twitchUrl = twitchUrl; } else { updateData.$unset.twitchUrl = ""; }
@@ -56,6 +57,7 @@ const updateBioCreator = async (
   if (linkOtherGame4)  { updateData.$set.linkOtherGame4 = linkOtherGame4; } else { updateData.$unset.linkOtherGame4 = ""; }
   if (nameOtherGames5) { updateData.$set.nameOtherGames5 = nameOtherGames5; } else { updateData.$unset.nameOtherGames5 = ""; }
   if (linkOtherGame5)  { updateData.$set.linkOtherGame5 = linkOtherGame5; } else { updateData.$unset.linkOtherGame5 = ""; }
+  if (isDarkMode)      { updateData.$set.isDarkMode = isDarkMode; } else { updateData.$unset.isDarkMode = ""; }
 
   try {
     await db.collection("créateurs").updateOne(

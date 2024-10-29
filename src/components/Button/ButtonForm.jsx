@@ -5,7 +5,6 @@ import { useFormStatus } from "react-dom"; // Pour connaitre le status actuel du
 export default function ButtonForm({
   children,
   formButton,
-  disabled,
 }) {
   const { pending } = useFormStatus(); // Peut être = à true, false ou undefined.
   return (

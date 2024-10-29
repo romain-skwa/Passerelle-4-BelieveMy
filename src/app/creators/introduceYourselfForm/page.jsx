@@ -32,10 +32,11 @@ const introduceYourself = () => {
   const [twitterUrl, setTwitterUrl] = useState('');
   const [user, setUser ] = useState(null);
   const [error, setError] = useState(null);
-
+  const [isDarkMode, setIsDarkMode] = useState(false);
+console.log( `isDarkMode : `,isDarkMode);
   useEffect(() => {
     const fetchUserData = async () => {
-        try {
+        try { // Get data about user
             const response = await fetch('/api/getAllUserData', {
                 method: 'POST',
                 headers: {
@@ -53,7 +54,13 @@ const introduceYourself = () => {
             const data = await response.json();
             setUser (data.user);
 
-        // Met à jour l'état avec les données de l'utilisateur
+        // Si elles existent, les données concernant l'utilisateur sont affichées dans les champs de texte
+        // **Modification ici : initialisez isDarkMode en fonction des données utilisateur**
+        if (data.user.isDarkMode !== undefined) { // Radiobox will be checked automatically
+          setIsDarkMode(data.user.isDarkMode); // Utilisez la valeur existante
+        } else {
+          setIsDarkMode(false); // Si isDarkMode n'existe pas, on le met à false
+        }
 
         if (data.user.bio) { setBio(data.user.bio); }
         if (data.user.nameOtherGames1) { setNameOtherGames1(data.user.nameOtherGames1); }
@@ -61,7 +68,7 @@ const introduceYourself = () => {
         if (data.user.nameOtherGames2) { setNameOtherGames2(data.user.nameOtherGames2); }
         if (data.user.linkOtherGame2) { setLinkOtherGame2(data.user.linkOtherGame2); }
         if (data.user.nameOtherGames3) { setNameOtherGames3(data.user.nameOtherGames3); }
-        if (data.user.linkOtherGame3) {setLinkOtherGame3(data.user.linkOtherGame3);}
+        if (data.user.linkOtherGame3) { setLinkOtherGame3(data.user.linkOtherGame3); }
         if (data.user.nameOtherGames4) { setNameOtherGames4(data.user.nameOtherGames4); }
         if (data.user.linkOtherGame4) { setLinkOtherGame4(data.user.linkOtherGame4); }
         if (data.user.nameOtherGames5) { setNameOtherGames5(data.user.nameOtherGames5); }
@@ -79,21 +86,18 @@ const introduceYourself = () => {
       fetchUserData();
   }, []);
 
-  if (error) {
-    return <div>Erreur: {error}</div>;
-  }
+  if (error) { return <div>Erreur: {error}</div>; }
 
-  if (!user) {
-    return <div>Chargement...</div>;
-  }
+  if (!user) { return <div>Chargement...</div>; }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Appelez la fonction pour mettre à jour les informations de l'utilisateur
+      // Envoyez les données à la fonction pour mettre à jour les informations de l'utilisateur
       await updateBioCreator(bio, logoUser, websiteUrl, discordUrl, twitchUrl, itchIoUrl,
          twitterUrl, nameOtherGames1, linkOtherGame1, nameOtherGames2, linkOtherGame2,
-         nameOtherGames3, linkOtherGame3, nameOtherGames4, linkOtherGame4, nameOtherGames5, linkOtherGame5,);
+         nameOtherGames3, linkOtherGame3, nameOtherGames4, linkOtherGame4, nameOtherGames5,
+         linkOtherGame5, isDarkMode);
       toast.success('Informations mises à jour avec succès !');
     } catch (error) {
       console.error(`error dans la page introduceYourself`, error); // Affichez l'erreur dans la console
@@ -179,7 +183,32 @@ const introduceYourself = () => {
               <input type="url" value={twitterUrl} onChange={(event) => setTwitterUrl(event.target.value)} placeholder='Lien X Twitter :' />
             </div>
           </div>
-          <button type="submit">Mettre à jour</button>
+
+          <div className="p-2 bg-black text-white ml-2 inline-flex align-middle my-3 rounded-xl border">
+            <span>Mode Sombre : Texte blanc sur fond noir</span>
+            <div className="ml-4"> 
+              <label>
+                <input 
+                  type="radio" 
+                  value="true" 
+                  checked={isDarkMode === true} 
+                  onChange={() => setIsDarkMode(true)} 
+                />
+                Oui
+              </label>
+              <label className="ml-4">
+                <input 
+                  type="radio" 
+                  value="false" 
+                  checked={isDarkMode === false} 
+                  onChange={() => setIsDarkMode(false)} 
+                />
+                Non
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" className="border block bg-green-500 text-white mx-auto p-2 rounded-xl">Mettre à jour</button>
         </form>
       </div>
     </GeneralLayout>

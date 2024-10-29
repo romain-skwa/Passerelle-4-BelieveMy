@@ -38,4 +38,71 @@
   @apply w-[15%] laptop:w-[20%] flex justify-end items-center
 }
 
-/***************************************************************/
+/******* EditorPerso ***************************/
+h2{ font-size: 2rem;}
+h3{ font-size: 1.5rem;}
+
+.boutonTextColor, .boutonBackgroundColor{
+  position: relative;
+  width: 35px; height: 35px;
+  color: white;
+  display: inline-flex; flex-direction: column;
+}
+.textColorLetter{
+  color: black;
+  position: relative;
+  top: -3px;
+  font-weight: 700;
+  font-size: 18px;
+}
+.rectangleTextColor{
+  height: 18%; width: 70%;
+  border: 1px solid black;
+  position: relative;
+  top: -5px;
+}
+.rectangleBackgroundTextColor{
+  height: 18%; width: 70%;
+  border: 1px solid black;
+}
+
+.iconPencil{
+  width: 17px;
+}
+.color-palette {
+  display: inline-block; /* or display: block; if you want to take full width */
+  width: 157px;
+  height: 165px;
+  overflow: auto; /* in case the content exceeds the container size */
+  padding: 4px; /* add some padding to make it look nicer */
+  border: 1px solid #020024;
+  position: absolute;
+  left: -60px; top: 35px;
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 25%, rgba(0,212,255,1) 100%); 
+  cursor: default;  
+}
+#textareaDescriptionJeu{
+  width: 52vw; height: 20vh;
+  padding: 0.5rem 1rem;
+  border-radius: 0.7rem;
+}
+.bouton{
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  margin-right: 10px;
+  border: 1px rgb(59, 58, 58) solid;
+  border-radius: 5px;  
+}
+.boutonGris {
+  width: 35px; height: 35px;
+}
+.longBoutonGris {
+  padding: 5px;
+  color: white;
+  text-shadow: 1px 1px 10px black;
+  font-weight: 600;
+}
+/******* Aperçu : Glimpse ****************/
+.apercu{
+  @apply border border-gray-300 p-4 min-h-[50px]
+}

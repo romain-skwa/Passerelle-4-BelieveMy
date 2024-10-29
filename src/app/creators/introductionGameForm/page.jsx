@@ -44,7 +44,6 @@ export default function introductionGameForm() {
       formData.append("imageOne", file);
       formData.append("imageName", file.name);
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
-      //formData.append("introductionOfTheGame", encodeURIComponent(introductionOfTheGame));
       formData.append("introductionOfTheGame",  he.encode(introductionOfTheGame));
       formData.append("isDarkMode", isDarkMode.toString()); 
 
@@ -56,7 +55,7 @@ export default function introductionGameForm() {
   };
   return (
     <GeneralLayout>      
-      <form onSubmit={onPrepare}  className="halfTransparentBlue">
+      <form onSubmit={onPrepare} className="w-[53vw] mx-auto bg-[rgba(116,173,218,0.645)] p-2">
         <p>
           {session?.user.username}, sur cette page, vous êtes invité à remplir
           de présentation de votre jeux.

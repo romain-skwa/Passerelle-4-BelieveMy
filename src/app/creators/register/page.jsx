@@ -92,7 +92,7 @@ export default function Register() {
             />
           </div>
 
-          <div className="password-requirement border">
+          <div className="w-11/12 md:w-[400px] my-2 mx-auto rounded-md border">
             <div className="text-center bg-slate-200 font-semibold">
               Mot de passe
             </div>
