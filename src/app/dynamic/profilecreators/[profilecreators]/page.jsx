@@ -1,5 +1,5 @@
 "use client";
-// introduction of a creator
+// to show the introduction of a creator
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";

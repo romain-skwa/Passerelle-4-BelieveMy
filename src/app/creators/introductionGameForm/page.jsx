@@ -3,12 +3,14 @@
 import { createIntroduction } from "@/actions/create-introduction";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { notFound } from "next/navigation";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import MyEditor from "@/components/MyEditor/MyEditor";
 import EditorPerso from "@/components/EditorPerso/EditorPerso";
-import Glimpse from "@/components/Glimpse/Glimpse";
+import CallRouteAllDataUser from "@/components/CallRouteAllDataUser/CallRouteAllDataUser";
+import Glimpse from "@/components/Glimpse/Glimpse";// Aperçu
 import he from 'he';
+import UserProfileSection from "@/components/UserProfileSection/UserProfileSection"; 
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -22,9 +24,33 @@ export default function introductionGameForm() {
   const [lienImage, setLienImage] = useState("");
   const [text, setText] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isIntroOfYourself, setIsIntroOfYourself] = useState(false);
+  const [user, setUser] = useState({});
 
+useEffect(() => {// to use the function fetchUserData when the session is defined
+  fetchUserData();
+}, [session]);
 
-  // Function
+  // Function to get all data about the connected user
+  const fetchUserData = async () => {
+    const response = await fetch("/api/getAllUserData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(session?.user?.username),
+    }); 
+
+    const data = await response.json();
+
+    if (!data) {throw new Error("Invalid JSON response");}
+
+    if (!response.ok) {toast.error("Une erreur est intervenue");}
+
+    setUser(data.user);
+  };
+
+  // Function to send the data to createIntroduction function
   const onPrepare = async (e) => {
     e.preventDefault();
 
@@ -46,6 +72,7 @@ export default function introductionGameForm() {
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
       formData.append("introductionOfTheGame",  he.encode(introductionOfTheGame));
       formData.append("isDarkMode", isDarkMode.toString()); 
+      formData.append("isIntroOfYourself", isIntroOfYourself.toString()); 
 
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
@@ -55,7 +82,7 @@ export default function introductionGameForm() {
   };
   return (
     <GeneralLayout>      
-      <form onSubmit={onPrepare} className="w-[53vw] mx-auto bg-[rgba(116,173,218,0.645)] p-2">
+      <form onSubmit={onPrepare} className="w-[53vw] mx-auto border  p-2">
         <p>
           {session?.user.username}, sur cette page, vous êtes invité à remplir
           de présentation de votre jeux.
@@ -84,7 +111,16 @@ export default function introductionGameForm() {
           onTextChange={(newText) => {setIntroductionOfTheGame(newText); }} 
         />
 
+        <div 
+          className="border border-black p-2 inline-block mt-3 rounded-md font-bold text-white cursor-pointer"
+          style={{textShadow: '2px 2px 7px rgba(0, 0, 0, 1)', backgroundColor: 'rgba(148, 163, 184, 0.7)',}}
+          onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
+          >
+          Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
+        </div>
+
         <Glimpse introductionOfTheGame={introductionOfTheGame} nameOfGame={nameOfGame} isDarkMode={isDarkMode}  />
+        {isIntroOfYourself && <UserProfileSection user={user} />}
 
         <input
           type="file"

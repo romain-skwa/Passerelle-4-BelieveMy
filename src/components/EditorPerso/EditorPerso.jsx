@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import "../../app/styles/components.css";
 import "../../app/styles/formulary.css";
 import { useClickOutside } from '@mantine/hooks';
 
-function MyTextArea({onTextChange, setIntroductionOfTheGame }) {
+function MyTextArea({onTextChange, setIntroductionOfTheGame}) {
   const [text, setText] = useState('');
   const [fontSize, setFontSize] = useState('12px'); // default font size
   const [undoStack, setUndoStack] = useState([]);  

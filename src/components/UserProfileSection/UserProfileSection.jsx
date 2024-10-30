@@ -5,7 +5,10 @@ import logoTwitch from "../../../public/logo/twitch_logo.png";
 import logoItchi from "../../../public/logo/itch-io-icon.png";
 import logoTwitter from "../../../public/logo/x__twitter-logo.png";
 
-const UserProfileSection = ({ user }) => {
+const UserProfileSection = ({user}) => {
+  if (!user) {
+    return <div>Aucun utilisateur connecté</div>; 
+  }
   return (
     <section className={user.isDarkMode ? 
       "w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border text-white bg-[rgba(0,0,0,0.90)]" : 

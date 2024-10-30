@@ -31,6 +31,7 @@ export const createIntroduction = async (formData) => {
       content: formData.get("introductionOfTheGame"),
       imageOne: formData.get("imageName"),
       isDarkMode: formData.get("isDarkMode"),
+      isIntroOfYourself: formData.get("isIntroOfYourself"),
       creation: new Date(),
     });
 

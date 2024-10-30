@@ -91,7 +91,8 @@ h3{ font-size: 1.5rem;}
   cursor: pointer;
   margin-right: 10px;
   border: 1px rgb(59, 58, 58) solid;
-  border-radius: 5px;  
+  border-radius: 5px;
+  background-color: rgba(148, 163, 184, 0.7);
 }
 .boutonGris {
   width: 35px; height: 35px;
@@ -99,7 +100,7 @@ h3{ font-size: 1.5rem;}
 .longBoutonGris {
   padding: 5px;
   color: white;
-  text-shadow: 1px 1px 10px black;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
   font-weight: 600;
 }
 /******* Aperçu : Glimpse ****************/
