@@ -7,7 +7,6 @@ import { notFound } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import EditorPerso from "@/components/EditorPerso/EditorPerso";
-import CallRouteAllDataUser from "@/components/CallRouteAllDataUser/CallRouteAllDataUser";
 import Glimpse from "@/components/Glimpse/Glimpse";// Aperçu
 import he from 'he';
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection"; 
