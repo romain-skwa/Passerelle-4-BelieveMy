@@ -107,3 +107,19 @@ h3{ font-size: 1.5rem;}
 .apercu{
   @apply border border-gray-300 p-4 min-h-[50px]
 }
+/********** PEGI ***********************/
+.pegi{
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.pegi img{
+  width: 3.5rem;
+}
+.pegi label{
+  padding: 0.3rem;
+  border: 1px black solid;
+  border-radius: 10px;
+  background-color: rgba(148, 163, 184, 0.7);
+
+}

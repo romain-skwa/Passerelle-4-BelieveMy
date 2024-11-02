@@ -5,11 +5,13 @@ import Link from "next/link";
 
 export default function ConnectedUser() {
     const { data: session } = useSession();
-    
+    const username = session?.user.username;
+    const encodedUsername = encodeURIComponent(username);
+    console.log(`session?.user.username`, session)
   return  (
     session?.user?.email ? (        
     <div className="text-white">
-      <Link href={`dynamic/profilecreators/@${encodeURIComponent(session?.user.username)}`}>
+      <Link href={`dynamic/profilecreators/@${encodedUsername}`}>
         {session?.user.username}
       </Link> est maintenant CONNECTE
     </div>
