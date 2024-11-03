@@ -27,10 +27,11 @@ export default function introductionGameForm() {
   const [isIntroOfYourself, setIsIntroOfYourself] = useState(false);
   const [user, setUser] = useState({});
   const [videoLink, setVideoLink] = useState("");
-  const [selectedAge, setSelectedAge] = useState("");
-  const [selectedAdditional, setSelectedAdditional] = useState([]); 
+  const [selectedAgePegi, setSelectedAgePegi] = useState("");
+  const [selectedAdditionalPegi, setSelectedAdditionalPegi] = useState([]);
+  const [shortIntroduction, setShortIntroduction] = useState("");
 
-   // Ajoutez cela à formData
+  // Ajoutez cela à formData
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
   useEffect(() => {
@@ -60,18 +61,28 @@ export default function introductionGameForm() {
 
     setUser(data.user);
   };
-  
+
   /****************** Envoyer les données à l'API createIntroduction ***************** */
   const onPrepare = async (e) => {
     e.preventDefault();
 
     try {
       const file = lienImage;
-      if (!file) {return toast.error("Vous devez sélectionner un fichier image");}
+      if (!file) {
+        return toast.error("Vous devez sélectionner un fichier image");
+      }
 
-      if (!file.name.match(/\.(jpg|jpeg|png)$/i)) {return toast.error("Le lien de l'image doit être au format jpg, jpeg ou png");}
+      if (!file.name.match(/\.(jpg|jpeg|png)$/i)) {
+        return toast.error(
+          "Le lien de l'image doit être au format jpg, jpeg ou png"
+        );
+      }
 
-      if (!selectedAge) {return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");}
+      if (!selectedAgePegi) {
+        return toast.error(
+          "Vous devez sélectionner un âge parmi les options disponibles."
+        );
+      }
 
       // Function to send the data to createIntroduction function
       const formData = new FormData();
@@ -79,11 +90,15 @@ export default function introductionGameForm() {
       formData.append("imageName", file.name);
       formData.append("videoLink", videoLink);
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
-      formData.append("introductionOfTheGame",he.encode(introductionOfTheGame));
+      formData.append(
+        "introductionOfTheGame",
+        he.encode(introductionOfTheGame)
+      );
       formData.append("isDarkMode", isDarkMode.toString());
       formData.append("isIntroOfYourself", isIntroOfYourself.toString());
-      formData.append("selectedAge", selectedAge);
-      formData.append("selectedAdditional", selectedAdditional);
+      formData.append("selectedAgePegi", selectedAgePegi);
+      formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
+      formData.append("shortIntroduction", shortIntroduction);
 
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
@@ -91,10 +106,14 @@ export default function introductionGameForm() {
       return toast.error(error.message);
     }
   };
-  
+
   return (
     <GeneralLayout>
-      <form onSubmit={onPrepare} className="w-[53vw] mx-auto border p-2">
+      <form
+        onSubmit={onPrepare}
+        className="w-[54vw] mx-auto border p-2"
+        style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
+      >
         <p>
           {session?.user.username}, sur cette page, vous êtes invité à remplir
           de présentation de votre jeux.
@@ -117,13 +136,30 @@ export default function introductionGameForm() {
           Texte noir et fond blanc
         </div>
 
-        <Pegi 
-        selectedAge={selectedAge} 
-        setSelectedAge={setSelectedAge} 
-        selectedAdditional={selectedAdditional} 
-        setSelectedAdditional={setSelectedAdditional} 
+        <Pegi
+          selectedAgePegi={selectedAgePegi}
+          setSelectedAgePegi={setSelectedAgePegi}
+          selectedAdditionalPegi={selectedAdditionalPegi}
+          setSelectedAdditionalPegi={setSelectedAdditionalPegi}
         />
+
         {/*<MyEditor value={introductionOfTheGame} onChange={(newContent) => setIntroductionOfTheGame(newContent)} />*/}
+        <div className="border p-2 my-2">
+          <p
+            className="text-white text-center font-bold mb-3"
+            style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+          >
+            Introduction courte et facultative qui sera affichée en gras
+          </p>
+          <textarea
+            name="shortIntroduction"
+            id="shortIntroduction"
+            placeholder="Introduction courte et facultative qui sera affichée en gras"
+            value={shortIntroduction}
+            onChange={(e) => setShortIntroduction(e.target.value)}
+          />
+        </div>
+
         <EditorPerso
           setIntroductionOfTheGame={setIntroductionOfTheGame}
           onTextChange={(newText) => {
@@ -147,6 +183,9 @@ export default function introductionGameForm() {
           introductionOfTheGame={introductionOfTheGame}
           nameOfGame={nameOfGame}
           isDarkMode={isDarkMode}
+          selectedAgePegi={selectedAgePegi}
+          selectedAdditionalPegi={selectedAdditionalPegi}
+          shortIntroduction={shortIntroduction}
         />
         {isIntroOfYourself && <UserProfileSection user={user} />}
 

@@ -546,7 +546,15 @@ const addBackgroundTag = (newColorBackgroundText) => {
   }, [text]);
 
   return (
-    <div >      
+    <div className='border p-2'>
+      <p 
+        className='text-white text-center font-bold mb-3'
+        style={{
+          textShadow: "2px 2px 7px rgba(0, 0, 0, 1)",
+        }}
+        >
+          Dans cette présentation, vous choisissez la mise forme du texte
+      </p>
       <section className='py-2 flex'>
         <div className='boutonGris bouton' onClick={handleUndo}><img className='w-[80%]' src="/icons/undo-icon.png" alt="icon undo" /></div>
         <div className='boutonGris bouton' onClick={handleRedo}><img className='w-[80%]' src="/icons/redo-icon.png" alt="icon redo" /></div>
@@ -555,7 +563,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
         <div className='longBoutonGris bouton' onClick={handleParagraphClick} title='<p>'>Paragraphe</div>
         <div className='longBoutonGris bouton' onClick={insertLineBreak} title='<br/>'>Retour ligne</div>
          {/* Choisir la taille du texte ------------------------------------------------------- */}
-         <select value={fontSize} className='p-1 border border-solid rounded' onChange={handleFontSizeChange} style={{ marginRight: '10px' }}>
+         <select value={fontSize} className='p-1 border border-solid rounded' onChange={handleFontSizeChange} style={{ marginLeft: '10px' }}>
           <option >Taille du texte</option>
           <option value="0.5rem">0.5rem</option>
           <option value="0.75rem">0.75rem</option>

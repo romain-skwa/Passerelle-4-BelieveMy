@@ -11,10 +11,10 @@ const UserProfileSection = ({user}) => {
   }
   return (
     <section className={user.isDarkMode ? 
-      "w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border text-white bg-[rgba(0,0,0,0.90)]" : 
-      "w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border text-black bg-white"
+      "w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl text-white bg-[rgba(0,0,0,0.90)]" : 
+      "w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl text-black bg-white"
     }>
-      <div>A propos de : <h1 className="inline">{decodeURIComponent(user.username)}</h1>{/* Ajouter ici le logo */} </div>
+      <div className="text-center mb-2">------------- A propos de : <h1 className="inline">{decodeURIComponent(user.username)}</h1> -------------{/* Ajouter ici le logo */} </div>
       {user.bio ? <p>{user.bio}</p> : "Cet utilisateur n'a pas encore écrit sa présentation"}
       {user.websiteUrl && <p><a href={user.websiteUrl}><strong>{user.websiteUrl}</strong></a></p>}
 

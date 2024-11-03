@@ -28,23 +28,20 @@ export const createIntroduction = async (formData) => {
       email: session.user.email,
       username: session.user.username,
       nameofgame: formData.get("nameOfGame"),
+      shortIntroduction: formData.get("shortIntroduction"),
       content: formData.get("introductionOfTheGame"),
       imageOne: formData.get("imageName"),
       videoLink: formData.get("videoLink"),
       isDarkMode: formData.get("isDarkMode"),
       isIntroOfYourself: formData.get("isIntroOfYourself"),
-      selectedAge: formData.get("selectedAge"),
-      selectedAdditional: formData.get("selectedAdditional"),
-      selectedAdditionalImages: formData.get("selectedAdditionalImages"),
+      selectedAgePegi: formData.get("selectedAgePegi"),
+      selectedAdditionalPegi: formData.get("selectedAdditionalPegi"),
       creation: new Date(),
     });
-
-
   } catch (e) {
     await client.close();
     throw new Error(e);
   }
 
   await client.close();
-
 };
