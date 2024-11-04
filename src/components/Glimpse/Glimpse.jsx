@@ -1,5 +1,5 @@
 // ApercuFormulaire.js
-import React from "react";
+import React, { useState } from "react";
 import "../../app/styles/components.css";
 import Image from "next/image";
 import logoPegi3 from "../../../public/logo/pegi_3.jpg";
@@ -18,8 +18,8 @@ import logoPegiDrogue from "../../../public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "../../../public/logo/pegi_discrimination.jpg";
 
 const pegiImages = {
-  3: { src: logoPegi3, title: "Pegi 3" },
-  7: { src: logoPegi7, title: "Pegi 7" },
+  3:  { src: logoPegi3,  title: "Pegi 3"  },
+  7:  { src: logoPegi7,  title: "Pegi 7"  },
   12: { src: logoPegi12, title: "Pegi 12" },
   16: { src: logoPegi16, title: "Pegi 16" },
   18: { src: logoPegi18, title: "Pegi 18" },
@@ -44,13 +44,17 @@ const ApercuFormulaire = ({
   selectedAdditionalPegi,
   shortIntroduction,
   releaseDate,
+  platform,
 }) => {
-    // Formatage de la date
-    const formattedDate = releaseDate ? new Date(releaseDate).toLocaleDateString("fr-FR", {
-      day: 'numeric',  
-      month: 'long',  
-      year: 'numeric'  
-    }) : '';
+  const [clickedDivision, setClickedDivision] = useState(null);
+
+  // Formatage de la date
+  const formattedDate = releaseDate ? new Date(releaseDate).toLocaleDateString("fr-FR", {
+    day: 'numeric',  
+    month: 'long',  
+    year: 'numeric'  
+  }) : '';
+
   return (
     <section>
       <h3>Aperçu :</h3>
@@ -61,6 +65,20 @@ const ApercuFormulaire = ({
       >
         {nameOfGame}
       </div>
+
+      {/**************** Affichage des plate-formes ********************/}
+        {platform && (
+          <div className={` flex justify-center gap-2 ${ isDarkMode ? " bg-black" : "bg-white" } `}>
+            {platform.map((plat, index) => (
+              <div
+                key={index}
+                className={`buttonPlatform ${ isDarkMode ? "text-white border border-white" : "text-black border-2 border-gray-700 "} `}
+              >
+                {plat}
+              </div>
+            ))}
+          </div>
+        )}
 
       {/**************** Affichage des images PEGI Age *******************/}
       <div

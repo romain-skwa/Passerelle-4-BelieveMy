@@ -13,6 +13,7 @@ import UserProfileSection from "@/components/UserProfileSection/UserProfileSecti
 import Pegi from "@/components/Pegi/Pegi";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Platform from './../../../components/Platform/Platform';
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -33,7 +34,8 @@ export default function introductionGameForm() {
   const [selectedAdditionalPegi, setSelectedAdditionalPegi] = useState([]);
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [releaseDate, setReleaseDate] = useState(new Date());
-  console.log(`releaseDate : `, releaseDate);
+  const [platform, setPlatform] = useState([]);
+  console.log(`platform : `, platform);
   // Ajoutez cela à formData
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
@@ -100,6 +102,7 @@ export default function introductionGameForm() {
       formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
       formData.append("shortIntroduction", shortIntroduction);
       formData.append("releaseDate", releaseDate);
+      formData.append("platform", platform);
 
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
@@ -132,7 +135,8 @@ export default function introductionGameForm() {
         <div  onClick={() => setIsDarkMode(!isDarkMode)}  className="p-2 bg-black text-white inline-block ml-2">
           Texte noir et fond blanc
         </div>
-
+        <Platform platform={platform} setPlatform={setPlatform} />
+        {/**************** Date ***************************** */}
         <div className="my-2 flex">
           <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
             Date de sortie : 
@@ -189,6 +193,7 @@ export default function introductionGameForm() {
           selectedAdditionalPegi={selectedAdditionalPegi}
           shortIntroduction={shortIntroduction}
           releaseDate={releaseDate}
+          platform={platform}
         />
         {isIntroOfYourself && <UserProfileSection user={user} />}
 

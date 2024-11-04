@@ -126,3 +126,28 @@ h3{ font-size: 1.5rem;}
   border-radius: 10px;
   background-color: rgba(148, 163, 184, 0.7);
 }
+/********** Platform *******************/
+.buttonPlatform-container {
+  display: flex;
+  flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'espace est insuffisant */
+  justify-content: center;
+  color: white;
+  text-shadow: 2px 2px 5px black;
+}
+
+.buttonPlatform {
+  padding: 0.2rem 0.4rem;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0.5rem; /* Espacement entre les boutons */
+  transition: background-color 0.3s; /* Effet de transition pour le survol */
+  /*border: 1px rgb(5, 4, 4) solid;*/
+  display: inline-block;
+}
+
+.buttonPlatform:hover {
+  background-color: rgb(37, 134, 169); /* Changement de couleur au survol */
+}
