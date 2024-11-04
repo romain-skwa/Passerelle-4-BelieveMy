@@ -35,7 +35,7 @@ export default function introductionGameForm() {
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [releaseDate, setReleaseDate] = useState(new Date());
   const [platform, setPlatform] = useState([]);
-  console.log(`platform : `, platform);
+
   // Ajoutez cela à formData
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
@@ -88,6 +88,13 @@ export default function introductionGameForm() {
           "Vous devez sélectionner un âge parmi les options disponibles."
         );
       }
+    
+
+    // Vérifiez si au moins une plateforme est sélectionnée
+
+    if (platform.length === 0) {
+      return toast.error("Vous devez sélectionner au moins une plateforme.");
+      }
 
       // Function to send the data to createIntroduction function
       const formData = new FormData();
@@ -102,8 +109,8 @@ export default function introductionGameForm() {
       formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
       formData.append("shortIntroduction", shortIntroduction);
       formData.append("releaseDate", releaseDate);
-      formData.append("platform", platform);
-
+      formData.append("platform", JSON.stringify(platform));
+      
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
     } catch (error) {
@@ -132,7 +139,7 @@ export default function introductionGameForm() {
           onChange={(e) => setNameOfGame(e.target.value)}
         />
 
-        <div  onClick={() => setIsDarkMode(!isDarkMode)}  className="p-2 bg-black text-white inline-block ml-2">
+        <div  onClick={() => setIsDarkMode(!isDarkMode)}  className="p-2 bg-black text-white inline-block ml-2 cursor-pointer">
           Texte noir et fond blanc
         </div>
         <Platform platform={platform} setPlatform={setPlatform} />

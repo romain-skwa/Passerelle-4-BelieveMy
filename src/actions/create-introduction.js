@@ -37,7 +37,7 @@ export const createIntroduction = async (formData) => {
       isIntroOfYourself: formData.get("isIntroOfYourself"),
       selectedAgePegi: formData.get("selectedAgePegi"),
       selectedAdditionalPegi: formData.get("selectedAdditionalPegi"),
-      platform: formData.get("platform"),
+      platform: JSON.parse(formData.get("platform")),
       creation: new Date(),
     });
   } catch (e) {

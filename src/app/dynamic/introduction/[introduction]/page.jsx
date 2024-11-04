@@ -33,8 +33,8 @@ export default function IntroductionGame() {
   const [game, setgame] = useState({});
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [user, setUser] = useState(); // When the bio of the creator of this game is called
-  /*
-console.log(`contenu de game : `, game);
+  
+console.log(`contenu de game : `, game);/*
 console.log(`creatorOfThisGame : `, creatorOfThisGame);
 console.log(`user : `, user);*/
 
@@ -172,6 +172,7 @@ console.log(`user : `, user);*/
         month: 'long',  
         year: 'numeric'  
       }) : 'Pas de date concernant ce jeu';
+
   return (
     <GeneralLayout>
       <section className={sectionClasses}>
@@ -193,19 +194,38 @@ console.log(`user : `, user);*/
           {decodeURIComponent(game.nameofgame)}{" "}
         </h1>
 
-        {/*********************************************************************************************/}
-        {/* Affichage de l'image Pegi correspondante */}
-        <div className={`flex justify-center gap-1`}>
-          {pegiImage && (
-            <Image
-              src={pegiImage.src}
-              alt={pegiImage.title}
-              title={pegiImage.title}
-              width={50} // Ajustez la largeur selon vos besoins
-              height={50} // Ajustez la hauteur selon vos besoins
-            />
-          )}
+        {/**************** Affichage des plate-formes PC et Consoles ********************/}
+          {game.platform && (
+              <div className={` flex justify-center gap-2 items-center `}>
+                {game.platform.map((plat, index) => (
+                  <div
+                    key={index}
+                    style={{ fontSize: '13px', padding: '1px 4px',  letterSpacing: '0.1rem'}}
+                    className={
+                      `inline-flex items-center   rounded-md  h-auto
+                      ${ isDarkMode == true ? " border border-white" : " border-2 border-gray-700 "} 
+                      `}
+                  >
+                    {plat}
+                  </div>
+                ))}
+              </div>
+            )}  
 
+        {/******************** Affichage des images PEGI Age **************************/}
+        <div className={`w-[95%] mx-auto flex justify-between align-middle gap-1`}>
+          {/* Affichage de l'image Pegi AGE correspondante */}
+            {pegiImage && (
+              <Image
+                src={pegiImage.src}
+                alt={pegiImage.title}
+                title={pegiImage.title}
+                width={50} // Ajustez la largeur selon vos besoins
+                height={50} // Ajustez la hauteur selon vos besoins
+              />
+            )}
+
+          {/**************** Affichage des PEGI Catégories (Violence, Multijoueur) ********************/}
           <div className={`flex gap-1`}>
             {game.selectedAdditionalPegi &&
               Array.isArray(game.selectedAdditionalPegi) &&
@@ -225,10 +245,12 @@ console.log(`user : `, user);*/
               })}
           </div>
         </div>
+
         {/******************* Date de sortie du jeu **********************/}
         <div className={"p-4 min-h-[50px] text-right"}>
           Sortie le {formattedDate}.
         </div>
+
         {/*********************************************************************************************/}
         {game.shortIntroduction ? (
           <div className="p-4 min-h-[50px] font-bold ">

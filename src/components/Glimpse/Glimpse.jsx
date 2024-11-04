@@ -56,7 +56,7 @@ const ApercuFormulaire = ({
   }) : '';
 
   return (
-    <section>
+    <section className={`${  isDarkMode ? "text-white bg-black" : "text-black bg-white" } `}>
       <h3>Aperçu :</h3>
       <div
         className={`p-4 min-h-[50px] text-3xl font-bold text-center ${
@@ -66,9 +66,9 @@ const ApercuFormulaire = ({
         {nameOfGame}
       </div>
 
-      {/**************** Affichage des plate-formes ********************/}
-        {platform && (
-          <div className={` flex justify-center gap-2 ${ isDarkMode ? " bg-black" : "bg-white" } `}>
+        {/**************** Affichage des plate-formes PC et Consoles *******************/}
+          {platform && (
+          <div className={` flex justify-center gap-2 items-center `}>
             {platform.map((plat, index) => (
               <div
                 key={index}
@@ -79,35 +79,27 @@ const ApercuFormulaire = ({
             ))}
           </div>
         )}
+        
+      {/********************************** PEGI *******************************************************************************/}
+      <div className={`w-[95%] mx-auto flex justify-between align-middle gap-1`}>
 
-      {/**************** Affichage des images PEGI Age *******************/}
-      <div
-        className={`${
-          isDarkMode ? "text-white bg-black" : "text-black bg-white"
-        } flex justify-center gap-1`}
-      >
-        {selectedAgePegi && (
-          <div
-            className={`${
-              isDarkMode ? "text-white bg-black" : "text-black bg-white"
-            }`}
-          >
-            <Image
-              src={pegiImages[selectedAgePegi].src} 
-              alt={pegiImages[selectedAgePegi].title} 
-              title={pegiImages[selectedAgePegi].title}
-              width={50} 
-              height={50} 
-            />
-          </div>
-        )}
+        {/**************** Affichage des images PEGI Age *******************/}
+        <div className={` flex justify-center gap-1 `}>
+          {selectedAgePegi && (
+            <div className={`${ isDarkMode ? "text-white bg-black" : "text-black bg-white" }`}>
+              <Image
+                src={pegiImages[selectedAgePegi].src} 
+                alt={pegiImages[selectedAgePegi].title} 
+                title={pegiImages[selectedAgePegi].title}
+                width={50} 
+                height={50} 
+              />
+            </div>
+          )}
+        </div>       
 
-        {/**************** Affichage des images pour les catégories supplémentaires *******************/}
-        <div
-          className={`${
-            isDarkMode ? "text-white bg-black" : "text-black bg-white"
-          } flex gap-1`}
-        >
+        {/**************** Affichage des PEGI Catégories (Violence, Multijoueur) *******************/}
+        <div className={`flex gap-1`}>
           {selectedAdditionalPegi &&
             Array.isArray(selectedAdditionalPegi) &&
             selectedAdditionalPegi.length > 0 &&
@@ -125,30 +117,26 @@ const ApercuFormulaire = ({
               ) : null; // Si aucune image n'est trouvée, ne rien afficher
             })}
         </div>
+
       </div>
+        
       {/******************* Date de sortie du jeu **********************/}
       <div
-        className={`p-4 min-h-[50px] text-right ${
-          isDarkMode ? "text-white bg-black" : "text-black bg-white "
-        }`}
+        className={`p-4 min-h-[50px] text-right`}
       >
         Sortie le {formattedDate}.
       </div>
 
       {/******************* Petite introduction en gras ******************************/}
       <div
-        className={`p-4 min-h-[50px] font-bold ${
-          isDarkMode ? "text-white bg-black" : "text-black bg-white "
-        }`}
+        className={`p-4 min-h-[50px] font-bold`}
       >
         {shortIntroduction}
       </div>
 
       {/********************** Description détaillée *********************************/}
       <div
-        className={`p-4 min-h-[50px] ${
-          isDarkMode ? "text-white bg-black" : "text-black bg-white "
-        }`}
+        className={`p-4 min-h-[50px]`}
         dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
       />
     </section>
