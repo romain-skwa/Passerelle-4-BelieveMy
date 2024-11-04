@@ -43,7 +43,14 @@ const ApercuFormulaire = ({
   selectedAgePegi,
   selectedAdditionalPegi,
   shortIntroduction,
+  releaseDate,
 }) => {
+    // Formatage de la date
+    const formattedDate = releaseDate ? new Date(releaseDate).toLocaleDateString("fr-FR", {
+      day: 'numeric',  
+      month: 'long',  
+      year: 'numeric'  
+    }) : '';
   return (
     <section>
       <h3>Aperçu :</h3>
@@ -55,6 +62,7 @@ const ApercuFormulaire = ({
         {nameOfGame}
       </div>
 
+      {/**************** Affichage des images PEGI Age *******************/}
       <div
         className={`${
           isDarkMode ? "text-white bg-black" : "text-black bg-white"
@@ -67,16 +75,16 @@ const ApercuFormulaire = ({
             }`}
           >
             <Image
-              src={pegiImages[selectedAgePegi].src} // Utilisez le mapping pour obtenir l'image
-              alt={pegiImages[selectedAgePegi].title} // Utilisez le titre pour l'attribut alt
+              src={pegiImages[selectedAgePegi].src} 
+              alt={pegiImages[selectedAgePegi].title} 
               title={pegiImages[selectedAgePegi].title}
-              width={50} // Ajustez la largeur selon vos besoins
-              height={50} // Ajustez la hauteur selon vos besoins
+              width={50} 
+              height={50} 
             />
           </div>
         )}
 
-        {/* Affichage des images pour les catégories supplémentaires */}
+        {/**************** Affichage des images pour les catégories supplémentaires *******************/}
         <div
           className={`${
             isDarkMode ? "text-white bg-black" : "text-black bg-white"
@@ -100,7 +108,16 @@ const ApercuFormulaire = ({
             })}
         </div>
       </div>
+      {/******************* Date de sortie du jeu **********************/}
+      <div
+        className={`p-4 min-h-[50px] text-right ${
+          isDarkMode ? "text-white bg-black" : "text-black bg-white "
+        }`}
+      >
+        Sortie le {formattedDate}.
+      </div>
 
+      {/******************* Petite introduction en gras ******************************/}
       <div
         className={`p-4 min-h-[50px] font-bold ${
           isDarkMode ? "text-white bg-black" : "text-black bg-white "
@@ -109,6 +126,7 @@ const ApercuFormulaire = ({
         {shortIntroduction}
       </div>
 
+      {/********************** Description détaillée *********************************/}
       <div
         className={`p-4 min-h-[50px] ${
           isDarkMode ? "text-white bg-black" : "text-black bg-white "

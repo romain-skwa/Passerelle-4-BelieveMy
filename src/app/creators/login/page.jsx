@@ -83,7 +83,7 @@ export default function Login() {
             ref={emailInputRef}
             className={focused.email ? "focused input-register-section" : "input-register-section"}
           />
-          <label for="email" className="label" onClick={() => handleLabelClick(emailInputRef)}>
+          <label htmlFor="email" className="label" onClick={() => handleLabelClick(emailInputRef)}>
             Courriel
           </label>
         </div>
@@ -98,7 +98,7 @@ export default function Login() {
             className={focused.password ? "focused input-register-section" : "input-register-section"}
           />
 
-          <label for="password" className="label" onClick={() => handleLabelClick(passwordInputRef)}>
+          <label htmlFor="password" className="label" onClick={() => handleLabelClick(passwordInputRef)}>
               Mot de passe
           </label>
         </div>

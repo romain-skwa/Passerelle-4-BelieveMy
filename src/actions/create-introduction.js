@@ -28,6 +28,7 @@ export const createIntroduction = async (formData) => {
       email: session.user.email,
       username: session.user.username,
       nameofgame: formData.get("nameOfGame"),
+      releaseDate: formData.get("releaseDate"),
       shortIntroduction: formData.get("shortIntroduction"),
       content: formData.get("introductionOfTheGame"),
       imageOne: formData.get("imageName"),

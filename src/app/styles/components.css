@@ -6,7 +6,7 @@
 
 /* focus sur le contenant des input */
 .input-component input.focused+label {  
-  animation: labelGetUp 0.5s forwards;
+  animation: labelGetUp 0.3s forwards;
 }
   @keyframes labelGetUp {
     0% { @apply top-6; }
@@ -14,7 +14,7 @@
   }
 
 /* texte à l'intérieur des input */
-.label{ @apply absolute left-8 text-xl top-6; cursor: text;}
+.label{ @apply absolute left-8 text-xl top-6; cursor: text; }
 
 /* input */
 .input-register-section { @apply  py-3 px-6 bg-white rounded w-11/12 md:w-96; }

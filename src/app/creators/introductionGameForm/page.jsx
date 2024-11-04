@@ -11,6 +11,8 @@ import Glimpse from "@/components/Glimpse/Glimpse"; // Aperçu
 import he from "he";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import Pegi from "@/components/Pegi/Pegi";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -30,7 +32,8 @@ export default function introductionGameForm() {
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
   const [selectedAdditionalPegi, setSelectedAdditionalPegi] = useState([]);
   const [shortIntroduction, setShortIntroduction] = useState("");
-
+  const [releaseDate, setReleaseDate] = useState(new Date());
+  console.log(`releaseDate : `, releaseDate);
   // Ajoutez cela à formData
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
@@ -62,7 +65,7 @@ export default function introductionGameForm() {
     setUser(data.user);
   };
 
-  /****************** Envoyer les données à l'API createIntroduction ***************** */
+  /****************** Envoyer les données à l'API createIntroduction **************************/
   const onPrepare = async (e) => {
     e.preventDefault();
 
@@ -90,15 +93,13 @@ export default function introductionGameForm() {
       formData.append("imageName", file.name);
       formData.append("videoLink", videoLink);
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
-      formData.append(
-        "introductionOfTheGame",
-        he.encode(introductionOfTheGame)
-      );
+      formData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
       formData.append("isDarkMode", isDarkMode.toString());
       formData.append("isIntroOfYourself", isIntroOfYourself.toString());
       formData.append("selectedAgePegi", selectedAgePegi);
       formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
       formData.append("shortIntroduction", shortIntroduction);
+      formData.append("releaseDate", releaseDate);
 
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
@@ -115,8 +116,7 @@ export default function introductionGameForm() {
         style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
       >
         <p>
-          {session?.user.username}, sur cette page, vous êtes invité à remplir
-          de présentation de votre jeux.
+          {session?.user.username}, sur cette page, vous êtes invité à remplir de présentation de votre jeux.
         </p>
         <input
           type="text"
@@ -129,11 +129,15 @@ export default function introductionGameForm() {
           onChange={(e) => setNameOfGame(e.target.value)}
         />
 
-        <div
-          className="p-2 bg-black text-white inline-block ml-2"
-          onClick={() => setIsDarkMode(!isDarkMode)}
-        >
+        <div  onClick={() => setIsDarkMode(!isDarkMode)}  className="p-2 bg-black text-white inline-block ml-2">
           Texte noir et fond blanc
+        </div>
+
+        <div className="my-2 flex">
+          <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
+            Date de sortie : 
+          </p>
+        <DatePicker className="pl-2" selected={releaseDate} dateFormat="dd/MM/yyyy" id="releaseDate" required onChange={(date) => setReleaseDate(date)} />
         </div>
 
         <Pegi
@@ -143,7 +147,6 @@ export default function introductionGameForm() {
           setSelectedAdditionalPegi={setSelectedAdditionalPegi}
         />
 
-        {/*<MyEditor value={introductionOfTheGame} onChange={(newContent) => setIntroductionOfTheGame(newContent)} />*/}
         <div className="border p-2 my-2">
           <p
             className="text-white text-center font-bold mb-3"
@@ -175,8 +178,7 @@ export default function introductionGameForm() {
           }}
           onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
         >
-          Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe
-          ?
+          Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
         </div>
 
         <Glimpse
@@ -186,6 +188,7 @@ export default function introductionGameForm() {
           selectedAgePegi={selectedAgePegi}
           selectedAdditionalPegi={selectedAdditionalPegi}
           shortIntroduction={shortIntroduction}
+          releaseDate={releaseDate}
         />
         {isIntroOfYourself && <UserProfileSection user={user} />}
 

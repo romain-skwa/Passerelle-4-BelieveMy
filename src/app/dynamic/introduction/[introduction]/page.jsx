@@ -33,8 +33,8 @@ export default function IntroductionGame() {
   const [game, setgame] = useState({});
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [user, setUser] = useState(); // When the bio of the creator of this game is called
-  
-console.log(`contenu de game : `, game);/*
+  /*
+console.log(`contenu de game : `, game);
 console.log(`creatorOfThisGame : `, creatorOfThisGame);
 console.log(`user : `, user);*/
 
@@ -145,7 +145,7 @@ console.log(`user : `, user);*/
       case "18":
         return { src: logoPegi18, title: "Pegi 18" };
       default:
-        return null; // ou une image par défaut
+        return null;
     }
   };
 
@@ -153,28 +153,25 @@ console.log(`user : `, user);*/
 
   const getImageForPegi = (pegi) => {
     switch (pegi) {
-      case "Jeux de Hasard":
-        return { src: logoPegiJeuxHasard, title: "Jeux de Hasard" };
-      case "Violence":
-        return { src: logoPegiViolence, title: "Violence" };
-      case "Langage Grossier":
-        return { src: logoPegiLangageGrossier, title: "Langage Grossier" };
-      case "Peur":
-        return { src: logoPegiPeur, title: "Peur" };
-      case "Sexe":
-        return { src: logoPegiSexe, title: "Sexe" };
-      case "Online":
-        return { src: logoPegiOnline, title: "Online" };
-      case "Nudité":
-        return { src: logoPegiNudite, title: "Nudité" };
-      case "Drogue":
-        return { src: logoPegiDrogue, title: "Drogue" };
-      case "Discrimination":
-        return { src: logoPegiDiscrimination, title: "Discrimination" };
-      default:
-        return null;
+      case "Jeux de Hasard": return { src: logoPegiJeuxHasard, title: "Jeux de Hasard" };
+      case "Violence": return { src: logoPegiViolence, title: "Violence" };
+      case "Langage Grossier": return { src: logoPegiLangageGrossier, title: "Langage Grossier" };
+      case "Peur": return { src: logoPegiPeur, title: "Peur" };
+      case "Sexe": return { src: logoPegiSexe, title: "Sexe" };
+      case "Online": return { src: logoPegiOnline, title: "Online" };
+      case "Nudité": return { src: logoPegiNudite, title: "Nudité" };
+      case "Drogue": return { src: logoPegiDrogue, title: "Drogue" };
+      case "Discrimination": return { src: logoPegiDiscrimination, title: "Discrimination" };
+      default: return null;
     }
   };
+
+      // Formatage de la date
+      const formattedDate = game.releaseDate ? new Date(game.releaseDate).toLocaleDateString("fr-FR", {
+        day: 'numeric',  
+        month: 'long',  
+        year: 'numeric'  
+      }) : 'Pas de date concernant ce jeu';
   return (
     <GeneralLayout>
       <section className={sectionClasses}>
@@ -228,7 +225,10 @@ console.log(`user : `, user);*/
               })}
           </div>
         </div>
-
+        {/******************* Date de sortie du jeu **********************/}
+        <div className={"p-4 min-h-[50px] text-right"}>
+          Sortie le {formattedDate}.
+        </div>
         {/*********************************************************************************************/}
         {game.shortIntroduction ? (
           <div className="p-4 min-h-[50px] font-bold ">
