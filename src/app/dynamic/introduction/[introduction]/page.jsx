@@ -4,6 +4,7 @@
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import he from "he";
 import "../../../styles/TinyMce.css";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
@@ -33,8 +34,9 @@ export default function IntroductionGame() {
   const [game, setgame] = useState({});
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [user, setUser] = useState(); // When the bio of the creator of this game is called
-  
-console.log(`contenu de game : `, game);/*
+  const username = game.username;
+  const encodedUsername = encodeURIComponent(username);
+console.log(`encodedUsername : `, encodedUsername);/*
 console.log(`creatorOfThisGame : `, creatorOfThisGame);
 console.log(`user : `, user);*/
 
@@ -220,8 +222,8 @@ console.log(`user : `, user);*/
                 src={pegiImage.src}
                 alt={pegiImage.title}
                 title={pegiImage.title}
-                width={50} // Ajustez la largeur selon vos besoins
-                height={50} // Ajustez la hauteur selon vos besoins
+                width={50} 
+                height={50} 
               />
             )}
 
@@ -258,7 +260,7 @@ console.log(`user : `, user);*/
           </div>
         ) : null}
         {/*********************************************************************************************/}
-        <div className="description">
+        <div className="p-4 ">
           {game.content ? (
             <div
               dangerouslySetInnerHTML={{
@@ -281,9 +283,20 @@ console.log(`user : `, user);*/
             ></iframe>
           </div>
         )}
-      </section>
 
-      {user && <UserProfileSection user={user} />}
+        {/* Affichage Nom du créateur */}
+        
+      {user 
+          ? 
+        <UserProfileSection user={user}/> 
+          :
+         <div>
+            <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
+              Jeu créé par {game.username}
+            </Link> 
+          </div> 
+      }
+      </section>
     </GeneralLayout>
   );
 }

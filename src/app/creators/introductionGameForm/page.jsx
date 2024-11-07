@@ -4,6 +4,7 @@ import { createIntroduction } from "@/actions/create-introduction";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useSession } from "next-auth/react";
 import { notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import EditorPerso from "@/components/EditorPerso/EditorPerso";
@@ -20,6 +21,7 @@ import Platform from './../../../components/Platform/Platform';
 export default function introductionGameForm() {
   // Variable
   const { data: session } = useSession();
+  const router = useRouter();
 
   // State
   const [nameOfGame, setNameOfGame] = useState("");
@@ -113,6 +115,8 @@ export default function introductionGameForm() {
       
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
+      // Redirect
+      router.replace("/");
     } catch (error) {
       return toast.error(error.message);
     }
