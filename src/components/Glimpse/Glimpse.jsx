@@ -45,6 +45,7 @@ const ApercuFormulaire = ({
   shortIntroduction,
   releaseDate,
   platform,
+  lienImage
 }) => {
   const [clickedDivision, setClickedDivision] = useState(null);
 
@@ -55,6 +56,8 @@ const ApercuFormulaire = ({
     year: 'numeric'  
   }) : '';
 
+  const arrayImage = lienImage;
+  const imageLink = arrayImage.name;
   return (
     <section className={`${  isDarkMode ? "text-white bg-black" : "text-black bg-white" } `}>
       <h3>Aperçu :</h3>
@@ -139,6 +142,17 @@ const ApercuFormulaire = ({
         className={`p-4 min-h-[50px]`}
         dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
       />
+
+      <div className="w-96 mx-auto">
+        <p className="text-center"> L'image que vous avez choisi pour affiche </p>
+        <Image
+          src={`/presentation/${imageLink}`}
+          className="lg:w-[192px] lg:h-[311px] my-3 mx-auto"
+          width={192}
+          height={311}
+          alt={`${imageLink}`}
+        />
+      </div>
     </section>
   );
 };

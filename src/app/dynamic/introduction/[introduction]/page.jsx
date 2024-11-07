@@ -239,7 +239,7 @@ console.log(`user : `, user);*/
                     key={index}
                     src={pegiData.src}
                     alt={pegiData.title}
-                    title={pegiData.title} // Ajoutez le titre pour l'attribut title
+                    title={pegiData.title} 
                     width={50}
                     height={50}
                   />
@@ -248,18 +248,35 @@ console.log(`user : `, user);*/
           </div>
         </div>
 
+        {/******************* Affichage des catégories **********************/}
+        {game.platform && (
+              <div className={` flex justify-center gap-2 items-center `}>
+                {game.genreOfGame.map((genre, index) => (
+                  <div
+                    key={index}
+                    style={{ fontSize: '13px', padding: '0px 8px 4px',  letterSpacing: '0.1rem'}}
+                    className={
+                      `inline-flex items-center   rounded-md 
+                      ${ isDarkMode == true ? " border border-white" : " border-2 border-gray-700 "} 
+                      `}
+                  >
+                    {genre}
+                  </div>
+                ))}
+              </div>
+            )}  
         {/******************* Date de sortie du jeu **********************/}
         <div className={"p-4 min-h-[50px] text-right"}>
           Sortie le {formattedDate}.
         </div>
 
-        {/*********************************************************************************************/}
+        {/******************** Introduction courte en gras **********************************************/}
         {game.shortIntroduction ? (
           <div className="p-4 min-h-[50px] font-bold ">
             {game.shortIntroduction}
           </div>
         ) : null}
-        {/*********************************************************************************************/}
+        {/******************** Présentation détaillée ************************************************/}
         <div className="p-4 ">
           {game.content ? (
             <div
@@ -274,7 +291,7 @@ console.log(`user : `, user);*/
 
         {/* Affichage conditionnel de l'iframe */}
         {game.videoLink && (
-          <div>
+          <div className="flex justify-center">
             <iframe
               width="560"
               height="315"

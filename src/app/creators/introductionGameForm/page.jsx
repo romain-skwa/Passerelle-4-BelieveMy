@@ -15,6 +15,7 @@ import Pegi from "@/components/Pegi/Pegi";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Platform from './../../../components/Platform/Platform';
+import GenreOfGame from './../../../components/GenreOfGame/GenreOfGame';
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -27,7 +28,6 @@ export default function introductionGameForm() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
   const [lienImage, setLienImage] = useState("");
-  const [text, setText] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isIntroOfYourself, setIsIntroOfYourself] = useState(false);
   const [user, setUser] = useState({});
@@ -37,6 +37,8 @@ export default function introductionGameForm() {
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [releaseDate, setReleaseDate] = useState(new Date());
   const [platform, setPlatform] = useState([]);
+  const [webSiteOfThisGame, setWebSiteOfThisGame] = useState("");
+  const [genreOfGame, setGenreOfGame] = useState([]);
 
   // Ajoutez cela à formData
 
@@ -112,7 +114,15 @@ export default function introductionGameForm() {
       formData.append("shortIntroduction", shortIntroduction);
       formData.append("releaseDate", releaseDate);
       formData.append("platform", JSON.stringify(platform));
-      
+      formData.append("webSiteOfThisGame", JSON.stringify(webSiteOfThisGame));
+      formData.append("genreOfGame", JSON.stringify(genreOfGame));
+      // Debugging
+
+for (const [key, value] of formData.entries()) {
+
+  console.log(key, value);
+
+}
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
       // Redirect
@@ -143,7 +153,7 @@ export default function introductionGameForm() {
           onChange={(e) => setNameOfGame(e.target.value)}
         />
 
-        <div  onClick={() => setIsDarkMode(!isDarkMode)}  className="p-2 bg-black text-white inline-block ml-2 cursor-pointer">
+        <div onClick={() => setIsDarkMode(!isDarkMode)}  className="p-2 bg-black text-white inline-block ml-2 cursor-pointer">
           Texte noir et fond blanc
         </div>
         <Platform platform={platform} setPlatform={setPlatform} />
@@ -154,7 +164,8 @@ export default function introductionGameForm() {
           </p>
         <DatePicker className="pl-2" selected={releaseDate} dateFormat="dd/MM/yyyy" id="releaseDate" required onChange={(date) => setReleaseDate(date)} />
         </div>
-
+        
+        {/**************** Les deux catégories de PEGI ***************************** */}
         <Pegi
           selectedAgePegi={selectedAgePegi}
           setSelectedAgePegi={setSelectedAgePegi}
@@ -162,6 +173,7 @@ export default function introductionGameForm() {
           setSelectedAdditionalPegi={setSelectedAdditionalPegi}
         />
 
+        {/**************** Introduction courte ***************************** */}
         <div className="border p-2 my-2">
           <p
             className="text-white text-center font-bold mb-3"
@@ -178,6 +190,7 @@ export default function introductionGameForm() {
           />
         </div>
 
+        {/**************** Editeur de texte ********************************************** */}
         <EditorPerso
           setIntroductionOfTheGame={setIntroductionOfTheGame}
           onTextChange={(newText) => {
@@ -185,16 +198,50 @@ export default function introductionGameForm() {
           }}
         />
 
-        <div
-          className="border border-black p-2 inline-block mt-3 rounded-md font-bold text-white cursor-pointer"
-          style={{
-            textShadow: "2px 2px 7px rgba(0, 0, 0, 1)",
-            backgroundColor: "rgba(148, 163, 184, 0.7)",
-          }}
-          onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
-        >
-          Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
+        {/**************** Ajout de la biographie du créateur ***************************** */}
+        <div className="flex justify-center">
+          <div
+            className=" grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
+            onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
+          >
+            Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
+          </div>
         </div>
+
+        {/**************** Affiche ***************************** */}
+        <div className="flex flex-col items-center">
+          <div className="w-[40vw] p-1 pl-2 mt-4 border grasFondBleu">
+            Choisissez l'affiche du jeu 
+            <input
+              type="file"
+              name="imageOne"
+              accept=".jpg, .jpeg, .png"
+              className="ml-4"
+              onChange={(e) => setLienImage(e.target.files[0])}
+            />
+          </div>
+            {/**************** Lien vidéo Youtube ***************************** */}
+            <input
+              type="url"
+              name="videoLink"
+              placeholder="Lien YouTube de la vidéo"
+              className="block w-[40vw] p-1 pl-2 m-2"
+              value={videoLink}
+              onChange={(e) => setVideoLink(e.target.value)}
+            />
+            
+            {/**************** Lien Site officiel ***************************** */}
+            <input
+              type="url"
+              name="webSiteOfThisGame"
+              placeholder="Lien vers le site officiel du jeu"
+              className="block w-[40vw] p-1 pl-2"
+              value={videoLink}
+              onChange={(e) => setWebSiteOfThisGame(e.target.value)}
+            />
+        </div>
+
+        <GenreOfGame selectedGenres={genreOfGame} setSelectedGenres={setGenreOfGame} />
 
         <Glimpse
           introductionOfTheGame={introductionOfTheGame}
@@ -205,28 +252,14 @@ export default function introductionGameForm() {
           shortIntroduction={shortIntroduction}
           releaseDate={releaseDate}
           platform={platform}
+          lienImage={lienImage}
         />
         {isIntroOfYourself && <UserProfileSection user={user} />}
-
-        <input
-          type="file"
-          name="imageOne"
-          accept=".jpg, .jpeg, .png"
-          onChange={(e) => setLienImage(e.target.files[0])}
-        />
-
-        <input
-          type="url"
-          name="videoLink"
-          placeholder="Lien YouTube de la vidéo"
-          value={videoLink}
-          onChange={(e) => setVideoLink(e.target.value)}
-        />
 
         <button
           className="bg-green-500 p-3 mx-auto w-40 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
           disabled={
-            nameOfGame.length < 1 || introductionOfTheGame.length < 1
+            nameOfGame.length < 1 || introductionOfTheGame.length < 1 || platform < 1 || shortIntroduction < 1 || lienImage === ""
           } /* Désactivé si les champs sont vides */
         >
           Envoyer

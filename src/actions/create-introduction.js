@@ -38,6 +38,8 @@ export const createIntroduction = async (formData) => {
       selectedAgePegi: formData.get("selectedAgePegi"),
       selectedAdditionalPegi: formData.get("selectedAdditionalPegi"),
       platform: JSON.parse(formData.get("platform")),
+      webSiteOfThisGame: JSON.parse(formData.get("webSiteOfThisGame")),
+      genreOfGame: JSON.parse(formData.get("genreOfGame")),
       creation: new Date(),
     });
   } catch (e) {
