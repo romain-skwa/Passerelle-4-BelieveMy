@@ -108,7 +108,7 @@ console.log(`user : `, user);*/
   const isDarkMode = game.isDarkMode; // Récupérer la valeur
 
   let sectionClasses =
-    "text-black bg-[rgba(255,255,225,1)] w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4"; // Valeur par défaut
+    "text-black bg-white w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4"; // Valeur par défaut
 
   if (isDarkMode === "true") {
     sectionClasses =
@@ -116,7 +116,7 @@ console.log(`user : `, user);*/
   } else {
     // if (isDarkMode === "false") or undefined
     sectionClasses =
-      "text-black bg-[rgba(255,255,225,1)] w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4";
+      "text-black bg-white w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4";
   }
 
   // Vérifiez si videoLink existe et modifiez-le si nécessaire

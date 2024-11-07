@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-    // Get the pseudo from the request body
+    // Get the data about a creator by pseudo from the request body
     const data = await request.json();
     const { pseudo } = data;
 
@@ -16,7 +16,10 @@ export async function POST(request) {
         const db = client.db(process.env.MONGODB_DATABASE);
 
         // First : Get the user
-        let user = await db.collection("créateurs").find( { username: pseudo } ).limit(1).toArray();
+        let user = await db.collection("créateurs").find(
+            { username: pseudo },
+            { projection: { password: 0, email: 0 } } // Exclut le champ "password"
+        ).limit(1).toArray();
 
         if(!user) {
             throw new Error("Cet utilisateur n'existe pas"); 
