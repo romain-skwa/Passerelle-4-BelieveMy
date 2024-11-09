@@ -32,19 +32,21 @@ const GenreOfGame = ({ selectedGenres, setSelectedGenres }) => {
 
   return (
     <div className="my-4">
-      <p className="text-white font-bold mb-2">Sélectionnez le ou les genres du jeu :</p>
-      {genres.map((genre) => (
-        <label key={genre.id} className="block">
-          <input
-            type="checkbox"
-            value={genre.id}
-            checked={selectedGenres.includes(genre.id)}
-            onChange={handleGenreChange}
-            className="mr-2"
-          />
-          {genre.label}
-        </label>
-      ))}
+      <p className="text-white font-bold mb-2 text-center">Sélectionnez le ou les genres du jeu :</p>
+      <div className='w-[200px] mx-auto'>
+        {genres.map((genre) => (
+          <label key={genre.id} className="block">
+            <input
+              type="checkbox"
+              value={genre.id}
+              checked={selectedGenres.includes(genre.id)}
+              onChange={handleGenreChange}
+              className="mr-2"
+            />
+            {genre.label}
+          </label>
+        ))}
+      </div>
     </div>
   );
 };

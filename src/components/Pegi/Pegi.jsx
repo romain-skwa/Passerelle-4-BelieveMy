@@ -93,8 +93,8 @@ const Pegi = ({
           </div>
         </label>
       </div>
-      {/****************************************************************************************************** */}
-      <div className="pegi">
+      {/******************* Catégories *********************************************************************************** */}
+      <div className="pegi flex-wrap">
         <label>
           <Image src={logoPegiSexe} alt="Logo Pegi Sexe" title="Sexe" />
           <div className="flex justify-center pt-1">
@@ -103,17 +103,6 @@ const Pegi = ({
               value="Sexe"
               checked={selectedAdditionalPegi.includes("Sexe")}
               onChange={() => handleAdditionalChange("Sexe")}
-            />
-          </div>
-        </label>
-        <label>
-          <Image src={logoPegiOnline} alt="Logo Pegi Online" title="En ligne" />
-          <div className="flex justify-center pt-1">
-            <input
-              type="checkbox"
-              value="Online"
-              checked={selectedAdditionalPegi.includes("Online")}
-              onChange={() => handleAdditionalChange("Online")}
             />
           </div>
         </label>
@@ -207,6 +196,17 @@ const Pegi = ({
               value="Discrimination"
               checked={selectedAdditionalPegi.includes("Discrimination")}
               onChange={() => handleAdditionalChange("Discrimination")}
+            />
+          </div>
+        </label>
+        <label>
+          <Image src={logoPegiOnline} alt="Logo Pegi Online" title="En ligne" />
+          <div className="flex justify-center pt-1">
+            <input
+              type="checkbox"
+              value="Online"
+              checked={selectedAdditionalPegi.includes("Online")}
+              onChange={() => handleAdditionalChange("Online")}
             />
           </div>
         </label>

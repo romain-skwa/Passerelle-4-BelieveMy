@@ -343,13 +343,14 @@ const introduceYourself = () => {
             </div>
           </div>
 
-          <div className="p-2 bg-black text-white ml-2 inline-flex align-middle my-3 rounded-xl border">
+          <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
             <span>Mode Sombre : Texte blanc sur fond noir</span>
             <div className="ml-4">
               <label>
                 <input
                   type="radio"
                   value="true"
+                  className="mx-2"
                   checked={isDarkMode === true}
                   onChange={() => setIsDarkMode(true)}
                 />
@@ -359,6 +360,7 @@ const introduceYourself = () => {
                 <input
                   type="radio"
                   value="false"
+                  className="mx-2"
                   checked={isDarkMode === false}
                   onChange={() => setIsDarkMode(false)}
                 />

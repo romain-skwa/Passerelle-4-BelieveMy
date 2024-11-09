@@ -99,7 +99,7 @@ export default function Header() {
 
             {/* ----------------Comment présenter------------------------- */}
             <div
-              className={`text-center mt-8 laptop:mt-0 bg-black/30 px-4 pb-1 pt-[3px] ml-3 border rounded-2xl ${
+              className={`text-center mt-8 laptop:mt-0 bg-black/30 px-4 pb-2 pt-[3px] ml-3 border rounded-2xl ${
                 !session?.user?.email ? "flex-grow" : ""
               }`}
             >
@@ -116,7 +116,7 @@ export default function Header() {
             className="mr-2 laptop:mr-4 flex justify-end"  /* Part right */
           >
             {session?.user?.email ? (
-              <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-2 laptop:bg-transparent" onClick={() => signOut()}>
+              <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent" onClick={() => signOut()}>
                 Se déconnecter
               </div>
             ) : (

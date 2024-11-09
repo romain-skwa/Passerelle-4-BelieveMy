@@ -37,20 +37,18 @@ export default async function Index() {
   return (
     <GeneralLayout>
       <ConnectedUser/>
-      <section className="flex flex-wrap gap-4 justify-center w-[95%] lg:w-2/3 mx-auto">
+      <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
         {introductionsImages.map((post) => (
-          <div key={post._id} className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black">
-            <div className=" w-[100%] ">
+          <div key={post._id} className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black ">
             <Link href={`dynamic/introduction/${encodeURIComponent(post.nameofgame)}`}>
                 <Image
                   src={`/presentation/${post.imageOne}`}
-                  className="lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
+                  className="h-[311px] hover:scale-105 transition duration-300"
                   width={192}
                   height={311}
                   alt={`${post.imageOne}`}
                 />
               </Link>
-            </div>
           </div>
         ))}
       </section>

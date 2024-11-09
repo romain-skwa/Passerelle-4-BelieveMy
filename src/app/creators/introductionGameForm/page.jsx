@@ -136,27 +136,37 @@ for (const [key, value] of formData.entries()) {
     <GeneralLayout>
       <form
         onSubmit={onPrepare}
-        className="w-[54vw] mx-auto border p-2"
+        className="w-[95vw] tablet:w-[84vw] laptop:w-[54vw] mx-auto border p-2"
         style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
       >
         <p>
           {session?.user.username}, sur cette page, vous êtes invité à remplir de présentation de votre jeux.
         </p>
-        <input
-          type="text"
-          name="nameOfGame"
-          placeholder="Nom du jeu"
-          className="px-3 py-2 rounded-md"
-          maxLength={80}
-          size={80}
-          value={nameOfGame}
-          onChange={(e) => setNameOfGame(e.target.value)}
-        />
 
-        <div onClick={() => setIsDarkMode(!isDarkMode)}  className="p-2 bg-black text-white inline-block ml-2 cursor-pointer">
-          Texte noir et fond blanc
+        <div className="laptop:flex items-center">
+          <input
+            type="text"
+            name="nameOfGame"
+            placeholder="Nom du jeu"
+            className="px-3 py-2 rounded-md w-full laptop:w-[70%] flex-grow"
+            maxLength={80}
+            size={80}
+            value={nameOfGame}
+            onChange={(e) => setNameOfGame(e.target.value)}
+          />
+
+          <div className="flex justify-center laptop:inline-block mt-3 laptop:mt-0">
+            <div 
+              onClick={() => setIsDarkMode(!isDarkMode)} 
+              className="p-2 bg-black text-white inline-block ml-2 cursor-pointer"
+            >
+              Texte noir et fond blanc
+            </div>
+          </div>
         </div>
+
         <Platform platform={platform} setPlatform={setPlatform} />
+
         {/**************** Date ***************************** */}
         <div className="my-2 flex">
           <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
@@ -210,8 +220,8 @@ for (const [key, value] of formData.entries()) {
 
         {/**************** Affiche ***************************** */}
         <div className="flex flex-col items-center">
-          <div className="w-[40vw] p-1 pl-2 mt-4 border grasFondBleu">
-            Choisissez l'affiche du jeu 
+          <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
+            <p className="text-center tablet:inline-block">Choisissez l'affiche du jeu </p>
             <input
               type="file"
               name="imageOne"
@@ -225,7 +235,7 @@ for (const [key, value] of formData.entries()) {
               type="url"
               name="videoLink"
               placeholder="Lien YouTube de la vidéo"
-              className="block w-[40vw] p-1 pl-2 m-2"
+              className="block w-[95%] tablet:w-[60%] p-1 pl-2 m-2"
               value={videoLink}
               onChange={(e) => setVideoLink(e.target.value)}
             />
@@ -235,7 +245,7 @@ for (const [key, value] of formData.entries()) {
               type="url"
               name="webSiteOfThisGame"
               placeholder="Lien vers le site officiel du jeu"
-              className="block w-[40vw] p-1 pl-2"
+              className="block w-[95%] tablet:w-[60%] p-1 pl-2"
               value={videoLink}
               onChange={(e) => setWebSiteOfThisGame(e.target.value)}
             />

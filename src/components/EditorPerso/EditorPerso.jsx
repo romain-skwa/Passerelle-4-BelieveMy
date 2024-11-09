@@ -67,41 +67,56 @@ function MyTextArea({onTextChange, setIntroductionOfTheGame}) {
   };
 
 /*********** TITRE H2 ******************************************************************************** */
-  const handleH2Click = () => {
-    const textarea = document.getElementById('textareaDescriptionJeu');
-    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    
-    if (selectedText === '') { return; }
+const handleH2Click = () => {
+  const textarea = document.getElementById('textareaDescriptionJeu');
+  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
   
-    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-    if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
-  
-    // Utiliser une regex pour trouver l'occurrence spécifique
-    const regex = new RegExp(`(${selectedText})`, 'g');
-    let count = 0;
-    const newText = textarea.value.replace(regex, (match, p1, offset) => {
-      count++;
-      // Vérifier si c'est l'occurrence que nous voulons formater
-      if (offset === startIndex) {
-        const isH3 = p1.includes('<h3>') && p1.includes('</h3>');
-        const isH2 = p1.includes('<h2>') && p1.includes('</h2>');
-  
-        if (isH3) {
-          // Si c'est déjà un <h3>, le changer en <h2>
-          return p1.replace(/<h3>(.*?)<\/h3>/, '<h2>$1</h2>');
-        } else if (isH2) {
-          // Si c'est un <h2>, retirer les balises
-          return p1.replace(/<h2>(.*?)<\/h2>/, '$1');
-        } else {
-          // Sinon, l'encadrer avec les balises <h3>
-          return `<h2>${p1}</h2>`;
-        }
+  if (selectedText === '') { return; }
+
+  const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
+  if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+
+  // Utiliser une regex pour trouver l'occurrence spécifique
+  const regex = new RegExp(`(${selectedText})`, 'g');
+
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
+
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
+    // Vérifier si c'est l'occurrence que nous voulons formater
+    if (offset === startIndex) {
+      const isH3 = p1.includes('<h3>') && p1.includes('</h3>');
+      const isH2 = p1.includes('<h2>') && p1.includes('</h2>');
+
+      if (isH3) {
+        // Si c'est déjà un <h3>, le changer en <h2>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = offset + p1.length; // Position de fin pour la sélection
+        return p1.replace(/<h3>(.*?)<\/h3>/, '<h2>$1</h2>');
+      } else if (isH2) {
+        // Si c'est un <h2>, retirer les balises
+        newStartIndex = offset;
+        newEndIndex = offset + p1.length - 9; 
+        return p1.replace(/<h2>(.*?)<\/h2>/, '$1');
+      } else {
+        // Sinon, l'encadrer avec les balises <h2>
+        newStartIndex = offset;
+        newEndIndex = newStartIndex + `<h2>${p1}</h2>`.length;
+        return `<h2>${p1}</h2>`;
       }
-      return p1; // Retourner le texte original pour les autres occurrences
-    });
-  
-    setText(newText);
-  };
+    }
+    return p1; // Retourner le texte original pour les autres occurrences
+  });
+
+  setText(newText);
+
+  // Sélectionner automatiquement le texte à présent modifié après un léger délai
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
+};
 
 /*********** TITRE H3 ******************************************************************************** */
 const handleH3Click = () => {
@@ -115,22 +130,31 @@ const handleH3Click = () => {
 
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
-  let count = 0;
-  const newText = textarea.value.replace(regex, (match, p1, offset) => {
-    count++;
+
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
+
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
       const isH3 = p1.includes('<h3>') && p1.includes('</h3>');
       const isH2 = p1.includes('<h2>') && p1.includes('</h2>');
 
       if (isH2) {
-        // Si c'est déjà un <h2>, le changer en <h2>
+        // Si c'est déjà un <h2>, le changer en <h3>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = offset + p1.length; // Position de fin pour la sélection (pas de changement de longueur)
         return p1.replace(/<h2>(.*?)<\/h2>/, '<h3>$1</h3>');
       } else if (isH3) {
         // Si c'est un <h3>, retirer les balises
+        newStartIndex = offset; 
+        newEndIndex = offset + p1.length - 9; 
         return p1.replace(/<h3>(.*?)<\/h3>/, '$1');
       } else {
         // Sinon, l'encadrer avec les balises <h3>
+        newStartIndex = offset; 
+        newEndIndex = newStartIndex + `<h3>${p1}</h3>`.length; 
         return `<h3>${p1}</h3>`;
       }
     }
@@ -138,6 +162,12 @@ const handleH3Click = () => {
   });
 
   setText(newText);
+
+  // Sélectionner le texte modifié après un léger délai
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
 };
   
 /*********** Taille du texte ******************************************************************************** */
@@ -175,23 +205,41 @@ const handleFontSizeChange = (e) => {
 };
 
 /*********** Inclure dans Paragraphe ******************************************************************************** */
-  const handleParagraphClick = () => {
+const handleParagraphClick = () => {
     const textarea = document.getElementById('textareaDescriptionJeu');
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
     
     if (selectedText === '') { return; }
 
+    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
+    if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+
     const isParagraph = selectedText.includes('<p>') && selectedText.includes('</p>');
     
     let newText;
+    let newStartIndex;
+    let newEndIndex;
+
     if (isParagraph) {
+        // Si c'est déjà un paragraphe, retirer les balises
+        newStartIndex = startIndex; // Position de départ pour la sélection
+        newEndIndex = startIndex + selectedText.length - 7; // Position de fin pour la sélection (7 = longueur de <p></p>)
         newText = textarea.value.replace(selectedText, selectedText.replace(/<p>(.*?)<\/p>/, '$1'));
     } else {
+        // Sinon, l'encadrer avec les balises <p>
+        newStartIndex = startIndex; // Position de départ pour la sélection
+        newEndIndex = newStartIndex + `<p>${selectedText}</p>`.length; // Position de fin pour la sélection
         newText = textarea.value.replace(selectedText, `<p>${selectedText}</p>`);
     }
     
     setText(newText);
-  };
+
+    // Sélectionner le texte modifié après un léger délai
+    setTimeout(() => {
+        textarea.setSelectionRange(newStartIndex, newEndIndex);
+        textarea.focus();
+    }, 0);
+};
 
 /*********** Gras ******************************************************************************** */
 const handleBoldClick = () => {
@@ -206,16 +254,25 @@ const handleBoldClick = () => {
 
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
-  let count = 0;
-  const newText = textarea.value.replace(regex, (match, p1, offset) => {
-    count++;
+  
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
+
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      const isBold = selectedText.includes('<b>') && selectedText.includes('</b>');
+      const isBold = p1.includes('<b>') && p1.includes('</b>');
+      
       if (isBold) {
+        // Si le texte est déjà en gras, retirer les balises
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <b></b>)
         return p1.replace(/<b>(.*?)<\/b>/, '$1');
       } else {
-        // Si le texte n'est pas en gras, on l'encadre avec les balises <b>
+        // Si le texte n'est pas en gras, l'encadrer avec les balises <b>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = newStartIndex + `<b>${p1}</b>`.length; // Position de fin pour la sélection
         return `<b>${p1}</b>`;
       }
     }
@@ -223,15 +280,19 @@ const handleBoldClick = () => {
   });
 
   setText(newText);
+
+  // Sélectionner le texte modifié après un léger délai
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
 };
 /*********** Italique ******************************************************************************** */
 const handleItalicClick = () => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
   
-  if (selectedText === '') {
-    return;  
-  }
+  if (selectedText === '') { return; }
 
   const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
   
@@ -239,15 +300,25 @@ const handleItalicClick = () => {
 
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
-  let newText = textarea.value.replace(regex, (match, p1, offset) => {
+
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
+
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      const isItalic = selectedText.includes('<i>') && selectedText.includes('</i>');
+      const isItalic = p1.includes('<i>') && p1.includes('</i>');
+      
       if (isItalic) {
         // Si le texte est déjà en italique, retirer les balises <i>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <i></i>)
         return p1.replace(/<i>(.*?)<\/i>/, '$1');
       } else {
         // Sinon, ajouter les balises <i>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = newStartIndex + `<i>${p1}</i>`.length; // Position de fin pour la sélection
         return `<i>${p1}</i>`;
       }
     }
@@ -255,6 +326,12 @@ const handleItalicClick = () => {
   });
 
   setText(newText);
+
+  // Sélectionner le texte modifié après un léger délai
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
 };
 
 /*********** Souligner ******************************************************************************** */
@@ -262,9 +339,7 @@ const handleUnderlineClick = () => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
   
-  if (selectedText === '') {
-    return;  
-  }
+  if (selectedText === '') { return; }
 
   const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
   
@@ -272,15 +347,25 @@ const handleUnderlineClick = () => {
 
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
-  const newText = textarea.value.replace(regex, (match, p1, offset) => {
+
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
+
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      const isUnderline = selectedText.includes('<u>') && selectedText.includes('</u>');
+      const isUnderline = p1.includes('<u>') && p1.includes('</u>');
+      
       if (isUnderline) {
         // Si le texte est déjà souligné, retirer les balises <u>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <u></u>)
         return p1.replace(/<u>(.*?)<\/u>/, '$1');
       } else {
         // Sinon, ajouter les balises <u>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = newStartIndex + `<u>${p1}</u>`.length; // Position de fin pour la sélection
         return `<u>${p1}</u>`;
       }
     }
@@ -288,6 +373,12 @@ const handleUnderlineClick = () => {
   });
 
   setText(newText);
+
+  // Sélectionner le texte modifié après un léger délai
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
 };
 
 /*********** Barrer le texte ******************************************************************************** */
@@ -301,17 +392,24 @@ const handleStrikeThroughClick = () => {
   
   if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
 
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
-  let newText = textarea.value.replace(regex, (match, p1, offset) => {
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
       const isStrikeThrough = selectedText.includes('<s>') && selectedText.includes('</s>');
       if (isStrikeThrough) {
         // Si le texte est déjà barré, retirer les balises <s>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <u></u>)        
         return p1.replace(/<s>(.*?)<\/s>/, '$1');
       } else {
         // Sinon, ajouter les balises <s>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = newStartIndex + `<u>${p1}</u>`.length; // Position de fin pour la sélection        
         return `<s>${p1}</s>`;
       }
     }
@@ -319,59 +417,90 @@ const handleStrikeThroughClick = () => {
   });
 
   setText(newText);
+
+  // Sélectionner le texte modifié après un léger délai
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
 };
 
 
 /*********** Changer Couleur Texte ******************************************************************************** */
-  /* -------- Réinitialisation ------------------*/
+/* -------- Réinitialisation ------------------*/
 const handleColorChange = (newColorText) => {
+  const textarea = document.getElementById('textareaDescriptionJeu');
+  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+  
   if (newColorText === "") { // Pour réinitialiser
-    const textarea = document.getElementById('textareaDescriptionJeu');
-    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    
+    const startIndex = textarea.selectionStart; // Position de départ de la sélection
+
     // Remplacer la balise <span style="color: ..."> et une balise de fermeture </span>
     const newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, ''));
-    
+
     setText(newText);
     setRectangleUnderA('rgba(255, 255, 255, 0)');
+
+    // Ajuster les indices de sélection
+    const newStartIndex = startIndex; // Position de départ pour la sélection
+    const newEndIndex = newStartIndex + (selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, '').length); // Position de fin pour la sélection
+
+    // Sélectionner le texte modifié
+    setTimeout(() => {
+      textarea.setSelectionRange(newStartIndex, newEndIndex);
+      textarea.focus();
+    }, 0);
   } else {
     handleColorClick(newColorText);
   }
 };
 
-  /* -------- On change la couleur du texte ------------------*/
-  const handleColorClick = (newColorText) => {
-    const textarea = document.getElementById('textareaDescriptionJeu');
-    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    if (selectedText === '') { return; }
+/* -------- On change la couleur du texte ------------------*/
+const handleColorClick = (newColorText) => {
+  const textarea = document.getElementById('textareaDescriptionJeu');
+  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+  if (selectedText === '') { return; }
 
-    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-    
-    if (startIndex === -1) {
-      return; // Si le texte sélectionné n'est pas trouvé
-    }
+  const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
+  
+  if (startIndex === -1) {
+    return; // Si le texte sélectionné n'est pas trouvé
+  }
 
-    // Utiliser une regex pour trouver l'occurrence spécifique
-    const regex = new RegExp(`(${selectedText})`, 'g');
-    let newText = textarea.value.replace(regex, (match, p1, offset) => {
-      // Vérifier si c'est l'occurrence que nous voulons formater
-      if (offset === startIndex) {
-        const isTextColorChanged = selectedText.includes('<span style="color:') && selectedText.includes('</span>');
-        if (isTextColorChanged) {
-          // Si une balise <span> existe déjà, remplacez la couleur de fond
-          return p1.replace(/(<span[^>]*style="color:).*?;/, `$1 ${newColorText};`);
-        } else {
-          // Sinon, créez une nouvelle balise <span> avec la couleur de fond
-          return `<span style="color: ${newColorText};">${p1}</span>`;
-        }
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
+  // Utiliser une regex pour trouver l'occurrence spécifique
+  const regex = new RegExp(`(${selectedText})`, 'g');
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
+    // Vérifier si c'est l'occurrence que nous voulons formater
+    if (offset === startIndex) {
+      const isTextColorChanged = selectedText.includes('<span style="color:') && selectedText.includes('</span>');
+      if (isTextColorChanged) {
+        // Si une balise <span> existe déjà, remplacez la couleur de fond
+        newStartIndex = offset;
+        newEndIndex = offset + p1.length ; 
+        return p1.replace(/(<span[^>]*style="color:).*?;/, `$1 ${newColorText};`);
+      } else {
+        // Sinon, créez une nouvelle balise <span> avec la couleur de fond
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = newStartIndex + `<span style="color: #******;">${p1}</span>`.length; // Position de fin pour la sélection
+        return `<span style="color: ${newColorText};">${p1}</span>`;
       }
-      return  p1; // Retourner le texte original pour les autres occurrences
-    });
+    }
+    return p1; // Retourner le texte original pour les autres occurrences
+  });
 
-    // Met à jour le textarea avec le nouveau texte
-    setRectangleUnderA(newColorText);
-    setText(newText);
-  };
+  // Met à jour le textarea avec le nouveau texte
+  setText(newText);
+  setRectangleUnderA(newColorText);
+
+  // Sélectionner le texte modifié
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
+};
 
 /*********** Changer Background Texte ******************************************************************* */
   /* -------- Réinitialisation ------------------*/
@@ -395,7 +524,16 @@ const handleColorChange = (newColorText) => {
   
       setText(newText);
       setBackgroundUnderPencil('rgba(255, 255, 255, 0)');
-      console.log('Couleur de fond réinitialisée');
+
+       // Ajuster les indices de sélection
+      const newStartIndex = startIndex; // Position de départ pour la sélection
+      const newEndIndex = newStartIndex + (selectedText.replace(/<span style="background-color: [^"]*">/, '').replace(/<\/span>/, '').length); // Position de fin pour la sélection
+
+      // Sélectionner le texte modifié
+      setTimeout(() => {
+        textarea.setSelectionRange(newStartIndex, newEndIndex);
+        textarea.focus();
+      }, 0);
     } else {
       console.log(`Changement de couleur de fond en : ${newColorBackgroundText}`);
       addBackgroundTag(newColorBackgroundText);
@@ -403,7 +541,7 @@ const handleColorChange = (newColorText) => {
     }
   };
 
-  /* -------- On change la couleur de FOND du texte ------------------*/
+/* -------- On change la couleur de FOND du texte ------------------*/
 const addBackgroundTag = (newColorBackgroundText) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
@@ -415,25 +553,41 @@ const addBackgroundTag = (newColorBackgroundText) => {
     return; // Si le texte sélectionné n'est pas trouvé
   }
 
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
-  let newText = textarea.value.replace(regex, (match, p1, offset) => {
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
       const isBackgroundColorChanged = selectedText.includes('<span style="background-color:') && selectedText.includes('</span>');
+
       if (isBackgroundColorChanged) {
         // Si une balise <span> existe déjà, remplacez la couleur de fond
-        return p1.replace(/(<span[^>]*style="background-color:).*?;/, `$1 ${newColorBackgroundText};`);
+        const updatedText = p1.replace(/(<span[^>]*style="background-color:).*?;/, `$1 ${newColorBackgroundText};`);
+        newStartIndex = offset;
+        newEndIndex = offset + p1.length;
+        return updatedText; // Retourner le texte mis à jour
       } else {
         // Sinon, créez une nouvelle balise <span> avec la couleur de fond
-        return `<span style="background-color: ${newColorBackgroundText};">${p1}</span>`;
+        const newSpan = `<span style="background-color: ${newColorBackgroundText};">${p1}</span>`;
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = newStartIndex + `<span style="background-color: #******;">${p1}</span>`.length; // Position de fin pour la sélection
+        return newSpan; // Retourner la nouvelle balise
       }
     }
-    return  p1; // Retourner le texte original pour les autres occurrences
+    return p1; // Retourner le texte original pour les autres occurrences
   });
 
   // Met à jour le textarea avec le nouveau texte
   setText(newText);
+
+  // Sélectionner le texte modifié
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
 };
 
   /********* Alignement de la sélection ************************************************************************/
@@ -443,33 +597,47 @@ const addBackgroundTag = (newColorBackgroundText) => {
     
     if (selectedText === '') { return; }
     
-    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-    
-    if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+    const startIndex = textarea.selectionStart; // Utiliser la position de départ de la sélection
+    const endIndex = textarea.selectionEnd; // Utiliser la position de fin de la sélection
+
+    // Déclaration des variables pour le texte modifié et les indices
+    let newText;
+    let newStartIndex;
+    let newEndIndex;
 
     // Expression régulière pour trouver la balise de positionnement existante
     const alignmentRegex = /<div style="text-align: (left|center|right);">(.*?)<\/div>/;
-  
-    let newText = textarea.value;
 
     // Utiliser une regex pour trouver l'occurrence spécifique
     const regex = new RegExp(`(${selectedText})`, 'g');
 
-    newText = newText.replace(regex, (match, p1, offset) => {
+    newText = textarea.value.replace(regex, (match, p1, offset) => {
         // Vérifier si c'est l'occurrence que nous voulons formater
         if (offset === startIndex) {
             // Si le texte sélectionné contient déjà une balise d'alignement, on la retire
             if (alignmentRegex.test(p1)) {
+                newStartIndex = offset; // Position de départ pour la sélection
+                newEndIndex = offset + p1.replace(alignmentRegex, '$2').length; // Position de fin pour la sélection
                 return p1.replace(alignmentRegex, '$2'); // Remplace par le texte sans la balise
             } else {
                 // Sinon, ajoute la nouvelle balise d'alignement à gauche
-                return `<div style="text-align: left;">${p1}</div>`;
+                const newDiv = `<div style="text-align: left;">${p1}</div>`;
+                newStartIndex = offset; // Position de départ pour la sélection
+                newEndIndex = newStartIndex + newDiv.length; // Position de fin pour la sélection
+                return newDiv; // Retourner la nouvelle balise
             }
         }
         return p1; // Retourner le texte original pour les autres occurrences
     });
 
+    // Met à jour le textarea avec le nouveau texte
     setText(newText);
+
+    // Sélectionner le texte modifié
+    setTimeout(() => {
+        textarea.setSelectionRange(newStartIndex, newEndIndex);
+        textarea.focus();
+    }, 0);
 };
 
   const handleAlignCenter = () => {
@@ -483,35 +651,50 @@ const addBackgroundTag = (newColorBackgroundText) => {
   const applyTextAlignment = (align) => {
     const textarea = document.getElementById('textareaDescriptionJeu');
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-  
+
     if (selectedText === '') { return; }
-  
-    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-    
-    if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+
+    const startIndex = textarea.selectionStart; // Position de départ de la sélection
+    const endIndex = textarea.selectionEnd; // Position de fin de la sélection
+
+    // Déclaration des variables pour le texte modifié et les indices
+    let newText;
+    let newStartIndex;
+    let newEndIndex;
 
     // Expression régulière pour trouver la balise de positionnement existante
     const alignmentRegex = /<div style="text-align: (left|center|right);">(.*?)<\/div>/;
 
-    let newText = textarea.value;
-
     // Utiliser une regex pour trouver l'occurrence spécifique
     const regex = new RegExp(`(${selectedText})`, 'g');
-    newText = newText.replace(regex, (match, p1, offset) => {
+
+    newText = textarea.value.replace(regex, (match, p1, offset) => {
         // Vérifier si c'est l'occurrence que nous voulons formater
         if (offset === startIndex) {
             // Si le texte sélectionné contient déjà une balise d'alignement, on remplace la balise existante
             if (alignmentRegex.test(p1)) {
+                newStartIndex = offset; // Position de départ pour la sélection
+                newEndIndex = offset + p1.replace(alignmentRegex, '$2').length; // Position de fin pour la sélection
                 return p1.replace(alignmentRegex, `<div style="text-align: ${align};">$2</div>`);
             } else {
                 // Sinon, ajoute la nouvelle balise d'alignement
-                return `<div style="text-align: ${align};">${p1}</div>`;
+                const newDiv = `<div style="text-align: ${align};">${p1}</div>`;
+                newStartIndex = offset; // Position de départ pour la sélection
+                newEndIndex = newStartIndex + newDiv.length; // Position de fin pour la sélection
+                return newDiv; // Retourner la nouvelle balise
             }
         }
         return p1; // Retourner le texte original pour les autres occurrences
     });
 
+    // Met à jour le textarea avec le nouveau texte
     setText(newText);
+
+    // Sélectionner le texte modifié
+    setTimeout(() => {
+        textarea.setSelectionRange(newStartIndex, newEndIndex);
+        textarea.focus();
+    }, 0);
 };
   /********* Retour à la ligne ************************************************************************/
   const insertLineBreak = () => {

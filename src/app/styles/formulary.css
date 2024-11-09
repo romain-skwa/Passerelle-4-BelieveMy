@@ -82,7 +82,7 @@ h3{ font-size: 1.5rem;}
   cursor: default;  
 }
 #textareaDescriptionJeu{
-  width: 52vw; height: 20vh;
+  width: 100%; height: 20vh;
   padding: 0.5rem 1rem;
   border-radius: 0.7rem;
 }
@@ -106,7 +106,7 @@ h3{ font-size: 1.5rem;}
 
 /********** shortIntroduction ***********************/
 #shortIntroduction{
-  width: 52vw; height: 8vh;
+  width: 100%; min-height: 9vh;
   padding: 0.5rem 1rem;
   border-radius: 0.7rem;
   margin-inline: auto;
