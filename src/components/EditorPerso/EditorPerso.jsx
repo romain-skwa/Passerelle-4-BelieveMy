@@ -174,71 +174,114 @@ const handleH3Click = () => {
 const handleFontSizeChange = (e) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-  const newSize = e.target.value;
-
+  
   if (selectedText === '') { return; }
 
-  const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-  if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+  const startIndex = textarea.selectionStart; // Position de départ de la sélection
+  const endIndex = textarea.selectionEnd; // Position de fin de la sélection
+
+  const newSize = e.target.value;
+
+  let newText;
+  let newStartIndex;
+  let newEndIndex;
 
   // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
-  let count = 0;
-  const newText = textarea.value.replace(regex, (match, p1, offset) => {
-    count++;
+
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
       // Si la nouvelle taille est "1rem", retirer la balise de taille de police
       if (newSize === "1rem") {
-        return p1.replace(/<span style="font-size: [^"]*">([^<]+)<\/span>/g, '$1');
+        const spanMatch = p1.match(/<span[^>]*style="font-size: [^"]*">([^<]+)<\/span>/);
+        if (spanMatch) {
+          const originalLength = p1.length; // Longueur de la sélection d'origine
+          console.log(`originalLength : `, originalLength);
+
+          const span0 = spanMatch[0];
+          console.log(`span0 : `, span0);
+          const spanLength = spanMatch[0].length; // Longueur de la balise <span>
+          console.log(`spanLength : `, spanLength);
+
+          // Longueur du contenu à l'intérieur de la balise
+          const contentLength = spanMatch[1].length;
+          console.log(`content : `, content);
+          const content = spanMatch[1];
+          console.log(`contentLength : `, contentLength);
+
+          // Calculer la longueur des balises
+          const lengthOfTags = spanLength - contentLength;
+          console.log(`lengthOfTags : `, lengthOfTags);
+
+          newStartIndex = offset; // Position de départ pour la sélection
+          console.log(`newStartIndex : `, newStartIndex);
+          newEndIndex = offset + (originalLength - lengthOfTags); // Ajuster la position de fin
+          console.log(`newEndIndex : `, newEndIndex);
+          return spanMatch[1]; // Retirer la balise et retourner le texte à l'intérieur
+        }
       } else {
-        // Sinon, remplacer la taille de police existante ou ajouter une nouvelle balise
-        const cleanText = p1.replace(/<span style="font-size: [^"]*">([^<]+)<\/span>/g, '$1');
-        return `<span style="font-size: ${newSize}">${cleanText}</span>`;
+        // Sinon, vérifier si p1 contient déjà une balise <span> avec une taille de police
+        const existingSpanMatch = p1.match(/<span[^>]*style="font-size: ([^"]*)">(.*?)<\/span>/);
+        
+        if (existingSpanMatch) {
+          // Si une balise existe, on remplace la taille de police
+          const newSpan = `<span style="font-size: ${newSize}">${existingSpanMatch[2]}</span>`;
+          newStartIndex = offset; // Position de départ pour la sélection
+          newEndIndex = offset + newSpan.length; // Ajuster la position de fin
+          return newSpan;
+        } else {
+          // Sinon, ajouter une nouvelle balise
+          const newSpan = `<span style="font-size: ${newSize}">${p1}</span>`;
+          newStartIndex = offset; // Position de départ pour la sélection
+          newEndIndex = offset + newSpan.length; // Ajuster la position de fin
+          return newSpan;
+        }
       }
     }
     return p1; // Retourner le texte original pour les autres occurrences
   });
 
   setText(newText);
-  setFontSize(newSize); // Mettre à jour l'état de la taille de police
+
+  // Sélectionner le texte modifié après un léger délai
+  setTimeout(() => {
+    textarea.setSelectionRange(newStartIndex, newEndIndex);
+    textarea.focus();
+  }, 0);
 };
 
 /*********** Inclure dans Paragraphe ******************************************************************************** */
 const handleParagraphClick = () => {
-    const textarea = document.getElementById('textareaDescriptionJeu');
-    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    
-    if (selectedText === '') { return; }
+  const textarea = document.getElementById('textareaDescriptionJeu');
+  const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+  
+  if (selectedText === '') { return; }
 
-    const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
-    if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+  const startIndex = textarea.selectionStart; // Utilisez directement la position de départ de la sélection
+  const endIndex = textarea.selectionEnd; // Utilisez directement la position de fin de la sélection
 
-    const isParagraph = selectedText.includes('<p>') && selectedText.includes('</p>');
-    
-    let newText;
-    let newStartIndex;
-    let newEndIndex;
+  const isParagraph = selectedText.includes('<p>') && selectedText.includes('</p>');
+  
+  let newText;
 
-    if (isParagraph) {
-        // Si c'est déjà un paragraphe, retirer les balises
-        newStartIndex = startIndex; // Position de départ pour la sélection
-        newEndIndex = startIndex + selectedText.length - 7; // Position de fin pour la sélection (7 = longueur de <p></p>)
-        newText = textarea.value.replace(selectedText, selectedText.replace(/<p>(.*?)<\/p>/, '$1'));
-    } else {
-        // Sinon, l'encadrer avec les balises <p>
-        newStartIndex = startIndex; // Position de départ pour la sélection
-        newEndIndex = newStartIndex + `<p>${selectedText}</p>`.length; // Position de fin pour la sélection
-        newText = textarea.value.replace(selectedText, `<p>${selectedText}</p>`);
-    }
-    
-    setText(newText);
+  if (isParagraph) {
+      // Si c'est déjà un paragraphe, retirer les balises
+      newText = textarea.value.slice(0, startIndex) + selectedText.replace(/<p>(.*?)<\/p>/, '$1') + textarea.value.slice(endIndex);
+  } else {
+      // Sinon, l'encadrer avec les balises <p>
+      newText = textarea.value.slice(0, startIndex) + `<p>${selectedText}</p>` + textarea.value.slice(endIndex);
+  }
+  
+  setText(newText);
 
-    // Sélectionner le texte modifié après un léger délai
-    setTimeout(() => {
-        textarea.setSelectionRange(newStartIndex, newEndIndex);
-        textarea.focus();
-    }, 0);
+  // Sélectionner le texte modifié après un léger délai
+  setTimeout(() => {
+      const newStartIndex = startIndex; // Position de départ pour la sélection
+      const newEndIndex = isParagraph ? startIndex + selectedText.length - 7 : startIndex + `<p>${selectedText}</p>`.length; // Ajuster la position de fin
+      textarea.setSelectionRange(newStartIndex, newEndIndex);
+      textarea.focus();
+  }, 0);
 };
 
 /*********** Gras ******************************************************************************** */
@@ -619,13 +662,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
                 newStartIndex = offset; // Position de départ pour la sélection
                 newEndIndex = offset + p1.replace(alignmentRegex, '$2').length; // Position de fin pour la sélection
                 return p1.replace(alignmentRegex, '$2'); // Remplace par le texte sans la balise
-            } else {
-                // Sinon, ajoute la nouvelle balise d'alignement à gauche
-                const newDiv = `<div style="text-align: left;">${p1}</div>`;
-                newStartIndex = offset; // Position de départ pour la sélection
-                newEndIndex = newStartIndex + newDiv.length; // Position de fin pour la sélection
-                return newDiv; // Retourner la nouvelle balise
-            }
+            } 
         }
         return p1; // Retourner le texte original pour les autres occurrences
     });
@@ -674,7 +711,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
             // Si le texte sélectionné contient déjà une balise d'alignement, on remplace la balise existante
             if (alignmentRegex.test(p1)) {
                 newStartIndex = offset; // Position de départ pour la sélection
-                newEndIndex = offset + p1.replace(alignmentRegex, '$2').length; // Position de fin pour la sélection
+                newEndIndex = offset + `<div style="text-align: ${align};">${p1.replace(alignmentRegex, '$2')}</div>`.length; // Position de fin pour la sélection // Position de fin pour la sélection
                 return p1.replace(alignmentRegex, `<div style="text-align: ${align};">$2</div>`);
             } else {
                 // Sinon, ajoute la nouvelle balise d'alignement
@@ -748,14 +785,14 @@ const addBackgroundTag = (newColorBackgroundText) => {
          {/* Choisir la taille du texte ------------------------------------------------------- */}
          <select value={fontSize} className='p-1 border border-solid rounded' onChange={handleFontSizeChange} style={{ marginLeft: '10px' }}>
           <option >Taille du texte</option>
-          <option value="0.5rem">0.5rem</option>
-          <option value="0.75rem">0.75rem</option>
-          <option value="1rem">1rem</option>
-          <option value="1.5rem">1.5rem</option>
-          <option value="1.75rem">1.75rem</option>
-          <option value="2rem">2rem</option>
-          <option value="2.5rem">2.5rem</option>
-          <option value="3rem">3rem</option>
+          <option value="0.5rem">x 0.5</option>
+          <option value="0.75rem">x 0.75</option>
+          <option value="1rem">Par défaut</option>
+          <option value="1.5rem"> x 1.5</option>
+          <option value="1.75rem">x 1.75</option>
+          <option value="2rem">x 2</option>
+          <option value="2.5rem">x 2.5</option>
+          <option value="3rem">x 3</option>
         </select>        
 
         <div className='boutonGris bouton' onClick={handleBoldClick} title='<b>'><img className='w-[60%]' src="/icons/format-bold.png" alt="icon bold" /></div>
