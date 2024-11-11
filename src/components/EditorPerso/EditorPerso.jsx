@@ -88,6 +88,7 @@ const handleH2Click = () => {
     if (offset === startIndex) {
       const isH3 = p1.includes('<h3>') && p1.includes('</h3>');
       const isH2 = p1.includes('<h2>') && p1.includes('</h2>');
+      const isP  = p1.includes('<p>') && p1.includes('</p>');
 
       if (isH3) {
         // Si c'est déjà un <h3>, le changer en <h2>
@@ -98,11 +99,22 @@ const handleH2Click = () => {
         // Si c'est un <h2>, retirer les balises
         newStartIndex = offset;
         newEndIndex = offset + p1.length - 9; 
+        console.log(`newStartIndex : `, newStartIndex);
+        console.log(`newEndIndex : `, newEndIndex);
         return p1.replace(/<h2>(.*?)<\/h2>/, '$1');
+      } else if (isP) {
+        // Si c'est déjà un <p>, le changer en <h2>
+        newStartIndex = offset;
+        newEndIndex = offset + p1.length + 2; 
+        console.log(`newStartIndex : `, newStartIndex);
+        console.log(`newEndIndex : `, newEndIndex);
+        return p1.replace(/<p>(.*?)<\/p>/, '<h2>$1</h2>');
       } else {
         // Sinon, l'encadrer avec les balises <h2>
         newStartIndex = offset;
         newEndIndex = newStartIndex + `<h2>${p1}</h2>`.length;
+        console.log(`newStartIndex : `, newStartIndex);
+        console.log(`newEndIndex : `, newEndIndex);
         return `<h2>${p1}</h2>`;
       }
     }
@@ -140,6 +152,7 @@ const handleH3Click = () => {
     if (offset === startIndex) {
       const isH3 = p1.includes('<h3>') && p1.includes('</h3>');
       const isH2 = p1.includes('<h2>') && p1.includes('</h2>');
+      const isP  = p1.includes('<p>') && p1.includes('</p>');
 
       if (isH2) {
         // Si c'est déjà un <h2>, le changer en <h3>
@@ -151,6 +164,13 @@ const handleH3Click = () => {
         newStartIndex = offset; 
         newEndIndex = offset + p1.length - 9; 
         return p1.replace(/<h3>(.*?)<\/h3>/, '$1');
+      } else if (isP) {
+        // Si c'est déjà un <p>, le changer en <h2>
+        newStartIndex = offset;
+        newEndIndex = offset + p1.length + 2; 
+        console.log(`newStartIndex : `, newStartIndex);
+        console.log(`newEndIndex : `, newEndIndex);
+        return p1.replace(/<p>(.*?)<\/p>/, '<h3>$1</h3>');
       } else {
         // Sinon, l'encadrer avec les balises <h3>
         newStartIndex = offset; 
@@ -258,27 +278,48 @@ const handleParagraphClick = () => {
   
   if (selectedText === '') { return; }
 
-  const startIndex = textarea.selectionStart; // Utilisez directement la position de départ de la sélection
-  const endIndex = textarea.selectionEnd; // Utilisez directement la position de fin de la sélection
+  const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
+  if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
 
-  const isParagraph = selectedText.includes('<p>') && selectedText.includes('</p>');
-  
+  // Utiliser une regex pour trouver l'occurrence spécifique
+  const regex = new RegExp(`(${selectedText})`, 'g');
+
   let newText;
+  let newStartIndex;
+  let newEndIndex;
 
-  if (isParagraph) {
-      // Si c'est déjà un paragraphe, retirer les balises
-      newText = textarea.value.slice(0, startIndex) + selectedText.replace(/<p>(.*?)<\/p>/, '$1') + textarea.value.slice(endIndex);
-  } else {
-      // Sinon, l'encadrer avec les balises <p>
-      newText = textarea.value.slice(0, startIndex) + `<p>${selectedText}</p>` + textarea.value.slice(endIndex);
-  }
-  
+  newText = textarea.value.replace(regex, (match, p1, offset) => {
+    // Vérifier si c'est l'occurrence que nous voulons formater
+    if (offset === startIndex) {
+      const isH2 = p1.includes('<h2>') && p1.includes('</h2>');
+      const isH3 = p1.includes('<h3>') && p1.includes('</h3>');
+      const isP  = p1.includes('<p>') && p1.includes('</p>');
+console.log(`p1 : `,p1);
+      if (isH2 || isH3) {
+        console.log("On est dans la situation où il existe déjà des balises h2 ou h3")
+        // Si c'est déjà un <h2> ou <h3>, retirer les balises et les remplacer par <>
+        newStartIndex = offset; // Position de départ pour la sélection
+        newEndIndex = offset + `${p1}`.length -2 ; // Ajuster la position de fin
+        return `<p>${p1.replace(/<\/?(h2|h3)>/g, '')}</p>`; // Remplacer les balises <h2> ou <h3> par <p>
+      } else if (isP) {
+        // Si c'est déjà un <p>, retirer les balises
+        newStartIndex = offset; 
+        newEndIndex = offset + p1.length - 7; // Ajuster la position de fin
+        return p1.replace(/<p>(.*?)<\/p>/, '$1'); // Retirer les balises <p>
+      } else {
+        // Sinon, l'encadrer avec les balises <p>
+        newStartIndex = offset; 
+        newEndIndex = newStartIndex + `<p>${p1}</p>`.length; 
+        return `<p>${p1}</p>`; // Encapsuler le texte avec <p>
+      }
+    }
+    return p1; // Retourner le texte original pour les autres occurrences
+  });
+
   setText(newText);
 
   // Sélectionner le texte modifié après un léger délai
   setTimeout(() => {
-      const newStartIndex = startIndex; // Position de départ pour la sélection
-      const newEndIndex = isParagraph ? startIndex + selectedText.length - 7 : startIndex + `<p>${selectedText}</p>`.length; // Ajuster la position de fin
       textarea.setSelectionRange(newStartIndex, newEndIndex);
       textarea.focus();
   }, 0);
