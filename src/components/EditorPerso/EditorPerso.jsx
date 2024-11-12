@@ -342,16 +342,18 @@ const handleBoldClick = () => {
   let newStartIndex;
   let newEndIndex;
 
-  newText = textarea.value.replace(regex, (match, p1, offset) => {
+  newText = textarea.value.replace(regex, (match, p1, offset) => { 
     // Vérifier si c'est l'occurrence que nous voulons formater
-    if (offset === startIndex) {
-      const isBold = p1.includes('<b>') && p1.includes('</b>');
-      const isH2 = p1.startsWith('<h2>') && p1.endsWith('</h2>');
-      const isH3 = p1.startsWith('<h3>') && p1.endsWith('</h3>');
-      const isParagraph = p1.startsWith('<p>') && p1.endsWith('</p>');
-      const isH2Bold = p1.includes('h2') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isH3Bold = p1.includes('h3') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isParagraphBold = p1.includes('p') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+    if (offset === startIndex) {// font-style: italic; text-decoration: underline; text-decoration: line-through;
+      const isBold = p1.includes('<b>') && p1.includes('</b>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isH2 = p1.startsWith('<h2>') && p1.endsWith('</h2>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isH3 = p1.startsWith('<h3>') && p1.endsWith('</h3>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isParagraph = p1.startsWith('<p>') && p1.endsWith('</p>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') ;
+      const isH2Bold = p1.includes('<h2') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isH3Bold = p1.includes('<h3') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isParagraphBold = p1.includes('<p') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') && !p1.includes('background-color: #');
+      const otherStyle = !p1.includes('font-weight: bold;') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') || p1.includes('background-color: #'));
+      const boldAndOtherStyle = p1.includes('font-weight: bold;') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') || p1.includes('background-color: #'));
 
       if (isBold) {
         // Si le texte est déjà en gras, retirer les balises
@@ -369,28 +371,43 @@ const handleBoldClick = () => {
         newEndIndex = newStartIndex + `<h3 style="font-weight: bold;">${p1.slice(4, -5)}</h3>`.length; // Position de fin pour la sélection
         return `<h3 style="font-weight: bold;">${p1.slice(4, -5)}</h3>`;
       } else if (isParagraph) {
+        console.log("C'est un paragraphe. On ajoute du gras");
         // Si c'est un <p>, ajouter le style
         newStartIndex = offset; // Position de départ pour la sélection
         newEndIndex = newStartIndex + `<p style="font-weight: bold;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`.length; // Position de fin pour la sélection
-        return `<p style="font-weight: bold;">${p1.replace(/<p[^>]*>/, '')}</p>`;
+        return `<p style="font-weight: bold;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`;
       } else if (isH2Bold) {
-        console.log("C'est un h2 avec du gras");
-        // Si c'est un <h2> contenant font-weight: bold, ajouter le style
+        console.log("C'est un h2 avec du gras donc en appuyant une nouvelle fois, on enlève ce gras");
+        // Si c'est un <h2> contenant font-weight: bold, retirer le style
         newStartIndex = offset; // Position de départ pour la sélection
         newEndIndex = newStartIndex + `<h2>${p1.replace(/<h2[^>]*style="font-weight:\s*bold;?"[^>]*>/, '').replace('</h2>', '')}</h2>`.length; // Position de fin pour la sélection
         return `<h2>${p1.replace(/<h2[^>]*style="font-weight:\s*bold;?"[^>]*>/, '').replace('</h2>', '')}</h2>`;
       } else if (isH3Bold) {
-        console.log("C'est un h3 avec du gras");
-        // Si c'est un <h2> contenant font-weight: bold, ajouter le style
+        console.log("C'est un h3 avec du gras. On retire le gras");
+        // Si c'est un <h3> contenant font-weight: bold, retirer le style
         newStartIndex = offset; // Position de départ pour la sélection
         newEndIndex = newStartIndex + `<h3>${p1.replace(/<h3[^>]*style="font-weight:\s*bold;?"[^>]*>/, '').replace('</h3>', '')}</h3>`.length; // Position de fin pour la sélection
         return `<h3>${p1.replace(/<h3[^>]*style="font-weight:\s*bold;?"[^>]*>/, '').replace('</h3>', '')}</h3>`;
       } else if (isParagraphBold) {
-        console.log("C'est un <p> avec du gras");
-        // Si c'est un <p> contenant font-weight: bold, ajouter le style
+        console.log("isParagraphBold ; C'est un paragraphe <p> avec du gras, donc on retire le gras");
+        // Si c'est un <p> contenant font-weight: bold, retirer le style
         newStartIndex = offset; // Position de départ pour la sélection
         newEndIndex = newStartIndex + `<p>${p1.replace(/<p[^>]*style="font-weight:\s*bold;?"[^>]*>/, '').replace('</p>', '')}</p>`.length; // Position de fin pour la sélection
         return `<p>${p1.replace(/<p[^>]*style="font-weight:\s*bold;?"[^>]*>/, '').replace('</p>', '')}</p>`;
+        } else if (otherStyle) {
+          console.log("otherStyle ; Il y a d'autres styles et on y ajoute du gras");
+          // Si le texte a déjà d'autres styles, ajouter font-weight: bold      
+          newStartIndex = offset;      
+          newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
+          // Ajouter font-weight: bold; aux styles existants      
+          return p1.replace(/style="/, 'style="font-weight: bold; ');
+        } else if (boldAndOtherStyle) {
+          console.log("boldAndOtherStyle ; Il y a déjà des styles en plus de Bold et on va retirer font-weight: bold ");
+          // Si le texte a déjà d'autres styles en plus de bold, retirer font-weight: bold      
+          newStartIndex = offset;      
+          newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
+          // Ajouter font-weight: bold; aux styles existants      
+          return p1.replace(/font-weight: bold; /, '');
       } else {
         // Si le texte n'est pas en gras, l'encadrer avec les balises <b>
         newStartIndex = offset; // Position de départ pour la sélection
