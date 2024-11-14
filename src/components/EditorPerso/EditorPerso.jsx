@@ -379,62 +379,36 @@ const handleBoldClick = () => {
   newText = textarea.value.replace(regex, (match, p1, offset) => { 
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {// font-style: italic; text-decoration: underline; text-decoration: line-through;
-      const isBold = p1.includes('<b>') && p1.includes('</b>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isH2 = p1.startsWith('<h2>') && p1.endsWith('</h2>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isH3 = p1.startsWith('<h3>') && p1.endsWith('</h3>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isParagraph = p1.includes('<p>') && p1.includes('</p>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') ;
-      const isH2Bold = p1.includes('<h2') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isH3Bold = p1.includes('<h3') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isParagraphBold = p1.includes('<p') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const otherStyle = !p1.includes('font-weight: bold;') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const boldAndOtherStyle = p1.includes('font-weight: bold;') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const spanBoldOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const spanBoldAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-weight: bold') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
+      const notIUS = !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isBold = (p1.includes('<b>') && p1.includes('</b>'));     
+      const isH2H3P = (p1.startsWith('<h2>') || p1.startsWith('<h3>') || p1.startsWith('<p>')) && notIUS;
+      const isH2H3PBold = (p1.startsWith('<h2 ') || p1.startsWith('<h3 ') || p1.startsWith('<p ')) && p1.includes('font-weight: bold;') && (!p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') );
+      const otherStyleButBold = !p1.includes('font-weight: bold;') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+      const boldAndOtherStyle = p1.includes('font-weight: bold;') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+      const spanBoldOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') ;
+      const spanBoldAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-weight: bold') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
 
       if (isBold) {
           // Si le texte est déjà en gras, retirer les balises
           newStartIndex = offset; // Position de départ pour la sélection
           newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <b></b>)
-        return p1.replace(/<b>(.*?)<\/b>/, '$1');
-      } else if (isH2) {
-          // Si c'est un <h2>, ajouter le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<h2 style="font-weight: bold;">${p1.slice(4, -5)}</h2>`.length; // Position de fin pour la sélection
-        return `<h2 style="font-weight: bold;">${p1.slice(4, -5)}</h2>`;
-      } else if (isH3) {
-          // Si c'est un <h3>, ajouter le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<h3 style="font-weight: bold;">${p1.slice(4, -5)}</h3>`.length; // Position de fin pour la sélection
-        return `<h3 style="font-weight: bold;">${p1.slice(4, -5)}</h3>`;
-      } else if (isParagraph) {
-          console.log("C'est un paragraphe. On ajoute du gras");
-          // Si c'est un <p>, ajouter le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<p style="font-weight: bold;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`.length; // Position de fin pour la sélection
-        return `<p style="font-weight: bold;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`;
-      } else if (isH2Bold) {
-          console.log("C'est un h2 avec du gras donc en appuyant une nouvelle fois, on enlève ce gras");
-          // Si c'est un <h2> contenant font-weight: bold, retirer le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          const content = p1.replace(/<h2[^>]*style="[^"]*font-weight:\s*bold\s*;?[^"]*"[^>]*>/, '').replace('</h2>', '');
-          newEndIndex = newStartIndex + content.length + 9; // Position de fin pour la sélection
-        return `<h2>${content}</h2>`;
-      } else if (isH3Bold) {
-          console.log("C'est un h3 avec du gras. On retire le gras");
-          // Si c'est un <h3> contenant font-weight: bold, retirer le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          const content = p1.replace(/<h3[^>]*style="[^"]*font-weight:\s*bold\s*;?[^"]*"[^>]*>/, '').replace('</h3>', '');
-          newEndIndex = newStartIndex + content.length + 9; // Position de fin pour la sélection
-        return `<h3>${content}</h3>`;
-      } else if (isParagraphBold) {
-          console.log("isParagraphBold ; C'est un paragraphe <p> avec du gras, donc on retire le gras");
-          // Si c'est un <p> contenant font-weight: bold, retirer le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          const content = p1.replace(/<p[^>]*style="[^"]*font-weight:\s*bold\s*;?[^"]*"[^>]*>/, '').replace('</p>', '');
-          newEndIndex = newStartIndex + content.length + 7; // Position de fin pour la sélection
-        return `<p>${content}</p>`;
-      } else if (otherStyle) {
-          console.log("otherStyle ; Il y a d'autres styles et on y ajoute du gras");
+          return p1.replace(/<b>(.*?)<\/b>/, '$1');
+      } else if (isH2H3P) {
+          // Si le texte contient déjà des balises <h2>, <h3> ou <p>, ajouter le style de Gras
+          console.log(`Le texte contient déjà une balise de titre ou de paragraphe, ajouter le Gras.`);
+          const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+          newStartIndex = offset;
+          newEndIndex = offset + p1.length + (`<${tagName} style="font-weight: bold;">`.length + `</${tagName}>`.length); // Ajuster la longueur pour la balise
+          return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="font-weight: bold;"$3`); // Ajouter le style à la balise existante
+      } else if (isH2H3PBold) {
+          // Si le texte contient déjà des balises <h2>, <h3> ou <p>, RETIRER le style de Gras
+          console.log(`isH2H3PBold ; Le texte contient déjà une balise de titre ou de paragraphe, RETIRER le Gras.`);
+          const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+          newStartIndex = offset;
+          newEndIndex = offset + p1.length + (`<${tagName} `.length); // Ajuster la longueur pour la balise
+          return p1.replace(new RegExp(`\\s*style="[^"]*"`, 'i'), '');    
+      } else if (otherStyleButBold) {
+          console.log("otherStyleButBold ; Il y a d'autres styles et on y ajoute du gras");
            // Si le texte a déjà d'autres styles, ajouter font-weight: bold      
           newStartIndex = offset;      
           newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
@@ -448,7 +422,7 @@ const handleBoldClick = () => {
           // Ajouter font-weight: bold; aux styles existants      
           return p1.replace(/font-weight: bold;/,'');
       } else if (spanBoldOnly) {
-          console.log("spanBoldOnly ; On est dans une span contenant Bold et on va retirer font-weight: bold ");
+          console.log("spanBoldOnly ; On est dans une span contenant Bold et on va retirer la balise <span> et font-weight: bold ");
           // Si le texte a déjà d'autres styles en plus de bold, retirer font-weight: bold      
           newStartIndex = offset;      
           newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
@@ -461,12 +435,12 @@ const handleBoldClick = () => {
           newStartIndex = offset;      
           newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
           // Retirer font-weight: bold; aux styles existants      
-        return p1.replace(/font-weight: bold;/,'');
+          return p1.replace(/font-weight: bold;/,'');
       } else {
           // Si le texte n'est pas en gras, l'encadrer avec les balises <b>
           newStartIndex = offset; // Position de départ pour la sélection
           newEndIndex = newStartIndex + `<b>${p1}</b>`.length; // Position de fin pour la sélection
-        return `<b>${p1}</b>`;
+          return `<b>${p1}</b>`;
       }
     }
     return p1; // Retourner le texte original pour les autres occurrences
@@ -501,7 +475,7 @@ const handleItalicClick = () => {
   newText = textarea.value.replace(regex, (match, p1, offset) => { 
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      const isItalic = p1.includes('<i>') && p1.includes('</i>') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isItalic = p1.includes('<i>') && p1.includes('</i>');
       const isH2 = p1.startsWith('<h2>') && p1.endsWith('</h2>') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>');
       const isH3 = p1.startsWith('<h3>') && p1.endsWith('</h3>') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>');
       const isParagraph = p1.startsWith('<p>') && p1.endsWith('</p>') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>');
@@ -844,36 +818,43 @@ const handleStrikeThroughClick = () => {
 const handleColorChange = (newColorText) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-  const isColorAndStyle = (selectedText.includes('style="color:') || selectedText.includes('; color:')) && (selectedText.includes('font-style: italic;') || selectedText.includes('text-decoration: underline;') || selectedText.includes('text-decoration: line-through;') || selectedText.includes('font-size:') || selectedText.includes('background-color: #'));
-  const isH2H3P = selectedText.includes('<h2 ') || selectedText.includes('<h3 ') ||  selectedText.includes('<p ');
+  const otherStyle = (selectedText.includes('font-weight: bold;') || selectedText.includes('font-style: italic;') || selectedText.includes('text-decoration: underline;') || selectedText.includes('text-decoration: line-through;') || selectedText.includes('font-size:') || selectedText.includes('background-color: #'));
+  const isColorAndStyle = (selectedText.includes('style="color:') || selectedText.includes('; color:')) && otherStyle;
+  const isH2H3P = selectedText.includes('<h2 ') || selectedText.includes('<h3 ') ||  selectedText.includes('<p ') && !otherStyle;
+    
+  // Ajuster les indices de sélection
+  let newStartIndex;
+  let newEndIndex;
 
   if (newColorText === "") { // Pour réinitialiser
-    const startIndex = textarea.selectionStart; // Position de départ de la sélection
+    newStartIndex = textarea.selectionStart; // Position de départ de la sélection
 
     let newText;
     if (isColorAndStyle) {
       // Si isColorAndStyle est vrai, retirer le style de couleur
-      console.log("isColorAndStyle - couleur de texte ; Color + au moins un autre style. On retire color: #******");
+      console.log("(isColorAndStyle - couleur de texte) ; Il y a Color + au moins un autre style. Réinitialisation de color : on retire color: #******");
+      newEndIndex = newStartIndex + (selectedText, selectedText.replace(/color:\s*#[0-9A-Fa-f]{6};?\s*/, '')).length;
       newText = textarea.value.replace(selectedText, selectedText.replace(/color:\s*#[0-9A-Fa-f]{6};?\s*/, ''));
     } else if (isH2H3P){
       // Si le texte sélectionné est dans des balises h2, h3 ou p, on le garde tel quel
+      console.log("(isH2H3P) Réinitialisation de la couleur de texte. La sélection est dans un h2, h3 ou <p>. Et elle ne contient pas d'autres styles que color.");
+      newEndIndex = newStartIndex + (selectedText, selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, '')).length;
       newText = textarea.value.replace(selectedText, selectedText
         .replace(/<h2 style="color: [^"]*">/, '<h2>')
         .replace(/<h3 style="color: [^"]*">/, '<h3>')
         .replace(/<p style="color: [^"]*">/, '<p>')
       );
     } else {
-      // Sinon, juste retirer la balise <span> et </span>
+      // Sinon, juste retirer la balise <span>, </span> et style="color
+      console.log("Réinitialisation de color. Suppression des balises <span> </span> et du style color");
+      newEndIndex = newStartIndex + (selectedText, selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, '')).length;
       newText = textarea.value.replace(selectedText, selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, ''));
     }
 
     setText(newText);
     setRectangleUnderA('rgba(255, 255, 255, 0)');
 
-    // Ajuster les indices de sélection
-    const newStartIndex = startIndex; // Position de départ pour la sélection
-    const newEndIndex = newStartIndex + (selectedText.replace(/<span style="color: [^"]*">/, '').replace(/<\/span>/, '').length); // Position de fin pour la sélection
-    // Sélectionner le texte modifié
+   // Sélectionner le texte modifié
     setTimeout(() => {
       textarea.setSelectionRange(newStartIndex, newEndIndex);
       textarea.focus();
@@ -965,7 +946,7 @@ const handleColorClick = (newColorText) => {
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);  
     const styled = (selectedText.includes('font-style: italic;') || selectedText.includes('text-decoration: underline;') || selectedText.includes('text-decoration: line-through;') || selectedText.includes('font-size:') || selectedText.includes('style="color:')|| selectedText.includes('; color:'));
     const isColorAndStyle = selectedText.includes('background-color: #') && styled; // background-color + au moins un autre style
-    const isH2H3P = (selectedText.includes('<h2 ') || selectedText.includes('<h3 ') || !selectedText.includes('<p '));
+    const isH2H3P = (selectedText.includes('<h2 ') || selectedText.includes('<h3 ') || selectedText.includes('<p ')) && !selectedText.includes('<span ');
     const isBackColored = selectedText.includes('background-color: #') && !styled && isH2H3P; // Seulement background-color dans h2 ou h3 ou <p>
 
     if (newColorBackgroundText === "") { // Pour réinitialiser
@@ -978,11 +959,11 @@ const handleColorClick = (newColorText) => {
       let newText;  
       if (isColorAndStyle) {  
         // Si isColorAndStyle est vrai, retirer le style de background-color 
-        console.log("isColorAndStyle - couleur de fond ; la sélection inclus background-color et au moins un autre style. On retire la couleur de fond.") 
+        console.log("isColorAndStyle Background - couleur de fond ; la sélection inclus background-color et au moins un autre style. On retire la couleur de fond.") 
         newText = textarea.value.replace(selectedText, selectedText.replace(/background-color:\s*#[0-9A-Fa-f]{6};?\s*/, ''));
       } else if (isBackColored) {  
         // Si seulement background-color existe. On le retire.
-        console.log("Si seulement background-color existe. On le retire");
+        console.log("(isBackColored) Dans un h2, h3 ou <p>, si seulement background-color existe et aucun autre style. On le retire");
         newText = textarea.value.replace(selectedText, selectedText
           .replace(/<h2 style="background-color: [^"]*">/, '<h2>')
           .replace(/<h3 style="background-color: [^"]*">/, '<h3>')
