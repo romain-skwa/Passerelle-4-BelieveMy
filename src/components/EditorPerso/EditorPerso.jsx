@@ -844,7 +844,7 @@ const handleStrikeThroughClick = () => {
 const handleColorChange = (newColorText) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-  const isColorAndStyle = selectedText.includes('color:') && (selectedText.includes('font-style: italic;') || selectedText.includes('text-decoration: underline;') || selectedText.includes('text-decoration: line-through;') || selectedText.includes('font-size:') || selectedText.includes('background-color: #') )
+  const isColorAndStyle = (selectedText.includes('style="color:') || selectedText.includes('; color:')) && (selectedText.includes('font-style: italic;') || selectedText.includes('text-decoration: underline;') || selectedText.includes('text-decoration: line-through;') || selectedText.includes('font-size:') || selectedText.includes('background-color: #'));
   const isH2H3P = selectedText.includes('<h2 ') || selectedText.includes('<h3 ') ||  selectedText.includes('<p ');
 
   if (newColorText === "") { // Pour réinitialiser
@@ -853,6 +853,7 @@ const handleColorChange = (newColorText) => {
     let newText;
     if (isColorAndStyle) {
       // Si isColorAndStyle est vrai, retirer le style de couleur
+      console.log("isColorAndStyle - couleur de texte ; Color + au moins un autre style. On retire color: #******");
       newText = textarea.value.replace(selectedText, selectedText.replace(/color:\s*#[0-9A-Fa-f]{6};?\s*/, ''));
     } else if (isH2H3P){
       // Si le texte sélectionné est dans des balises h2, h3 ou p, on le garde tel quel
@@ -962,7 +963,10 @@ const handleColorClick = (newColorText) => {
   const handleBackgroundColorClick = (newColorBackgroundText) => {
     const textarea = document.getElementById('textareaDescriptionJeu');
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);  
-    const isColorAndStyle = selectedText.includes('background-color: #') && (selectedText.includes('font-style: italic;') || selectedText.includes('text-decoration: underline;') || selectedText.includes('text-decoration: line-through;') || selectedText.includes('font-size:') || selectedText.includes('color:'))
+    const styled = (selectedText.includes('font-style: italic;') || selectedText.includes('text-decoration: underline;') || selectedText.includes('text-decoration: line-through;') || selectedText.includes('font-size:') || selectedText.includes('style="color:')|| selectedText.includes('; color:'));
+    const isColorAndStyle = selectedText.includes('background-color: #') && styled; // background-color + au moins un autre style
+    const isH2H3P = (selectedText.includes('<h2 ') || selectedText.includes('<h3 ') || !selectedText.includes('<p '));
+    const isBackColored = selectedText.includes('background-color: #') && !styled && isH2H3P; // Seulement background-color dans h2 ou h3 ou <p>
 
     if (newColorBackgroundText === "") { // Pour réinitialiser
       if (selectedText === '') { return; }
@@ -973,10 +977,20 @@ const handleColorClick = (newColorText) => {
   
       let newText;  
       if (isColorAndStyle) {  
-        // Si isColorAndStyle est vrai, retirer le style de background-color  
-        newText = textarea.value.replace(selectedText, selectedText.replace(/background-color:\s*#[0-9A-Fa-f]{6};?\s*/, '').replace(/<span style="[^"]*background-color: [^"]*">/, '').replace(/<\/span>/, ''));  
+        // Si isColorAndStyle est vrai, retirer le style de background-color 
+        console.log("isColorAndStyle - couleur de fond ; la sélection inclus background-color et au moins un autre style. On retire la couleur de fond.") 
+        newText = textarea.value.replace(selectedText, selectedText.replace(/background-color:\s*#[0-9A-Fa-f]{6};?\s*/, ''));
+      } else if (isBackColored) {  
+        // Si seulement background-color existe. On le retire.
+        console.log("Si seulement background-color existe. On le retire");
+        newText = textarea.value.replace(selectedText, selectedText
+          .replace(/<h2 style="background-color: [^"]*">/, '<h2>')
+          .replace(/<h3 style="background-color: [^"]*">/, '<h3>')
+          .replace(/<p style="background-color: [^"]*">/, '<p>')
+        );
       } else {  
-        // Sinon, juste retirer la balise <span> (si elle existe)  
+        // Sinon, juste retirer la balise <span> (si elle existe) 
+        console.log("on retire la balise span et background-color"); 
         newText = textarea.value.replace(/<span[^>]*style="[^"]*background-color[^"]*"[^>]*>(.*?)<\/span>/g, (match, p1, offset) => {  
           if (offset >= startIndex && offset + match.length <= endIndex) {  
             return p1; // Retirer la balise <span> si elle entoure le texte sélectionné  
@@ -989,32 +1003,20 @@ const handleColorClick = (newColorText) => {
       setBackgroundUnderPencil('rgba(255, 255, 255, 0)');
 
        // Ajuster les indices de sélection
-
     const newStartIndex = startIndex; // Position de départ pour la sélection
-
     const newEndIndex = newStartIndex + (newText.substring(startIndex, endIndex).length); // Position de fin pour la sélection
 
-
     // Sélectionner le texte modifié
-
     setTimeout(() => {
-
       textarea.setSelectionRange(newStartIndex, newEndIndex);
-
       textarea.focus();
-
     }, 0);
 
   } else {
-
     console.log(`Changement de couleur de fond en : ${newColorBackgroundText}`);
-
     addBackgroundTag(newColorBackgroundText);
-
     setBackgroundUnderPencil(newColorBackgroundText);
-
   }
-
 };
 
 /* -------- On change la couleur de FOND du texte ------------------*/
@@ -1038,22 +1040,40 @@ const addBackgroundTag = (newColorBackgroundText) => {
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
       const isBackgroundColorChanged = selectedText.includes('<span style="background-color:') && selectedText.includes('</span>');
-      const isStyle = (p1.includes('font-weight: bold;')|| p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('"color: #') || p1.includes(' color: #') )
+      const isStyle = !p1.includes('background-color: #') && (p1.includes('font-weight: bold;') || p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('"color: #') || p1.includes(' color: #') )
+
+      const isHeadingOrParagraph = (p1.includes('<h2>') || p1.includes('<h3>') || p1.includes('<p>')) && !p1.includes('background-color: #'); // Sans couleur
+      const isH2H3Pspancolored = (p1.includes('<h2 ') || p1.includes('<h3 ') || !p1.includes('<p ') || !p1.includes('<span ')) && p1.includes('background-color: #'); // Avec couleur
 
       if (isBackgroundColorChanged) {
         // Si une balise <span> existe déjà, remplacez la couleur de fond
+        console.log("Si span contenant background-color: existe, on change la couleur");
         const updatedText = p1.replace(/(<span[^>]*style="background-color:).*?;/, `$1 ${newColorBackgroundText};`);
         newStartIndex = offset;
         newEndIndex = offset + p1.length;
         return updatedText; // Retourner le texte mis à jour
+      }else if (isHeadingOrParagraph) {
+          // Si le texte contient déjà des balises <h2>, <h3> ou <p>, ajouter le style de couleur
+          console.log(`Le texte contient déjà une balise de titre ou de paragraphe, ajouter le style de couleur.`);
+          const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+          newStartIndex = offset;
+          newEndIndex = offset + p1.length + (`<${tagName} style="background-color: ${newColorBackgroundText};">`.length + `</${tagName}>`.length); // Ajuster la longueur pour la balise
+          return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="background-color: ${newColorBackgroundText};"$3`); // Ajouter le style à la balise existante
       }else if (isStyle) {
         // Si un (ou plusieurs) style est déjà présent, ajouter background-color: #******
-        console.log(`Si un style est déjà présent, ajouter background-color: #******`);
+        console.log(`isStyle ; Si un style est déjà présent, ajouter background-color: #******`);
         newStartIndex = offset;
         newEndIndex = offset + p1.length + 27;
         return p1.replace(/style="/, `style="background-color: ${newColorBackgroundText}; `);
+      } else if (isH2H3Pspancolored) {
+        // Si la sélection est dans un h2, un h3 ou un <p> et qu'une background-color est déjà présente, on change cette couleur de fond
+        console.log("Dans <h2>, <h3>, <p> ou <span> comportant déjà une couleur de fond, on change cette couleur.")
+        newStartIndex = offset;
+        newEndIndex = offset + p1.length; 
+        return p1.replace(/(background-color:\s*#[0-9A-Fa-f]{6};?)/, `background-color: ${newColorBackgroundText};`);
       } else {
         // Sinon, créez une nouvelle balise <span> avec la couleur de fond
+        console.log("Création de nouvelles balises");
         const newSpan = `<span style="background-color: ${newColorBackgroundText};">${p1}</span>`;
         newStartIndex = offset; // Position de départ pour la sélection
         newEndIndex = newStartIndex + `<span style="background-color: #******;">${p1}</span>`.length; // Position de fin pour la sélection
