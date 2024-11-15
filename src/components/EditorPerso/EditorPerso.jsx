@@ -387,59 +387,53 @@ const handleBoldClick = () => {
       const boldAndOtherStyle = p1.includes('font-weight: bold;') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
       const spanBoldOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-weight: bold') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') ;
       const spanBoldAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-weight: bold') && (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+      
+      newStartIndex = offset; // Position de départ pour la sélection
 
       if (isBold) {
-          // Si le texte est déjà en gras, retirer les balises
-          newStartIndex = offset; // Position de départ pour la sélection
+        // Si le texte est déjà en gras, retirer les balises
           newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <b></b>)
           return p1.replace(/<b>(.*?)<\/b>/, '$1');
       } else if (isH2H3P) {
-          // Si le texte contient déjà des balises <h2>, <h3> ou <p>, ajouter le style de Gras
+        // Si le texte contient déjà des balises <h2>, <h3> ou <p>, ajouter le style de Gras
           console.log(`Le texte contient déjà une balise de titre ou de paragraphe, ajouter le Gras.`);
           const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
-          newStartIndex = offset;
           newEndIndex = offset + p1.length + (`<${tagName} style="font-weight: bold;">`.length + `</${tagName}>`.length); // Ajuster la longueur pour la balise
           return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="font-weight: bold;"$3`); // Ajouter le style à la balise existante
       } else if (isH2H3PBold) {
-          // Si le texte contient déjà des balises <h2>, <h3> ou <p>, RETIRER le style de Gras
+        // Si le texte contient déjà des balises <h2>, <h3> ou <p>, RETIRER le style de Gras
           console.log(`isH2H3PBold ; Le texte contient déjà une balise de titre ou de paragraphe, RETIRER le Gras.`);
           const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
-          newStartIndex = offset;
           newEndIndex = offset + p1.length + (`<${tagName} `.length); // Ajuster la longueur pour la balise
           return p1.replace(new RegExp(`\\s*style="[^"]*"`, 'i'), '');    
       } else if (otherStyleButBold) {
+        // Si le texte a déjà d'autres styles, ajouter font-weight: bold      
           console.log("otherStyleButBold ; Il y a d'autres styles et on y ajoute du gras");
-           // Si le texte a déjà d'autres styles, ajouter font-weight: bold      
-          newStartIndex = offset;      
           newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
           // Ajouter font-weight: bold; aux styles existants      
           return p1.replace(/style="/, 'style="font-weight: bold; ');
       } else if (boldAndOtherStyle) {
+        // Si le texte a déjà d'autres styles en plus de bold, retirer font-weight: bold      
           console.log("boldAndOtherStyle ; Il y a déjà des styles en plus de Bold et on va retirer font-weight: bold ");
-          // Si le texte a déjà d'autres styles en plus de bold, retirer font-weight: bold      
-          newStartIndex = offset;      
           newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
-          // Ajouter font-weight: bold; aux styles existants      
-          return p1.replace(/font-weight: bold;/,'');
+          // Retirer font-weight: bold; aux styles existants      
+          return p1.replace(/font-weight: bold;\s*/, '');
       } else if (spanBoldOnly) {
+        // Si le texte a déjà d'autres styles en plus de bold, retirer font-weight: bold      
           console.log("spanBoldOnly ; On est dans une span contenant Bold et on va retirer la balise <span> et font-weight: bold ");
-          // Si le texte a déjà d'autres styles en plus de bold, retirer font-weight: bold      
-          newStartIndex = offset;      
           newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
-          // Retirer font-weight: bold ainsi que les balises span      
+          // Retirer font-weight: bold ainsi que les balises <span>
           const content = p1.replace(/<span[^>]*style="[^"]*font-weight:\s*bold\s*;?[^"]*"[^>]*>(.*?)<\/span>/, '$1');
-          return content; // Retourne le contenu sans balise <span>
+          return content; 
       } else if (spanBoldAndOther) {
+        // Dans span, si le texte a déjà d'autres styles en plus de bold, retirer seulement font-weight: bold      
           console.log("spanBoldAndOther ; On est dans une span contenant Bold et d'autres style. Il faut effacer bold");
-          // Dans span, si le texte a déjà d'autres styles en plus de bold, retirer seulement font-weight: bold      
-          newStartIndex = offset;      
           newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: bold;'
           // Retirer font-weight: bold; aux styles existants      
           return p1.replace(/font-weight: bold;/,'');
       } else {
-          // Si le texte n'est pas en gras, l'encadrer avec les balises <b>
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<b>${p1}</b>`.length; // Position de fin pour la sélection
+        // Si le texte n'est pas en gras, l'encadrer avec les balises <b>
+          newEndIndex = newStartIndex + `<b>${p1}</b>`.length;
           return `<b>${p1}</b>`;
       }
     }
@@ -475,93 +469,61 @@ const handleItalicClick = () => {
   newText = textarea.value.replace(regex, (match, p1, offset) => { 
     // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      const isItalic = p1.includes('<i>') && p1.includes('</i>');
-      const isH2 = p1.startsWith('<h2>') && p1.endsWith('</h2>') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isH3 = p1.startsWith('<h3>') && p1.endsWith('</h3>') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isParagraph = p1.startsWith('<p>') && p1.endsWith('</p>') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>');
-      const isH2Italic = p1.includes('<h2') && p1.includes('font-style: italic') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isH3Italic = p1.includes('<h3') && p1.includes('font-style: italic') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isParagraphItalic = p1.includes('<p') && p1.includes('font-style: italic') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const otherStyle = !p1.includes('font-style: italic') && (p1.includes('font-weight: bold;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const italicAndOtherStyle = p1.includes('font-style: italic') && (p1.includes('font-weight: bold;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const spanItalicOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-style: italic;') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const spanItalicAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-style: italic;') && (p1.includes('font-weight: bold') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
+      const notIUS = !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isItalic = (p1.includes('<i>') && p1.includes('</i>'));     
+      const isH2H3P = (p1.startsWith('<h2>') || p1.startsWith('<h3>') || p1.startsWith('<p>')) && notIUS;
+      const isH2H3PIitalic = (p1.startsWith('<h2 ') || p1.startsWith('<h3 ') || p1.startsWith('<p ')) && p1.includes('font-style: italic;') && (!p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') );
+      const otherStyleButItalic = !p1.includes('font-style: italic;') && (p1.includes('font-weight: bold;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+      const italicAndOtherStyle = p1.includes('font-style: italic;') && (p1.includes('font-weight: bold;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+      const spanItalicOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-style: italic') && !p1.includes('<b>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') ;
+      const spanItalicAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('font-style: italic') && (p1.includes('font-weight: bold;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+
+      newStartIndex = offset; // Position de départ pour la sélection
 
       if (isItalic) {
         // Si le texte est déjà en italique, retirer les balises
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <i></i>)
+        newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <i></i>)
         return p1.replace(/<i>(.*?)<\/i>/, '$1');
-      } else if (isH2) {
-          // Si c'est un <h2>, ajouter le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<h2 style="font-style: italic;">${p1.slice(4, -5)}</h2>`.length; // Position de fin pour la sélection
-        return `<h2 style="font-style: italic;">${p1.slice(4, -5)}</h2>`;
-      } else if (isH3) {
-          // Si c'est un <h3>, ajouter le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<h3 style="font-style: italic;">${p1.slice(4, -5)}</h3>`.length; // Position de fin pour la sélection
-        return `<h3 style="font-style: italic;">${p1.slice(4, -5)}</h3>`;
-      } else if (isParagraph) {
-          console.log("C'est un paragraphe. On ajoute de l'italique");
-          // Si c'est un <p>, ajouter le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<p style="font-style: italic;">${p1.replace(/<p[^>]*>/, '').replace('</p>','')}</p>`.length; // Position de fin pour la sélection
-        return `<p style="font-style: italic;">${p1.replace(/<p[^>]*>/, '').replace('</p>','')}</p>`;
-      } else if (isH2Italic) {
-          console.log("C'est un h2 avec de l'italique donc en appuyant une nouvelle fois, on enlève cet italique");
-          // Si c'est un <h2> contenant font-style: italic, retirer le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          const content = p1.replace(/<h2[^>]*style="[^"]*font-style:\s*italic;?[^"]*"[^>]*>/, '').replace('</h2>', '');
-          newEndIndex = newStartIndex + content.length + 9; // Position de fin pour la sélection
-        return `<h2>${content}</h2>`;
-      } else if (isH3Italic) {
-          console.log("C'est un h3 avec de l'italique. On retire l'italique");
-          // Si c'est un <h3> contenant font-style: italic, retirer le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          const content = p1.replace(/<h3[^>]*style="[^"]*font-style:\s*italic;?[^"]*"[^>]*>/, '').replace('</h3>', '');
-          newEndIndex = newStartIndex + content.length + 9; // Position de fin pour la sélection
-        return `<h3>${content}</h3>`;
-      } else if (isParagraphItalic) {
-        console.log("isParagraphItalic ; C'est un paragraphe <p> avec de l'italique, donc on retire l'italique");
-        // Si c'est un <p> contenant font-style: italic, retirer le style
-          newStartIndex = offset; // Position de départ pour la sélection
-          const content = p1.replace(/<p[^>]*style="[^"]*font-style:\s*italic;?[^"]*"[^>]*>/, '').replace('</p>', '');
-          newEndIndex = newStartIndex + content.length + 7; // Position de fin pour la sélection
-        return `<p>${content}</p>`;
-      } else if (otherStyle) {
-          console.log("otherStyle italic; Il y a d'autres styles et on y ajoute de l'italique");
-          // Si le texte a déjà d'autres styles, ajouter font-weight: Italic      
-          newStartIndex = offset;      
-          newEndIndex = newStartIndex + p1.length + 20; // 20 = longueur de 'font-weight: Italic;'
-          // Ajouter font-weight: Italic; aux styles existants      
+      } else if (isH2H3P) {
+        // Si le texte contient déjà des balises <h2>, <h3> ou <p>, ajouter le style d'italique
+        console.log(`Le texte contient déjà une balise de titre ou de paragraphe, ajouter l'italique.`);
+        const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+        newEndIndex = offset + p1.length + (`<${tagName} style="font-style: italic ;">`.length + `</${tagName}>`.length); // Ajuster la longueur pour la balise
+        return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="font-style: italic;"$3`); // Ajouter le style à la balise existante
+      } else if (isH2H3PIitalic) {
+        // Si le texte contient déjà des balises <h2>, <h3> ou <p>, RETIRER le style d'italique
+        console.log(`isH2H3PIitalic ; Le texte contient déjà une balise de titre ou de paragraphe, RETIRER l'italique.`);
+        const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+        newEndIndex = offset + p1.length + (`<${tagName} `.length); // Ajuster la longueur pour la balise
+        return p1.replace(new RegExp(`\\s*style="[^"]*"`, 'i'), '');    
+      } else if (otherStyleButItalic) {
+        // Si le texte a déjà d'autres styles, ajouter font-style: italic      
+        console.log("otherStyleButItalic ; Il y a d'autres styles et on y ajoute de l'italique");
+        newEndIndex = newStartIndex + p1.length + 20; // 20 = longueur de 'font-style: italic;'
+        // Ajouter font-style: italic; aux styles existants      
         return p1.replace(/style="/, 'style="font-style: italic; ');
       } else if (italicAndOtherStyle) {
-          console.log("italicAndOtherStyle ; Il y a déjà des styles en plus de Italic et on va retirer font-style: italic; ");
-          // Si le texte a déjà d'autres styles en plus de Italic, retirer font-weight: Italic      
-          newStartIndex = offset;      
-          newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-style: italic;'
-          // Ajouter font-style: italic; aux styles existants      
-        return p1.replace(/font-style: italic;/,'');
-        } else if (spanItalicOnly) {
-          console.log("spanItalicOnly ; On est dans une span contenant Italic et on va retirer font-weight: Italic ");
-          // Si le texte a déjà d'autres styles en plus de Italic, retirer font-weight: Italic      
-          newStartIndex = offset;      
-          newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-weight: Italic;'
-          // Retirer font-weight: Italic ainsi que les balises span      
-          const content = p1.replace(/<span[^>]*style="[^"]*font-style:\s*italic\s*;?[^"]*"[^>]*>(.*?)<\/span>/, '$1');
-          return content; // Retourne le contenu sans balise <span>
+        // Si le texte a déjà d'autres styles en plus d'italique, retirer font-style: italic      
+        console.log("italicAndOtherStyle ; Il y a déjà des styles en plus de l'italique et on va retirer font-style: italic ");
+        newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-style: italic;'
+        // Retirer font-style: italic; aux styles existants      
+        return p1.replace(/font-style: italic;\s*/, '');
+      } else if (spanItalicOnly) {
+        // Si le texte a déjà d'autres styles en plus d'italique, retirer font-style: italic      
+        console.log("spanItalicOnly ; On est dans une span contenant Italique et on va retirer la balise <span> et font-style: italic ");
+        newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-style: italic;'
+        // Retirer font-style: italic ainsi que les balises <span>
+        const content = p1.replace(/<span[^>]*style="[^"]*font-style:\s*italic\s*;?[^"]*"[^>]*>(.*?)<\/span>/, '$1');
+        return content; 
       } else if (spanItalicAndOther) {
-          console.log("spanItalicAndOther ; On est dans une span contenant Italic et d'autres style. Il faut effacer Italic");
-          // Dans span, si le texte a déjà d'autres styles en plus de Italic, retirer seulement font-style: Italic      
-          newStartIndex = offset;      
-          newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-style: Italic;'
-          // Retirer font-style: Italic; aux styles existants      
+        // Dans span, si le texte a déjà d'autres styles en plus d'italique, retirer seulement font-style: italic      
+        console.log("spanItalicAndOther ; On est dans une span contenant Italique et d'autres styles. Il faut effacer italique");
+        newEndIndex = newStartIndex + p1.length + 19; // 19 = longueur de 'font-style: italic;'
+        // Retirer font-style: italic; aux styles existants      
         return p1.replace(/font-style: italic;/,'');
       } else {
-          // Si le texte n'est pas en italique, l'encadrer avec les balises <i>
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = newStartIndex + `<i>${p1}</i>`.length; // Position de fin pour la sélection
+        // Si le texte n'est pas en italique, l'encadrer avec les balises <i>
+        newEndIndex = newStartIndex + `<i>${p1}</i>`.length;
         return `<i>${p1}</i>`;
       }
     }
@@ -586,9 +548,8 @@ const handleUnderlineClick = () => {
 
   const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
   
-  if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+  if (startIndex === -1) return;
 
-  // Utiliser une regex pour trouver l'occurrence spécifique
   const regex = new RegExp(`(${selectedText})`, 'g');
   
   let newText;
@@ -596,97 +557,52 @@ const handleUnderlineClick = () => {
   let newEndIndex;
 
   newText = textarea.value.replace(regex, (match, p1, offset) => { 
-    // Vérifier si c'est l'occurrence que nous voulons formater
     if (offset === startIndex) {
-      const isUnderline = p1.includes('<u>') && p1.includes('</u>');
-      const isH2 = p1.startsWith('<h2>') && p1.endsWith('</h2>') && !p1.includes('<i>') && !p1.includes('<b>') && !p1.includes('<s>');
-      const isH3 = p1.startsWith('<h3>') && p1.endsWith('</h3>') && !p1.includes('<i>') && !p1.includes('<b>') && !p1.includes('<s>');
-      const isParagraph = p1.startsWith('<p>') && p1.endsWith('</p>') && !p1.includes('<i>') && !p1.includes('<b>') && !p1.includes('<s>');
-      const isH2Underline = p1.includes('<h2') && p1.includes('text-decoration: underline') && !p1.includes('<i>') && !p1.includes('<b>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isH3Underline = p1.includes('<h3') && p1.includes('text-decoration: underline') && !p1.includes('<i>') && !p1.includes('<b>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isParagraphUnderline = p1.includes('<p') && p1.includes('text-decoration: underline') && !p1.includes('<i>') && !p1.includes('<b>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const otherStyle = !p1.includes('text-decoration: underline;') && (p1.includes('font-style: italic;') || p1.includes('font-weight: bold;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const underlineAndOtherStyle = p1.includes('text-decoration: underline;') && (p1.includes('font-style: italic;') || p1.includes('font-weight: bold;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const spanUnderlineOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: underline;') && !p1.includes('<u>') && !p1.includes('<i>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const spanUnderlineAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: underline;') && (p1.includes('font-weight: bold') || p1.includes('font-style: italic;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') )
+      const notIUS = !p1.includes('<u>') && !p1.includes('<i>') && !p1.includes('<s>');
+      const isUnderlined = (p1.includes('<u>') && p1.includes('</u>'));     
+      const isH2H3P = (p1.startsWith('<h2>') || p1.startsWith('<h3>') || p1.startsWith('<p>')) && notIUS;
+      const isH2H3PUnderlined = (p1.startsWith('<h2 ') || p1.startsWith('<h3 ') || p1.startsWith('<p ')) && p1.includes('text-decoration: underline;') && (!p1.includes('font-weight: bold;') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') );
+      const otherStyleButUnderlined = !p1.includes('text-decoration: underline;') && (p1.includes('font-weight: bold;') || p1.includes('font-style: italic;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+      const underlinedAndOtherStyle = p1.includes('text-decoration: underline;') && (p1.includes('font-weight: bold;') || p1.includes('font-style: italic;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
+      const spanUnderlinedOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: underline') && !p1.includes('<b>') && !p1.includes('<i>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: line-through;') && !p1.includes('font-size:') && !p1.includes('color: #') ;
+      const spanUnderlinedAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: underline') && (p1.includes('font-weight: bold;') || p1.includes('font-style: italic;') || p1.includes('text-decoration: line-through;') || p1.includes('font-size:') || p1.includes('color: #') );
 
-      if (isUnderline) {
-        // Si le texte est déjà souligné, retirer les balises
-        newStartIndex = offset; // Position de départ pour la sélection
-        newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (7 = longueur de <u></u>)
+      newStartIndex = offset;
+
+      if (isUnderlined) {
+        newEndIndex = offset + p1.length - 7; 
         return p1.replace(/<u>(.*?)<\/u>/, '$1');
-      } else if (isH2) {
-        // Si c'est un <h2>, ajouter le style
-        newStartIndex = offset; 
-        newEndIndex = newStartIndex + `<h2 style="text-decoration: underline;">${p1.slice(4, -5)}</h2>`.length; 
-        return `<h2 style="text-decoration: underline;">${p1.slice(4, -5)}</h2>`;
-      } else if (isH3) {
-        // Si c'est un <h3>, ajouter le style
-        newStartIndex = offset; 
-        newEndIndex = newStartIndex + `<h3 style="text-decoration: underline;">${p1.slice(4, -5)}</h3>`.length;
-        return `<h3 style="text-decoration: underline;">${ p1.slice(4, -5)}</h3>`;
-      } else if (isParagraph) {
-        // Si c'est un <p>, ajouter le style
-        newStartIndex = offset; 
-        newEndIndex = newStartIndex + `<p style="text-decoration: underline;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`.length; 
-        return `<p style="text-decoration: underline;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`;
-      } else if (isH2Underline) {
-        // Si c'est un <h2> contenant text-decoration: underline, retirer le style
-        newStartIndex = offset; 
-        const content = p1.replace(/<h2[^>]*style="[^"]*text-decoration:\s*underline\s*;?[^"]*"[^>]*>/, '').replace('</h2>', '');
-        newEndIndex = newStartIndex + content.length + 9; 
-        return `<h2>${content}</h2>`;
-      } else if (isH3Underline) {
-        // Si c'est un <h3> contenant text-decoration: underline, retirer le style
-        newStartIndex = offset; 
-        const content = p1.replace(/<h3[^>]*style="[^"]*text-decoration:\s*underline\s*;?[^"]*"[^>]*>/, '').replace('</h3>', '');
-        newEndIndex = newStartIndex + content.length + 9;
-        return `<h3>${content}</h3>`;
-      } else if (isParagraphUnderline) {
-        // Si c'est un <p> contenant text-decoration: underline, retirer le style
-        newStartIndex = offset;
-        const content = p1.replace(/<p[^>]*style="[^"]*text-decoration:\s*underline\s*;?[^"]*"[^>]*>/, '').replace('</p>', '');
-        newEndIndex = newStartIndex + content.length + 7;
-        return `<p>${content}</p>`;
-      } else if (otherStyle) {
-        console.log("otherStyle Souligner ; Il y a d'autres styles et on y ajoute Underline")
-        // Si le texte a déjà d'autres styles, ajouter text-decoration: underline
-        newStartIndex = offset;      
-        newEndIndex = newStartIndex + p1.length + 28;
+      } else if (isH2H3P) {
+        const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+        newEndIndex = offset + p1.length + (`<${tagName} style="text-decoration: underline;">`.length + `</${tagName}>`.length);
+        return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="text-decoration: underline;"$3`);
+      } else if (isH2H3PUnderlined) {
+        const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+        newEndIndex = offset + p1.length + (`<${tagName} `.length);
+        return p1.replace(new RegExp(`\\s*style="[^"]*"`, 'i'), '');    
+      } else if (otherStyleButUnderlined) {
+        newEndIndex = newStartIndex + p1.length + 30; 
         return p1.replace(/style="/, 'style="text-decoration: underline; ');
-      } else if (underlineAndOtherStyle) {
-        // Si le texte a déjà d'autres styles en plus de souligné, retirer text-decoration: underline
-        newStartIndex = offset;      
-        newEndIndex = newStartIndex + p1.length + 25; 
+      } else if (underlinedAndOtherStyle) {
+        newEndIndex = newStartIndex + p1.length + 30; 
+        return p1.replace(/text-decoration: underline;\s*/, '');
+      } else if (spanUnderlinedOnly) {
+        newEndIndex = newStartIndex + p1.length + 30; 
+        const content = p1.replace(/<span[^>]*style="[^"]*text-decoration:\s*underline\s*;?[^"]*"[^>]*>(.*?)<\/span>/, '$1');
+        return content; 
+      } else if (spanUnderlinedAndOther) {
+        newEndIndex = newStartIndex + p1.length + 30; 
         return p1.replace(/text-decoration: underline;/, '');
-      } else if (spanUnderlineOnly) {
-          console.log("spanUnderlineOnly ; On est dans une span contenant Underline et on va retirer font-weight: Underline ");
-          // Si le texte a déjà d'autres styles en plus de Underline, retirer font-weight: Underline      
-          newStartIndex = offset;      
-          newEndIndex = newStartIndex + p1.length + 24; 
-          // Retirer text-decoration: underline ainsi que les balises span      
-          const content = p1.replace(/<span[^>]*style="[^"]*text-decoration:\s*underline\s*;?[^"]*"[^>]*>(.*?)<\/span>/, '$1');
-          return content; // Retourne le contenu sans balise <span>
-      } else if (spanUnderlineAndOther) {
-          console.log("spanUnderlineAndOther ; On est dans une span contenant Underline et d'autres styles. Il faut effacer Underline");
-          // Dans span, si le texte a déjà d'autres styles en plus de Underline, retirer seulement text-decoration: underline      
-          newStartIndex = offset;      
-          newEndIndex = newStartIndex + p1.length + 24; 
-          // Retirer text-decoration: underline; aux styles existants      
-          return p1.replace(/text-decoration:\s*underline;\s*/,''); // Retirer le style de soulignement   
       } else {
-        // Si le texte n'est pas souligné, l'encadrer avec les balises <u>
-        newStartIndex = offset; // Position de départ pour la sélection
-        newEndIndex = newStartIndex + `<u>${p1}</u>`.length; // Position de fin pour la sélection
+        newEndIndex = newStartIndex + `<u>${p1}</u>`.length;
         return `<u>${p1}</u>`;
       }
     }
-    return p1; // Retourner le texte original pour les autres occurrences
+    return p1; 
   });
 
   setText(newText);
 
-  // Sélectionner le texte modifié après un léger délai
   setTimeout(() => {
     textarea.setSelectionRange(newStartIndex, newEndIndex);
     textarea.focus();
@@ -710,93 +626,56 @@ const handleStrikeThroughClick = () => {
   let newText;
   let newStartIndex;
   let newEndIndex;
+
   newText = textarea.value.replace(regex, (match, p1, offset) => { 
-
     // Vérifier si c'est l'occurrence que nous voulons formater
-
     if (offset === startIndex) {
+      // Détermination des styles et balises existants
+      const notIUS = !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>');
+      const isStrikeThrough = (p1.includes('<s>') && p1.includes('</s>'));     
+      const isH2H3P = (p1.startsWith('<h2>') || p1.startsWith('<h3>') || p1.startsWith('<p>')) && notIUS;
+      const isH2H3PStrikeThrough = (p1.startsWith('<h2 ') || p1.startsWith('<h3 ') || p1.startsWith('<p ')) && p1.includes('text-decoration: line-through;') && (!p1.includes('font-weight: bold;') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline;') && !p1.includes('font-size:') && !p1.includes('color: #') );
+      const otherStyleButStrikeThrough = !p1.includes('text-decoration: line-through;') && (p1.includes('font-style: italic;') || p1.includes('font-weight: bold;') || p1.includes('font-size:') || p1.includes('color: #'));
+      const strikeThroughAndOtherStyle = p1.includes('text-decoration: line-through;') && (p1.includes('font-style: italic;') || p1.includes('font-weight: bold;') || p1.includes('font-size:') || p1.includes('color: #'));
+      const spanStrikeThroughOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: line-through;') && !p1.includes('<b>') && !p1.includes('<i>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('font-style: italic;') && !p1.includes('text-decoration: underline') && !p1.includes('font-size:') && !p1.includes('color: #') ;
+      const spanStrikeThroughAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: line-through;') && (p1.includes('font-weight: bold;') || p1.includes('font-style: italic;') || p1.includes('text-decoration: underline') || p1.includes('font-size:') || p1.includes('color: #') );
 
-      const isStrikethrough = p1.includes('<s>') && p1.includes('</s>');
-      const isH2 = p1.startsWith('<h2>') && p1.endsWith('</h2>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<b>');
-      const isH3 = p1.startsWith('<h3>') && p1.endsWith('</h3>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<b>');
-      const isParagraph = p1.startsWith('<p>') && p1.endsWith('</p>') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<b>');
-      const isH2Strikethrough = p1.includes('<h2') && p1.includes('text-decoration: line-through') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<b>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isH3Strikethrough = p1.includes('<h3') && p1.includes('text-decoration: line-through') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<b>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const isParagraphStrikethrough = p1.includes('<p') && p1.includes('text-decoration: line-through') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<b>') && !p1.includes('<s>') && !p1.includes('font-style: italic;') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const otherStyle = !p1.includes('text-decoration: line-through;') && (p1.includes('font-style: italic;') || p1.includes('font-weight: bold;') || p1.includes('text-decoration: underline;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const strikethroughAndOtherStyle = p1.includes('text-decoration: line-through;') && (p1.includes('font-style: italic;') || p1.includes('font-weight: bold;') || p1.includes('text-decoration: underline;') || p1.includes('font-size:') || p1.includes('color: #') )
-      const spanStrikethroughOnly = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: line-through') && !p1.includes('<i>') && !p1.includes('<u>') && !p1.includes('<s>') && !p1.includes('font-weight: bold;') && !p1.includes('text-decoration: underline;') && !p1.includes('font-style: italic;') && !p1.includes('font-size:') && !p1.includes('color: #') 
-      const spanStrikethroughAndOther = p1.includes('<span') && p1.includes('</span>') && p1.includes('text-decoration: line-through') && (p1.includes('font-weight: bold') || p1.includes('text-decoration: underline;') || p1.includes('font-style: italic;') || p1.includes('font-size:') || p1.includes('color: #')) 
+      newStartIndex = offset; // Position de départ pour la sélection
 
-
-      if (isStrikethrough) {
+      if (isStrikeThrough) {
         // Si le texte est déjà barré, retirer les balises
-        newStartIndex = offset; // Position de départ pour la sélection
-        newEndIndex = offset + p1.length - 7; // Position de fin pour la sélection (4 = longueur de <s></s>)
+        newEndIndex = offset + p1.length - 4; // Position de fin pour la sélection (4 = longueur de <s></s>)
         return p1.replace(/<s>(.*?)<\/s>/, '$1');
-      } else if (isH2) {
-        // Si c'est un <h2>, ajouter le style
-        newStartIndex = offset; 
-        newEndIndex = newStartIndex + `<h2 style="text-decoration: line-through;">${p1.slice(4, -5)}</h2>`.length;
-        return `<h2 style="text-decoration: line-through;">${p1.slice(4, -5)}</h2>`;
-      } else if (isH3) {
-        // Si c'est un <h3>, ajouter le style
-        newStartIndex = offset;
-        newEndIndex = newStartIndex + `<h3 style="text-decoration: line-through;">${p1.slice(4, -5)}</h3>`.length;
-        return `<h3 style="text-decoration: line-through;">${p1.slice(4, -5)}</h3>`;
-      } else if (isParagraph) {
-        // Si c'est un <p>, ajouter le style
-        newStartIndex = offset;
-        newEndIndex = newStartIndex + `<p style="text-decoration: line-through;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`.length;
-        return `<p style="text-decoration: line-through;">${p1.replace(/<p[^>]*>/, '').replace('</p>', '')}</p>`;
-      } else if (isH2Strikethrough) {
-        // Si c'est un <h2> contenant text-decoration: line-through, retirer le style
-        newStartIndex = offset; 
-        const content = p1.replace(/<h2[^>]*style="[^"]*text-decoration:\s*line-through\s*;?[^"]*"[^>]*>/, '').replace('</h2>', '');
-        newEndIndex = newStartIndex + content.length + 9; 
-        return `<h2>${content}</h2>`;
-      } else if (isH3Strikethrough) {
-        // Si c'est un <h3> contenant text-decoration: line-through, retirer le style
-        newStartIndex = offset;
-        const content = p1.replace(/<h3[^>]*style="[^"]*text-decoration:\s*line-through\s*;?[^"]*"[^>]*>/, '').replace('</h3>', '');
-        newEndIndex = newStartIndex + content.length + 9;
-        return `<h3>${content}</h3>`;
-      } else if (isParagraphStrikethrough) {
-        // Si c'est un <p> contenant text-decoration: line-through, retirer le style
-        newStartIndex = offset;
-        const content = p1.replace(/<p[^>]*style="[^"]*text-decoration:\s*line-through\s*;?[^"]*"[^>]*>/, '').replace('</p>', '');
-        newEndIndex = newStartIndex + content.length + 7;
-        return `<p>${content}</p>`;
-      } else if (otherStyle) {
-        console.log("otherStyle Barrer, s'il y a déjà d'autres styles, on y ajoute Barrer")
-        // Si le texte a déjà d'autres styles, ajouter text-decoration: line-through
-        newStartIndex = offset;
-        newEndIndex = newStartIndex + p1.length + 31;
+      } else if (isH2H3P) {
+        // Ajouter le style barré
+        console.log(`Le texte contient déjà une balise de titre ou de paragraphe, ajouter le barré.`);
+        const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+        newEndIndex = offset + p1.length + (`<${tagName} style="text-decoration: line-through;">`.length + `</${tagName}>`.length);
+        return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="text-decoration: line-through;"$3`);
+      } else if (isH2H3PStrikeThrough) {
+        const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+        newEndIndex = offset + p1.length + (`<${tagName} `.length);
+        return p1.replace(new RegExp(`\\s*style="[^"]*"`, 'i'), '');  
+      } else if (otherStyleButStrikeThrough) {
+        // Ajouter text-decoration: line-through 
+        console.log("otherStyleButStrikeThrough ; Il y a d'autres styles, et on y ajoute le barré");
+        newEndIndex = newStartIndex + p1.length + 30; // 30 = longueur de 'text-decoration: line-through;'
         return p1.replace(/style="/, 'style="text-decoration: line-through; ');
-      } else if (strikethroughAndOtherStyle) {
-        // Si le texte a déjà d'autres styles en plus de barré, retirer text-decoration: line-through
-        newStartIndex = offset;
-        newEndIndex = newStartIndex + p1.length + 25;
+      } else if (strikeThroughAndOtherStyle) {
+        // Retirer text-decoration: line-through
+        console.log("strikeThroughAndOtherStyle ; Il y a déjà d'autres styles en plus du barré, retirer le barré");
+        newEndIndex = newStartIndex + p1.length + 30; // 30 = longueur de 'text-decoration: line-through;'
+        return p1.replace(/text-decoration: line-through;\s*/, '');
+      } else if (spanStrikeThroughOnly) {
+        newEndIndex = newStartIndex + p1.length + 30; 
+        const content = p1.replace(/<span[^>]*style="[^"]*text-decoration:\s*line-through;\s*;?[^"]*"[^>]*>(.*?)<\/span>/, '$1');
+        return content; 
+      } else if (spanStrikeThroughAndOther) {
+        newEndIndex = newStartIndex + p1.length + 30; 
         return p1.replace(/text-decoration: line-through;/, '');
-      } else if (spanStrikethroughOnly) {
-        console.log("spanStrikethroughOnly ; On est dans une span contenant Strikethrough et on va retirer text-decoration: line-through; ");
-        // Si le texte a déjà d'autres styles en plus de Strikethrough, retirer text-decoration: line-through;      
-        newStartIndex = offset;      
-        newEndIndex = newStartIndex + p1.length + 30; // 30 = longueur de 'text-decoration: line-through;'
-        // Retirer text-decoration: line-through ainsi que les balises span      
-        const content = p1.replace(/<span[^>]*style="[^"]*text-decoration:\s*line-through\s*;?[^"]*"[^>]*>(.*?)<\/span>/, '$1');
-        return content; // Retourne le contenu sans balise <span>
-    } else if (spanStrikethroughAndOther) {
-        console.log("spanStrikethroughAndOther ; On est dans une span contenant Strikethrough et d'autres styles. Il faut effacer Strikethrough");
-        // Dans span, si le texte a déjà d'autres styles en plus de Strikethrough, retirer seulement text-decoration: line-through      
-        newStartIndex = offset;      
-        newEndIndex = newStartIndex + p1.length + 30; // 30 = longueur de 'text-decoration: line-through;'
-        // Retirer text-decoration: line-through; aux styles existants      
-        return p1.replace(/text-decoration:\s*line-through;\s*/,''); // Retirer le style de barré    
       } else {
-        // Sinon, ajouter les balises <s>
-        newStartIndex = offset; // Position de départ pour la sélection
-        newEndIndex = newStartIndex + `<u>${p1}</u>`.length; // Position de fin pour la sélection        
+        // Barrer le texte
+        newEndIndex = newStartIndex + `<s>${p1}</s>`.length;
         return `<s>${p1}</s>`;
       }
     }
@@ -811,6 +690,7 @@ const handleStrikeThroughClick = () => {
     textarea.focus();
   }, 0);
 };
+
 
 
 /*********** Changer Couleur Texte ******************************************************************************** */
