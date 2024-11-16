@@ -215,83 +215,97 @@ const handleH3Click = () => {
 const handleFontSizeChange = (e) => {
   const textarea = document.getElementById('textareaDescriptionJeu');
   const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-  
-  if (selectedText === '') { return; }
-
-  const startIndex = textarea.selectionStart; // Position de départ de la sélection
-  const endIndex = textarea.selectionEnd; // Position de fin de la sélection
-
   const newSize = e.target.value;
 
+  if (selectedText === '') { return; }
+  const startIndex = textarea.value.indexOf(selectedText, textarea.selectionStart);
+  if (startIndex === -1) return; // Si le texte sélectionné n'est pas trouvé
+
+  // Utiliser une regex pour trouver l'occurrence spécifique
+  const regex = new RegExp(`(${selectedText})`, 'g');
+  
   let newText;
   let newStartIndex;
   let newEndIndex;
 
-  // Utiliser une regex pour trouver l'occurrence spécifique
-  const regex = new RegExp(`(${selectedText})`, 'g');
-
-  newText = textarea.value.replace(regex, (match, p1, offset) => {
+  newText = textarea.value.replace(regex, (match, p1, offset) => { 
     // Vérifier si c'est l'occurrence que nous voulons formater
-    if (offset === startIndex) {
-      // Si la nouvelle taille est "1rem", retirer la balise de taille de police
-      if (newSize === "1rem") {
-        const spanMatch = p1.match(/<span[^>]*style="font-size: [^"]*">([^<]+)<\/span>/);
-        if (spanMatch) {
-          const originalLength = p1.length; // Longueur de la sélection d'origine
-          console.log(`originalLength : `, originalLength);
-
-          const span0 = spanMatch[0];
-          console.log(`span0 : `, span0);
-          const spanLength = spanMatch[0].length; // Longueur de la balise <span>
-          console.log(`spanLength : `, spanLength);
-
-          // Longueur du contenu à l'intérieur de la balise
-          const contentLength = spanMatch[1].length;
-          console.log(`content : `, content);
-          const content = spanMatch[1];
-          console.log(`contentLength : `, contentLength);
-
-          // Calculer la longueur des balises
-          const lengthOfTags = spanLength - contentLength;
-          console.log(`lengthOfTags : `, lengthOfTags);
-
-          newStartIndex = offset; // Position de départ pour la sélection
-          console.log(`newStartIndex : `, newStartIndex);
-          newEndIndex = offset + (originalLength - lengthOfTags); // Ajuster la position de fin
-          console.log(`newEndIndex : `, newEndIndex);
-          return spanMatch[1]; // Retirer la balise et retourner le texte à l'intérieur
-        }
-      } else {
-        // Sinon, vérifier si p1 contient déjà une balise <span> avec une taille de police
-        const existingSpanMatch = p1.match(/<span[^>]*style="font-size: ([^"]*)">(.*?)<\/span>/);
+    if (offset === startIndex) {// font-style: italic; text-decoration: underline; text-decoration: line-through;
+      const isStyled = p1.includes('font-weight: bold;') || (p1.includes('font-style: italic;') || p1.includes('text-decoration: underline;') || p1.includes('text-decoration: line-through;') || p1.includes('color: #'));
+      const isFontSizeSpan = (p1.includes('font-size:') && p1.includes('</span>')) && (!p1.includes('</h2>') || !p1.includes('</h3>') || !p1.includes('</p>')) && !isStyled;
+      const isH2H3PnoStyle = (p1.startsWith('<h2>') || p1.startsWith('<h3>') || p1.startsWith('<p>')) && !p1.includes('span') && !p1.includes('font-size:') && !isStyled;
+      const isH2H3PwithStyle = (p1.startsWith('<h2') || p1.startsWith('<h3') || p1.startsWith('<p')) && !p1.includes('span') && !p1.includes('font-size:') && isStyled;
+      const isfont = p1.includes('font-size:');
+      const spanStyled = p1.includes('<span') && isStyled && (!p1.startsWith('<h2>') || !p1.startsWith('<h3>') || !p1.startsWith('<p>'));
+      const isH2H3PfontSize = (p1.startsWith('<h2 ') || p1.startsWith('<h3 ') || p1.startsWith('<p ')) && p1.includes('font-size:') && !isStyled;
         
-        if (existingSpanMatch) {
-          // Si une balise existe, on remplace la taille de police
-          const newSpan = `<span style="font-size: ${newSize}">${existingSpanMatch[2]}</span>`;
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = offset + newSpan.length; // Ajuster la position de fin
-          return newSpan;
+      newStartIndex = offset; // Position de départ pour la sélection
+
+      if(newSize === "1rem"){
+        if(isFontSizeSpan){
+          console.log("(isFontSizeSpan) : Font-size dans un span. Pas dans un h2, h3 ou P. Aucun autre style On supprime le style font-size et les balises span")
+          // Supprimer la balise <span> tout en conservant le texte à l'intérieur
+          newEndIndex = offset + p1.length  // Ajuster la longueur pour la balise
+          return p1.replace(/<span[^>]*style="font-size: [^"]*">(.*?)<\/span>/, '$1');
+        } else if (isH2H3PfontSize) {
+          console.log("(isH2H3PfontSize) : Supprimer les balises h2, h3 ou p ainsi que 'font-size' et sa valeur");
+          // Supprimer les balises <h2>, <h3>, <p> tout en conservant le texte à l'intérieur  
+          newEndIndex = offset + p1.length 
+          return p1.replace(/<(h2|h3|p)[^>]*>(.*?)<\/(h2|h3|p)>/g, '$2').replace(/font-size:\s*[^;]*;?\s*/g, ''); // Supprime les balises et font-size
         } else {
-          // Sinon, ajouter une nouvelle balise
-          const newSpan = `<span style="font-size: ${newSize}">${p1}</span>`;
-          newStartIndex = offset; // Position de départ pour la sélection
-          newEndIndex = offset + newSpan.length; // Ajuster la position de fin
-          return newSpan;
+          // Supprimer font-size: et sa valeur tout en conservant le reste de la sélection
+          console.log("Supprimer uniquement 'font-size' et sa valeur. On conserve le reste");
+          newEndIndex = offset + p1.length 
+          return p1.replace(/font-size:\s*[^;]*;?\s*/g, ''); // Supprime font-size et sa valeur    
+        }}
+
+      if(newSize !== "1rem"){
+        if(isH2H3PnoStyle){
+          console.log("isH2H3PnoStyle, dans un h2, h3 ou P sans aucun style, Ajouter font-size");
+          // Dans un H2, un H3 ou un P sans aucun style, Ajouter style="font-size: ${newSize};" à la balise
+          const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
+          newEndIndex = offset + p1.length + (`<${tagName} style="font-size: ${newSize};">`.length + `</${tagName}>`.length);
+          return p1.replace(/<(h2|h3|p)(.*?)>(.*?)<\/\1>/g, `<$1 style="font-size: ${newSize};"$2>$3</$1>`);
+        } else if (isH2H3PwithStyle) {
+          console.log(`isH2H3PwithStyle, Dans un H2, un H3 ou un P AVEC style, Ajouter style="font-size: ${newSize};" à la balise`);
+          // Dans un H2, un H3 ou un P AVEC style, Ajouter style="font-size: ${newSize};" à la balise
+          newEndIndex = offset + p1.length + (`style="font-size: ${newSize};`).length; 
+          return p1.replace(/style="/, `style="font-size: ${newSize}; `);
+        } else if (isfont){
+          console.log("isfont, s'il font-size existe déjà, Changer sa valeur");  
+            // Trouver la valeur actuelle de font-size
+            const currentFontSizeMatch = p1.match(/font-size:\s*([^;]*);?/);      
+            const currentFontSize = currentFontSizeMatch ? currentFontSizeMatch[0] : ''; // 'font-size: X;' ou une chaîne vide      
+            const currentFontSizeLength = currentFontSize.length; // Longueur de l'ancien font-size      
+            // Nouvelle valeur de font-size      
+            const newFontSize = `font-size: ${newSize};`;      
+            const newFontSizeLength = newFontSize.length; // Longueur de la nouvelle valeur     
+            // Calculer newEndIndex
+            newEndIndex = offset + p1.length - currentFontSizeLength + newFontSizeLength;
+          return p1.replace(/font-size:\s*[^;]*;?/g, newFontSize);
+        } else if (spanStyled){
+          console.log("spanStyled, Dans un span avec au moins un style, Ajouter font-size");
+          // Ajouter font-size dans une span qui a déjà au moins un style
+          newEndIndex = offset + p1.length + (`style="font-size: ${newSize};`).length; 
+          return p1.replace(/style="/, `style="font-size: ${newSize}; `);
+        } else {
+          console.log("else, on ajoute span + style = font-size");
+          // Ajouter des balises span + style="font-size
+          newEndIndex = offset + `<span style="font-size: ${newSize};">${p1}</span>`.length 
+          return `<span style="font-size: ${newSize};">${p1}</span>`;
         }
-      }
+      }      
     }
     return p1; // Retourner le texte original pour les autres occurrences
   });
 
   setText(newText);
-
-  // Sélectionner le texte modifié après un léger délai
+  // Restore selection after a slight delay
   setTimeout(() => {
     textarea.setSelectionRange(newStartIndex, newEndIndex);
     textarea.focus();
   }, 0);
 };
-
 /*********** Inclure dans Paragraphe ******************************************************************************** */
 const handleParagraphClick = () => {
   const textarea = document.getElementById('textareaDescriptionJeu');
