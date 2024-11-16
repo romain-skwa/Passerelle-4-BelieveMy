@@ -16,6 +16,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Platform from './../../../components/Platform/Platform';
 import GenreOfGame from './../../../components/GenreOfGame/GenreOfGame';
+import '../../styles/formulary.css';
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -25,22 +26,30 @@ export default function introductionGameForm() {
   const router = useRouter();
 
   // State
+  const [user, setUser] = useState({});
+  const [isIntroOfYourself, setIsIntroOfYourself] = useState(false);
   const [nameOfGame, setNameOfGame] = useState("");
+  const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
   const [lienImage, setLienImage] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isIntroOfYourself, setIsIntroOfYourself] = useState(false);
-  const [user, setUser] = useState({});
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
   const [selectedAdditionalPegi, setSelectedAdditionalPegi] = useState([]);
-  const [shortIntroduction, setShortIntroduction] = useState("");
-  const [releaseDate, setReleaseDate] = useState(new Date());
+  const [releaseDate, setReleaseDate] = useState(null);
   const [platform, setPlatform] = useState([]);
   const [webSiteOfThisGame, setWebSiteOfThisGame] = useState("");
   const [genreOfGame, setGenreOfGame] = useState([]);
 
-  // Ajoutez cela à formData
+  const [isShortIntroVisible, setIsShortIntroVisible] = useState(false);
+  const [isEditorVisible, setIsEditorVisible] = useState(false);
+  const [isPlatformVisible, setPlatformVisible] = useState(false);
+  const [isReleaseDateVisible, setIsReleaseDateVisible] = useState(false);
+  const [isPegiAgeVisible, setIsPegiAgeVisible] = useState(false);
+  const [isPosterVisible, setIsPosterVisible] = useState(false);
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
+  const [isWebsiteVisible, setIsWebsiteVisible] = useState(false);
+  const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
   useEffect(() => {
@@ -93,12 +102,16 @@ export default function introductionGameForm() {
         );
       }
     
+      // Vérifiez si au moins une plateforme est sélectionnée
 
-    // Vérifiez si au moins une plateforme est sélectionnée
+      if (platform.length === 0) {
+        return toast.error("Vous devez sélectionner au moins une plateforme.");
+        }
 
-    if (platform.length === 0) {
-      return toast.error("Vous devez sélectionner au moins une plateforme.");
-      }
+      // Vérifiez si le site officiel commence par "https://www."
+      if (webSiteOfThisGame && !webSiteOfThisGame.startsWith("https://www.")) {
+        return toast.error("Le lien du site officiel doit commencer par 'https://www.'");    
+        }
 
       // Function to send the data to createIntroduction function
       const formData = new FormData();
@@ -118,22 +131,22 @@ export default function introductionGameForm() {
       formData.append("genreOfGame", JSON.stringify(genreOfGame));
       // Debugging
 
-for (const [key, value] of formData.entries()) {
+    for (const [key, value] of formData.entries()) 
+      {console.log(key, value);}
+          await createIntroduction(formData);
+          toast.success("Présentation du jeu envoyée avec succès !");
+          // Redirect
+          router.replace("/");
+        } catch (error) {
+          return toast.error(error.message);
+        }
+      };
 
-  console.log(key, value);
-
-}
-      await createIntroduction(formData);
-      toast.success("Présentation du jeu envoyée avec succès !");
-      // Redirect
-      router.replace("/");
-    } catch (error) {
-      return toast.error(error.message);
-    }
-  };
-
+  // Check the adress http
+  
   return (
     <GeneralLayout>
+
       <form
         onSubmit={onPrepare}
         className="w-[95vw] tablet:w-[84vw] laptop:w-[54vw] mx-auto border p-2"
@@ -142,6 +155,18 @@ for (const [key, value] of formData.entries()) {
         <p>
           {session?.user.username}, sur cette page, vous êtes invité à remplir de présentation de votre jeux.
         </p>
+
+      <section className="bandeauTop laptop:w-[650px]">
+        <div onClick={() => setIsShortIntroVisible(!isShortIntroVisible)} style={{backgroundColor: shortIntroduction.length > 1 ? "green" : "#2e2d2c",}}>Introduction courte</div>
+        <div onClick={() => setIsEditorVisible(!isEditorVisible)} style={{backgroundColor: introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",}}>Présentation détaillée</div>
+        <div onClick={() => setPlatformVisible(!isPlatformVisible)} style={{backgroundColor: platform.length != [] ? "green" : "#2e2d2c",}}>Plate-forme</div>
+        <div onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)} style={{backgroundColor: releaseDate != null ? "green" : "#2e2d2c",}}>Date de sortie</div>
+        <div onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)} style={{backgroundColor: selectedAgePegi.length != "" ? "green" : "#2e2d2c",}}>Pegi age & catégorie</div>
+        <div onClick={() => setIsPosterVisible(!isPosterVisible)} style={{backgroundColor: lienImage.length != "" ? "green" : "#2e2d2c",}}>Affiche</div>
+        <div onClick={() => setIsCategoryVisible(!isCategoryVisible)} style={{backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",}}>Catégorie</div>
+        <div onClick={() => setIsVideoVisible(!isVideoVisible)} style={{backgroundColor: videoLink.length != "" ? "green" : "#2e2d2c",}}>Vidéo youtube</div>
+        <div onClick={() => setIsWebsiteVisible(!isWebsiteVisible)} style={{backgroundColor: webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",}}>Site officiel</div>
+      </section>
 
         <div className="laptop:flex items-center">
           <input
@@ -165,50 +190,61 @@ for (const [key, value] of formData.entries()) {
           </div>
         </div>
 
-        <Platform platform={platform} setPlatform={setPlatform} />
 
-        {/**************** Date ***************************** */}
-        <div className="my-2 flex">
-          <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
-            Date de sortie : 
-          </p>
-        <DatePicker className="pl-2" selected={releaseDate} dateFormat="dd/MM/yyyy" id="releaseDate" required onChange={(date) => setReleaseDate(date)} />
-        </div>
-        
-        {/**************** Les deux catégories de PEGI ***************************** */}
-        <Pegi
-          selectedAgePegi={selectedAgePegi}
-          setSelectedAgePegi={setSelectedAgePegi}
-          selectedAdditionalPegi={selectedAdditionalPegi}
-          setSelectedAdditionalPegi={setSelectedAdditionalPegi}
-        />
 
         {/**************** Introduction courte ***************************** */}
-        <div className="border p-2 my-2">
-          <p
-            className="text-white text-center font-bold mb-3"
-            style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
-          >
-            Introduction courte et facultative qui sera affichée en gras
-          </p>
-          <textarea
-            name="shortIntroduction"
-            id="shortIntroduction"
-            placeholder="Introduction courte et facultative qui sera affichée en gras"
-            value={shortIntroduction}
-            onChange={(e) => setShortIntroduction(e.target.value)}
-          />
-        </div>
+        {isShortIntroVisible && (
+          <div className="border p-2 my-2">
+            <p
+              className="text-white text-center font-bold mb-3"
+              style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+            >
+              Introduction courte et facultative qui sera affichée en gras
+            </p>
+            <textarea
+              name="shortIntroduction"
+              id="shortIntroduction"
+              placeholder="Introduction courte et facultative qui sera affichée en gras"
+              value={shortIntroduction}
+              onChange={(e) => setShortIntroduction(e.target.value)}
+            />
+          </div>
+        )}
 
         {/**************** Editeur de texte ********************************************** */}
-        <EditorPerso
-          setIntroductionOfTheGame={setIntroductionOfTheGame}
-          onTextChange={(newText) => {
-            setIntroductionOfTheGame(newText);
-          }}
-        />
+        {isEditorVisible && (
+          <EditorPerso
+            setIntroductionOfTheGame={setIntroductionOfTheGame}
+            onTextChange={(newText) => {
+              setIntroductionOfTheGame(newText);
+            }}
+          />
+        )}
 
-        {/**************** Ajout de la biographie du créateur ***************************** */}
+        {isPlatformVisible && (
+          <Platform platform={platform} setPlatform={setPlatform} />
+        )}
+
+        {/**************** Date ***************************** */}
+        {isReleaseDateVisible && (
+          <div className="my-2 flex">
+            <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
+              Date de sortie : 
+            </p>
+          <DatePicker className="pl-2" selected={releaseDate} dateFormat="dd/MM/yyyy" id="releaseDate" required onChange={(date) => setReleaseDate(date)} />
+          </div>
+        )}
+
+        {/**************** Les deux catégories de PEGI ***************************** */}
+        {isPegiAgeVisible && (
+          <Pegi
+            selectedAgePegi={selectedAgePegi}
+            setSelectedAgePegi={setSelectedAgePegi}
+            selectedAdditionalPegi={selectedAdditionalPegi}
+            setSelectedAdditionalPegi={setSelectedAdditionalPegi}
+          />
+        )}
+        {/**************** Ajout de la biographie du créateur ***************************** */}       
         <div className="flex justify-center">
           <div
             className=" grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
@@ -218,19 +254,22 @@ for (const [key, value] of formData.entries()) {
           </div>
         </div>
 
-        {/**************** Affiche ***************************** */}
         <div className="flex flex-col items-center">
-          <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
-            <p className="text-center tablet:inline-block">Choisissez l'affiche du jeu </p>
-            <input
-              type="file"
-              name="imageOne"
-              accept=".jpg, .jpeg, .png"
-              className="ml-4"
-              onChange={(e) => setLienImage(e.target.files[0])}
-            />
-          </div>
-            {/**************** Lien vidéo Youtube ***************************** */}
+          {/**************** Affiche ***************************** */}
+          {isPosterVisible && (
+            <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
+              <p className="text-center tablet:inline-block">Choisissez l'affiche du jeu </p>
+              <input
+                type="file"
+                name="imageOne"
+                accept=".jpg, .jpeg, .png"
+                className="ml-4"
+                onChange={(e) => setLienImage(e.target.files[0])}
+              />
+            </div>
+          )}
+          {/**************** Lien vidéo Youtube ***************************** */}
+          {isVideoVisible && (
             <input
               type="url"
               name="videoLink"
@@ -239,19 +278,22 @@ for (const [key, value] of formData.entries()) {
               value={videoLink}
               onChange={(e) => setVideoLink(e.target.value)}
             />
-            
-            {/**************** Lien Site officiel ***************************** */}
+          )}
+          
+          {/**************** Lien Site officiel ***************************** */}
+          {isWebsiteVisible && (
             <input
               type="url"
               name="webSiteOfThisGame"
               placeholder="Lien vers le site officiel du jeu"
               className="block w-[95%] tablet:w-[60%] p-1 pl-2"
-              value={videoLink}
+              value={webSiteOfThisGame}
               onChange={(e) => setWebSiteOfThisGame(e.target.value)}
             />
+          )}
         </div>
-
-        <GenreOfGame selectedGenres={genreOfGame} setSelectedGenres={setGenreOfGame} />
+          
+        {isCategoryVisible && (<GenreOfGame selectedGenres={genreOfGame} setSelectedGenres={setGenreOfGame} />)}
 
         <Glimpse
           introductionOfTheGame={introductionOfTheGame}
@@ -264,6 +306,7 @@ for (const [key, value] of formData.entries()) {
           platform={platform}
           lienImage={lienImage}
         />
+
         {isIntroOfYourself && <UserProfileSection user={user} />}
 
         <button

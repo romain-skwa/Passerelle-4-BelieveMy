@@ -13,7 +13,6 @@ function MyTextArea({onTextChange, setIntroductionOfTheGame}) {
   const [isBackgroundColorPicker, setIsBackgroundColorPicker] = useState(false); // État pour la visibilité de la palette de couleurs
   const refUseClickOutside = useClickOutside(() => setIsColorPickerVisible(false));
   const refUseClickOutside2 = useClickOutside(() => setIsBackgroundColorPicker(false));
-  const [alignment, setAlignment] = useState('left'); // État pour l'alignement du texte
   const textAreaRef = useRef(null);
 
   useEffect(() => {
@@ -786,35 +785,31 @@ const handleColorClick = (newColorText) => {
 
       const isHeadingOrParagraph = p1.includes('<h2>') || p1.includes('<h3>') || p1.includes('<p>'); // Sans couleur
       const isH2H3Pcolored = (p1.includes('<h2 ') || p1.includes('<h3 ') || p1.includes('<p ')) && selectedText.includes('color:') && !p1.includes('background-color: #'); // Avec couleur
+        newStartIndex = offset;
 
       if (isHeadingOrParagraph) {
         // Si le texte contient déjà des balises <h2>, <h3> ou <p>, ajouter le style de couleur
         console.log(`Le texte contient déjà une balise de titre ou de paragraphe, ajouter le style de couleur.`);
         const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
-        newStartIndex = offset;
         newEndIndex = offset + p1.length + (`<${tagName} style="color: ${newColorText};">`.length + `</${tagName}>`.length); // Ajuster la longueur pour la balise
         return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="color: ${newColorText};"$3`); // Ajouter le style à la balise existante
       } else if (isH2H3Pcolored) {
         // Si la sélection est dans un h2, un h3 ou un <p> et qu'une color est déjà présente, on change cette couleur
         console.log("Dans <h2>, <h3> ou <p> comportant déjà une couleur, on change la couleur.")
-        newStartIndex = offset;
         newEndIndex = offset + p1.length; 
         return p1.replace(/(color:\s*#[0-9A-Fa-f]{6};?)/, `color: ${newColorText};`);
       } else if (isTextColorChanged) {
         // Si une balise <span> existe déjà, remplacez la couleur de fond
         console.log(`Si une balise <span> existe déjà, remplacez la couleur de fond`);
-        newStartIndex = offset;
         newEndIndex = offset + p1.length; 
         return p1.replace(/(color:\s*#[0-9A-Fa-f]{6};?)/, `color: ${newColorText};`);
       } else if (isStyle) {
         // Si un (ou plusieurs) style est déjà présent, ajouter Color: #******
         console.log(`Si un style est déjà présent, ajouter Color: #******`);
-        newStartIndex = offset;
         newEndIndex = offset + p1.length + 16;
         return p1.replace(/style="/, `style="color: ${newColorText}; `);
       } else {
         // Sinon, créez une nouvelle balise <span> avec la couleur de fond
-        newStartIndex = offset; // Position de départ pour la sélection
         newEndIndex = newStartIndex + `<span style="color: #******;">${p1}</span>`.length; // Position de fin pour la sélection
         return `<span style="color: ${newColorText};">${p1}</span>`;
       }
@@ -919,38 +914,34 @@ const addBackgroundTag = (newColorBackgroundText) => {
 
       const isHeadingOrParagraph = (p1.includes('<h2>') || p1.includes('<h3>') || p1.includes('<p>')) && !p1.includes('background-color: #'); // Sans couleur
       const isH2H3Pspancolored = (p1.includes('<h2 ') || p1.includes('<h3 ') || !p1.includes('<p ') || !p1.includes('<span ')) && p1.includes('background-color: #'); // Avec couleur
+        newStartIndex = offset;
 
       if (isBackgroundColorChanged) {
         // Si une balise <span> existe déjà, remplacez la couleur de fond
         console.log("Si span contenant background-color: existe, on change la couleur");
         const updatedText = p1.replace(/(<span[^>]*style="background-color:).*?;/, `$1 ${newColorBackgroundText};`);
-        newStartIndex = offset;
         newEndIndex = offset + p1.length;
         return updatedText; // Retourner le texte mis à jour
       }else if (isHeadingOrParagraph) {
           // Si le texte contient déjà des balises <h2>, <h3> ou <p>, ajouter le style de couleur
           console.log(`Le texte contient déjà une balise de titre ou de paragraphe, ajouter le style de couleur.`);
           const tagName = p1.includes('<h2>') ? 'h2' : p1.includes('<h3>') ? 'h3' : 'p';
-          newStartIndex = offset;
           newEndIndex = offset + p1.length + (`<${tagName} style="background-color: ${newColorBackgroundText};">`.length + `</${tagName}>`.length); // Ajuster la longueur pour la balise
           return p1.replace(/(<\/?)(h[2-3]|p)([^>]*>)/, `$1$2 style="background-color: ${newColorBackgroundText};"$3`); // Ajouter le style à la balise existante
       }else if (isStyle) {
         // Si un (ou plusieurs) style est déjà présent, ajouter background-color: #******
         console.log(`isStyle ; Si un style est déjà présent, ajouter background-color: #******`);
-        newStartIndex = offset;
         newEndIndex = offset + p1.length + 27;
         return p1.replace(/style="/, `style="background-color: ${newColorBackgroundText}; `);
       } else if (isH2H3Pspancolored) {
         // Si la sélection est dans un h2, un h3 ou un <p> et qu'une background-color est déjà présente, on change cette couleur de fond
         console.log("Dans <h2>, <h3>, <p> ou <span> comportant déjà une couleur de fond, on change cette couleur.")
-        newStartIndex = offset;
         newEndIndex = offset + p1.length; 
         return p1.replace(/(background-color:\s*#[0-9A-Fa-f]{6};?)/, `background-color: ${newColorBackgroundText};`);
       } else {
         // Sinon, créez une nouvelle balise <span> avec la couleur de fond
         console.log("Création de nouvelles balises");
         const newSpan = `<span style="background-color: ${newColorBackgroundText};">${p1}</span>`;
-        newStartIndex = offset; // Position de départ pour la sélection
         newEndIndex = newStartIndex + `<span style="background-color: #******;">${p1}</span>`.length; // Position de fin pour la sélection
         return newSpan; // Retourner la nouvelle balise
       }
@@ -1100,15 +1091,11 @@ const addBackgroundTag = (newColorBackgroundText) => {
   }, [text]);
 
   return (
-    <div className='border p-2'>
-      <p 
-        className='text-white text-center font-bold mb-3'
-        style={{
-          textShadow: "2px 2px 7px rgba(0, 0, 0, 1)",
-        }}
-        >
+    <div className='border mt-4 p-2'>
+      <p className='text-white text-center font-bold mb-3' style={{textShadow: "2px 2px 7px rgba(0, 0, 0, 1)",}}>
           Dans cette présentation, vous choisissez la mise forme du texte
       </p>
+
       <section className='py-2 flex'>
         <div className='boutonGris bouton' onClick={handleUndo}><img className='w-[80%]' src="/icons/undo-icon.png" alt="icon undo" /></div>
         <div className='boutonGris bouton' onClick={handleRedo}><img className='w-[80%]' src="/icons/redo-icon.png" alt="icon redo" /></div>

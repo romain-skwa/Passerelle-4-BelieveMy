@@ -143,16 +143,15 @@ const ApercuFormulaire = ({
         dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
       />
 
-      <div className="w-96 mx-auto">
-        <p className="text-center"> L'image que vous avez choisi pour affiche </p>
-        <Image
-          src={`/presentation/${imageLink}`}
-          className="lg:w-[192px] lg:h-[311px] my-3 mx-auto"
-          width={192}
-          height={311}
-          alt={`${imageLink}`}
-        />
-      </div>
+        {imageLink && (
+          <Image
+            src={`/presentation/${imageLink}`}
+            className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
+            width={192}
+            height={311}
+            alt={`${imageLink}`}
+          />
+        )}
     </section>
   );
 };
