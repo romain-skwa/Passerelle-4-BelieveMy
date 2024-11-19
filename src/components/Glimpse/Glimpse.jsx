@@ -45,7 +45,8 @@ const ApercuFormulaire = ({
   shortIntroduction,
   releaseDate,
   platform,
-  lienImage
+  lienImage,
+  genreOfGame
 }) => {
   const [clickedDivision, setClickedDivision] = useState(null);
 
@@ -59,14 +60,13 @@ const ApercuFormulaire = ({
   const arrayImage = lienImage;
   const imageLink = arrayImage.name;
   return (
-    <section className={`${  isDarkMode ? "text-white bg-black" : "text-black bg-white" } `}>
+    <section className={`w-[48vw] mx-auto ${ isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white" } `}>
       <h3>Aperçu :</h3>
-      <div
-        className={`p-4 min-h-[50px] text-3xl font-bold text-center ${
-          isDarkMode ? "text-white bg-black" : "text-black bg-white"
-        }`}
-      >
-        {nameOfGame}
+
+      <div className="flex justify-center">
+        <div className={`p-4 min-h-[50px] text-3xl font-bold text-center inline-block rounded-lg`}>
+          {nameOfGame}
+        </div>
       </div>
 
         {/**************** Affichage des plate-formes PC et Consoles *******************/}
@@ -89,7 +89,7 @@ const ApercuFormulaire = ({
         {/**************** Affichage des images PEGI Age *******************/}
         <div className={` flex justify-center gap-1 `}>
           {selectedAgePegi && (
-            <div className={`${ isDarkMode ? "text-white bg-black" : "text-black bg-white" }`}>
+            <div>
               <Image
                 src={pegiImages[selectedAgePegi].src} 
                 alt={pegiImages[selectedAgePegi].title} 
@@ -123,25 +123,41 @@ const ApercuFormulaire = ({
 
       </div>
         
-      {/******************* Date de sortie du jeu **********************/}
-      <div
-        className={`p-4 min-h-[50px] text-right`}
-      >
-        Sortie le {formattedDate}.
-      </div>
+      {/******************* Affichage des catégories **********************/}
+      {genreOfGame && (
+          <div className={` flex justify-center gap-2 items-center `}>
+            {genreOfGame.map((genre, index) => (
+              <div
+                key={index}
+                style={{ fontSize: '15px', padding: '0px 4px 0px',  letterSpacing: '0.1rem'}}
+                className={
+                  `inline-flex items-center rounded-md 
+                  ${ isDarkMode == true ? "border border-white" : "border-2 border-gray-700 "} 
+                  `}
+              >
+                {genre}
+              </div>
+            ))}
+          </div>
+        )}  
 
       {/******************* Petite introduction en gras ******************************/}
       <div
-        className={`p-4 min-h-[50px] font-bold`}
+        className={`p-4 min-h-[50px] font-bold mx-4 rounded-lg`}
       >
         {shortIntroduction}
       </div>
 
       {/********************** Description détaillée *********************************/}
       <div
-        className={`p-4 min-h-[50px]`}
+        className={`p-4 min-h-[50px] m-4 rounded-lg`}
         dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
       />
+
+      {/******************* Date de sortie du jeu **********************/}
+      <div className={`p-4 min-h-[50px] text-right`}>
+        Sortie le {formattedDate}.
+      </div>
 
         {imageLink && (
           <Image

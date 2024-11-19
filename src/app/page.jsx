@@ -8,7 +8,6 @@ import Link from "next/link";
 
 export default async function Index() {
   // Variable
-
   let introductionsImages, client;
   try {
     // Connect to the MongoDB cluster
@@ -41,14 +40,14 @@ export default async function Index() {
         {introductionsImages.map((post) => (
           <div key={post._id} className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black ">
             <Link href={`dynamic/introduction/${encodeURIComponent(post.nameofgame)}`}>
-                <Image
-                  src={`/presentation/${post.imageOne}`}
-                  className="h-[311px] hover:scale-105 transition duration-300"
-                  width={192}
-                  height={311}
-                  alt={`${post.imageOne}`}
-                />
-              </Link>
+              <Image
+                src={`/presentation/${post.imageOne}`}
+                className="h-[311px] hover:scale-105 transition duration-300"
+                width={192}
+                height={311}
+                alt={`${post.imageOne}`}
+              />
+            </Link>
           </div>
         ))}
       </section>

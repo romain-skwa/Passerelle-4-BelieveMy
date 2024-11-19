@@ -27,7 +27,7 @@ import logoPegiDiscrimination from "../../../../../public/logo/pegi_discriminati
 
 export default function IntroductionGame() {
   // Variable
-  const params = useParams();
+  const params = useParams();console.log(`params : `, params);
   const nameofgame = decodeURIComponent(params.introduction); // Important de mettre le nom du dossier [profilecreators]
 
   // State
@@ -98,9 +98,9 @@ console.log(`user : `, user);*/
         setUser(data.user); // Mettez à jour l'état `user` avec les données récupérées
       };
 
-      fetchDataCreatorOfThisGame(); // Appelez la fonction ici
+      fetchDataCreatorOfThisGame(); 
     }
-  }, [game, creatorOfThisGame]); // Ajoutez `creatorOfThisGame` comme dépendance
+  }, [game, creatorOfThisGame]); 
 
   /**************************************************** */
 
@@ -178,7 +178,7 @@ console.log(`user : `, user);*/
   return (
     <GeneralLayout>
       <section className={sectionClasses}>
-        <div>
+      {/*  <div>
           Ceci est la présentation du jeu {decodeURIComponent(nameofgame)}
         </div>
         <div>Le développeur {game.username} </div>
@@ -191,6 +191,7 @@ console.log(`user : `, user);*/
         <div>Pegi age : {game.selectedAgePegi} </div>
         <div>Pegi catégorie(s) : {game.selectedAdditionalPegi}</div>
         <br></br>
+         */}
 
         <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
           {decodeURIComponent(game.nameofgame)}{" "}
@@ -249,12 +250,12 @@ console.log(`user : `, user);*/
         </div>
 
         {/******************* Affichage des catégories **********************/}
-        {game.platform && (
+        {game.genreOfGame && (
               <div className={` flex justify-center gap-2 items-center `}>
                 {game.genreOfGame.map((genre, index) => (
                   <div
                     key={index}
-                    style={{ fontSize: '13px', padding: '0px 8px 4px',  letterSpacing: '0.1rem'}}
+                    style={{ fontSize: '15px', padding: '0px 8px 4px',  letterSpacing: '0.1rem'}}
                     className={
                       `inline-flex items-center   rounded-md 
                       ${ isDarkMode == true ? " border border-white" : " border-2 border-gray-700 "} 
@@ -265,10 +266,6 @@ console.log(`user : `, user);*/
                 ))}
               </div>
             )}  
-        {/******************* Date de sortie du jeu **********************/}
-        <div className={"p-4 min-h-[50px] text-right"}>
-          Sortie le {formattedDate}.
-        </div>
 
         {/******************** Introduction courte en gras **********************************************/}
         {game.shortIntroduction ? (
@@ -301,18 +298,22 @@ console.log(`user : `, user);*/
           </div>
         )}
 
-        {/* Affichage Nom du créateur */}
-        
-      {user 
-          ? 
-        <UserProfileSection user={user}/> 
-          :
-         <div>
-            <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
-              Jeu créé par {game.username}
-            </Link> 
-          </div> 
-      }
+        {/******************* Date de sortie du jeu **********************/}
+        <div className={"p-4 min-h-[50px] text-right"}>
+          Sortie le {formattedDate}.
+        </div>
+
+        {/************ Affichage Nom du créateur **********************/}        
+        {user 
+            ? 
+          <UserProfileSection user={user}/> 
+            :
+          <div>
+              <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
+                Jeu créé par {game.username}
+              </Link> 
+            </div> 
+        }
       </section>
     </GeneralLayout>
   );

@@ -305,6 +305,7 @@ export default function introductionGameForm() {
           releaseDate={releaseDate}
           platform={platform}
           lienImage={lienImage}
+          genreOfGame={genreOfGame}
         />
 
         {isIntroOfYourself && <UserProfileSection user={user} />}

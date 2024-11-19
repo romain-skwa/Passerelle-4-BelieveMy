@@ -7,12 +7,26 @@ import flagBG from "../../../public/flag/drapeau_uk.jpg";
 import flagFrance from "../../../public/flag/Flag_France.png";
 import homeIconWhite from "../../../public/logo/white-home-icon.png";
 import searchIconWhite from "../../../public/logo/Search-icon.png";
-
+import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
 export default function Header() {
   const { data: session } = useSession();
+
+      // État pour gérer la visibilité de la zone de recherche
+      const [isSearchVisible, setSearchVisible] = useState(false);
+
+      // Fonction pour gérer le clic sur le bouton "Rechercher"  
+      const handleSearchClick = () => {  
+          setSearchVisible(!isSearchVisible); // Alterne la visibilité  
+      };
+
+      const [searchTerm, setSearchTerm] = useState(''); // État pour le mot clé
+
+      const handleSearchChange = (event) => {    
+        setSearchTerm(event.target.value); // Met à jour l'état avec la valeur de l'input    
+      };
 
   return (
   <header className="text-white ">
@@ -55,19 +69,42 @@ export default function Header() {
       {/* ------------------------------------------------------------------------------------ */}
 
       <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative ">
-        <div className="flex" /* Part left */>
+        <div style={{ display: 'flex', alignItems: 'center' }} /* Part left */>
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4 ">
             <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
-                Accueil
+               Accueil
             </Link>
           </div>
           {/* ----------------Recherche------------------------- */}
+          {!isSearchVisible && ( 
           <div className="text-center m-2 laptop:m-0 hidden laptop:block ">
-            <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
-              Rechercher        
-            </Link>
+            <div 
+              onClick={handleSearchClick} 
+              href="../../" 
+              className="border px-4 pb-1 pt-[3px] rounded-2xl"
+              >
+              Rechercher
+            </div>
           </div>
+          )}
+          {isSearchVisible && ( 
+            <div className="flex border rounded-2xl px-4 py-1">
+              <input 
+                type="text" 
+                value={searchTerm} // Lien avec l'état
+                onChange={handleSearchChange} // Gestion du changement
+                className=" text-black placeholder-gray-500 outline-none px-1" // Appliquez la couleur ici
+              />
+              <Link href={`/dynamic/searchResult/${encodeURIComponent(searchTerm)}`}>
+                <Image
+                  src={searchIconWhite}
+                  alt="Search Icon"
+                  className="w-6 h-6 ml-2 cursor-pointer"
+                />
+              </Link>
+            </div>
+            )}
         </div>
 
 
