@@ -100,7 +100,7 @@ export default function Header() {
                 <Image
                   src={searchIconWhite}
                   alt="Search Icon"
-                  className="w-6 h-6 ml-2 cursor-pointer"
+                  className="mt-[2px] ml-[10px] w-5 h-5  cursor-pointer"
                 />
               </Link>
             </div>
