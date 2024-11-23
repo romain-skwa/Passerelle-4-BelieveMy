@@ -1,9 +1,12 @@
 import "../../app/styles/loading.css";
+import Image from "next/image";
+import Pacman from "../../../public/gif/pacman.gif";
 
 const  Loading =  () => {
     return (
-        <div id="load">
-            <div className="letters">
+        <div className="load">
+                <Image src={Pacman} alt="Pacman" className="pacman w-[250px]" />
+            <div className="lettersGroup">
                 <div className="letter">L</div>
                 <div className="letter">O</div>
                 <div className="letter">A</div>

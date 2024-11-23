@@ -1,58 +1,74 @@
-#load {
-  position: relative;
-  display: flex;
-  width: 500px; height: 500px;
-  border: 1px solid black;
-  background-color: black;
-  background-image: url("../../../public/gif/pacman.gif");
-  background-position: 17px center;
-  background-repeat: no-repeat; 
+.load {
+  margin-top: 10vh;
+  width: 100vw; height: 260px;
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;  /* Pour cacher la partie qui déborde */
+  position: relative;
 }
 
-.letters{
+@keyframes eateat {
+    0%{transform: translateX(-20vw);}
+  100%{transform: translateX(120vw);}
+}
+.pacman {
   position: absolute;
-  animation: rotate 10s linear infinite;  
+  animation: 15s forwards eateat;
 }
 
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.lettersGroup{
+  padding-top: 10vh;
+  width: 100vw; height: 100px;
+  display: flex; justify-content: center;
+  gap: 1rem;
 }
 
-.letter {
-  position: absolute;
-  width: 20px; /* Largeur de chaque lettre */
-  height: 20px; /* Hauteur de chaque lettre */
-  transform: rotate(calc(var(--i) * 72deg)) translateY(-90px); /* Ajustez l'angle et la distance */
-  transform-origin: 50% 100%; /* Origine de la transformation */
-  font-size: 2rem;
+.letter{
+  height: 4.2rem;
+  font-size: 3rem;
+  padding: 1rem;
+  background-color: black;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 5px;
 }
-.letter:nth-child(1) {
-  transform: rotate(0deg) translateY(-240px); /* Ajustez l'angle et la distance */
+
+@keyframes jump {
+    0%{transform: translateY(0px);}
+    5%{transform: translateY(0px) rotate(0deg);}
+    8%{transform: translateY(-50px) rotate(40deg);}
+   10%{transform: translateY(-30px) rotate(-10deg);}
+   12%{transform: translateY(0) translateX(0) rotate(0deg);}
+   20%{transform: translateY(0) translateX(1vw) rotate(0deg);}
+  100%{transform: translateX(100vw);}
 }
-.letter:nth-child(2) {
-  transform: rotate(7deg) translateY(-240px); /* Ajustez l'angle et la distance */
+
+.letter:nth-of-type(1) {
+  animation: 10s jump forwards;
 }
-.letter:nth-child(3) {
-  transform: rotate(16deg) translateY(-240px); /* Ajustez l'angle et la distance */
+
+@keyframes run {
+    0%{transform: translateX(0);}
+  100%{transform: translateX(100vw);}
 }
-.letter:nth-child(4) {
-  transform: rotate(24deg) translateY(-240px); /* Ajustez l'angle et la distance */
+
+.letter:not(:nth-of-type(1)) {
+  animation: 7s run forwards;
+  animation-delay: 1.5s;
 }
-.letter:nth-child(5) {
-  transform: rotate(32deg) translateY(-240px); /* Ajustez l'angle et la distance */
+.letter:nth-of-type(2) {
+  animation-timing-function: cubic-bezier(0,.34,.49,.36);
 }
-.letter:nth-child(6) {
-  transform: rotate(37deg) translateY(-240px); /* Ajustez l'angle et la distance */
+.letter:nth-of-type(3) {
+ animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
 }
-.letter:nth-child(7) {
-  transform: rotate(45deg) translateY(-240px); /* Ajustez l'angle et la distance */
+.letter:nth-of-type(4) {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.letter:nth-of-type(5) {
+  animation-timing-function: cubic-bezier(0.6, 0.1, 0.3, 0.9);
+}
+.letter:nth-of-type(6) {
+  animation-timing-function: cubic-bezier(0.7, 0.2, 0.3, 0.8);
+}
+.letter:nth-of-type(7) {
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }

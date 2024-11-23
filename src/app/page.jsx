@@ -34,13 +34,14 @@ export default function Index() {
   return (
     <GeneralLayout>
       <ConnectedUser  />
-      <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
         {loading ? (
           <Loading />
         ) : (         
-          <HomeImages introductionsImages={introductionsImages} />
+          <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
+            <HomeImages introductionsImages={introductionsImages} />
+          </section>
         )}
-      </section>
     </GeneralLayout>
   );
 }
+{/**/}

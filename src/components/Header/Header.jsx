@@ -78,7 +78,7 @@ export default function Header() {
           </div>
           {/* ----------------Recherche------------------------- */}
           {!isSearchVisible && ( 
-          <div className="text-center m-2 laptop:m-0 hidden laptop:block ">
+          <div className="text-center m-2 laptop:m-0 hidden laptop:block">
             <div 
               onClick={handleSearchClick} 
               href="../../" 
@@ -89,12 +89,12 @@ export default function Header() {
           </div>
           )}
           {isSearchVisible && ( 
-            <div className="flex border rounded-2xl px-4 py-1 w-[235px] tablet:w-[295px]" >
+            <div className="flex border rounded-2xl px-4 py-1 w-[100%] tablet:w-[295px]" >
               <input 
                 type="text" 
                 value={searchTerm} // Lien avec l'état
                 onChange={handleSearchChange} // Gestion du changement
-                className="text-black placeholder-gray-500 outline-none px-1 w-[170px] tablet:w-[245px]" // Appliquez la couleur ici
+                className="text-black placeholder-gray-500 outline-none px-1 w-[100%] tablet:w-[245px]" // Appliquez la couleur ici
               />
               <Link href={`/dynamic/searchResult/${encodeURIComponent(searchTerm)}`}>
                 <Image
@@ -141,7 +141,7 @@ export default function Header() {
 
         {/* -----------CONNEXION-----INSCRIPTION-------------------------------------------------------------- */}
 
-        <div className="text-sm uppercase flex justify-center laptop:justify-end pt-2 laptop:pt-1 w-[50%] laptop:w-[25%]">
+        <div className="text-sm uppercase flex justify-center laptop:justify-end pt-2 laptop:pt-1 w-[70%] laptop:w-[25%]">
           <div className="mr-0 laptop:mr-4 flex justify-end" /* Part right */>
             {session?.user?.email ? (
               <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent" onClick={() => signOut()}>
