@@ -5,6 +5,7 @@ import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection"; 
+import Loading from "@/components/Loading/Loading";
 
 export default function Profile() {
   // Variable
@@ -12,51 +13,56 @@ export default function Profile() {
   const pseudo = params.profilecreators.slice(3); // Important de mettre le nom du dossier [profilecreators]
 
   // State
-  const [user, setUser] = useState({}); console.log(`user : `, user);
+  const [user, setUser ] = useState({});
+  const [loading, setLoading] = useState(true); // État pour le chargement
 
   useEffect(() => {
     if (!pseudo) {
       notFound();
+    } else {
+      fetchUserData();
     }
-
-    fetchUserData();
-  }, []);
+  }, [pseudo]); // Ajout de pseudo comme dépendance
 
   // Function
   const fetchUserData = async () => {
-    const response = await fetch("/api/userConnection", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({pseudo}),
-    });
+    setLoading(true); // Commencer le chargement
+    try {
+      const response = await fetch("/api/userConnection", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ pseudo }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!data) {throw new Error("Invalid JSON response");}
+      if (!data) {
+        throw new Error("Invalid JSON response");
+      }
 
-    if (!response.ok) {toast.error("Une erreur est intervenue");}
-
-    setUser(data.user);
+      if (!response.ok) {
+        toast.error("Une erreur est intervenue");
+      } else {
+        setUser (data.user);
+      }
+    } catch (error) {
+      toast.error("Une erreur est survenue lors de la récupération des données.");
+    } finally {
+      setLoading(false); // Fin du chargement
+    }
   };
-
 
   return (
     <GeneralLayout>
       <section className="text-white">
-        <div>Ici le pseudo sans décodage : {pseudo} </div>
-        <div>Ceci est un profil {decodeURIComponent(pseudo)} </div>
-        <div>
-          Ici, on peut voir l'identifiant de l'utilisateur {decodeURIComponent(user.username)} {" "}
-        </div>
-        <div>Et ceci est la bio : {user.bio}</div>
-        <div>Site : {user.websiteUrl}</div>
-        {user.discord && <div>{user.discord}</div>}
-        {user.itchoIo && <div>{user.itchoIo}</div>}
-        {user.twitch && <div>{user.twitch}</div>}
+        {loading ? (
+          <Loading /> // Affiche le composant Loading pendant le chargement
+        ) : (
+          <UserProfileSection user={user} />
+        )}
       </section>
-      <UserProfileSection user={user} />      
     </GeneralLayout>
   );
 }

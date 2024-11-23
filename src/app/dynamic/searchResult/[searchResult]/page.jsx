@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import Link from "next/link";
+import Loading from "@/components/Loading/Loading";
 
 export default function SearchIntroductionGame() {
   // Variable
@@ -62,22 +63,20 @@ export default function SearchIntroductionGame() {
     <GeneralLayout>
       <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
         {loading ? (
-          <p>Chargement des jeux...</p>
+          <Loading />
         ) : (
           <>
             {games.length > 0 ? (
               games.map(game => (
                 game.imageOne && (
-                  <div key={game._id} className="mt-2 w-[47%] tablet:w-[192px] overflow-hidden tablet:shadow-xl shadow-black">
+                  <div key={game._id} className="mt-2 relative w-[150px] tablet:w-[192px] h-[243px] tablet:h-[311px] overflow-hidden tablet:shadow-xl shadow-black">
                     <Link href={`/dynamic/introduction/${encodeURIComponent(game.nameofgame)}`}>
-                      <div className="relative w-[150px] tablet:w-[192px] h-[243px] tablet:h-[311px] overflow-hidden">
                         <Image
                           src={`/presentation/${game.imageOne}`}
                           layout="fill" // Utilisez layout="fill" pour remplir le conteneur
                           objectFit="cover" // Utilisez objectFit pour couvrir le conteneur
                           alt={`${game.imageOne}`}
                         />
-                      </div>
                     </Link>
                   </div>
                 )

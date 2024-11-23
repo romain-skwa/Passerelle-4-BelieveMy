@@ -1,0 +1,58 @@
+#load {
+  position: relative;
+  display: flex;
+  width: 500px; height: 500px;
+  border: 1px solid black;
+  background-color: black;
+  background-image: url("../../../public/gif/pacman.gif");
+  background-position: 17px center;
+  background-repeat: no-repeat; 
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.letters{
+  position: absolute;
+  animation: rotate 10s linear infinite;  
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.letter {
+  position: absolute;
+  width: 20px; /* Largeur de chaque lettre */
+  height: 20px; /* Hauteur de chaque lettre */
+  transform: rotate(calc(var(--i) * 72deg)) translateY(-90px); /* Ajustez l'angle et la distance */
+  transform-origin: 50% 100%; /* Origine de la transformation */
+  font-size: 2rem;
+}
+.letter:nth-child(1) {
+  transform: rotate(0deg) translateY(-240px); /* Ajustez l'angle et la distance */
+}
+.letter:nth-child(2) {
+  transform: rotate(7deg) translateY(-240px); /* Ajustez l'angle et la distance */
+}
+.letter:nth-child(3) {
+  transform: rotate(16deg) translateY(-240px); /* Ajustez l'angle et la distance */
+}
+.letter:nth-child(4) {
+  transform: rotate(24deg) translateY(-240px); /* Ajustez l'angle et la distance */
+}
+.letter:nth-child(5) {
+  transform: rotate(32deg) translateY(-240px); /* Ajustez l'angle et la distance */
+}
+.letter:nth-child(6) {
+  transform: rotate(37deg) translateY(-240px); /* Ajustez l'angle et la distance */
+}
+.letter:nth-child(7) {
+  transform: rotate(45deg) translateY(-240px); /* Ajustez l'angle et la distance */
+}

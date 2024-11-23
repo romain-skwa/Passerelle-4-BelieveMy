@@ -24,6 +24,7 @@ import logoPegiLangageGrossier from "../../../../../public/logo/pegi_langageGros
 import logoPegiPeur from "../../../../../public/logo/pegi_peur.jpg";
 import logoPegiDrogue from "../../../../../public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "../../../../../public/logo/pegi_discrimination.jpg";
+import Loading from "@/components/Loading/Loading";
 
 export default function IntroductionGame() {
   // Variable
@@ -36,11 +37,7 @@ export default function IntroductionGame() {
   const [user, setUser] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
   const encodedUsername = encodeURIComponent(username);
-console.log(`encodedUsername : `, encodedUsername);/*
-console.log(`creatorOfThisGame : `, creatorOfThisGame);
-console.log(`user : `, user);*/
-
-
+  const [loading, setLoading] = useState(true); 
   /************************************************ */
   useEffect(() => {
     if (!nameofgame) {
@@ -72,6 +69,7 @@ console.log(`user : `, user);*/
 
     setgame(data.game);
     setCreatorOfThisGame(data.game.username);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -177,22 +175,10 @@ console.log(`user : `, user);*/
 
   return (
     <GeneralLayout>
+        {loading ? (
+          <Loading /> // Affiche le composant Loading pendant le chargement
+        ) : (
       <section className={sectionClasses}>
-      {/*  <div>
-          Ceci est la présentation du jeu {decodeURIComponent(nameofgame)}
-        </div>
-        <div>Le développeur {game.username} </div>
-        <div>Description du jeu : {game.content} </div>
-        <div>Is black ou pas is black ? {game.isDarkMode} </div>
-        <div>
-          La présentation du créateur de ce jeu est-elle censée s'afficher ?{" "}
-          {game.isIntroOfYourself}
-        </div>
-        <div>Pegi age : {game.selectedAgePegi} </div>
-        <div>Pegi catégorie(s) : {game.selectedAdditionalPegi}</div>
-        <br></br>
-         */}
-
         <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
           {decodeURIComponent(game.nameofgame)}{" "}
         </h1>
@@ -315,6 +301,7 @@ console.log(`user : `, user);*/
             </div> 
         }
       </section>
+    )}
     </GeneralLayout>
   );
 }

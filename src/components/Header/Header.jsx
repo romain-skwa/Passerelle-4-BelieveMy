@@ -68,8 +68,8 @@ export default function Header() {
       {/* ----------------LIGNE 2------------------------------------------------------------- */}
       {/* ------------------------------------------------------------------------------------ */}
 
-      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative ">
-        <div style={{ display: 'flex', alignItems: 'center' }} /* Part left */>
+      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative "> {/* Part left */}
+        <div style={{ display: 'flex', alignItems: 'center' }} className="w-[65%] laptop:w-[25%] flex justify-center laptop:justify-start">
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4 ">
             <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
@@ -89,18 +89,18 @@ export default function Header() {
           </div>
           )}
           {isSearchVisible && ( 
-            <div className="flex border rounded-2xl px-4 py-1">
+            <div className="flex border rounded-2xl px-4 py-1 w-[235px] tablet:w-[295px]" >
               <input 
                 type="text" 
                 value={searchTerm} // Lien avec l'état
                 onChange={handleSearchChange} // Gestion du changement
-                className=" text-black placeholder-gray-500 outline-none px-1" // Appliquez la couleur ici
+                className="text-black placeholder-gray-500 outline-none px-1 w-[170px] tablet:w-[245px]" // Appliquez la couleur ici
               />
               <Link href={`/dynamic/searchResult/${encodeURIComponent(searchTerm)}`}>
                 <Image
                   src={searchIconWhite}
                   alt="Search Icon"
-                  className="mt-[2px] ml-[10px] w-5 h-5  cursor-pointer"
+                  className="mt-[2px] ml-[10px] w-5 h-5 cursor-pointer"
                 />
               </Link>
             </div>
@@ -113,18 +113,14 @@ export default function Header() {
           <div className={`flex flex-col laptop:flex-row pb-3 laptop:pb-0`}>
             {session?.user?.email ? (
               <>
-                <div className="
-                cursor-pointer border text-center rounded-2xl bg-black/30 mt-2 laptop:mt-0 px-4 pt-[3px] ml-3 
-                pl-4 pb-2 laptop:pb-0 order-last laptop:order-none
-                ">
+                <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
+                pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
                   <Link href="../../creators/introduceYourselfForm">
                     Présentez-vous
                   </Link>
                 </div>
-                <div className="
-                cursor-pointer border text-center rounded-2xl bg-black/30 mt-2 laptop:mt-0 px-4 pt-[3px] ml-3 
-                pl-4 pb-2 laptop:pb-0 order-last laptop:order-none
-                ">
+                <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
+                pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
                   <Link href="../../creators/introductionGameForm">
                     Présentez votre jeu
                   </Link>
@@ -135,11 +131,8 @@ export default function Header() {
             )}
 
             {/* ----------------Comment présenter------------------------- */}
-            <div
-              className={`text-center mt-8 laptop:mt-0 bg-black/30 px-4 pb-2 pt-[3px] ml-3 border rounded-2xl ${
-                !session?.user?.email ? "flex-grow" : ""
-              }`}
-            >
+            <div className={`border text-center mt-4 laptop:mt-0 bg-black/70 px-4 pb-2 pt-[3px] laptop:ml-3 rounded-2xl 
+              ${ !session?.user?.email ? "flex-grow" : "" }`}>
               Comment présenter votre jeu ?
             </div>
           </div>
@@ -148,10 +141,8 @@ export default function Header() {
 
         {/* -----------CONNEXION-----INSCRIPTION-------------------------------------------------------------- */}
 
-        <div className="text-sm uppercase flex laptop:justify-end pt-2 laptop:pt-1">
-          <div
-            className="mr-2 laptop:mr-4 flex justify-end"  /* Part right */
-          >
+        <div className="text-sm uppercase flex justify-center laptop:justify-end pt-2 laptop:pt-1 w-[50%] laptop:w-[25%]">
+          <div className="mr-0 laptop:mr-4 flex justify-end" /* Part right */>
             {session?.user?.email ? (
               <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent" onClick={() => signOut()}>
                 Se déconnecter
@@ -180,6 +171,7 @@ export default function Header() {
         {/* --------Icone SEARCH visible sur écran mobiles------------ */}
         <Link href="../../" className="absolute right-0 mr-4 top-[7px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
           <Image
+            onClick={handleSearchClick} 
             src={searchIconWhite}
             alt="Search Icon"
             className="w-4 h-4"
