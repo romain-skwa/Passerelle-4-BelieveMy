@@ -13,7 +13,7 @@ export default function SearchIntroductionGame() {
   // Variable
   const params = useParams();
   const nameofgame = decodeURIComponent(params.searchResult);
-  
+
   // State
   const [games, setGames] = useState([]); // All all found are in this array
   console.log(games);
@@ -53,7 +53,9 @@ export default function SearchIntroductionGame() {
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des données :", error);
-      toast.error("Une erreur est survenue lors de la récupération des données.");
+      toast.error(
+        "Une erreur est survenue lors de la récupération des données."
+      );
     } finally {
       setLoading(false); // Fin du chargement
     }
@@ -61,32 +63,40 @@ export default function SearchIntroductionGame() {
 
   return (
     <GeneralLayout>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
-              {games.length > 0 ? (
-                games.map(game => (
-                  game.imageOne && (
-                    <div key={game._id} className="mt-2 relative w-[150px] tablet:w-[192px] h-[243px] tablet:h-[311px] overflow-hidden tablet:shadow-xl shadow-black">
-                      <Link href={`/dynamic/introduction/${encodeURIComponent(game.nameofgame)}`}>
-                          <Image
-                            src={`/presentation/${game.imageOne}`}
-                            layout="fill" // Utilisez layout="fill" pour remplir le conteneur
-                            objectFit="cover" // Utilisez objectFit pour couvrir le conteneur
-                            alt={`${game.imageOne}`}
-                          />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
+            {games.length > 0 ? (
+              games.map(
+                (game) =>
+                  game.urlPoster && (
+                    <div
+                      key={game._id}
+                      className="mt-2 relative w-[150px] tablet:w-[192px] h-[243px] tablet:h-[311px] overflow-hidden tablet:shadow-xl shadow-black"
+                    >
+                      <Link
+                        href={`/dynamic/introduction/${encodeURIComponent(
+                          game.nameofgame
+                        )}`}
+                      >
+                        <Image
+                          src={`/presentation/${game.urlPoster}`}
+                          layout="fill" // Utilisez layout="fill" pour remplir le conteneur
+                          objectFit="cover" // Utilisez objectFit pour couvrir le conteneur
+                          alt={`${game.urlPoster}`}
+                        />
                       </Link>
                     </div>
                   )
-                ))
-              ) : (
-                <p>Aucun jeu trouvé</p>
-              )}
-            </section>
-          </>
-        )}
+              )
+            ) : (
+              <p>Aucun jeu trouvé</p>
+            )}
+          </section>
+        </>
+      )}
     </GeneralLayout>
   );
 }

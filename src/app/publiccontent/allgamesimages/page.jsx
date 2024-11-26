@@ -5,40 +5,47 @@ import imageTwo from "../../../../public/presentation/mario&co.jpg";
 
 //PAGE INUTILISEE
 export default async function Allgamesimages() {
-    let introductionsImages, client;
-    try {
-        // Connect to the MongoDB cluster
-        client = await MongoClient.connect(process.env.MONGODB_CLIENT);
+  let introductionsImages, client;
+  try {
+    // Connect to the MongoDB cluster
+    client = await MongoClient.connect(process.env.MONGODB_CLIENT);
 
-        // Connect to the MongoDB database
-        const db = client.db(process.env.MONGODB_DATABASE);
+    // Connect to the MongoDB database
+    const db = client.db(process.env.MONGODB_DATABASE);
 
-        // Select the introductions collection
-        introductionsImages = await db.collection('introduction-database').find().sort({creation : 1}).toArray();
+    // Select the introductions collection
+    introductionsImages = await db
+      .collection("introduction-database")
+      .find()
+      .sort({ creation: 1 })
+      .toArray();
 
-        // Format 
-        introductionsImages = introductionsImages.map(eachImage => ({
-            ...eachImage,
-            _id: eachImage._id.toString()
-        }))
-    } catch (error) {
-        throw new Error(error.message);
-    }
-    await client.close();
+    // Format
+    introductionsImages = introductionsImages.map((eachImage) => ({
+      ...eachImage,
+      _id: eachImage._id.toString(),
+    }));
+  } catch (error) {
+    throw new Error(error.message);
+  }
+  await client.close();
 
-    return(
-        <GeneralLayout>
-            Liste de tous les jeux ici : 
-            {/* Images list*/}
-            {introductionsImages.map(post => (
-                <div key={post._id}>
-                    <p>{post.content}</p>
-                    <p>{post.imageOne}</p>
-                    <Image src={`/presentation/${post.imageOne}`} width={400} height={300} className="w-48" />
-                </div>
-            ))}
-                  <Image src={imageTwo} className="w-48"></Image>
-
-        </GeneralLayout>
-    )
+  return (
+    <GeneralLayout>
+      Liste de tous les jeux ici :{/* Images list*/}
+      {introductionsImages.map((post) => (
+        <div key={post._id}>
+          <p>{post.content}</p>
+          <p>{post.urlPoster}</p>
+          <Image
+            src={`/presentation/${post.urlPoster}`}
+            width={400}
+            height={300}
+            className="w-48"
+          />
+        </div>
+      ))}
+      <Image src={imageTwo} className="w-48"></Image>
+    </GeneralLayout>
+  );
 }

@@ -3,7 +3,6 @@
 import { createIntroduction } from "@/actions/create-introduction";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useSession } from "next-auth/react";
-import { notFound } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -12,11 +11,11 @@ import Glimpse from "@/components/Glimpse/Glimpse"; // Aperçu
 import he from "he";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import Pegi from "@/components/Pegi/Pegi";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import Platform from './../../../components/Platform/Platform';
-import GenreOfGame from './../../../components/GenreOfGame/GenreOfGame';
-import '../../styles/formulary.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Platform from "./../../../components/Platform/Platform";
+import GenreOfGame from "./../../../components/GenreOfGame/GenreOfGame";
+import "../../styles/formulary.css";
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -32,6 +31,7 @@ export default function introductionGameForm() {
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
   const [lienImage, setLienImage] = useState("");
+  const [backgroundImage, setBackgroundImage] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
@@ -47,9 +47,13 @@ export default function introductionGameForm() {
   const [isReleaseDateVisible, setIsReleaseDateVisible] = useState(false);
   const [isPegiAgeVisible, setIsPegiAgeVisible] = useState(false);
   const [isPosterVisible, setIsPosterVisible] = useState(false);
+  const [isBackgroundVisible, setIsBackgroundVisible] = useState(false);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const [isWebsiteVisible, setIsWebsiteVisible] = useState(false);
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
+
+  const posterFile = lienImage;
+  const backgroundFile = backgroundImage;
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
   useEffect(() => {
@@ -101,224 +105,354 @@ export default function introductionGameForm() {
           "Vous devez sélectionner un âge parmi les options disponibles."
         );
       }
-    
+
       // Vérifiez si au moins une plateforme est sélectionnée
 
       if (platform.length === 0) {
         return toast.error("Vous devez sélectionner au moins une plateforme.");
-        }
+      }
 
       // Vérifiez si le site officiel commence par "https://www."
       if (webSiteOfThisGame && !webSiteOfThisGame.startsWith("https://www.")) {
-        return toast.error("Le lien du site officiel doit commencer par 'https://www.'");    
-        }
+        return toast.error(
+          "Le lien du site officiel doit commencer par 'https://www.'"
+        );
+      }
+
+    // Vérification de la date de sortie
+    if (releaseDate) {
+      const releaseDateString = releaseDate.toLocaleDateString("fr-FR"); // Format de la date en français
+      const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
+
+      if (!datePattern.test(releaseDateString)) {
+        return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
+      }
+    } else {
+      return toast.error("Vous devez sélectionner une date de sortie.");
+    }
 
       // Function to send the data to createIntroduction function
       const formData = new FormData();
-      formData.append("imageOne", file);
-      formData.append("imageName", file.name);
-      formData.append("videoLink", videoLink);
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
-      formData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
-      formData.append("isDarkMode", isDarkMode.toString());
-      formData.append("isIntroOfYourself", isIntroOfYourself.toString());
+      formData.append("shortIntroduction", shortIntroduction);
+      formData.append("introductionOfTheGame",he.encode(introductionOfTheGame));
+      formData.append("platform", JSON.stringify(platform));
+      formData.append("releaseDate", releaseDate);
+      formData.append("poster", posterFile);
+      formData.append("urlPoster", posterFile.name);
+      formData.append("imageBackground", backgroundFile);
+      formData.append("urlImageBackground", backgroundFile.name);
       formData.append("selectedAgePegi", selectedAgePegi);
       formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
-      formData.append("shortIntroduction", shortIntroduction);
-      formData.append("releaseDate", releaseDate);
-      formData.append("platform", JSON.stringify(platform));
-      formData.append("webSiteOfThisGame", JSON.stringify(webSiteOfThisGame));
       formData.append("genreOfGame", JSON.stringify(genreOfGame));
+      formData.append("videoLink", videoLink);
+      formData.append("webSiteOfThisGame", JSON.stringify(webSiteOfThisGame));
+      formData.append("isDarkMode", isDarkMode.toString());
+      formData.append("isIntroOfYourself", isIntroOfYourself.toString());
       // Debugging
 
-    for (const [key, value] of formData.entries()) 
-      {console.log(key, value);}
-          await createIntroduction(formData);
-          toast.success("Présentation du jeu envoyée avec succès !");
-          // Redirect
-          router.replace("/");
-        } catch (error) {
-          return toast.error(error.message);
-        }
-      };
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+      await createIntroduction(formData);
+      toast.success("Présentation du jeu envoyée avec succès !");
+      // Redirect
+      router.replace("/");
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
 
   // Check the adress http
-  
+
   return (
     <GeneralLayout>
+      <section>
+        <form
+          onSubmit={onPrepare}
+          className="w-[95vw] tablet:w-[84vw] laptop:w-[54vw] mx-auto border p-2"
+          style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
+        >
+          <p>
+            {session?.user.username}, sur cette page, vous êtes invité à remplir
+            de présentation de votre jeux.
+          </p>
 
-      <form
-        onSubmit={onPrepare}
-        className="w-[95vw] tablet:w-[84vw] laptop:w-[54vw] mx-auto border p-2"
-        style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
-      >
-        <p>
-          {session?.user.username}, sur cette page, vous êtes invité à remplir de présentation de votre jeux.
-        </p>
-
-      <section className="bandeauTop laptop:w-[650px]">
-        <div onClick={() => setIsShortIntroVisible(!isShortIntroVisible)} style={{backgroundColor: shortIntroduction.length > 1 ? "green" : "#2e2d2c",}}>Introduction courte</div>
-        <div onClick={() => setIsEditorVisible(!isEditorVisible)} style={{backgroundColor: introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",}}>Présentation détaillée</div>
-        <div onClick={() => setPlatformVisible(!isPlatformVisible)} style={{backgroundColor: platform.length != [] ? "green" : "#2e2d2c",}}>Plate-forme</div>
-        <div onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)} style={{backgroundColor: releaseDate != null ? "green" : "#2e2d2c",}}>Date de sortie</div>
-        <div onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)} style={{backgroundColor: selectedAgePegi.length != "" ? "green" : "#2e2d2c",}}>Pegi age & catégorie</div>
-        <div onClick={() => setIsPosterVisible(!isPosterVisible)} style={{backgroundColor: lienImage.length != "" ? "green" : "#2e2d2c",}}>Affiche</div>
-        <div onClick={() => setIsCategoryVisible(!isCategoryVisible)} style={{backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",}}>Catégorie</div>
-        <div onClick={() => setIsVideoVisible(!isVideoVisible)} style={{backgroundColor: videoLink.length != "" ? "green" : "#2e2d2c",}}>Vidéo youtube</div>
-        <div onClick={() => setIsWebsiteVisible(!isWebsiteVisible)} style={{backgroundColor: webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",}}>Site officiel</div>
-      </section>
-
-        <div className="laptop:flex items-center">
-          <input
-            type="text"
-            name="nameOfGame"
-            placeholder="Nom du jeu"
-            className="px-3 py-2 rounded-md w-full laptop:w-[70%] flex-grow"
-            maxLength={80}
-            size={80}
-            value={nameOfGame}
-            onChange={(e) => setNameOfGame(e.target.value)}
-          />
-
-          <div className="flex justify-center laptop:inline-block mt-3 laptop:mt-0">
-            <div 
-              onClick={() => setIsDarkMode(!isDarkMode)} 
-              className="p-2 bg-black text-white inline-block ml-2 cursor-pointer"
+          <section className="bandeauTop laptop:w-[650px]">
+            <div
+              onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
+              style={{
+                backgroundColor:
+                  shortIntroduction.length > 1 ? "green" : "#2e2d2c",
+              }}
             >
-              Texte noir et fond blanc
+              Introduction courte
+            </div>
+            <div
+              onClick={() => setIsEditorVisible(!isEditorVisible)}
+              style={{
+                backgroundColor:
+                  introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",
+              }}
+            >
+              Présentation détaillée
+            </div>
+            <div
+              onClick={() => setPlatformVisible(!isPlatformVisible)}
+              style={{
+                backgroundColor: platform.length != [] ? "green" : "#2e2d2c",
+              }}
+            >
+              Plate-forme
+            </div>
+            <div
+              onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)}
+              style={{
+                backgroundColor: releaseDate != null ? "green" : "#2e2d2c",
+              }}
+            >
+              Date de sortie
+            </div>
+            <div
+              onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)}
+              style={{
+                backgroundColor:
+                  selectedAgePegi.length != "" ? "green" : "#2e2d2c",
+              }}
+            >
+              Pegi age & catégorie
+            </div>
+            <div
+              onClick={() => setIsPosterVisible(!isPosterVisible)}
+              style={{
+                backgroundColor: lienImage.length != "" ? "green" : "#2e2d2c",
+              }}
+            >
+              Affiche
+            </div>
+            <div
+              onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
+              style={{
+                backgroundColor:
+                  backgroundImage.length != "" ? "green" : "#2e2d2c",
+              }}
+            >
+              Arrière plan
+            </div>
+            <div
+              onClick={() => setIsCategoryVisible(!isCategoryVisible)}
+              style={{
+                backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",
+              }}
+            >
+              Catégorie
+            </div>
+            <div
+              onClick={() => setIsVideoVisible(!isVideoVisible)}
+              style={{
+                backgroundColor: videoLink.length != "" ? "green" : "#2e2d2c",
+              }}
+            >
+              Vidéo youtube
+            </div>
+            <div
+              onClick={() => setIsWebsiteVisible(!isWebsiteVisible)}
+              style={{
+                backgroundColor:
+                  webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
+              }}
+            >
+              Site officiel
+            </div>
+          </section>
+
+          <div className="laptop:flex items-center">
+            <input
+              type="text"
+              name="nameOfGame"
+              placeholder="Nom du jeu"
+              className="px-3 py-2 rounded-md w-full laptop:w-[70%] flex-grow"
+              maxLength={80}
+              size={80}
+              value={nameOfGame}
+              onChange={(e) => setNameOfGame(e.target.value)}
+            />
+
+            <div className="flex justify-center laptop:inline-block mt-3 laptop:mt-0">
+              <div
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="p-2 bg-black text-white inline-block ml-2 cursor-pointer"
+              >
+                Texte noir et fond blanc
+              </div>
             </div>
           </div>
-        </div>
 
-
-
-        {/**************** Introduction courte ***************************** */}
-        {isShortIntroVisible && (
-          <div className="border p-2 my-2">
-            <p
-              className="text-white text-center font-bold mb-3"
-              style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
-            >
-              Introduction courte et facultative qui sera affichée en gras
-            </p>
-            <textarea
-              name="shortIntroduction"
-              id="shortIntroduction"
-              placeholder="Introduction courte et facultative qui sera affichée en gras"
-              value={shortIntroduction}
-              onChange={(e) => setShortIntroduction(e.target.value)}
-            />
-          </div>
-        )}
-
-        {/**************** Editeur de texte ********************************************** */}
-        {isEditorVisible && (
-          <EditorPerso
-            setIntroductionOfTheGame={setIntroductionOfTheGame}
-            onTextChange={(newText) => {
-              setIntroductionOfTheGame(newText);
-            }}
-          />
-        )}
-
-        {isPlatformVisible && (
-          <Platform platform={platform} setPlatform={setPlatform} />
-        )}
-
-        {/**************** Date ***************************** */}
-        {isReleaseDateVisible && (
-          <div className="my-2 flex">
-            <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
-              Date de sortie : 
-            </p>
-          <DatePicker className="pl-2" selected={releaseDate} dateFormat="dd/MM/yyyy" id="releaseDate" required onChange={(date) => setReleaseDate(date)} />
-          </div>
-        )}
-
-        {/**************** Les deux catégories de PEGI ***************************** */}
-        {isPegiAgeVisible && (
-          <Pegi
-            selectedAgePegi={selectedAgePegi}
-            setSelectedAgePegi={setSelectedAgePegi}
-            selectedAdditionalPegi={selectedAdditionalPegi}
-            setSelectedAdditionalPegi={setSelectedAdditionalPegi}
-          />
-        )}
-        {/**************** Ajout de la biographie du créateur ***************************** */}       
-        <div className="flex justify-center">
-          <div
-            className=" grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
-            onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
-          >
-            Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center">
-          {/**************** Affiche ***************************** */}
-          {isPosterVisible && (
-            <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
-              <p className="text-center tablet:inline-block">Choisissez l'affiche du jeu </p>
-              <input
-                type="file"
-                name="imageOne"
-                accept=".jpg, .jpeg, .png"
-                className="ml-4"
-                onChange={(e) => setLienImage(e.target.files[0])}
+          {/**************** Introduction courte ***************************** */}
+          {isShortIntroVisible && (
+            <div className="border p-2 my-2">
+              <p
+                className="text-white text-center font-bold mb-3"
+                style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+              >
+                Cette introduction courte sera affichée en gras
+              </p>
+              <textarea
+                name="shortIntroduction"
+                id="shortIntroduction"
+                placeholder="Cette introduction courte sera affichée en gras"
+                value={shortIntroduction}
+                onChange={(e) => setShortIntroduction(e.target.value)}
               />
             </div>
           )}
-          {/**************** Lien vidéo Youtube ***************************** */}
-          {isVideoVisible && (
-            <input
-              type="url"
-              name="videoLink"
-              placeholder="Lien YouTube de la vidéo"
-              className="block w-[95%] tablet:w-[60%] p-1 pl-2 m-2"
-              value={videoLink}
-              onChange={(e) => setVideoLink(e.target.value)}
+
+          {/**************** Editeur de texte ********************************************** */}
+          {isEditorVisible && (
+            <EditorPerso
+              introductionOfTheGame={introductionOfTheGame} 
+              setIntroductionOfTheGame={setIntroductionOfTheGame}
+              onTextChange={(newText) => { 
+                setIntroductionOfTheGame(newText);
+              }}
             />
           )}
-          
-          {/**************** Lien Site officiel ***************************** */}
-          {isWebsiteVisible && (
-            <input
-              type="url"
-              name="webSiteOfThisGame"
-              placeholder="Lien vers le site officiel du jeu"
-              className="block w-[95%] tablet:w-[60%] p-1 pl-2"
-              value={webSiteOfThisGame}
-              onChange={(e) => setWebSiteOfThisGame(e.target.value)}
+
+          {isPlatformVisible && (
+            <Platform platform={platform} setPlatform={setPlatform} />
+          )}
+
+          {/**************** Date ***************************** */}
+          {isReleaseDateVisible && (
+            <div className="my-2 flex">
+              <p
+                className="text-white font-bold mr-2"
+                style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+              >
+                Date de sortie :
+              </p>
+              <DatePicker
+                className="pl-2"
+                selected={releaseDate}
+                dateFormat="dd/MM/yyyy"
+                id="releaseDate"
+                required
+                onChange={(date) => setReleaseDate(date)}
+              />
+            </div>
+          )}
+
+          {/**************** Les deux catégories de PEGI ***************************** */}
+          {isPegiAgeVisible && (
+            <Pegi
+              selectedAgePegi={selectedAgePegi}
+              setSelectedAgePegi={setSelectedAgePegi}
+              selectedAdditionalPegi={selectedAdditionalPegi}
+              setSelectedAdditionalPegi={setSelectedAdditionalPegi}
             />
           )}
-        </div>
-          
-        {isCategoryVisible && (<GenreOfGame selectedGenres={genreOfGame} setSelectedGenres={setGenreOfGame} />)}
+          {/**************** Ajout de la biographie du créateur ***************************** */}
+          <div className="flex justify-center">
+            <div
+              className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
+              onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
+            >
+              Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
+            </div>
+          </div>
 
-        <Glimpse
-          introductionOfTheGame={introductionOfTheGame}
-          nameOfGame={nameOfGame}
-          isDarkMode={isDarkMode}
-          selectedAgePegi={selectedAgePegi}
-          selectedAdditionalPegi={selectedAdditionalPegi}
-          shortIntroduction={shortIntroduction}
-          releaseDate={releaseDate}
-          platform={platform}
-          lienImage={lienImage}
-          genreOfGame={genreOfGame}
-        />
+          <div className="flex flex-col items-center bg-amber-400">
+            {/**************** Affiche ***************************** */}
+            {isPosterVisible && (
+              <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
+                <p className="text-center tablet:inline-block">
+                  Choisissez l'affiche du jeu{" "}
+                </p>
+                <input
+                  type="file"
+                  name="poster"
+                  accept=".jpg, .jpeg, .png"
+                  className="ml-4"
+                  onChange={(e) => setLienImage(e.target.files[0])}
+                />
+              </div>
+            )}
+            {/**************** Arrière plan ***************************** */}
+            {isBackgroundVisible && (
+              <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
+                <p className="text-center tablet:inline-block">
+                  Choisissez une image pour l'arrière plan{" "}
+                </p>
+                <input
+                  type="file"
+                  name="imageBackground"
+                  accept=".jpg, .jpeg, .png"
+                  className="ml-4"
+                  onChange={(e) => setBackgroundImage(e.target.files[0])}
+                />
+              </div>
+            )}
+            {/**************** Lien vidéo Youtube ***************************** */}
+            {isVideoVisible && (
+              <input
+                type="url"
+                name="videoLink"
+                placeholder="Lien YouTube de la vidéo"
+                className="block w-[95%] tablet:w-[60%] p-1 pl-2 m-2"
+                value={videoLink}
+                onChange={(e) => setVideoLink(e.target.value)}
+              />
+            )}
 
-        {isIntroOfYourself && <UserProfileSection user={user} />}
+            {/**************** Lien Site officiel ***************************** */}
+            {isWebsiteVisible && (
+              <input
+                type="url"
+                name="webSiteOfThisGame"
+                placeholder="Lien vers le site officiel du jeu"
+                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
+                value={webSiteOfThisGame}
+                onChange={(e) => setWebSiteOfThisGame(e.target.value)}
+              />
+            )}
+          </div>
 
-        <button
-          className="bg-green-500 p-3 mx-auto w-40 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
-          disabled={
-            nameOfGame.length < 1 || introductionOfTheGame.length < 1 || platform < 1 || shortIntroduction < 1 || lienImage === ""
-          } /* Désactivé si les champs sont vides */
-        >
-          Envoyer
-        </button>
-      </form>
+          {isCategoryVisible && (
+            <GenreOfGame
+              selectedGenres={genreOfGame}
+              setSelectedGenres={setGenreOfGame}
+            />
+          )}
+
+          <Glimpse
+            nameOfGame={nameOfGame}
+            shortIntroduction={shortIntroduction}
+            introductionOfTheGame={introductionOfTheGame}
+            isDarkMode={isDarkMode}
+            selectedAgePegi={selectedAgePegi}
+            selectedAdditionalPegi={selectedAdditionalPegi}
+            releaseDate={releaseDate}
+            platform={platform}
+            lienImage={lienImage}
+            genreOfGame={genreOfGame}
+          />
+
+          {isIntroOfYourself && <UserProfileSection user={user} />}
+
+          <button
+            className="bg-green-500 p-3 mx-auto w-40 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
+            disabled={
+              nameOfGame.length < 1 ||
+              introductionOfTheGame.length < 1 ||
+              platform < 1 ||
+              shortIntroduction < 1 ||
+              lienImage === ""
+            } /* Désactivé si les champs sont vides */
+          >
+            Envoyer
+          </button>
+        </form>
+      </section>
     </GeneralLayout>
   );
 }

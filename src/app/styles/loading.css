@@ -6,12 +6,16 @@
   position: relative;
 }
 
+
 @keyframes eateat {
-    0%{transform: translateX(-20vw);}
-  100%{transform: translateX(120vw);}
+    0%{transform: translateX(0);}
+  100%{transform: translateX(130vw);}
 }
+
 .pacman {
   position: absolute;
+  width: 250px;
+  left: -250px;
   animation: 15s forwards eateat;
 }
 
@@ -38,7 +42,7 @@
    10%{transform: translateY(-30px) rotate(-10deg);}
    12%{transform: translateY(0) translateX(0) rotate(0deg);}
    20%{transform: translateY(0) translateX(1vw) rotate(0deg);}
-  100%{transform: translateX(100vw);}
+  100%{transform: translateX(110vw);}
 }
 
 .letter:nth-of-type(1) {
@@ -54,21 +58,31 @@
   animation: 7s run forwards;
   animation-delay: 1.5s;
 }
-.letter:nth-of-type(2) {
-  animation-timing-function: cubic-bezier(0,.34,.49,.36);
-}
-.letter:nth-of-type(3) {
- animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
-}
-.letter:nth-of-type(4) {
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-.letter:nth-of-type(5) {
-  animation-timing-function: cubic-bezier(0.6, 0.1, 0.3, 0.9);
-}
-.letter:nth-of-type(6) {
-  animation-timing-function: cubic-bezier(0.7, 0.2, 0.3, 0.8);
-}
-.letter:nth-of-type(7) {
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+.letter:nth-of-type(2) {animation-timing-function: cubic-bezier(0,.34,.49,.36);}
+.letter:nth-of-type(3) {animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);}
+.letter:nth-of-type(4) {animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);}
+.letter:nth-of-type(5) {animation-timing-function: cubic-bezier(0.6, 0.1, 0.3, 0.9);}
+.letter:nth-of-type(6) {animation-timing-function: cubic-bezier(0.7, 0.2, 0.3, 0.8);}
+.letter:nth-of-type(7) {animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);}
+
+@media (max-width: 600px) {
+    @keyframes eateat {
+      0%{transform: translateX(0);}
+    100%{transform: translateX(260vw);}
+  }
+
+  .letter{  padding: 0.4rem; font-size: 2.5rem;  }
+
+  .pacman {
+    animation-delay: 3s;
+  }
+  
+  .letter:nth-of-type(1) {
+    animation: 7s jump forwards;
+  }
+
+  .letter:not(:nth-of-type(1)) {
+    animation: 4s run forwards;
+    animation-delay: 1.5s;
+  }
 }

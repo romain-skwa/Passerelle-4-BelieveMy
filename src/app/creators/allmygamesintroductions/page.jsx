@@ -12,7 +12,7 @@ export default async function Allmygamesintroductions() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return redirect('login');
+    return redirect("login");
   }
 
   let introductionsImages, client;
@@ -42,13 +42,17 @@ export default async function Allmygamesintroductions() {
 
   return (
     <GeneralLayout>
-      Liste de tous les jeux ici : 
-      {/* Images list*/}
+      Liste de tous les jeux ici :{/* Images list*/}
       {introductionsImages.map((post) => (
         <div key={post._id}>
           <p>{post.content}</p>
-          <p>{post.imageOne}</p>
-          <Image src={`/presentation/${post.imageOne}`} width={400} height={300} className="w-48" />
+          <p>{post.urlPoster}</p>
+          <Image
+            src={`/presentation/${post.urlPoster}`}
+            width={400}
+            height={300}
+            className="w-48"
+          />
         </div>
       ))}
     </GeneralLayout>

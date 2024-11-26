@@ -15,7 +15,7 @@ export async function GET(req) {
     // Select the introductions collection
     introductionsImages = await db
       .collection("introduction-database")
-      .find()
+      .find({}, { projection: { urlPoster: 1, nameofgame: 1 } })
       .sort({ creation: 1 })
       .toArray();
 
@@ -25,7 +25,9 @@ export async function GET(req) {
       _id: eachImage._id.toString(),
     }));
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
   } finally {
     if (client) {
       await client.close();

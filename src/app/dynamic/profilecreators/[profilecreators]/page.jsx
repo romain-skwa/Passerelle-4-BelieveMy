@@ -60,7 +60,7 @@ export default function Profile() {
         {loading ? (
           <Loading /> // Affiche le composant Loading pendant le chargement
         ) : (
-          <UserProfileSection user={user} />
+           <UserProfileSection user={user} />
         )}
       </section>
     </GeneralLayout>

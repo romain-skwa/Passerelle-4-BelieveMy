@@ -31,7 +31,10 @@ export const createIntroduction = async (formData) => {
       releaseDate: formData.get("releaseDate"),
       shortIntroduction: formData.get("shortIntroduction"),
       content: formData.get("introductionOfTheGame"),
-      imageOne: formData.get("imageName"),
+      //poster: formData.get("poster"), pour plus tard, quand il faudra stocker l'image sur un serveur
+      urlPoster: formData.get("urlPoster"),
+      //poster: formData.get("imageBackground"), pour plus tard, quand il faudra stocker l'image sur un serveur
+      urlImageBackground: formData.get("urlImageBackground"),
       videoLink: formData.get("videoLink"),
       isDarkMode: formData.get("isDarkMode"),
       isIntroOfYourself: formData.get("isIntroOfYourself"),

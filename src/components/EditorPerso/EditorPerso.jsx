@@ -2,22 +2,27 @@ import React, { useState, useRef, useEffect } from 'react';
 import "../../app/styles/formulary.css";
 import { useClickOutside } from '@mantine/hooks';
 
-function MyTextArea({onTextChange, setIntroductionOfTheGame}) {
-  const [text, setText] = useState('');
+function MyTextArea({onTextChange, introductionOfTheGame, setIntroductionOfTheGame}) {
+  const [text, setText] = useState(introductionOfTheGame); // valeur initiale == introductionOfTheGame. Utile quand on fait réapparaitre ce composant
   const [fontSize, setFontSize] = useState('12px'); // default font size
   const [undoStack, setUndoStack] = useState([]);  
   const [redoStack, setRedoStack] = useState([]); 
   const [rectangleUnderA, setRectangleUnderA] = useState([]); 
   const [backgroundUnderPencil, setBackgroundUnderPencil] = useState([]); 
-  const [isColorPickerVisible, setIsColorPickerVisible] = useState(false); // État pour la visibilité de la palette de couleurs
-  const [isBackgroundColorPicker, setIsBackgroundColorPicker] = useState(false); // État pour la visibilité de la palette de couleurs
-  const refUseClickOutside = useClickOutside(() => setIsColorPickerVisible(false));
+  const [isColorPickerVisible, setIsColorPickerVisible] = useState(false); // Palette de couleurs des lettres
+  const [isBackgroundColorPicker, setIsBackgroundColorPicker] = useState(false); // Palette de couleurs fond des lettres
+  const refUseClickOutside = useClickOutside(() => setIsColorPickerVisible(false)); // Fermer palette de couleurs des lettres
   const refUseClickOutside2 = useClickOutside(() => setIsBackgroundColorPicker(false));
   const textAreaRef = useRef(null);
 
+  
   useEffect(() => {
     setIntroductionOfTheGame(text); // Synchronisation de l'état  
   }, [text]); 
+
+  useEffect(() => {
+    setText(introductionOfTheGame);
+  }, [introductionOfTheGame]);
 
   // Couleur 
   const colors = [
