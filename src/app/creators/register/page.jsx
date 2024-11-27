@@ -7,7 +7,6 @@ import { newCreatorData } from "@/actions/newCreatorData";
 import { toast } from "react-toastify";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation"; // Toujours utiliser ce router quand on choisit le router App
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 
 export default function Register() {
   // Variable
@@ -66,9 +65,11 @@ export default function Register() {
     router.push("/creators/login");
   };
   return (
-    <GeneralLayout>
+    <>
       <section className="w-[30vw] mx-auto my-4 py-4 flex-col bg-white/10 border-2 rounded-2xl">
-        <div className="text-center mx-auto w-[180px] p-3 bg-black/70 text-white text-2xl rounded-2xl border-2 border-black">INSCRIPTION</div>
+        <div className="text-center mx-auto w-[180px] p-3 bg-black/70 text-white text-2xl rounded-2xl border-2 border-black">
+          INSCRIPTION
+        </div>
 
         {/* Form */}
         <form action={registerNewCreator}>
@@ -98,7 +99,8 @@ export default function Register() {
             </div>
             <div className="text-sm md:text-base text-center bg-white pb-2">
               {" "}
-              8 caractères minimum incluant<br></br> au moins 1 chiffre et 1 lettre
+              8 caractères minimum incluant<br></br> au moins 1 chiffre et 1
+              lettre
             </div>
           </div>
 
@@ -136,7 +138,7 @@ export default function Register() {
           </div>
         </form>
       </section>
-    </GeneralLayout>
+    </>
   );
 }
 /* On se sert d'un server action pour pouvoir envoyer des données depuis un composant client*/

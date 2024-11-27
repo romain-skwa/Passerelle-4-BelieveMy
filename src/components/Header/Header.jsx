@@ -11,7 +11,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
-export default function Header() {
+export default function Header({background}) {
   const { data: session } = useSession();
 
       // État pour gérer la visibilité de la zone de recherche
@@ -29,7 +29,7 @@ export default function Header() {
       };
 
   return (
-  <header className="text-white ">
+  <header className={`text-white ${background}`}>
     <section className="flex justify-between laptop:px-8 pt-3 relative">
         {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
         <div className="flex w-[75px] h-10 ml-3 laptop:ml-0 mt-2 laptop:w-40">

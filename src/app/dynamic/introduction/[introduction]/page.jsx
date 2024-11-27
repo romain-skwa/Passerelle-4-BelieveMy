@@ -38,6 +38,7 @@ export default function IntroductionGame() {
   const username = game.username;
   const encodedUsername = encodeURIComponent(username);
   const [loading, setLoading] = useState(true); 
+  const [backgroundImage, setBackgroundImage] = useState();
   /************************************************ */
   useEffect(() => {
     if (!nameofgame) {
@@ -166,15 +167,23 @@ export default function IntroductionGame() {
     }
   };
 
-      // Formatage de la date
-      const formattedDate = game.releaseDate ? new Date(game.releaseDate).toLocaleDateString("fr-FR", {
-        day: 'numeric',  
-        month: 'long',  
-        year: 'numeric'  
-      }) : 'Pas de date concernant ce jeu';
+    // Formatage de la date
+    const formattedDate = game.releaseDate ? new Date(game.releaseDate).toLocaleDateString("fr-FR", {
+      day: 'numeric',  
+      month: 'long',  
+      year: 'numeric'  
+    }) : 'Pas de date concernant ce jeu';
+
+    // BackgroundImage
+    useEffect(() => {
+
+    if(game.urlImageBackground){
+      setBackgroundImage(game.urlImageBackground)
+    }
+  }, [game]); 
 
   return (
-    <GeneralLayout>
+    <GeneralLayout backgroundImage={backgroundImage}>
         {loading ? (
           <Loading /> // Affiche le composant Loading pendant le chargement
         ) : (
