@@ -39,21 +39,21 @@ export const createIntroduction = async (formData) => {
       selectedAdditionalPegi: formData.get("selectedAdditionalPegi"),
       platform: JSON.parse(formData.get("platform")),
       genreOfGame: JSON.parse(formData.get("genreOfGame")),
+      videoLink: formData.get("videoLink")?.trim() || null, 
+      webSiteOfThisGame: formData.get("webSiteOfThisGame")?.trim() || null, 
+      webSiteOfThisCreator: formData.get("webSiteOfThisCreator")?.trim() || null,
+      steamLink: formData.get("steamLink")?.trim() || null,
+      epicGamesLink: formData.get("epicGamesLink")?.trim() || null,
       creation: new Date(),
     };
 
-    // Only add videoLink if it is not empty
-    const videoLink = formData.get("videoLink");
-    if (videoLink && videoLink.length > 0) {
-      introductionData.videoLink = videoLink; // Directly assign it without JSON parsing
-    }
-
-    // Only add webSiteOfThisGame if it is not empty
-    const webSiteOfThisGame = formData.get("webSiteOfThisGame");
-    if (webSiteOfThisGame && webSiteOfThisGame.length > 0) {
-      introductionData.webSiteOfThisGame = JSON.parse(webSiteOfThisGame);
-    }
-
+    // Filtrer les valeurs nulles avant d'insérer dans la base de données
+    Object.keys(introductionData).forEach(key => {
+      if (introductionData[key] === null) {
+        delete introductionData[key];
+      }
+    });
+   
     // Add the post to the database
     await db.collection("introduction-database").insertOne(introductionData);
   } catch (e) {

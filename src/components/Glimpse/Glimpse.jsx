@@ -1,4 +1,4 @@
-// ApercuFormulaire.js
+// ApercuFormulaire.js 
 import React, { useState } from "react";
 import "../../app/styles/components.css";
 import Image from "next/image";
@@ -16,6 +16,8 @@ import logoPegiLangageGrossier from "../../../public/logo/pegi_langageGrossier.j
 import logoPegiPeur from "../../../public/logo/pegi_peur.jpg";
 import logoPegiDrogue from "../../../public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "../../../public/logo/pegi_discrimination.jpg";
+import iconeSteam from "../../../public/icons/steam-icon.png";
+import iconeEpicGames from "../../../public/icons/epicGamesIcon.png";
 
 const pegiImages = {
   3:  { src: logoPegi3,  title: "Pegi 3"  },
@@ -46,7 +48,12 @@ const ApercuFormulaire = ({
   releaseDate,
   platform,
   lienImage,
-  genreOfGame
+  genreOfGame,
+  videoLink,
+  webSiteOfThisGame,
+  webSiteOfThisCreator,
+  steamLink,
+  epicGamesLink,
 }) => {
   const [clickedDivision, setClickedDivision] = useState(null);
 
@@ -60,7 +67,7 @@ const ApercuFormulaire = ({
   const arrayImage = lienImage;
   const imageLink = arrayImage.name;
   return (
-    <section className={`w-[48vw] mx-auto ${ isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white" } `}>
+    <section className={`mt-4 w-[48vw] mx-auto ${ isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white" } `}>
       <h3>Aperçu :</h3>
 
       <div className="flex justify-center">
@@ -153,6 +160,68 @@ const ApercuFormulaire = ({
         className={`p-4 min-h-[50px] m-4 rounded-lg`}
         dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
       />
+      
+      {/******************* Vidéo youtube **********************/}
+      {videoLink && (
+        <div className="flex justify-center">
+          <iframe
+            width="560"
+            height="315"
+            src={videoLink.includes("watch?v=") ? videoLink.replace("watch?v=", "embed/") : videoLink}
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
+
+      <section className="flex justify-center gap-6">
+        {/******************* Site officiel du jeu **********************/}
+        {webSiteOfThisGame && (
+          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
+            <a href={webSiteOfThisGame} target="_blank" rel="noopener noreferrer">
+              Site officiel du jeu
+            </a>
+          </div>
+        )}
+        {/******************* Site officiel des créateurs **********************/}
+        {webSiteOfThisCreator && (
+          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
+            <a href={webSiteOfThisCreator} target="_blank" rel="noopener noreferrer">
+              Site officiel des créateurs
+            </a>
+          </div>
+        )}
+      </section>
+
+      {/******************* Logo Steam & EpicGames **********************/}
+      <section className="mt-4 flex justify-center gap-6">
+        {steamLink && (
+          <>
+          <a href={steamLink} target="_blank" rel="noopener noreferrer">
+            <Image 
+              src={iconeSteam}
+              width={50}
+              height={50}
+              className="w-[50px] h-[50px] hover:scale-105 transition duration-300" 
+              alt="Steam" 
+            />
+          </a>
+          </>
+        )}
+
+        {epicGamesLink && (
+          <>
+          <a href={epicGamesLink} target="_blank" rel="noopener noreferrer">
+            <Image 
+              src={iconeEpicGames}
+              width={50}
+              height={50}
+              className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300" 
+              alt="Steam" 
+            />
+          </a>
+          </>
+        )}
+      </section>
 
       {/******************* Date de sortie du jeu **********************/}
       <div className={`p-4 min-h-[50px] text-right`}>

@@ -39,7 +39,10 @@ export default function introductionGameForm() {
   const [releaseDate, setReleaseDate] = useState(null);
   const [platform, setPlatform] = useState([]);
   const [webSiteOfThisGame, setWebSiteOfThisGame] = useState("");
+  const [webSiteOfThisCreator, setWebSiteOfThisCreator] = useState(""); 
   const [genreOfGame, setGenreOfGame] = useState([]);
+  const [steamLink, setSteamLink] = useState("");
+  const [epicGamesLink, setEpicGamesLink] = useState("");
 
   const [isShortIntroVisible, setIsShortIntroVisible] = useState(false);
   const [isEditorVisible, setIsEditorVisible] = useState(false);
@@ -49,11 +52,22 @@ export default function introductionGameForm() {
   const [isPosterVisible, setIsPosterVisible] = useState(false);
   const [isBackgroundVisible, setIsBackgroundVisible] = useState(false);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
-  const [isWebsiteVisible, setIsWebsiteVisible] = useState(false);
+  const [isWebsiteGameVisible, setIsWebsiteGameVisible] = useState(false);
+  const [isWebsiteCreatorVisible, setIsWebsiteCreatorVisible] = useState(false);
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
+  const [isSteamLinkVisible, setIsSteamLinkVisible] = useState(false);
+  const [isEpicGamesLinkVisible, setIsEpicGamesLinkVisible] = useState(false);
 
   const posterFile = lienImage;
   const backgroundFile = backgroundImage;
+
+  const resetLienImage = () => {
+    setLienImage(""); // Réinitialiser la valeur de lienImage  
+  };
+
+  const resetbackgroundImage = () => {
+    setBackgroundImage(""); // Réinitialiser la valeur de lienImage  
+  };
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
   useEffect(() => {
@@ -112,25 +126,37 @@ export default function introductionGameForm() {
         return toast.error("Vous devez sélectionner au moins une plateforme.");
       }
 
-      // Vérifiez si le site officiel commence par "https://www."
-      if (webSiteOfThisGame && !webSiteOfThisGame.startsWith("https://www.")) {
+      // Vérifiez si le site du jeu commence par "https://"
+      if (webSiteOfThisGame && !webSiteOfThisGame.startsWith("https://")) {
         return toast.error(
-          "Le lien du site officiel doit commencer par 'https://www.'"
+          "Le lien du site officiel doit commencer par 'https://'"
         );
       }
 
-    // Vérification de la date de sortie
-    if (releaseDate) {
-      const releaseDateString = releaseDate.toLocaleDateString("fr-FR"); // Format de la date en français
-      const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
-
-      if (!datePattern.test(releaseDateString)) {
-        return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
+      // Vérifiez si le site des créateurs commence par "https://"
+      if (webSiteOfThisCreator && !webSiteOfThisCreator.startsWith("https://")) {
+        return toast.error(
+          "Le lien du site officiel doit commencer par 'https://'"
+        );
       }
-    } else {
-      return toast.error("Vous devez sélectionner une date de sortie.");
-    }
 
+      // Vérification de la date de sortie
+      if (releaseDate) {
+        const releaseDateString = releaseDate.toLocaleDateString("fr-FR"); // Format de la date en français
+        const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
+
+        if (!datePattern.test(releaseDateString)) {
+          return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
+        }
+      } else {
+        return toast.error("Vous devez sélectionner une date de sortie.");
+      }
+
+      // Vérifiez si le site Steam commence par "https://"
+      if (steamLink && (!steamLink.startsWith("https://") || !steamLink.includes("steam"))) {
+        return toast.error("Le lien vers Steam doit commencer par 'https://'");
+      }
+      
       // Function to send the data to createIntroduction function
       const formData = new FormData();
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
@@ -140,17 +166,23 @@ export default function introductionGameForm() {
       formData.append("releaseDate", releaseDate);
       formData.append("poster", posterFile);
       formData.append("urlPoster", posterFile.name);
-      formData.append("imageBackground", backgroundFile);
-      formData.append("urlImageBackground", backgroundFile.name);
       formData.append("selectedAgePegi", selectedAgePegi);
       formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
       formData.append("genreOfGame", JSON.stringify(genreOfGame));
       formData.append("videoLink", videoLink);
-      formData.append("webSiteOfThisGame", JSON.stringify(webSiteOfThisGame));
+      formData.append("steamLink", steamLink);
+      formData.append("epicGamesLink", epicGamesLink);
+      formData.append("webSiteOfThisGame", webSiteOfThisGame);
+      formData.append("webSiteOfThisCreator", webSiteOfThisCreator);
       formData.append("isDarkMode", isDarkMode.toString());
       formData.append("isIntroOfYourself", isIntroOfYourself.toString());
+      // Ajout conditionnel pour urlImageBackground
+      if (backgroundFile) {
+        formData.append("imageBackground", backgroundFile);
+        formData.append("urlImageBackground", backgroundFile.name);
+      }
+      
       // Debugging
-
       for (const [key, value] of formData.entries()) {
         console.log(key, value);
       }
@@ -163,7 +195,6 @@ export default function introductionGameForm() {
     }
   };
 
-  // Check the adress http
 
   return (
     <GeneralLayout>
@@ -184,86 +215,135 @@ export default function introductionGameForm() {
               style={{
                 backgroundColor:
                   shortIntroduction.length > 1 ? "green" : "#2e2d2c",
+                  border: isShortIntroVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Introduction courte
             </div>
+
             <div
               onClick={() => setIsEditorVisible(!isEditorVisible)}
               style={{
                 backgroundColor:
                   introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",
+                  border: isEditorVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Présentation détaillée
             </div>
+
             <div
               onClick={() => setPlatformVisible(!isPlatformVisible)}
               style={{
                 backgroundColor: platform.length != [] ? "green" : "#2e2d2c",
+                border: isPlatformVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Plate-forme
             </div>
+
             <div
               onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)}
               style={{
                 backgroundColor: releaseDate != null ? "green" : "#2e2d2c",
+                border: isReleaseDateVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Date de sortie
             </div>
+
             <div
               onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)}
               style={{
                 backgroundColor:
                   selectedAgePegi.length != "" ? "green" : "#2e2d2c",
+                  border: isPegiAgeVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Pegi age & catégorie
             </div>
+
             <div
               onClick={() => setIsPosterVisible(!isPosterVisible)}
               style={{
                 backgroundColor: lienImage.length != "" ? "green" : "#2e2d2c",
+                border: isPosterVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Affiche
             </div>
+
             <div
               onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
               style={{
                 backgroundColor:
                   backgroundImage.length != "" ? "green" : "#2e2d2c",
+                  border: isBackgroundVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Arrière plan
             </div>
+
             <div
               onClick={() => setIsCategoryVisible(!isCategoryVisible)}
               style={{
                 backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",
+                border: isCategoryVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Catégorie
             </div>
+
             <div
               onClick={() => setIsVideoVisible(!isVideoVisible)}
               style={{
                 backgroundColor: videoLink.length != "" ? "green" : "#2e2d2c",
+                border: isVideoVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Vidéo youtube
             </div>
+
             <div
-              onClick={() => setIsWebsiteVisible(!isWebsiteVisible)}
+              onClick={() => setIsWebsiteGameVisible(!isWebsiteGameVisible)}
               style={{
-                backgroundColor:
-                  webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
+                backgroundColor: webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
+                border: isWebsiteGameVisible ? "2px solid white" : "2px solid black",
               }}
             >
-              Site officiel
+              Site officiel du jeu
             </div>
+
+            <div
+              onClick={() => setIsWebsiteCreatorVisible(!isWebsiteCreatorVisible)}
+              style={{
+                backgroundColor: webSiteOfThisCreator.length != "" ? "green" : "#2e2d2c",
+                border: isWebsiteCreatorVisible ? "2px solid white" : "2px solid black",
+              }}
+            >
+              Site officiel des créateurs
+            </div>
+
+            <div
+              onClick={() => setIsSteamLinkVisible(!isSteamLinkVisible)}
+              style={{
+                backgroundColor: steamLink.length != "" ? "green" : "#2e2d2c",
+                border: isSteamLinkVisible ? "2px solid white" : "2px solid black",
+              }}
+            >
+              Lien vers le site Steam
+            </div>
+
+            <div
+              onClick={() => setIsEpicGamesLinkVisible(!isEpicGamesLinkVisible)}
+              style={{
+                backgroundColor: epicGamesLink.length != "" ? "green" : "#2e2d2c",
+                border: isEpicGamesLinkVisible ? "2px solid white" : "2px solid black",
+              }}
+            >
+              Lien vers le site Epic Games
+            </div>
+
           </section>
 
           <div className="laptop:flex items-center">
@@ -361,7 +441,7 @@ export default function introductionGameForm() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center bg-amber-400">
+          <div className="flex flex-col items-center gap-3">
             {/**************** Affiche ***************************** */}
             {isPosterVisible && (
               <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
@@ -375,6 +455,15 @@ export default function introductionGameForm() {
                   className="ml-4"
                   onChange={(e) => setLienImage(e.target.files[0])}
                 />
+
+              {lienImage && ( // Affiche le bouton seulement si une image est sélectionnée
+                <div
+                  className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
+                  onClick={resetLienImage}
+                >
+                  Effacer l'image
+                </div>
+                )}
               </div>
             )}
             {/**************** Arrière plan ***************************** */}
@@ -390,6 +479,15 @@ export default function introductionGameForm() {
                   className="ml-4"
                   onChange={(e) => setBackgroundImage(e.target.files[0])}
                 />
+
+                {backgroundImage && ( // Affiche le bouton seulement si une image est sélectionnée
+                <div
+                  className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
+                  onClick={resetbackgroundImage}
+                >
+                  Effacer l'image d'arrière plan
+                </div>
+                )}
               </div>
             )}
             {/**************** Lien vidéo Youtube ***************************** */}
@@ -404,8 +502,8 @@ export default function introductionGameForm() {
               />
             )}
 
-            {/**************** Lien Site officiel ***************************** */}
-            {isWebsiteVisible && (
+            {/**************** Lien Site officiel du jeu***************************** */}
+            {isWebsiteGameVisible && (
               <input
                 type="url"
                 name="webSiteOfThisGame"
@@ -415,6 +513,42 @@ export default function introductionGameForm() {
                 onChange={(e) => setWebSiteOfThisGame(e.target.value)}
               />
             )}
+
+            {/**************** Lien Site officiel des créateurs ***************************** */}
+            {isWebsiteCreatorVisible && (
+              <input
+                type="url"
+                name="webSiteOfThisCreator"
+                placeholder="Lien vers le site officiel du/des créateur(s)"
+                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
+                value={webSiteOfThisCreator}
+                onChange={(e) => setWebSiteOfThisCreator(e.target.value)}
+              />
+            )}
+
+            {/**************** Lien Steam ***************************** */}
+            {isSteamLinkVisible && (
+              <input
+                type="url"
+                name="steamLink"
+                placeholder="Lien vers le site Steam"
+                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
+                value={steamLink}
+                onChange={(e) => setSteamLink(e.target.value)}
+                />
+              )}
+
+            {/**************** Lien Epic Games ***************************** */}
+            {isEpicGamesLinkVisible && (
+              <input
+                type="url"
+                name="epicGamesLink"
+                placeholder="Lien vers le site Epic Games"
+                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
+                value={epicGamesLink}
+                onChange={(e) => setEpicGamesLink(e.target.value)}
+                />
+              )}
           </div>
 
           {isCategoryVisible && (
@@ -435,6 +569,11 @@ export default function introductionGameForm() {
             platform={platform}
             lienImage={lienImage}
             genreOfGame={genreOfGame}
+            videoLink={videoLink}
+            webSiteOfThisGame={webSiteOfThisGame}
+            webSiteOfThisCreator={webSiteOfThisCreator}
+            steamLink={steamLink}
+            epicGamesLink={epicGamesLink}
           />
 
           {isIntroOfYourself && <UserProfileSection user={user} />}

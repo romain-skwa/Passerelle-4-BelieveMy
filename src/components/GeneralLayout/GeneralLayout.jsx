@@ -8,14 +8,14 @@ export default function GeneralLayout({ children, backgroundImage }) {
   const hasBackgroundImage = !!backgroundImage;
   return (
     <section className="flex flex-col h-screen">
-      <Header background={hasBackgroundImage ? "bg-black" : ""} />
+      <Header background={hasBackgroundImage != undefined ? "" : "bg-black"} />
       <main
         className="flex-grow"
         style={{ backgroundImage: `url(/background/${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         {children}
       </main>
-      <Footer background={hasBackgroundImage ? "bg-black" : ""} />
+      <Footer background={hasBackgroundImage != undefined ? "" : "bg-black"} />
     </section>
   );
 }

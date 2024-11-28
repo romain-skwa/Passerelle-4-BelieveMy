@@ -33,7 +33,7 @@ const introduceYourself = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  console.log(`isDarkMode : `, isDarkMode);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -57,7 +57,6 @@ const introduceYourself = () => {
         const data = await response.json();
         setUser(data.user);
 
-        // Si elles existent, les données concernant l'utilisateur sont affichées dans les champs de texte
         // **Modification ici : initialisez isDarkMode en fonction des données utilisateur**
         if (data.user.isDarkMode !== undefined) {
           // Radiobox will be checked automatically
@@ -65,7 +64,8 @@ const introduceYourself = () => {
         } else {
           setIsDarkMode(false); // Si isDarkMode n'existe pas, on le met à false
         }
-
+        
+        // Si elles existent, les données concernant l'utilisateur sont affichées dans les champs de texte
         if (data.user.bio) {
           setBio(data.user.bio);
         }

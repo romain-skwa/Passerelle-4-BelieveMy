@@ -25,6 +25,8 @@ import logoPegiPeur from "../../../../../public/logo/pegi_peur.jpg";
 import logoPegiDrogue from "../../../../../public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "../../../../../public/logo/pegi_discrimination.jpg";
 import Loading from "@/components/Loading/Loading";
+import iconeSteam from "../../../../../public/icons/steam-icon.png";
+import iconeEpicGames from "../../../../../public/icons/epicGamesIcon.png";
 
 export default function IntroductionGame() {
   // Variable
@@ -281,7 +283,7 @@ export default function IntroductionGame() {
           )}
         </div>
 
-        {/* Affichage conditionnel de l'iframe */}
+        {/************ Affichage conditionnel de l'iframe ****************/}
         {game.videoLink && (
           <div className="flex justify-center">
             <iframe
@@ -292,6 +294,56 @@ export default function IntroductionGame() {
             ></iframe>
           </div>
         )}
+
+        <section className="flex justify-center gap-6">
+          {/******************* Site officiel du jeu **********************/}
+          {game.webSiteOfThisGame && (
+            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
+              <a href={game.webSiteOfThisGame} target="_blank" rel="noopener noreferrer">
+                Site officiel du jeu
+              </a>
+            </div>
+          )}
+          {/******************* Site officiel des créateurs **********************/}
+          {game.webSiteOfThisCreator && (
+            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
+              <a href={game.webSiteOfThisCreator} target="_blank" rel="noopener noreferrer">
+                Site officiel des créateurs
+              </a>
+            </div>
+          )}
+        </section>
+
+        {/******************* Logo Steam & EpicGames **********************/}
+      <section className="mt-4 flex justify-center gap-6">
+        {game.steamLink && (
+          <>
+          <a href={game.steamLink} target="_blank" rel="noopener noreferrer">
+            <Image 
+              src={iconeSteam}
+              width={50}
+              height={50}
+              className="w-[50px] h-[50px] hover:scale-105 transition duration-300" 
+              alt="Steam" 
+            />
+          </a>
+          </>
+        )}
+
+        {game.epicGamesLink && (
+          <>
+          <a href={game.epicGamesLink} target="_blank" rel="noopener noreferrer">
+            <Image 
+              src={iconeEpicGames}
+              width={50}
+              height={50}
+              className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300" 
+              alt="Steam" 
+            />
+          </a>
+          </>
+        )}
+      </section>
 
         {/******************* Date de sortie du jeu **********************/}
         <div className={"p-4 min-h-[50px] text-right"}>
