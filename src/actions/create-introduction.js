@@ -4,6 +4,18 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { MongoClient } from "mongodb";
 
+// Vérifier si le nom du jeu existe déjà
+const checkIfGameExists = async (nameOfGame) => {
+  const client = await MongoClient.connect(process.env.MONGODB_CLIENT);
+  const db = client.db(process.env.MONGODB_DATABASE);
+
+  const existingGame = await db.collection("introduction-database").findOne({ nameofgame: nameOfGame });
+
+  await client.close();
+
+  return existingGame !== null; // Renvoie true si le jeu existe déjà
+};
+
 export const createIntroduction = async (formData) => {
   // Variable
   const session = await getServerSession(authOptions);
@@ -11,6 +23,16 @@ export const createIntroduction = async (formData) => {
   // If the user isn't connected
   if (!session.user) {
     throw new Error("Vous devez être connecté");
+  }
+
+  // Récupérer le nom du jeu
+  const nameOfGame = formData.get("nameOfGame");
+
+
+  // Vérifier si le nom du jeu existe déjà
+  const gameExists = await checkIfGameExists(nameOfGame);
+  if (gameExists) {
+    throw new Error("Ce nom de jeu existe déjà dans la base de données.");
   }
 
   let client;
