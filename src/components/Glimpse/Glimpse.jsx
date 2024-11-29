@@ -18,6 +18,9 @@ import logoPegiDrogue from "../../../public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "../../../public/logo/pegi_discrimination.jpg";
 import iconeSteam from "../../../public/icons/steam-icon.png";
 import iconeEpicGames from "../../../public/icons/epicGamesIcon.png";
+import PlayerSolo from "../../../public/icons/solo.png";
+import MultiPlayersLocal from "../../../public/icons/multiLocal.png";
+import MultiPlayersOnline from "../../../public/icons/muliOnline.jpg";
 
 const pegiImages = {
   3:  { src: logoPegi3,  title: "Pegi 3"  },
@@ -54,6 +57,7 @@ const ApercuFormulaire = ({
   webSiteOfThisCreator,
   steamLink,
   epicGamesLink,
+  SoloMulti,
 }) => {
   const [clickedDivision, setClickedDivision] = useState(null);
 
@@ -66,6 +70,14 @@ const ApercuFormulaire = ({
 
   const arrayImage = lienImage;
   const imageLink = arrayImage.name;
+
+  // Liste des modes de jeu
+  const SoloMultis = [
+    { genre: "Solo", icon: PlayerSolo },
+    { genre: "Multijoueur local", icon: MultiPlayersLocal },
+    { genre: "Multijoueur en ligne", icon: MultiPlayersOnline },
+  ];
+  const displayOrder = ["Solo", "Multijoueur local", "Multijoueur en ligne"];
   return (
     <section className={`mt-4 w-[48vw] mx-auto ${ isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white" } `}>
       <h3>Aperçu :</h3>
@@ -147,7 +159,38 @@ const ApercuFormulaire = ({
             ))}
           </div>
         )}  
-
+      
+      {/******************* Solo / Multi ******************************/}
+      {SoloMulti && SoloMulti.length > 0 && (
+        <div className="buttonSoloMulti-container">
+          {SoloMulti
+            .slice()
+            .sort((a, b) => displayOrder.indexOf(a) - displayOrder.indexOf(b)) // Trier selon l'ordre défini
+            .map((genre) => {
+            const icon = SoloMultis.find((item) => item.genre === genre)?.icon; // Trouver l'icône correspondante
+            return (
+              <div
+                key={genre}
+                className="buttonSoloMulti"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <span style={{ marginRight: "10px" }}>{genre}</span>
+                {icon && (
+                  <img
+                    src={icon.src}
+                    alt={genre}
+                    style={{ width: "50px", height: "50px", borderRadius: "10px" }}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
       {/******************* Petite introduction en gras ******************************/}
       <div
         className={`p-4 min-h-[50px] font-bold mx-4 rounded-lg`}

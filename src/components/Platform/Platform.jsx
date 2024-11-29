@@ -35,7 +35,7 @@ const ButtonPlatform = ({platform, setPlatform}) => {
         <div
             key={platformName}
             onClick={() => handlePlatformClick(platformName)}
-            className={`buttonPlatform ${platform.includes(platformName) ? 'bg-green-700 border border-white' : 'bg-[rgba(148, 163, 184, 0.7)] border-2 border-gray-600'}`}
+            className={`buttonPlatform ${platform.includes(platformName) ? 'bg-green-900 border border-white' : 'bg-gray-800 border-2 border-gray-600'}`}
         >
             {platformName}
         </div>

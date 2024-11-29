@@ -29,6 +29,7 @@ export const createIntroduction = async (formData) => {
       releaseDate: formData.get("releaseDate"),
       shortIntroduction: formData.get("shortIntroduction"),
       content: formData.get("introductionOfTheGame"),
+      SoloMulti: JSON.parse(formData.get("SoloMulti")),
       urlPoster: formData.get("urlPoster"),
       //poster: formData.get("poster"), pour plus tard, quand il faudra stocker l'image sur un serveur
       urlImageBackground: formData.get("urlImageBackground"),

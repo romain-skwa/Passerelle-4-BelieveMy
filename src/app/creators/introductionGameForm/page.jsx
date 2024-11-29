@@ -1,21 +1,22 @@
 "use client";
 
 import { createIntroduction } from "@/actions/create-introduction";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import EditorPerso from "@/components/EditorPerso/EditorPerso";
-import Glimpse from "@/components/Glimpse/Glimpse"; // Aperçu
-import he from "he";
-import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
-import Pegi from "@/components/Pegi/Pegi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import he from "he";
+import "../../styles/formulary.css";
+import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import EditorPerso from "@/components/EditorPerso/EditorPerso";
+import Glimpse from "@/components/Glimpse/Glimpse"; // Aperçu
+import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
+import Pegi from "@/components/Pegi/Pegi";
+import ButtonSoloMulti from "@/components/ButtonSoloMulti/ButtonSoloMulti";
 import Platform from "./../../../components/Platform/Platform";
 import GenreOfGame from "./../../../components/GenreOfGame/GenreOfGame";
-import "../../styles/formulary.css";
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -39,10 +40,11 @@ export default function introductionGameForm() {
   const [releaseDate, setReleaseDate] = useState(null);
   const [platform, setPlatform] = useState([]);
   const [webSiteOfThisGame, setWebSiteOfThisGame] = useState("");
-  const [webSiteOfThisCreator, setWebSiteOfThisCreator] = useState(""); 
+  const [webSiteOfThisCreator, setWebSiteOfThisCreator] = useState("");
   const [genreOfGame, setGenreOfGame] = useState([]);
   const [steamLink, setSteamLink] = useState("");
   const [epicGamesLink, setEpicGamesLink] = useState("");
+  const [SoloMulti, setSoloMulti] = useState([]);console.log(`SoloMulti : `, SoloMulti);
 
   const [isShortIntroVisible, setIsShortIntroVisible] = useState(false);
   const [isEditorVisible, setIsEditorVisible] = useState(false);
@@ -57,16 +59,17 @@ export default function introductionGameForm() {
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
   const [isSteamLinkVisible, setIsSteamLinkVisible] = useState(false);
   const [isEpicGamesLinkVisible, setIsEpicGamesLinkVisible] = useState(false);
+  const [isSoloMulti, setIsSoloMulti] = useState(false); 
 
   const posterFile = lienImage;
   const backgroundFile = backgroundImage;
 
   const resetLienImage = () => {
-    setLienImage(""); // Réinitialiser la valeur de lienImage  
+    setLienImage(""); // Réinitialiser la valeur de lienImage
   };
 
   const resetbackgroundImage = () => {
-    setBackgroundImage(""); // Réinitialiser la valeur de lienImage  
+    setBackgroundImage(""); // Réinitialiser la valeur de lienImage
   };
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
@@ -104,20 +107,14 @@ export default function introductionGameForm() {
 
     try {
       const file = lienImage;
-      if (!file) {
-        return toast.error("Vous devez sélectionner un fichier image");
-      }
+      if (!file) {return toast.error("Vous devez sélectionner un fichier image");}
 
       if (!file.name.match(/\.(jpg|jpeg|png)$/i)) {
-        return toast.error(
-          "Le lien de l'image doit être au format jpg, jpeg ou png"
-        );
+        return toast.error("Le lien de l'image doit être au format jpg, jpeg ou png");
       }
 
       if (!selectedAgePegi) {
-        return toast.error(
-          "Vous devez sélectionner un âge parmi les options disponibles."
-        );
+        return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
       }
 
       // Vérifiez si au moins une plateforme est sélectionnée
@@ -128,16 +125,12 @@ export default function introductionGameForm() {
 
       // Vérifiez si le site du jeu commence par "https://"
       if (webSiteOfThisGame && !webSiteOfThisGame.startsWith("https://")) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
 
       // Vérifiez si le site des créateurs commence par "https://"
       if (webSiteOfThisCreator && !webSiteOfThisCreator.startsWith("https://")) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
 
       // Vérification de la date de sortie
@@ -146,7 +139,9 @@ export default function introductionGameForm() {
         const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
 
         if (!datePattern.test(releaseDateString)) {
-          return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
+          return toast.error(
+            "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)"
+          );
         }
       } else {
         return toast.error("Vous devez sélectionner une date de sortie.");
@@ -156,7 +151,7 @@ export default function introductionGameForm() {
       if (steamLink && (!steamLink.startsWith("https://") || !steamLink.includes("steam"))) {
         return toast.error("Le lien vers Steam doit commencer par 'https://'");
       }
-      
+
       // Function to send the data to createIntroduction function
       const formData = new FormData();
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
@@ -166,6 +161,7 @@ export default function introductionGameForm() {
       formData.append("releaseDate", releaseDate);
       formData.append("poster", posterFile);
       formData.append("urlPoster", posterFile.name);
+      formData.append("SoloMulti", JSON.stringify(SoloMulti));
       formData.append("selectedAgePegi", selectedAgePegi);
       formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
       formData.append("genreOfGame", JSON.stringify(genreOfGame));
@@ -181,11 +177,11 @@ export default function introductionGameForm() {
         formData.append("imageBackground", backgroundFile);
         formData.append("urlImageBackground", backgroundFile.name);
       }
-      
+
       // Debugging
-      for (const [key, value] of formData.entries()) {
+      /*for (const [key, value] of formData.entries()) {
         console.log(key, value);
-      }
+      }*/
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
       // Redirect
@@ -194,7 +190,6 @@ export default function introductionGameForm() {
       return toast.error(error.message);
     }
   };
-
 
   return (
     <GeneralLayout>
@@ -215,7 +210,9 @@ export default function introductionGameForm() {
               style={{
                 backgroundColor:
                   shortIntroduction.length > 1 ? "green" : "#2e2d2c",
-                  border: isShortIntroVisible ? "2px solid white" : "2px solid black",
+                border: isShortIntroVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Introduction courte
@@ -226,7 +223,7 @@ export default function introductionGameForm() {
               style={{
                 backgroundColor:
                   introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",
-                  border: isEditorVisible ? "2px solid white" : "2px solid black",
+                border: isEditorVisible ? "2px solid white" : "2px solid black",
               }}
             >
               Présentation détaillée
@@ -236,7 +233,9 @@ export default function introductionGameForm() {
               onClick={() => setPlatformVisible(!isPlatformVisible)}
               style={{
                 backgroundColor: platform.length != [] ? "green" : "#2e2d2c",
-                border: isPlatformVisible ? "2px solid white" : "2px solid black",
+                border: isPlatformVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Plate-forme
@@ -246,7 +245,9 @@ export default function introductionGameForm() {
               onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)}
               style={{
                 backgroundColor: releaseDate != null ? "green" : "#2e2d2c",
-                border: isReleaseDateVisible ? "2px solid white" : "2px solid black",
+                border: isReleaseDateVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Date de sortie
@@ -257,7 +258,9 @@ export default function introductionGameForm() {
               style={{
                 backgroundColor:
                   selectedAgePegi.length != "" ? "green" : "#2e2d2c",
-                  border: isPegiAgeVisible ? "2px solid white" : "2px solid black",
+                border: isPegiAgeVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Pegi age & catégorie
@@ -274,11 +277,23 @@ export default function introductionGameForm() {
             </div>
 
             <div
+              onClick={() => setIsSoloMulti(!isSoloMulti)}
+              style={{
+                backgroundColor: lienImage.length != "" ? "green" : "#2e2d2c",
+                border: isSoloMulti ? "2px solid white" : "2px solid black",
+              }}
+            >
+              Solo / Multi
+            </div>
+
+            <div
               onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
               style={{
                 backgroundColor:
                   backgroundImage.length != "" ? "green" : "#2e2d2c",
-                  border: isBackgroundVisible ? "2px solid white" : "2px solid black",
+                border: isBackgroundVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Arrière plan
@@ -288,7 +303,9 @@ export default function introductionGameForm() {
               onClick={() => setIsCategoryVisible(!isCategoryVisible)}
               style={{
                 backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",
-                border: isCategoryVisible ? "2px solid white" : "2px solid black",
+                border: isCategoryVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Catégorie
@@ -307,18 +324,26 @@ export default function introductionGameForm() {
             <div
               onClick={() => setIsWebsiteGameVisible(!isWebsiteGameVisible)}
               style={{
-                backgroundColor: webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
-                border: isWebsiteGameVisible ? "2px solid white" : "2px solid black",
+                backgroundColor:
+                  webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
+                border: isWebsiteGameVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Site officiel du jeu
             </div>
 
             <div
-              onClick={() => setIsWebsiteCreatorVisible(!isWebsiteCreatorVisible)}
+              onClick={() =>
+                setIsWebsiteCreatorVisible(!isWebsiteCreatorVisible)
+              }
               style={{
-                backgroundColor: webSiteOfThisCreator.length != "" ? "green" : "#2e2d2c",
-                border: isWebsiteCreatorVisible ? "2px solid white" : "2px solid black",
+                backgroundColor:
+                  webSiteOfThisCreator.length != "" ? "green" : "#2e2d2c",
+                border: isWebsiteCreatorVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Site officiel des créateurs
@@ -328,7 +353,9 @@ export default function introductionGameForm() {
               onClick={() => setIsSteamLinkVisible(!isSteamLinkVisible)}
               style={{
                 backgroundColor: steamLink.length != "" ? "green" : "#2e2d2c",
-                border: isSteamLinkVisible ? "2px solid white" : "2px solid black",
+                border: isSteamLinkVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Lien vers le site Steam
@@ -337,13 +364,15 @@ export default function introductionGameForm() {
             <div
               onClick={() => setIsEpicGamesLinkVisible(!isEpicGamesLinkVisible)}
               style={{
-                backgroundColor: epicGamesLink.length != "" ? "green" : "#2e2d2c",
-                border: isEpicGamesLinkVisible ? "2px solid white" : "2px solid black",
+                backgroundColor:
+                  epicGamesLink.length != "" ? "green" : "#2e2d2c",
+                border: isEpicGamesLinkVisible
+                  ? "2px solid white"
+                  : "2px solid black",
               }}
             >
               Lien vers le site Epic Games
             </div>
-
           </section>
 
           <div className="laptop:flex items-center">
@@ -390,9 +419,9 @@ export default function introductionGameForm() {
           {/**************** Editeur de texte ********************************************** */}
           {isEditorVisible && (
             <EditorPerso
-              introductionOfTheGame={introductionOfTheGame} 
+              introductionOfTheGame={introductionOfTheGame}
               setIntroductionOfTheGame={setIntroductionOfTheGame}
-              onTextChange={(newText) => { 
+              onTextChange={(newText) => {
                 setIntroductionOfTheGame(newText);
               }}
             />
@@ -431,13 +460,20 @@ export default function introductionGameForm() {
               setSelectedAdditionalPegi={setSelectedAdditionalPegi}
             />
           )}
+
+          {/**************** Sole ou Multi ***************************** */}
+          {isSoloMulti && (
+            <ButtonSoloMulti SoloMulti={SoloMulti} setSoloMulti={setSoloMulti} />
+          )}
+
           {/**************** Ajout de la biographie du créateur ***************************** */}
           <div className="flex justify-center">
             <div
               className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
               onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
             >
-              Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
+              Souhaitez-vous ajouter la présentation de vous-même ou de votre
+              équipe ?
             </div>
           </div>
 
@@ -456,13 +492,13 @@ export default function introductionGameForm() {
                   onChange={(e) => setLienImage(e.target.files[0])}
                 />
 
-              {lienImage && ( // Affiche le bouton seulement si une image est sélectionnée
-                <div
-                  className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
-                  onClick={resetLienImage}
-                >
-                  Effacer l'image
-                </div>
+                {lienImage && ( // Affiche le bouton seulement si une image est sélectionnée
+                  <div
+                    className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
+                    onClick={resetLienImage}
+                  >
+                    Effacer l'image
+                  </div>
                 )}
               </div>
             )}
@@ -481,12 +517,12 @@ export default function introductionGameForm() {
                 />
 
                 {backgroundImage && ( // Affiche le bouton seulement si une image est sélectionnée
-                <div
-                  className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
-                  onClick={resetbackgroundImage}
-                >
-                  Effacer l'image d'arrière plan
-                </div>
+                  <div
+                    className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
+                    onClick={resetbackgroundImage}
+                  >
+                    Effacer l'image d'arrière plan
+                  </div>
                 )}
               </div>
             )}
@@ -535,8 +571,8 @@ export default function introductionGameForm() {
                 className="block w-[95%] tablet:w-[60%] p-1 pl-2"
                 value={steamLink}
                 onChange={(e) => setSteamLink(e.target.value)}
-                />
-              )}
+              />
+            )}
 
             {/**************** Lien Epic Games ***************************** */}
             {isEpicGamesLinkVisible && (
@@ -547,8 +583,8 @@ export default function introductionGameForm() {
                 className="block w-[95%] tablet:w-[60%] p-1 pl-2"
                 value={epicGamesLink}
                 onChange={(e) => setEpicGamesLink(e.target.value)}
-                />
-              )}
+              />
+            )}
           </div>
 
           {isCategoryVisible && (
@@ -562,16 +598,17 @@ export default function introductionGameForm() {
             nameOfGame={nameOfGame}
             shortIntroduction={shortIntroduction}
             introductionOfTheGame={introductionOfTheGame}
-            isDarkMode={isDarkMode}
+            platform={platform}
+            releaseDate={releaseDate}
             selectedAgePegi={selectedAgePegi}
             selectedAdditionalPegi={selectedAdditionalPegi}
-            releaseDate={releaseDate}
-            platform={platform}
             lienImage={lienImage}
+            SoloMulti={SoloMulti}
             genreOfGame={genreOfGame}
             videoLink={videoLink}
             webSiteOfThisGame={webSiteOfThisGame}
             webSiteOfThisCreator={webSiteOfThisCreator}
+            isDarkMode={isDarkMode}
             steamLink={steamLink}
             epicGamesLink={epicGamesLink}
           />

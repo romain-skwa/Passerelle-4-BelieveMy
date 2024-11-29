@@ -27,6 +27,9 @@ import logoPegiDiscrimination from "../../../../../public/logo/pegi_discriminati
 import Loading from "@/components/Loading/Loading";
 import iconeSteam from "../../../../../public/icons/steam-icon.png";
 import iconeEpicGames from "../../../../../public/icons/epicGamesIcon.png";
+import PlayerSolo from "../../../../../public/icons/solo.png";
+import MultiPlayersLocal from "../../../../../public/icons/multiLocal.png";
+import MultiPlayersOnline from "../../../../../public/icons/muliOnline.jpg";
 
 export default function IntroductionGame() {
   // Variable
@@ -184,6 +187,14 @@ export default function IntroductionGame() {
     }
   }, [game]); 
 
+   // Liste des modes de jeu
+   const SoloMultis = [
+    { genre: "Solo", icon: PlayerSolo },
+    { genre: "Multijoueur local", icon: MultiPlayersLocal },
+    { genre: "Multijoueur en ligne", icon: MultiPlayersOnline },
+  ];
+  const displayOrder = ["Solo", "Multijoueur local", "Multijoueur en ligne"];
+
   return (
     <GeneralLayout backgroundImage={backgroundImage}>
         {loading ? (
@@ -263,7 +274,37 @@ export default function IntroductionGame() {
                 ))}
               </div>
             )}  
-
+{/******************* Solo / Multi ******************************/}
+      {game.SoloMulti && game.SoloMulti.length > 0 && (
+        <div className="buttonSoloMulti-container">
+          {game.SoloMulti
+            .slice()
+            .sort((a, b) => displayOrder.indexOf(a) - displayOrder.indexOf(b)) // Trier selon l'ordre défini
+            .map((genre) => {
+            const icon = SoloMultis.find((item) => item.genre === genre)?.icon; // Trouver l'icône correspondante
+            return (
+              <div
+                key={genre}
+                className="buttonSoloMulti"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <span style={{ marginRight: "10px" }}>{genre}</span>
+                {icon && (
+                  <img
+                    src={icon.src}
+                    alt={genre}
+                    style={{ width: "50px", height: "50px", borderRadius: "10px" }}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
         {/******************** Introduction courte en gras **********************************************/}
         {game.shortIntroduction ? (
           <div className="p-4 min-h-[50px] font-bold ">
