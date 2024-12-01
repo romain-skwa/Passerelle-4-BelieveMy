@@ -165,7 +165,7 @@ h3 {
   letter-spacing: 0.1rem;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0.5rem; /* Espacement entre les boutons */
+  margin-inline: 0.5rem; /* Espacement entre les boutons */
   transition: background-color 0.3s; /* Effet de transition pour le survol */
   /*border: 1px rgb(5, 4, 4) solid;*/
   display: inline-block;
@@ -181,6 +181,7 @@ h3 {
   justify-content: center;
   gap: 1.2rem;
   margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 .buttonSoloMulti {
   height: 34px;

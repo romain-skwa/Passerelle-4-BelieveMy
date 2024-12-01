@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import he from "he";
-import "../../../styles/TinyMce.css";
+import "../../../styles/introduction.css";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -33,16 +33,17 @@ import MultiPlayersOnline from "../../../../../public/icons/muliOnline.jpg";
 
 export default function IntroductionGame() {
   // Variable
-  const params = useParams();console.log(`params : `, params);
+  const params = useParams();
   const nameofgame = decodeURIComponent(params.introduction); // Important de mettre le nom du dossier [profilecreators]
 
   // State
   const [game, setgame] = useState({});
+  console.log(`game : `, game);
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [user, setUser] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
   const encodedUsername = encodeURIComponent(username);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState();
   /************************************************ */
   useEffect(() => {
@@ -102,25 +103,24 @@ export default function IntroductionGame() {
         setUser(data.user); // Mettez à jour l'état `user` avec les données récupérées
       };
 
-      fetchDataCreatorOfThisGame(); 
+      fetchDataCreatorOfThisGame();
     }
-  }, [game, creatorOfThisGame]); 
+  }, [game, creatorOfThisGame]);
 
   /**************************************************** */
 
   // Déterminer les classes en fonction de isDarkMode
   const isDarkMode = game.isDarkMode; // Récupérer la valeur
 
-  let sectionClasses =
-    "text-black bg-white w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4"; // Valeur par défaut
+  let isDarkClass; // Valeur par défaut
 
   if (isDarkMode === "true") {
-    sectionClasses =
-      "text-white bg-[rgba(0,0,0,0.90)] w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4";
+    isDarkClass =
+      "text-white bg-[rgba(0,0,0,0.90)]";
   } else {
     // if (isDarkMode === "false") or undefined
-    sectionClasses =
-      "text-black bg-white w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4";
+    isDarkClass =
+      "text-black bg-white";
   }
 
   // Vérifiez si videoLink existe et modifiez-le si nécessaire
@@ -159,36 +159,47 @@ export default function IntroductionGame() {
 
   const getImageForPegi = (pegi) => {
     switch (pegi) {
-      case "Jeux de Hasard": return { src: logoPegiJeuxHasard, title: "Jeux de Hasard" };
-      case "Violence": return { src: logoPegiViolence, title: "Violence" };
-      case "Langage Grossier": return { src: logoPegiLangageGrossier, title: "Langage Grossier" };
-      case "Peur": return { src: logoPegiPeur, title: "Peur" };
-      case "Sexe": return { src: logoPegiSexe, title: "Sexe" };
-      case "Online": return { src: logoPegiOnline, title: "Online" };
-      case "Nudité": return { src: logoPegiNudite, title: "Nudité" };
-      case "Drogue": return { src: logoPegiDrogue, title: "Drogue" };
-      case "Discrimination": return { src: logoPegiDiscrimination, title: "Discrimination" };
-      default: return null;
+      case "Jeux de Hasard":
+        return { src: logoPegiJeuxHasard, title: "Jeux de Hasard" };
+      case "Violence":
+        return { src: logoPegiViolence, title: "Violence" };
+      case "Langage Grossier":
+        return { src: logoPegiLangageGrossier, title: "Langage Grossier" };
+      case "Peur":
+        return { src: logoPegiPeur, title: "Peur" };
+      case "Sexe":
+        return { src: logoPegiSexe, title: "Sexe" };
+      case "Online":
+        return { src: logoPegiOnline, title: "Online" };
+      case "Nudité":
+        return { src: logoPegiNudite, title: "Nudité" };
+      case "Drogue":
+        return { src: logoPegiDrogue, title: "Drogue" };
+      case "Discrimination":
+        return { src: logoPegiDiscrimination, title: "Discrimination" };
+      default:
+        return null;
     }
   };
 
-    // Formatage de la date
-    const formattedDate = game.releaseDate ? new Date(game.releaseDate).toLocaleDateString("fr-FR", {
-      day: 'numeric',  
-      month: 'long',  
-      year: 'numeric'  
-    }) : 'Pas de date concernant ce jeu';
+  // Formatage de la date
+  const formattedDate = game.releaseDate
+    ? new Date(game.releaseDate).toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "Pas de date concernant ce jeu";
 
-    // BackgroundImage
-    useEffect(() => {
-
-    if(game.urlImageBackground){
-      setBackgroundImage(game.urlImageBackground)
+  // BackgroundImage
+  useEffect(() => {
+    if (game.urlImageBackground) {
+      setBackgroundImage(game.urlImageBackground);
     }
-  }, [game]); 
+  }, [game]);
 
-   // Liste des modes de jeu
-   const SoloMultis = [
+  // Liste des modes de jeu
+  const SoloMultis = [
     { genre: "Solo", icon: PlayerSolo },
     { genre: "Multijoueur local", icon: MultiPlayersLocal },
     { genre: "Multijoueur en ligne", icon: MultiPlayersOnline },
@@ -197,213 +208,261 @@ export default function IntroductionGame() {
 
   return (
     <GeneralLayout backgroundImage={backgroundImage}>
-        {loading ? (
-          <Loading /> // Affiche le composant Loading pendant le chargement
-        ) : (
-      <section className={sectionClasses}>
-        <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
-          {decodeURIComponent(game.nameofgame)}{" "}
-        </h1>
+      {loading ? (
+        <Loading /> // Affiche le composant Loading pendant le chargement
+      ) : (
+        <section className={`${isDarkClass} w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4`}>
+            <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
+              {decodeURIComponent(game.nameofgame)}{" "}
+            </h1>
 
-        {/**************** Affichage des plate-formes PC et Consoles ********************/}
-          {game.platform && (
-              <div className={` flex justify-center gap-2 items-center `}>
+            {/**************** Affichage des plate-formes PC et Consoles ********************/}
+            {game.platform && (
+              <div className={`flex justify-center gap-2 items-center`}>
                 {game.platform.map((plat, index) => (
                   <div
                     key={index}
-                    style={{ fontSize: '13px', padding: '1px 4px',  letterSpacing: '0.1rem'}}
-                    className={
-                      `inline-flex items-center   rounded-md  h-auto
-                      ${ isDarkMode == true ? " border border-white" : " border-2 border-gray-700 "} 
-                      `}
+                    style={{
+                      fontSize: "13px",
+                      padding: "1px 4px",
+                      letterSpacing: "0.1rem",
+                    }}
+                    className={`inline-flex items-center rounded-md h-auto
+                        ${
+                          isDarkMode == true
+                            ? " border border-white"
+                            : " border-2 border-gray-700 "
+                        } 
+                        `}
                   >
                     {plat}
                   </div>
                 ))}
               </div>
-            )}  
-
-        {/******************** Affichage des images PEGI Age **************************/}
-        <div className={`w-[95%] mx-auto flex justify-between align-middle gap-1`}>
-          {/* Affichage de l'image Pegi AGE correspondante */}
-            {pegiImage && (
-              <Image
-                src={pegiImage.src}
-                alt={pegiImage.title}
-                title={pegiImage.title}
-                width={50} 
-                height={50} 
-              />
             )}
 
-          {/**************** Affichage des PEGI Catégories (Violence, Multijoueur) ********************/}
-          <div className={`flex gap-1`}>
-            {game.selectedAdditionalPegi &&
-              Array.isArray(game.selectedAdditionalPegi) &&
-              game.selectedAdditionalPegi.length > 0 &&
-              game.selectedAdditionalPegi.map((pegi, index) => {
-                const pegiData = getImageForPegi(pegi);
-                return pegiData ? (
+            {/******************** Affichage des images PEGI Age **************************/}
+            {pegiImage && (
+              <div
+                className={`w-[95%] my-4 mx-auto flex ${
+                  game.selectedAdditionalPegi.length > 0
+                    ? "justify-between"
+                    : "justify-center"
+                } align-middle gap-1`}
+              >
+                {/* Affichage de l'image Pegi AGE correspondante */}
+                {pegiImage && (
                   <Image
-                    key={index}
-                    src={pegiData.src}
-                    alt={pegiData.title}
-                    title={pegiData.title} 
+                    src={pegiImage.src}
+                    alt={pegiImage.title}
+                    title={pegiImage.title}
                     width={50}
                     height={50}
                   />
-                ) : null; // Si aucune image n'est trouvée, ne rien afficher
-              })}
-          </div>
-        </div>
+                )}
 
-        {/******************* Affichage des catégories **********************/}
-        {game.genreOfGame && (
+                {/**************** Affichage des PEGI Catégories (Violence, Multijoueur) ********************/}
+                <div className={`flex gap-1`}>
+                  {game.selectedAdditionalPegi &&
+                    Array.isArray(game.selectedAdditionalPegi) &&
+                    game.selectedAdditionalPegi.length > 0 &&
+                    game.selectedAdditionalPegi.map((pegi, index) => {
+                      const pegiData = getImageForPegi(pegi);
+                      return pegiData ? (
+                        <Image
+                          key={index}
+                          src={pegiData.src}
+                          alt={pegiData.title}
+                          title={pegiData.title}
+                          width={50}
+                          height={50}
+                        />
+                      ) : null; // Si aucune image n'est trouvée, ne rien afficher
+                    })}
+                </div>
+              </div>
+            )}
+
+            {/******************* Affichage des catégories **********************/}
+            {game.genreOfGame && (
               <div className={` flex justify-center gap-2 items-center `}>
                 {game.genreOfGame.map((genre, index) => (
                   <div
                     key={index}
-                    style={{ fontSize: '15px', padding: '0px 8px 4px',  letterSpacing: '0.1rem'}}
-                    className={
-                      `inline-flex items-center   rounded-md 
-                      ${ isDarkMode == true ? " border border-white" : " border-2 border-gray-700 "} 
-                      `}
+                    style={{
+                      fontSize: "15px",
+                      padding: "0px 8px 4px",
+                      letterSpacing: "0.1rem",
+                    }}
+                    className={`inline-flex items-center rounded-md 
+                        ${
+                          isDarkMode == true
+                            ? " border border-white"
+                            : " border-2 border-gray-700 "
+                        } 
+                        `}
                   >
                     {genre}
                   </div>
                 ))}
               </div>
-            )}  
-{/******************* Solo / Multi ******************************/}
-      {game.SoloMulti && game.SoloMulti.length > 0 && (
-        <div className="buttonSoloMulti-container">
-          {game.SoloMulti
-            .slice()
-            .sort((a, b) => displayOrder.indexOf(a) - displayOrder.indexOf(b)) // Trier selon l'ordre défini
-            .map((genre) => {
-            const icon = SoloMultis.find((item) => item.genre === genre)?.icon; // Trouver l'icône correspondante
-            return (
-              <div
-                key={genre}
-                className="buttonSoloMulti"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "10px",
-                }}
-              >
-                <span style={{ marginRight: "10px" }}>{genre}</span>
-                {icon && (
-                  <img
-                    src={icon.src}
-                    alt={genre}
-                    style={{ width: "50px", height: "50px", borderRadius: "10px" }}
-                  />
-                )}
+            )}
+            {/******************* Solo / Multi ******************************/}
+            {game.SoloMulti && game.SoloMulti.length > 0 && (
+              <div className="flex justify-center mt-4 pb-2 gap-5 ">
+                {game.SoloMulti.slice()
+                  .sort(
+                    (a, b) => displayOrder.indexOf(a) - displayOrder.indexOf(b)
+                  ) // Trier selon l'ordre défini
+                  .map((genre) => {
+                    const icon = SoloMultis.find(
+                      (item) => item.genre === genre
+                    )?.icon; // Trouver l'icône correspondante
+                    return (
+                      <div
+                        key={genre}
+                        className="buttonSoloMulti"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          padding: "10px",
+                        }}
+                      >
+                        <span style={{ marginRight: "10px" }}>{genre}</span>
+                        {icon && (
+                          <img
+                            src={icon.src}
+                            alt={genre}
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "10px",
+                            }}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
               </div>
-            );
-          })}
-        </div>
-      )}
-        {/******************** Introduction courte en gras **********************************************/}
-        {game.shortIntroduction ? (
-          <div className="p-4 min-h-[50px] font-bold ">
-            {game.shortIntroduction}
-          </div>
-        ) : null}
-        {/******************** Présentation détaillée ************************************************/}
-        <div className="p-4 ">
-          {game.content ? (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: he.decode(game.content.toString()),
-              }}
-            />
-          ) : (
-            <div>Aucun contenu disponible</div>
-          )}
-        </div>
+            )}
 
-        {/************ Affichage conditionnel de l'iframe ****************/}
-        {game.videoLink && (
-          <div className="flex justify-center">
-            <iframe
-              width="560"
-              height="315"
-              src={game.videoLink}
-              allowFullScreen
-            ></iframe>
-          </div>
-        )}
+            {/***********************************************************************************************/}
+            {/******************** Introduction courte en gras **********************************************/}
+            {game.shortIntroduction ? (
+              <div className="p-4 min-h-[50px] font-bold mx-4">
+                {game.shortIntroduction}
+              </div>
+            ) : null}
+            {/******************** Présentation détaillée ************************************************/}
+            <div className="p-4">
+              {game.content ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: he.decode(game.content.toString()),
+                  }}
+                />
+              ) : (
+                <div>Aucun contenu disponible</div>
+              )}
+            </div>
 
-        <section className="flex justify-center gap-6">
-          {/******************* Site officiel du jeu **********************/}
-          {game.webSiteOfThisGame && (
-            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
-              <a href={game.webSiteOfThisGame} target="_blank" rel="noopener noreferrer">
-                Site officiel du jeu
-              </a>
+            {/************ vidéo Youtube ****************/}
+            {game.videoLink && (
+              <div className="flex justify-center pt-6">
+                <iframe
+                  width="560"
+                  height="315"
+                  src={game.videoLink}
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
+
+            <section className="mt-4 flex flex-col laptop:flex-row laptop:justify-center gap-6">
+              {/******************* Site officiel du jeu **********************/}
+              {game.webSiteOfThisGame && (
+                <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0">
+                  <a
+                    href={game.webSiteOfThisGame}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Site officiel du jeu
+                  </a>
+                </div>
+              )}
+              {/******************* Site officiel des créateurs **********************/}
+              {game.webSiteOfThisCreator && (
+                <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl  w-[220px] mx-auto laptop:m-0">
+                  <a
+                    href={game.webSiteOfThisCreator}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Site officiel des créateurs
+                  </a>
+                </div>
+              )}
+            </section>
+
+            {/******************* Logo Steam & EpicGames **********************/}
+            <section className="pt-6 flex justify-center gap-6">
+              {game.steamLink && (
+                <>
+                  <a
+                    href={game.steamLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      src={iconeSteam}
+                      width={50}
+                      height={50}
+                      className="w-[50px] h-[50px] hover:scale-105 transition duration-300"
+                      alt="Steam"
+                    />
+                  </a>
+                </>
+              )}
+
+              {game.epicGamesLink && (
+                <>
+                  <a
+                    href={game.epicGamesLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      src={iconeEpicGames}
+                      width={40}
+                      height={40}
+                      className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300"
+                      alt="Steam"
+                    />
+                  </a>
+                </>
+              )}
+            </section>
+
+            {/******************* Date de sortie du jeu **********************/}
+            <div className={"p-4 pr-6 min-h-[50px] text-right"}>
+              Sortie le {formattedDate}.
             </div>
-          )}
-          {/******************* Site officiel des créateurs **********************/}
-          {game.webSiteOfThisCreator && (
-            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
-              <a href={game.webSiteOfThisCreator} target="_blank" rel="noopener noreferrer">
-                Site officiel des créateurs
-              </a>
-            </div>
-          )}
+
+            {/************ Affichage Nom du créateur **********************/}
+            {user ? (
+              <UserProfileSection user={user} />
+            ) : (
+              <div className="p-4">
+                <Link
+                  href={`../../../dynamic/profilecreators/@${encodedUsername}`}
+                >
+                  Jeu créé par {game.username}
+                </Link>
+              </div>
+            )}
         </section>
-
-        {/******************* Logo Steam & EpicGames **********************/}
-      <section className="mt-4 flex justify-center gap-6">
-        {game.steamLink && (
-          <>
-          <a href={game.steamLink} target="_blank" rel="noopener noreferrer">
-            <Image 
-              src={iconeSteam}
-              width={50}
-              height={50}
-              className="w-[50px] h-[50px] hover:scale-105 transition duration-300" 
-              alt="Steam" 
-            />
-          </a>
-          </>
-        )}
-
-        {game.epicGamesLink && (
-          <>
-          <a href={game.epicGamesLink} target="_blank" rel="noopener noreferrer">
-            <Image 
-              src={iconeEpicGames}
-              width={50}
-              height={50}
-              className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300" 
-              alt="Steam" 
-            />
-          </a>
-          </>
-        )}
-      </section>
-
-        {/******************* Date de sortie du jeu **********************/}
-        <div className={"p-4 min-h-[50px] text-right"}>
-          Sortie le {formattedDate}.
-        </div>
-
-        {/************ Affichage Nom du créateur **********************/}        
-        {user 
-            ? 
-          <UserProfileSection user={user}/> 
-            :
-          <div>
-              <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
-                Jeu créé par {game.username}
-              </Link> 
-            </div> 
-        }
-      </section>
-    )}
+      )}
     </GeneralLayout>
   );
 }

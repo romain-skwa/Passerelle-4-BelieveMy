@@ -79,31 +79,35 @@ const ApercuFormulaire = ({
   ];
   const displayOrder = ["Solo", "Multijoueur local", "Multijoueur en ligne"];
   return (
-    <section className={`mt-4 w-[48vw] mx-auto ${ isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white" } `}>
+    <section className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${ isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white" } `}>
       <h3>Aperçu :</h3>
 
       <div className="flex justify-center">
-        <div className={`p-4 min-h-[50px] text-3xl font-bold text-center inline-block rounded-lg`}>
+        <div className={`p-4 min-h-[50px] text-3xl font-bold text-center`}>
           {nameOfGame}
         </div>
       </div>
 
-        {/**************** Affichage des plate-formes PC et Consoles *******************/}
-          {platform && (
-          <div className={` flex justify-center gap-2 items-center `}>
-            {platform.map((plat, index) => (
-              <div
-                key={index}
-                className={`buttonPlatform ${ isDarkMode ? "text-white border border-white" : "text-black border-2 border-gray-700 "} `}
-              >
-                {plat}
-              </div>
-            ))}
-          </div>
-        )}
+      {/**************** Affichage des plate-formes PC et Consoles *******************/}
+        {platform && (
+        <div className={` flex justify-center gap-2 items-center `}>
+          {platform.map((plat, index) => (
+            <div
+              key={index}
+              className={`buttonPlatform ${ isDarkMode ? "text-white border border-white" : "text-black border-2 border-gray-700 "} `}
+            >
+              {plat}
+            </div>
+          ))}
+        </div>
+      )}
         
       {/********************************** PEGI *******************************************************************************/}
-      <div className={`w-[95%] mx-auto flex justify-between align-middle gap-1`}>
+      <div className={`w-[95%] my-4 mx-auto flex align-middle gap-1  ${
+                  selectedAdditionalPegi.length > 0
+                    ? "justify-between"
+                    : "justify-center"
+                } `}>
 
         {/**************** Affichage des images PEGI Age *******************/}
         <div className={` flex justify-center gap-1 `}>
@@ -193,14 +197,14 @@ const ApercuFormulaire = ({
       )}
       {/******************* Petite introduction en gras ******************************/}
       <div
-        className={`p-4 min-h-[50px] font-bold mx-4 rounded-lg`}
+        className={`p-4 min-h-[50px] font-bold mx-4 `}
       >
         {shortIntroduction}
       </div>
 
       {/********************** Description détaillée *********************************/}
       <div
-        className={`p-4 min-h-[50px] m-4 rounded-lg`}
+        className={`p-4 min-h-[50px]`}
         dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
       />
       
@@ -216,10 +220,10 @@ const ApercuFormulaire = ({
         </div>
       )}
 
-      <section className="flex justify-center gap-6">
+      <section className="mt-4 flex flex-col laptop:flex-row laptop:justify-center gap-6">
         {/******************* Site officiel du jeu **********************/}
         {webSiteOfThisGame && (
-          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
+          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0">
             <a href={webSiteOfThisGame} target="_blank" rel="noopener noreferrer">
               Site officiel du jeu
             </a>
@@ -227,7 +231,7 @@ const ApercuFormulaire = ({
         )}
         {/******************* Site officiel des créateurs **********************/}
         {webSiteOfThisCreator && (
-          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl">
+          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0">
             <a href={webSiteOfThisCreator} target="_blank" rel="noopener noreferrer">
               Site officiel des créateurs
             </a>
@@ -236,7 +240,7 @@ const ApercuFormulaire = ({
       </section>
 
       {/******************* Logo Steam & EpicGames **********************/}
-      <section className="mt-4 flex justify-center gap-6">
+      <section className="pt-6 flex justify-center gap-6">
         {steamLink && (
           <>
           <a href={steamLink} target="_blank" rel="noopener noreferrer">
@@ -267,7 +271,7 @@ const ApercuFormulaire = ({
       </section>
 
       {/******************* Date de sortie du jeu **********************/}
-      <div className={`p-4 min-h-[50px] text-right`}>
+      <div className={`p-4 pr-6 min-h-[50px] text-right`}>
         Sortie le {formattedDate}.
       </div>
 

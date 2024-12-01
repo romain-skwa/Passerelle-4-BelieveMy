@@ -149,7 +149,7 @@ export default function introductionGameForm() {
 
       // Vérifiez si le site Steam commence par "https://"
       if (steamLink && (!steamLink.startsWith("https://") || !steamLink.includes("steam"))) {
-        return toast.error("Le lien vers Steam doit commencer par 'https://'");
+        return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
       }
 
       // Function to send the data to createIntroduction function
@@ -204,8 +204,8 @@ export default function introductionGameForm() {
             de présentation de votre jeux.
           </p>
 
-          <section >
-            <div>Obligatoire</div>
+          <section className="border mb-3">
+          <div className="flex justify-center text-white text-xl">Obligatoire</div>
             <div className="bandeauTop ">
               <div
                 onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
@@ -290,9 +290,9 @@ export default function introductionGameForm() {
             </div>
           </section>
 
-          <section>
-            <div className="flex justify-center text-white">Facultatif</div>
-            <div className="bandeauTop ">
+          <section className="border mb-3">
+            <div className="flex justify-center text-white text-xl">Facultatif</div>
+            <div className="bandeauTop">
               <div
                 onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
                 style={{

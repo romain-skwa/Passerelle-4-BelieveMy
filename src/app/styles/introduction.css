@@ -1,0 +1,9 @@
+.neuphormism{
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 
+        5px 5px 10px black, 
+        -5px -5px 10px black, 
+        inset  -5px -5px 10px black, 
+        inset  5px 5px 10px rgb(135, 134, 134);
+}
