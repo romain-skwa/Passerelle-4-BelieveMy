@@ -38,7 +38,6 @@ export default function IntroductionGame() {
 
   // State
   const [game, setgame] = useState({});
-  console.log(`game : `, game);
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [user, setUser] = useState(); // When the bio of the creator of this game is called
   const username = game.username;

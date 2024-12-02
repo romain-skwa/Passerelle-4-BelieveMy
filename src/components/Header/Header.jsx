@@ -29,7 +29,7 @@ export default function Header({background}) {
       };
 
   return (
-  <header className={`text-white ${background}`}>
+  <header className={`text-white pb-2 ${background}`}>
     <section className="flex justify-between laptop:px-8 pt-3 relative">
         {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
         <div className="flex w-[75px] h-10 ml-3 laptop:ml-0 mt-2 laptop:w-40">

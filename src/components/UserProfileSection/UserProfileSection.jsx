@@ -11,8 +11,8 @@ const UserProfileSection = ({user}) => {
   }
   return (
     <section className={user.isDarkMode ? 
-      "w-[95%] laptop:w-[48vw] mx-auto p-2 laptop:p-4 rounded-xl text-white bg-[rgba(0,0,0,0.90)]" : 
-      "w-[95%] laptop:w-[48vw] mx-auto p-2 laptop:p-4 rounded-xl text-black bg-white"
+      "w-[95%] laptop:w-[50vw] mx-auto p-2 laptop:p-4 rounded-xl text-white bg-[rgba(0,0,0,0.90)]" : 
+      "w-[95%] laptop:w-[50vw] mx-auto p-2 laptop:p-4 rounded-xl text-black bg-white"
     }>
       <div className="text-center mb-2">
           <div className="hidden tablet:block">

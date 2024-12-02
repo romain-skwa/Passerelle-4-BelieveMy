@@ -32,7 +32,7 @@ export default function introductionGameForm() {
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
   const [lienImage, setLienImage] = useState("");
-  const [backgroundImage, setBackgroundImage] = useState("");
+  const [backgroundFile, setBackgroundFile] = useState(""); console.log(`backgroundFile : `, backgroundFile)
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
@@ -44,7 +44,7 @@ export default function introductionGameForm() {
   const [genreOfGame, setGenreOfGame] = useState([]);
   const [steamLink, setSteamLink] = useState("");
   const [epicGamesLink, setEpicGamesLink] = useState("");
-  const [SoloMulti, setSoloMulti] = useState([]);console.log(`SoloMulti : `, SoloMulti);
+  const [SoloMulti, setSoloMulti] = useState([]);
 
   const [isShortIntroVisible, setIsShortIntroVisible] = useState(false);
   const [isEditorVisible, setIsEditorVisible] = useState(false);
@@ -62,14 +62,13 @@ export default function introductionGameForm() {
   const [isSoloMulti, setIsSoloMulti] = useState(false); 
 
   const posterFile = lienImage;
-  const backgroundFile = backgroundImage;
 
   const resetLienImage = () => {
     setLienImage(""); // Réinitialiser la valeur de lienImage
   };
 
-  const resetbackgroundImage = () => {
-    setBackgroundImage(""); // Réinitialiser la valeur de lienImage
+  const resetbackgroundFile = () => {
+    setBackgroundFile(""); // Réinitialiser la valeur de backgroundFile
   };
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
@@ -117,8 +116,16 @@ export default function introductionGameForm() {
         return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
       }
 
-      // Vérifiez si au moins une plateforme est sélectionnée
+      // Vérifiez le nombre de caractères de la courte introduction
+      if(shortIntroduction.length > 400 ){
+        return toast.error("L'introduction doit comporter 400 caractères maximum.");
+      }
 
+      //Vérifiez le nombre de caractères de la présentation détaillée
+      if(introductionOfTheGame.length > 10000){
+        return toast.error("La présentation doit comporter 10 000 caractères maximum.");
+      }
+      // Vérifiez si au moins une plateforme est sélectionnée
       if (platform.length === 0) {
         return toast.error("Vous devez sélectionner au moins une plateforme.");
       }
@@ -297,7 +304,7 @@ export default function introductionGameForm() {
                 onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
                 style={{
                   backgroundColor:
-                    backgroundImage.length != "" ? "green" : "#2e2d2c",
+                    backgroundFile.length != "" ? "green" : "#2e2d2c",
                   border: isBackgroundVisible
                     ? "2px solid white"
                     : "2px solid black",
@@ -521,13 +528,13 @@ export default function introductionGameForm() {
                   name="imageBackground"
                   accept=".jpg, .jpeg, .png"
                   className="ml-4"
-                  onChange={(e) => setBackgroundImage(e.target.files[0])}
+                  onChange={(e) => setBackgroundFile(e.target.files[0])}
                 />
 
-                {backgroundImage && ( // Affiche le bouton seulement si une image est sélectionnée
+                {backgroundFile && ( // Affiche le bouton seulement si une image est sélectionnée
                   <div
                     className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
-                    onClick={resetbackgroundImage}
+                    onClick={resetbackgroundFile}
                   >
                     Effacer l'image d'arrière plan
                   </div>
@@ -602,7 +609,31 @@ export default function introductionGameForm() {
             />
           )}
 
-          <Glimpse
+          
+          <div className="flex justify-center">
+            <button
+              className="bg-green-500 p-3 w-60 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
+              disabled={
+                nameOfGame.length < 1 ||
+                introductionOfTheGame.length < 1 ||
+                platform < 1 ||
+                shortIntroduction < 1 ||
+                lienImage === ""
+              } /* Désactivé si les champs sont vides */
+            >
+              Envoyer la présentation
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section style={{
+        backgroundImage: backgroundFile.name ? `url(/background/${backgroundFile.name})` : 'none',
+        backgroundSize: 'cover', // Optionnel, pour couvrir tout l'espace
+        backgroundPosition: 'center', // Optionnel, pour centrer l'image
+        }}>
+
+        <Glimpse
             nameOfGame={nameOfGame}
             shortIntroduction={shortIntroduction}
             introductionOfTheGame={introductionOfTheGame}
@@ -622,20 +653,6 @@ export default function introductionGameForm() {
           />
 
           {isIntroOfYourself && <UserProfileSection user={user} />}
-
-          <button
-            className="bg-green-500 p-3 mx-auto w-40 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
-            disabled={
-              nameOfGame.length < 1 ||
-              introductionOfTheGame.length < 1 ||
-              platform < 1 ||
-              shortIntroduction < 1 ||
-              lienImage === ""
-            } /* Désactivé si les champs sont vides */
-          >
-            Envoyer
-          </button>
-        </form>
       </section>
     </GeneralLayout>
   );

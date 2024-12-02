@@ -10,7 +10,7 @@ export default function GeneralLayout({ children, backgroundImage }) {
     <section className="flex flex-col h-screen">
       <Header background={hasBackgroundImage ? "bg-black" : ""} />
       <main
-        className="flex-grow"
+        className="flex-grow pt-6 pb-6"
         style={{
           backgroundImage: `url(/background/${backgroundImage})`,
           backgroundSize: "cover",
