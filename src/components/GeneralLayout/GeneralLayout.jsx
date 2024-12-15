@@ -15,7 +15,7 @@ export default function GeneralLayout({ children, backgroundImage }) {
           backgroundImage: `url(/background/${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          boxShadow: "inset 0px -5px 10px black, inset 0px 5px 10px black",
+          boxShadow: "inset 0px -5px 10px black, inset 0px 10px 15px black",
         }}
       >
         {children}

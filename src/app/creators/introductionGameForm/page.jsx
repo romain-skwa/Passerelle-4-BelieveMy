@@ -17,6 +17,7 @@ import Pegi from "@/components/Pegi/Pegi";
 import ButtonSoloMulti from "@/components/ButtonSoloMulti/ButtonSoloMulti";
 import Platform from "./../../../components/Platform/Platform";
 import GenreOfGame from "./../../../components/GenreOfGame/GenreOfGame";
+import {ImageUpload} from "./../../../components/ImageUpload/ImageUpload";
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -117,12 +118,12 @@ export default function introductionGameForm() {
       }
 
       // Vérifiez le nombre de caractères de la courte introduction
-      if(shortIntroduction.length > 400 ){
+      if (shortIntroduction.length > 400 ){
         return toast.error("L'introduction doit comporter 400 caractères maximum.");
       }
 
       //Vérifiez le nombre de caractères de la présentation détaillée
-      if(introductionOfTheGame.length > 10000){
+      if (introductionOfTheGame.length > 10000){
         return toast.error("La présentation doit comporter 10 000 caractères maximum.");
       }
       // Vérifiez si au moins une plateforme est sélectionnée
@@ -212,7 +213,7 @@ export default function introductionGameForm() {
           </p>
 
           <section className="border mb-3">
-          <div className="flex justify-center text-white text-xl">Obligatoire</div>
+            <div className="flex justify-center text-white text-xl">Obligatoire</div>
             <div className="bandeauTop ">
               <div
                 onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
@@ -515,6 +516,7 @@ export default function introductionGameForm() {
                     Effacer l'image
                   </div>
                 )}
+                <ImageUpload />
               </div>
             )}
             {/**************** Arrière plan ***************************** */}

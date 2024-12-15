@@ -1,8 +1,8 @@
 import React from "react";
 import "../../app/styles/formulary.css";
-import PlayerSolo from "../../../public/icons/solo.png";
-import MultiPlayersLocal from "../../../public/icons/multiLocal.png";
-import MultiPlayersOnline from "../../../public/icons/muliOnline.jpg";
+import PlayerSolo from "/public/icons/solo.png";
+import MultiPlayersLocal from "/public/icons/multiLocal.png";
+import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
 
 const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
   // Liste des modes de jeu

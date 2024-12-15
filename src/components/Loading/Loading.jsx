@@ -1,6 +1,6 @@
 import "../../app/styles/loading.css";
 import Image from "next/image";
-import Pacman from "../../../public/gif/pacman.gif";
+import Pacman from "/public/gif/pacman.gif";
 
 const  Loading =  () => {
     return (

@@ -1,7 +1,7 @@
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { MongoClient } from "mongodb";
 import Image from "next/image";
-import imageTwo from "../../../../public/presentation/mario&co.jpg";
+import imageTwo from "/public/presentation/mario&co.jpg";
 
 //PAGE INUTILISEE
 export default async function Allgamesimages() {
