@@ -12,11 +12,11 @@ const HomeImages = ({ introductionsImages }) => {
         >
           <Link href={`dynamic/introduction/${encodeURIComponent(post.nameofgame)}`}>
             <Image
-              src={`/presentation/${post.urlPoster}`} // Utilisez l'image que vous souhaitez
+              src={post.urlPosterCloudinary ? `${post.urlPosterCloudinary}` : `/presentation/${post.urlPoster}`} // Condition pour choisir l'URL de l'image
               width={192}
               height={311}
               className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300" // Ajoutez les classes pour l'effet hover
-              alt={`${post.urlPoster}`}
+              alt={`${post.nameofgame}`}
             />
           </Link>
         </div>

@@ -51,7 +51,7 @@ const ApercuFormulaire = ({
   shortIntroduction,
   releaseDate,
   platform,
-  lienImage,
+  urlPosterCloudinary,
   genreOfGame,
   videoLink,
   webSiteOfThisGame,
@@ -69,8 +69,6 @@ const ApercuFormulaire = ({
     year: 'numeric'  
   }) : '';
 
-  const arrayImage = lienImage;
-  const imageLink = arrayImage.name;
 
   // Liste des modes de jeu
   const SoloMultis = [
@@ -276,13 +274,13 @@ const ApercuFormulaire = ({
         Sortie le {formattedDate}.
       </div>
 
-        {imageLink && (
+        {urlPosterCloudinary && (
           <Image
-            src={`/presentation/${imageLink}`}
+            src={urlPosterCloudinary}
             className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
             width={192}
             height={311}
-            alt={`${imageLink}`}
+            alt={`${nameOfGame}`}
           />
         )}
     </section>

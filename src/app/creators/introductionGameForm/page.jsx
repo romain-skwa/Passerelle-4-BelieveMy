@@ -32,8 +32,8 @@ export default function introductionGameForm() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
-  const [lienImage, setLienImage] = useState("");
-  const [backgroundFile, setBackgroundFile] = useState(""); console.log(`backgroundFile : `, backgroundFile)
+  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState("");
+  const [backgroundFile, setBackgroundFile] = useState(""); console.log(`urlPosterCloudinary : `, urlPosterCloudinary)
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
@@ -62,10 +62,9 @@ export default function introductionGameForm() {
   const [isEpicGamesLinkVisible, setIsEpicGamesLinkVisible] = useState(false);
   const [isSoloMulti, setIsSoloMulti] = useState(false); 
 
-  const posterFile = lienImage;
 
-  const resetLienImage = () => {
-    setLienImage(""); // Réinitialiser la valeur de lienImage
+  const resetUrlPosterCloudinary = () => {
+    setUrlPosterCloudinary(""); // Réinitialiser la valeur de urlPosterCloudinary
   };
 
   const resetbackgroundFile = () => {
@@ -106,10 +105,9 @@ export default function introductionGameForm() {
     e.preventDefault();
 
     try {
-      const file = lienImage;
-      if (!file) {return toast.error("Vous devez sélectionner un fichier image");}
+      if (!urlPosterCloudinary) {return toast.error("Vous devez sélectionner un fichier image");}
 
-      if (!file.name.match(/\.(jpg|jpeg|png)$/i)) {
+      if (!urlPosterCloudinary.match(/\.(jpg|jpeg|png)$/i)) {
         return toast.error("Le lien de l'image doit être au format jpg, jpeg ou png");
       }
 
@@ -167,8 +165,7 @@ export default function introductionGameForm() {
       formData.append("introductionOfTheGame",he.encode(introductionOfTheGame));
       formData.append("platform", JSON.stringify(platform));
       formData.append("releaseDate", releaseDate);
-      formData.append("poster", posterFile);
-      formData.append("urlPoster", posterFile.name);
+      formData.append("urlPosterCloudinary", urlPosterCloudinary);
       formData.append("SoloMulti", JSON.stringify(SoloMulti));
       formData.append("selectedAgePegi", selectedAgePegi);
       formData.append("selectedAdditionalPegi", selectedAdditionalPegi);
@@ -279,7 +276,7 @@ export default function introductionGameForm() {
               <div
                 onClick={() => setIsPosterVisible(!isPosterVisible)}
                 style={{
-                  backgroundColor: lienImage.length != "" ? "green" : "#2e2d2c",
+                  backgroundColor: urlPosterCloudinary.length != "" ? "green" : "#2e2d2c",
                   border: isPosterVisible ? "2px solid white" : "2px solid black",
                 }}
               >
@@ -500,23 +497,23 @@ export default function introductionGameForm() {
                 <p className="text-center tablet:inline-block">
                   Choisissez l'affiche du jeu{" "}
                 </p>
-                <input
+              {/*   <input
                   type="file"
                   name="poster"
                   accept=".jpg, .jpeg, .png"
                   className="ml-4"
-                  onChange={(e) => setLienImage(e.target.files[0])}
+                  onChange={(e) => setUrlPosterCloudinary(e.target.files[0])}
                 />
 
-                {lienImage && ( // Affiche le bouton seulement si une image est sélectionnée
+                {urlPosterCloudinary && ( // Affiche le bouton seulement si une image est sélectionnée
                   <div
                     className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
-                    onClick={resetLienImage}
+                    onClick={resetUrlPosterCloudinary}
                   >
                     Effacer l'image
                   </div>
-                )}
-                <ImageUpload />
+                )} */}
+                <ImageUpload setUrlPosterCloudinary={setUrlPosterCloudinary}/>
               </div>
             )}
             {/**************** Arrière plan ***************************** */}
@@ -620,7 +617,7 @@ export default function introductionGameForm() {
                 introductionOfTheGame.length < 1 ||
                 platform < 1 ||
                 shortIntroduction < 1 ||
-                lienImage === ""
+                urlPosterCloudinary === ""
               } /* Désactivé si les champs sont vides */
             >
               Envoyer la présentation
@@ -643,7 +640,7 @@ export default function introductionGameForm() {
             releaseDate={releaseDate}
             selectedAgePegi={selectedAgePegi}
             selectedAdditionalPegi={selectedAdditionalPegi}
-            lienImage={lienImage}
+            urlPosterCloudinary={urlPosterCloudinary}
             SoloMulti={SoloMulti}
             genreOfGame={genreOfGame}
             videoLink={videoLink}

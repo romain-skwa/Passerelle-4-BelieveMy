@@ -52,10 +52,8 @@ export const createIntroduction = async (formData) => {
       shortIntroduction: formData.get("shortIntroduction"),
       content: formData.get("introductionOfTheGame"),
       SoloMulti: JSON.parse(formData.get("SoloMulti")),
-      urlPoster: formData.get("urlPoster"),
-      //poster: formData.get("poster"), pour plus tard, quand il faudra stocker l'image sur un serveur
+      urlPosterCloudinary: formData.get("urlPosterCloudinary"),
       urlImageBackground: formData.get("urlImageBackground"),
-      //poster: formData.get("imageBackground"), pour plus tard, quand il faudra stocker l'image sur un serveur
       isDarkMode: formData.get("isDarkMode"),
       isIntroOfYourself: formData.get("isIntroOfYourself"),
       selectedAgePegi: formData.get("selectedAgePegi"),
