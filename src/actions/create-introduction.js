@@ -53,7 +53,7 @@ export const createIntroduction = async (formData) => {
       content: formData.get("introductionOfTheGame"),
       SoloMulti: JSON.parse(formData.get("SoloMulti")),
       urlPosterCloudinary: formData.get("urlPosterCloudinary"),
-      urlImageBackground: formData.get("urlImageBackground"),
+      urlBackgroundCloudinary: formData.get("urlBackgroundCloudinary"),
       isDarkMode: formData.get("isDarkMode"),
       isIntroOfYourself: formData.get("isIntroOfYourself"),
       selectedAgePegi: formData.get("selectedAgePegi"),

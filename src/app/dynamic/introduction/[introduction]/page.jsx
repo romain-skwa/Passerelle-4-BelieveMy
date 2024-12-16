@@ -192,8 +192,8 @@ export default function IntroductionGame() {
 
   // BackgroundImage
   useEffect(() => {
-    if (game.urlImageBackground) {
-      setBackgroundImage(game.urlImageBackground);
+    if (game.urlBackgroundCloudinary) {
+      setBackgroundImage(game.urlBackgroundCloudinary);
     }
   }, [game]);
 

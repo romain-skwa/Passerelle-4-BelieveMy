@@ -32,8 +32,8 @@ export default function introductionGameForm() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
-  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState("");
-  const [backgroundFile, setBackgroundFile] = useState(""); console.log(`urlPosterCloudinary : `, urlPosterCloudinary)
+  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); console.log(`urlPosterCloudinary : `, urlPosterCloudinary)
+  const [urlBackgroundCloudinary, setUrlBackgroundCloudinary] = useState(""); console.log(`urlBackgroundCloudinary : `, urlBackgroundCloudinary)
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
@@ -67,8 +67,8 @@ export default function introductionGameForm() {
     setUrlPosterCloudinary(""); // Réinitialiser la valeur de urlPosterCloudinary
   };
 
-  const resetbackgroundFile = () => {
-    setBackgroundFile(""); // Réinitialiser la valeur de backgroundFile
+  const resetUrlBackgroundCloudinary = () => {
+    setUrlBackgroundCloudinary(""); // Réinitialiser la valeur de urlBackgroundCloudinary
   };
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
@@ -178,9 +178,8 @@ export default function introductionGameForm() {
       formData.append("isDarkMode", isDarkMode.toString());
       formData.append("isIntroOfYourself", isIntroOfYourself.toString());
       // Ajout conditionnel pour urlImageBackground
-      if (backgroundFile) {
-        formData.append("imageBackground", backgroundFile);
-        formData.append("urlImageBackground", backgroundFile.name);
+      if (urlBackgroundCloudinary) {
+        formData.append("urlBackgroundCloudinary", urlBackgroundCloudinary);
       }
 
       // Debugging
@@ -302,7 +301,7 @@ export default function introductionGameForm() {
                 onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
                 style={{
                   backgroundColor:
-                    backgroundFile.length != "" ? "green" : "#2e2d2c",
+                    urlBackgroundCloudinary.length != "" ? "green" : "#2e2d2c",
                   border: isBackgroundVisible
                     ? "2px solid white"
                     : "2px solid black",
@@ -513,7 +512,7 @@ export default function introductionGameForm() {
                     Effacer l'image
                   </div>
                 )} */}
-                <ImageUpload setUrlPosterCloudinary={setUrlPosterCloudinary}/>
+                <ImageUpload image={setUrlPosterCloudinary} buttonText="Télécharger Affiche"/>
               </div>
             )}
             {/**************** Arrière plan ***************************** */}
@@ -522,22 +521,24 @@ export default function introductionGameForm() {
                 <p className="text-center tablet:inline-block">
                   Choisissez une image pour l'arrière plan{" "}
                 </p>
-                <input
+               {/* <input
                   type="file"
                   name="imageBackground"
                   accept=".jpg, .jpeg, .png"
                   className="ml-4"
-                  onChange={(e) => setBackgroundFile(e.target.files[0])}
+                  onChange={(e) => setUrlBackgroundCloudinary(e.target.files[0])}
                 />
 
-                {backgroundFile && ( // Affiche le bouton seulement si une image est sélectionnée
+                {urlBackgroundCloudinary && ( // Affiche le bouton seulement si une image est sélectionnée
                   <div
                     className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
-                    onClick={resetbackgroundFile}
+                    onClick={resetUrlBackgroundCloudinary}
                   >
                     Effacer l'image d'arrière plan
                   </div>
-                )}
+                )} */}
+                <ImageUpload image={setUrlBackgroundCloudinary} buttonText="Télécharger Background"/>
+
               </div>
             )}
             {/**************** Lien vidéo Youtube ***************************** */}
@@ -627,7 +628,7 @@ export default function introductionGameForm() {
       </section>
 
       <section style={{
-        backgroundImage: backgroundFile.name ? `url(/background/${backgroundFile.name})` : 'none',
+        backgroundImage: urlBackgroundCloudinary ? `url(${urlBackgroundCloudinary})` : 'none',
         backgroundSize: 'cover', // Optionnel, pour couvrir tout l'espace
         backgroundPosition: 'center', // Optionnel, pour centrer l'image
         }}>

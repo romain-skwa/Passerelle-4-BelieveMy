@@ -12,7 +12,7 @@ export default function GeneralLayout({ children, backgroundImage }) {
       <main
         className="flex-grow pt-6 pb-6"
         style={{
-          backgroundImage: `url(/background/${backgroundImage})`,
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           boxShadow: "inset 0px -5px 10px black, inset 0px 10px 15px black",
