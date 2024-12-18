@@ -2,12 +2,14 @@
 // INTRODUCTION OF ONE GAME
 // Dynamic page
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
-import { useParams } from "next/navigation";
+import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
+import Share from "@/components/Share/Share";
+import ShareOnDiscord from "@/components/ShareOnDiscord/ShareOnDiscord";
+import { useParams, usePathname, useSearchParams  } from "next/navigation"; // Avec le routeur App, next/Router ne peut pas être utilisé
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import he from "he";
 import "../../../styles/introduction.css";
-import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import logoPegi3 from "/public/logo/pegi_3.jpg";
@@ -34,6 +36,8 @@ import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
 export default function IntroductionGame() {
   // Variable
   const params = useParams();
+  const pathname = usePathname(); // Récupérer le chemin actuel
+  const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire  
   const nameofgame = decodeURIComponent(params.introduction); // Important de mettre le nom du dossier [profilecreators]
 
   // State
@@ -45,6 +49,19 @@ export default function IntroductionGame() {
   const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState();
   /************************************************ */
+  const title = 'Titre de ma page';
+  const message = "Je vous invite à découvrir ce jeu ! https://votre-site.com/ma-page";
+  const [currentUrl ,setCurrentUrl] = useState(); console.log(`currentUrl : `, currentUrl);
+  
+  // Récupérer l'URL actuelle
+  useEffect(() => {
+    // Assurez-vous que le code est exécuté uniquement côté client
+    if (typeof window !== "undefined") {
+      const fullUrl = `${window.location.origin}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+      setCurrentUrl(fullUrl);
+    }
+  }, [pathname, searchParams]);  // Re-déclencher lorsque le chemin ou les paramètres changent
+
   useEffect(() => {
     if (!nameofgame) {
       notFound();
@@ -91,13 +108,9 @@ export default function IntroductionGame() {
 
         const data = await response.json();
 
-        if (!data) {
-          throw new Error("Invalid JSON response");
-        }
+        if (!data) {throw new Error("Invalid JSON response");}
 
-        if (!response.ok) {
-          toast.error("Une erreur est intervenue");
-        }
+        if (!response.ok) {toast.error("Une erreur est intervenue");}
 
         setUser(data.user); // Mettez à jour l'état `user` avec les données récupérées
       };
@@ -114,8 +127,7 @@ export default function IntroductionGame() {
   let isDarkClass; // Valeur par défaut
 
   if (isDarkMode === "true") {
-    isDarkClass =
-      "text-white bg-[rgba(0,0,0,0.90)]";
+    isDarkClass = "text-white bg-[rgba(0,0,0,0.90)]";
   } else {
     // if (isDarkMode === "false") or undefined
     isDarkClass =
@@ -214,7 +226,9 @@ export default function IntroductionGame() {
             <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
               {decodeURIComponent(game.nameofgame)}{" "}
             </h1>
-
+            <p>L'URL actuelle est : {currentUrl} </p>
+            <Share currentUrl={currentUrl} title={title} />
+            <ShareOnDiscord message={message} />
             {/**************** Affichage des plate-formes PC et Consoles ********************/}
             {game.platform && (
               <div className={`flex justify-center gap-2 items-center`}>
