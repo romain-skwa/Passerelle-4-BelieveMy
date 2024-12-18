@@ -470,7 +470,7 @@ export default function IntroductionGame() {
                 <Link
                   href={`../../../dynamic/profilecreators/@${encodedUsername}`}
                 >
-                  Jeu créé par {game.username}
+                  Jeu créé par {decodeURIComponent(game.username)}
                 </Link>
               </div>
             )}
