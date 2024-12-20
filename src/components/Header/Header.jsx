@@ -3,6 +3,7 @@ import logoInstagram from "/public/logo/instagram_logo.png";
 import logoFacebook from "/public/logo/facebook_logo.png";
 import logoTwitch from "/public/logo/twitch_logo.png";
 import logoDiscord from "/public/logo/discord-logo.png";
+import logoYoutube from "/public/logo/youtube_logo.png";
 import flagBG from "/public/flag/drapeau_uk.jpg";
 import flagFrance from "/public/flag/Flag_France.png";
 import homeIconWhite from "/public/logo/white-home-icon.png";
@@ -10,6 +11,7 @@ import searchIconWhite from "/public/logo/Search-icon.png";
 import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import SocialFrame from "@/components/SocialFrame/SocialFrame";
 
 export default function Header({background}) {
   const { data: session } = useSession();
@@ -32,7 +34,7 @@ export default function Header({background}) {
   <header className={`text-white pb-2 ${background}`}>
     <section className="flex justify-between laptop:px-8 pt-3 relative">
         {/* ----------------DRAPEAUX----------------------------------------------------------------- */}
-        <div className="flex w-[75px] h-10 ml-3 laptop:ml-0 mt-2 laptop:w-40">
+        <div className="flex w-[75px] h-10 ml-3 laptop:ml-0 mt-2 tablet:w-40 ">
           <Image
             src={flagBG}
             alt="Drapeau Grande Bretagne"
@@ -49,19 +51,18 @@ export default function Header({background}) {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="uppercase text-2xl h-20 max-w-[110px]">This is my game</div>       
- 
+        <div className="uppercase text-2xl h-20 max-w-[110px] border">This is my game</div>
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
-        <div className="h-8 w-[75px] laptop:w-[150px] laptop:flex mt-1 mr-3">
-          <div className="flex mb-3">
-            <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7 " />
-            <Image src={logoFacebook}  alt="Logo facebook"  className="w-7 h-7 mx-3" />
-          </div>
-          <div className="flex">
-            <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7 mr-2 laptop:ml-2" />
-            <Image src={logoDiscord} alt="Logo Discord" className="w-8 h-8 mr-3" />
-          </div>
+        <div className="w-[75px] tablet:hidden">
+          <SocialFrame />{/* Visible seulement sur téléphone */}
+        </div>
+        <div className="hidden tablet:flex h-8 w-[75px] tablet:w-[150px] mt-1 mr-3 mb-3 gap-2 flex-row-reverse">
+            <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7" />
+            <Image src={logoFacebook}  alt="Logo facebook" className="w-7 h-7 " />
+            <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7" />
+            <Image src={logoDiscord} alt="Logo Discord" className="w-8 h-8" />
+            <Image src={logoYoutube} alt="Logo Youtube" className="w-7 h-7" />            
         </div>
       </section>
 

@@ -49,9 +49,8 @@ export default function IntroductionGame() {
   const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState();
   /************************************************ */
-  const title = 'Titre de ma page';
   const message = "Je vous invite à découvrir ce jeu ! https://votre-site.com/ma-page";
-  const [currentUrl ,setCurrentUrl] = useState(); console.log(`currentUrl : `, currentUrl);
+  const [currentUrl, setCurrentUrl] = useState(); console.log(`currentUrl : `, currentUrl);
   
   // Récupérer l'URL actuelle
   useEffect(() => {
@@ -227,7 +226,7 @@ export default function IntroductionGame() {
               {decodeURIComponent(game.nameofgame)}{" "}
             </h1>
             <p>L'URL actuelle est : {currentUrl} </p>
-            <Share currentUrl={currentUrl} title={title} />
+            <Share currentUrl={currentUrl} />
             <ShareOnDiscord message={message} />
             {/**************** Affichage des plate-formes PC et Consoles ********************/}
             {game.platform && (

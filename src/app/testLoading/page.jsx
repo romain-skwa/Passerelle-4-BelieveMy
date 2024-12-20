@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";  // Utilisation 
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import Loading from "@/components/Loading/Loading";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import SocialFrame from "@/components/SocialFrame/SocialFrame";
 
 export default function TestPage() {
   const [currentUrl, setCurrentUrl] = useState("");
@@ -24,6 +25,7 @@ export default function TestPage() {
       <p>L'URL actuelle est : {currentUrl}</p>
       <Loading />
       <ImageUpload />
+      <SocialFrame />
     </GeneralLayout>
   );
 }

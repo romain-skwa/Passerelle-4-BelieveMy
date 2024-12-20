@@ -29,3 +29,21 @@
   text-shadow: 2px 2px 7px rgba(0, 0, 0, 1);
   background-color: rgba(148, 163, 184, 0.7);
 }
+/**** SocialFrame *****************************************************************************************/
+.allIconSocial {
+  transform: translateX(0.0rem); /* 6.25rem * 1.5 */
+  animation: iconsMove 10s infinite;
+}
+
+@keyframes iconsMove {
+  0% { transform: translateX(-8.75rem); } /* 6.25rem * 1.5 */
+  15% { transform: translateX(-7.0rem); } /* 5rem * 1.5 */
+  20% { transform: translateX(-7.0rem); } /* 5rem * 1.5 */
+  35% { transform: translateX(-5.2rem); } /* 3.7rem * 1.5 */
+  40% { transform: translateX(-5.2rem); } /* 3.7rem * 1.5 */
+  55% { transform: translateX(-3.45rem); } /* 2.5rem * 1.5 */
+  60% { transform: translateX(-3.45rem); } /* 2.5rem * 1.5 */
+  75% { transform: translateX(-1.8rem); } /* 1.2rem * 1.5 */
+  80% { transform: translateX(-1.8rem); } /* 1.2rem * 1.5 */
+  to { transform: translateX(0rem); }
+}

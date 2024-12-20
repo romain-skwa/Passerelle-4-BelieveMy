@@ -9,13 +9,13 @@ export default function Share({ currentUrl, title }) {
 
   useEffect(() => {
     // Mettre à jour le message de partage une fois que currentUrl est disponible
-    if (currentUrl && title) { // Placer currentUrl AVANT le reste pour que l'encadré youtube s'affiche.
-      setShareMessage(`${ladresseYoutube} - Découvrez cette page : ${title}`);
+    if (currentUrl ) { // Placer currentUrl AVANT le reste pour que l'encadré youtube s'affiche.
+      setShareMessage(`${ladresseYoutube}`);
     }
-  }, [currentUrl, title]); // Recalculer quand currentUrl ou title change
+  }, [currentUrl]); // Recalculer quand currentUrl ou title change
 
   // URL de partage sur Twitter
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(ladresseYoutube)}`;
   
   // URL de partage sur Facebook
   const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ladresseYoutube)}`;
