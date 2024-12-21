@@ -275,13 +275,16 @@ const ApercuFormulaire = ({
       </div>
 
         {urlPosterCloudinary && (
-          <Image
-            src={urlPosterCloudinary}
-            className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
-            width={192}
-            height={311}
-            alt={`${nameOfGame}`}
-          />
+          <>
+            <p className="text-center">Affiche :</p>
+            <Image
+              src={urlPosterCloudinary}
+              className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
+              width={192}
+              height={311}
+              alt={`${nameOfGame}`}
+            />
+          </>
         )}
     </section>
   );

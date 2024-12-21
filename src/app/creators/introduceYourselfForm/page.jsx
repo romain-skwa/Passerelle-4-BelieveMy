@@ -7,10 +7,10 @@ import { toast } from "react-toastify";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import updateBioCreator from "@/actions/updateBioCreator";
 import formulary from "../../styles/formulary.css";
-import logoDiscord from "..//public/logo/discord-logo.png";
-import logoTwitch from "..//public/logo/twitch_logo.png";
-import logoItchi from "..//public/logo/itch-io-icon.png";
-import logoTwitter from "..//public/logo/x__twitter-logo.png";
+import logoDiscord from "../../../../public/logo/discord-logo.png";
+import logoTwitch from "../../../../public/logo/twitch_logo.png";
+import logoItchi from "../../../../public/logo/itch-io-icon.png";
+import logoTwitter from "../../../../public/logo/x__twitter-logo.png";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState("");

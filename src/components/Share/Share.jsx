@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import Image from "next/image";
+import logoTwitter from "../../../public/logo/x__twitter-logo.png";
+import logoFacebook from "../../../public/logo/facebook_logo.png";
 
 // Composant Share qui prend currentUrl et title en props
 export default function Share({ currentUrl, title }) {
@@ -22,15 +25,22 @@ export default function Share({ currentUrl, title }) {
 
   return (
     <div>
-      <p>Partagez cette page :</p>
-      <div>
+      <p className='flex justify-center text-sm mb-2'>Partagez cette page :</p>
+      <div className='flex justify-center gap-2'>
         <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
-          Partager sur Twitter
+          <Image
+            src={logoTwitter}
+            alt="Logo Twitter"
+            className="w-7 h-7 bg-white rounded-md p-1"
+          />
         </a>
-      </div>
-      <div>
+ 
         <a href={facebookUrl} target="_blank" rel="noopener noreferrer">
-          Partager sur Facebook
+          <Image
+            src={logoFacebook}
+            alt="Logo Facebook"
+            className="w-7 h-7 bg-white rounded-md p-1"
+          />
         </a>
       </div>
     </div>

@@ -18,6 +18,7 @@ import ButtonSoloMulti from "@/components/ButtonSoloMulti/ButtonSoloMulti";
 import Platform from "./../../../components/Platform/Platform";
 import GenreOfGame from "./../../../components/GenreOfGame/GenreOfGame";
 import {ImageUpload} from "./../../../components/ImageUpload/ImageUpload";
+import Image from "next/image";
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -32,8 +33,8 @@ export default function introductionGameForm() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
-  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); console.log(`urlPosterCloudinary : `, urlPosterCloudinary)
-  const [urlBackgroundCloudinary, setUrlBackgroundCloudinary] = useState(""); console.log(`urlBackgroundCloudinary : `, urlBackgroundCloudinary)
+  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); 
+  const [urlBackgroundCloudinary, setUrlBackgroundCloudinary] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
@@ -46,7 +47,8 @@ export default function introductionGameForm() {
   const [steamLink, setSteamLink] = useState("");
   const [epicGamesLink, setEpicGamesLink] = useState("");
   const [SoloMulti, setSoloMulti] = useState([]);
-
+  const [formComplete, setFormComplete] = useState(false);
+  
   const [isShortIntroVisible, setIsShortIntroVisible] = useState(false);
   const [isEditorVisible, setIsEditorVisible] = useState(false);
   const [isPlatformVisible, setPlatformVisible] = useState(false);
@@ -61,7 +63,6 @@ export default function introductionGameForm() {
   const [isSteamLinkVisible, setIsSteamLinkVisible] = useState(false);
   const [isEpicGamesLinkVisible, setIsEpicGamesLinkVisible] = useState(false);
   const [isSoloMulti, setIsSoloMulti] = useState(false); 
-
 
   const resetUrlPosterCloudinary = () => {
     setUrlPosterCloudinary(""); // Réinitialiser la valeur de urlPosterCloudinary
@@ -103,6 +104,7 @@ export default function introductionGameForm() {
   /****************** Envoyer les données à l'API createIntroduction **************************/
   const onPrepare = async (e) => {
     e.preventDefault();
+
 
     try {
       if (!urlPosterCloudinary) {return toast.error("Vous devez sélectionner un fichier image");}
@@ -210,7 +212,7 @@ export default function introductionGameForm() {
 
           <section className="border mb-3">
             <div className="flex justify-center text-white text-xl">Obligatoire</div>
-            <div className="bandeauTop ">
+            <div className="bandeauTop">
               <div
                 onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
                 style={{
@@ -478,7 +480,7 @@ export default function introductionGameForm() {
             <ButtonSoloMulti SoloMulti={SoloMulti} setSoloMulti={setSoloMulti} />
           )}
 
-          {/**************** Ajout de la biographie du créateur ***************************** */}
+          {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
           <div className="flex justify-center">
             <div
               className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
@@ -490,58 +492,37 @@ export default function introductionGameForm() {
           </div>
 
           <div className="flex flex-col items-center gap-3">
-            {/**************** Affiche ***************************** */}
+            {/**************** Affiche [encadré] ***************************** */}
             {isPosterVisible && (
               <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
                 <p className="text-center tablet:inline-block">
                   Choisissez l'affiche du jeu{" "}
                 </p>
-              {/*   <input
-                  type="file"
-                  name="poster"
-                  accept=".jpg, .jpeg, .png"
-                  className="ml-4"
-                  onChange={(e) => setUrlPosterCloudinary(e.target.files[0])}
-                />
-
-                {urlPosterCloudinary && ( // Affiche le bouton seulement si une image est sélectionnée
-                  <div
-                    className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
-                    onClick={resetUrlPosterCloudinary}
-                  >
-                    Effacer l'image
-                  </div>
-                )} */}
-                <ImageUpload image={setUrlPosterCloudinary} buttonText="Télécharger Affiche"/>
+              
+                <ImageUpload image={setUrlPosterCloudinary} buttonText="Télécharger Affiche" tag="Affiche" isFormComplete={formComplete} />
+                {urlPosterCloudinary && (
+                  <Image
+                    src={urlPosterCloudinary}
+                    className="lg:w-[192px] lg:h-[311px] py-3 mx-auto inline-block ml-4"
+                    width={192}
+                    height={311}
+                    alt={`${nameOfGame}`}
+                  />
+                )}
               </div>
             )}
-            {/**************** Arrière plan ***************************** */}
+            {/**************** Arrière plan [encadré] ***************************** */}
             {isBackgroundVisible && (
               <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
                 <p className="text-center tablet:inline-block">
                   Choisissez une image pour l'arrière plan{" "}
                 </p>
-               {/* <input
-                  type="file"
-                  name="imageBackground"
-                  accept=".jpg, .jpeg, .png"
-                  className="ml-4"
-                  onChange={(e) => setUrlBackgroundCloudinary(e.target.files[0])}
-                />
-
-                {urlBackgroundCloudinary && ( // Affiche le bouton seulement si une image est sélectionnée
-                  <div
-                    className="mt-2 p-2 bg-red-500 text-white text-center cursor-pointer"
-                    onClick={resetUrlBackgroundCloudinary}
-                  >
-                    Effacer l'image d'arrière plan
-                  </div>
-                )} */}
-                <ImageUpload image={setUrlBackgroundCloudinary} buttonText="Télécharger Background"/>
+               
+                <ImageUpload image={setUrlBackgroundCloudinary} buttonText="Télécharger Background" tag="Background"/>
 
               </div>
             )}
-            {/**************** Lien vidéo Youtube ***************************** */}
+            {/**************** Lien vidéo Youtube [encadré] ***************************** */}
             {isVideoVisible && (
               <input
                 type="url"
@@ -553,7 +534,7 @@ export default function introductionGameForm() {
               />
             )}
 
-            {/**************** Lien Site officiel du jeu***************************** */}
+            {/**************** Lien Site officiel du jeu [encadré]***************************** */}
             {isWebsiteGameVisible && (
               <input
                 type="url"
@@ -565,7 +546,7 @@ export default function introductionGameForm() {
               />
             )}
 
-            {/**************** Lien Site officiel des créateurs ***************************** */}
+            {/**************** Lien Site officiel des créateurs [encadré] ***************************** */}
             {isWebsiteCreatorVisible && (
               <input
                 type="url"
@@ -577,7 +558,7 @@ export default function introductionGameForm() {
               />
             )}
 
-            {/**************** Lien Steam ***************************** */}
+            {/**************** Lien Steam [encadré] ***************************** */}
             {isSteamLinkVisible && (
               <input
                 type="url"
@@ -589,7 +570,7 @@ export default function introductionGameForm() {
               />
             )}
 
-            {/**************** Lien Epic Games ***************************** */}
+            {/**************** Lien Epic Games [encadré] ***************************** */}
             {isEpicGamesLinkVisible && (
               <input
                 type="url"
@@ -608,7 +589,6 @@ export default function introductionGameForm() {
               setSelectedGenres={setGenreOfGame}
             />
           )}
-
           
           <div className="flex justify-center">
             <button
@@ -630,7 +610,7 @@ export default function introductionGameForm() {
       <section style={{
         backgroundImage: urlBackgroundCloudinary ? `url(${urlBackgroundCloudinary})` : 'none',
         backgroundSize: 'cover', // Optionnel, pour couvrir tout l'espace
-        backgroundPosition: 'center', // Optionnel, pour centrer l'image
+        backgroundPosition: 'center', // Optionnel, pour centrer l'image 
         }}>
 
         <Glimpse

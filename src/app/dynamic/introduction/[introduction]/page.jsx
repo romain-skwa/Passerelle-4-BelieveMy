@@ -4,7 +4,6 @@
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import Share from "@/components/Share/Share";
-import ShareOnDiscord from "@/components/ShareOnDiscord/ShareOnDiscord";
 import { useParams, usePathname, useSearchParams  } from "next/navigation"; // Avec le routeur App, next/Router ne peut pas être utilisé
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -227,10 +226,9 @@ export default function IntroductionGame() {
             </h1>
             <p>L'URL actuelle est : {currentUrl} </p>
             <Share currentUrl={currentUrl} />
-            <ShareOnDiscord message={message} />
             {/**************** Affichage des plate-formes PC et Consoles ********************/}
             {game.platform && (
-              <div className={`flex justify-center gap-2 items-center`}>
+              <div className={`flex justify-center gap-2 items-center mt-4`}>
                 {game.platform.map((plat, index) => (
                   <div
                     key={index}
