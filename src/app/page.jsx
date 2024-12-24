@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 export default function Index() {
   const [introductionsImages, setIntroductionsImages] = useState([]);
   const [loading, setLoading] = useState(true);
-console.log(`introductionsImages : `, introductionsImages);
+
   useEffect(() => {
     const fetchImages = async () => {
       try {

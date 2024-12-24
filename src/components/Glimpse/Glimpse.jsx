@@ -276,7 +276,7 @@ const ApercuFormulaire = ({
 
         {urlPosterCloudinary && (
           <>
-            <p className="text-center">Affiche :</p>
+            <p className="text-center">Affiche visible dans la page d'accueil et les résultats des recherches :</p>
             <Image
               src={urlPosterCloudinary}
               className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"

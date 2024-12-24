@@ -25,7 +25,7 @@ export default function Share({ currentUrl, title }) {
 
   return (
     <div>
-      <p className='flex justify-center text-sm mb-2'>Partagez cette page :</p>
+      <p className='flex justify-center text-sm'>Partagez cette page :</p>
       <div className='flex justify-center gap-2'>
         <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
           <Image

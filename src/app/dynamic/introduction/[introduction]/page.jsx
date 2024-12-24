@@ -48,7 +48,6 @@ export default function IntroductionGame() {
   const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState();
   /************************************************ */
-  const message = "Je vous invite à découvrir ce jeu ! https://votre-site.com/ma-page";
   const [currentUrl, setCurrentUrl] = useState(); console.log(`currentUrl : `, currentUrl);
   
   // Récupérer l'URL actuelle
@@ -224,8 +223,6 @@ export default function IntroductionGame() {
             <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
               {decodeURIComponent(game.nameofgame)}{" "}
             </h1>
-            <p>L'URL actuelle est : {currentUrl} </p>
-            <Share currentUrl={currentUrl} />
             {/**************** Affichage des plate-formes PC et Consoles ********************/}
             {game.platform && (
               <div className={`flex justify-center gap-2 items-center mt-4`}>
@@ -471,6 +468,7 @@ export default function IntroductionGame() {
                 </Link>
               </div>
             )}
+            <Share currentUrl={currentUrl} />
         </section>
       )}
     </GeneralLayout>

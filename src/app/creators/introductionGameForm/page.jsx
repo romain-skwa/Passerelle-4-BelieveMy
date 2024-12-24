@@ -17,7 +17,7 @@ import Pegi from "@/components/Pegi/Pegi";
 import ButtonSoloMulti from "@/components/ButtonSoloMulti/ButtonSoloMulti";
 import Platform from "./../../../components/Platform/Platform";
 import GenreOfGame from "./../../../components/GenreOfGame/GenreOfGame";
-import {ImageUpload} from "./../../../components/ImageUpload/ImageUpload";
+import { ImageUpload } from "./../../../components/ImageUpload/ImageUpload";
 import Image from "next/image";
 
 // FORMULARY used by a the creator to introduce one game
@@ -33,7 +33,7 @@ export default function introductionGameForm() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
-  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); 
+  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); console.log("urlPosterCloudinary dans le Formulaire : ", urlPosterCloudinary);
   const [urlBackgroundCloudinary, setUrlBackgroundCloudinary] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
@@ -47,7 +47,6 @@ export default function introductionGameForm() {
   const [steamLink, setSteamLink] = useState("");
   const [epicGamesLink, setEpicGamesLink] = useState("");
   const [SoloMulti, setSoloMulti] = useState([]);
-  const [formComplete, setFormComplete] = useState(false);
   
   const [isShortIntroVisible, setIsShortIntroVisible] = useState(false);
   const [isEditorVisible, setIsEditorVisible] = useState(false);
@@ -206,190 +205,10 @@ export default function introductionGameForm() {
           style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
         >
           <p>
-            {session?.user.username}, sur cette page, vous êtes invité à remplir
-            de présentation de votre jeux.
+            {session?.user.username}, sur cette page, vous êtes invité à remplir de présentation de votre jeux.
           </p>
 
-          <section className="border mb-3">
-            <div className="flex justify-center text-white text-xl">Obligatoire</div>
-            <div className="bandeauTop">
-              <div
-                onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
-                style={{
-                  backgroundColor:
-                    shortIntroduction.length > 1 ? "green" : "#2e2d2c",
-                  border: isShortIntroVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Introduction courte
-              </div>
-
-              <div
-                onClick={() => setIsEditorVisible(!isEditorVisible)}
-                style={{
-                  backgroundColor:
-                    introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",
-                  border: isEditorVisible ? "2px solid white" : "2px solid black",
-                }}
-              >
-                Présentation détaillée
-              </div>
-
-              <div
-                onClick={() => setPlatformVisible(!isPlatformVisible)}
-                style={{
-                  backgroundColor: platform.length != [] ? "green" : "#2e2d2c",
-                  border: isPlatformVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Plate-forme
-              </div>
-
-              <div
-                onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)}
-                style={{
-                  backgroundColor: releaseDate != null ? "green" : "#2e2d2c",
-                  border: isReleaseDateVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Date de sortie
-              </div>
-
-              <div
-                onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)}
-                style={{
-                  backgroundColor:
-                    selectedAgePegi.length != "" ? "green" : "#2e2d2c",
-                  border: isPegiAgeVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Pegi age & catégorie
-              </div>
-
-              <div
-                onClick={() => setIsPosterVisible(!isPosterVisible)}
-                style={{
-                  backgroundColor: urlPosterCloudinary.length != "" ? "green" : "#2e2d2c",
-                  border: isPosterVisible ? "2px solid white" : "2px solid black",
-                }}
-              >
-                Affiche
-              </div>
-
-              <div
-                onClick={() => setIsSoloMulti(!isSoloMulti)}
-                style={{
-                  backgroundColor: SoloMulti.length != "" ? "green" : "#2e2d2c",
-                  border: isSoloMulti ? "2px solid white" : "2px solid black",
-                }}
-              >
-                Solo / Multi
-              </div>
-            </div>
-          </section>
-
-          <section className="border mb-3">
-            <div className="flex justify-center text-white text-xl">Facultatif</div>
-            <div className="bandeauTop">
-              <div
-                onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
-                style={{
-                  backgroundColor:
-                    urlBackgroundCloudinary.length != "" ? "green" : "#2e2d2c",
-                  border: isBackgroundVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Arrière plan
-              </div>
-
-              <div
-                onClick={() => setIsCategoryVisible(!isCategoryVisible)}
-                style={{
-                  backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",
-                  border: isCategoryVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Catégorie
-              </div>
-
-              <div
-                onClick={() => setIsVideoVisible(!isVideoVisible)}
-                style={{
-                  backgroundColor: videoLink.length != "" ? "green" : "#2e2d2c",
-                  border: isVideoVisible ? "2px solid white" : "2px solid black",
-                }}
-              >
-                Vidéo youtube
-              </div>
-
-              <div
-                onClick={() => setIsWebsiteGameVisible(!isWebsiteGameVisible)}
-                style={{
-                  backgroundColor:
-                    webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
-                  border: isWebsiteGameVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Site officiel du jeu
-              </div>
-
-              <div
-                onClick={() =>
-                  setIsWebsiteCreatorVisible(!isWebsiteCreatorVisible)
-                }
-                style={{
-                  backgroundColor:
-                    webSiteOfThisCreator.length != "" ? "green" : "#2e2d2c",
-                  border: isWebsiteCreatorVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Site officiel des créateurs
-              </div>
-
-              <div
-                onClick={() => setIsSteamLinkVisible(!isSteamLinkVisible)}
-                style={{
-                  backgroundColor: steamLink.length != "" ? "green" : "#2e2d2c",
-                  border: isSteamLinkVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Lien vers le site Steam
-              </div>
-
-              <div
-                onClick={() => setIsEpicGamesLinkVisible(!isEpicGamesLinkVisible)}
-                style={{
-                  backgroundColor:
-                    epicGamesLink.length != "" ? "green" : "#2e2d2c",
-                  border: isEpicGamesLinkVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                }}
-              >
-                Lien vers le site Epic Games
-              </div>
-            </div>
-          </section>
-
-          <div className="laptop:flex items-center">
+          <div className="laptop:flex items-center mb-3">
             <input
               type="text"
               name="nameOfGame"
@@ -411,6 +230,218 @@ export default function introductionGameForm() {
             </div>
           </div>
 
+          {/************ Boutons Obligatoires **********************************************************/}
+
+          <section className="border mb-3" style={{cursor: nameOfGame.length >= 2 ? 'pointer' : 'not-allowed'}}>
+            <div className="flex justify-center text-white text-xl">Obligatoire</div>
+            <div className="bandeauTop">
+              <div
+                onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
+                style={{
+                  backgroundColor:
+                    shortIntroduction.length > 1 ? "green" : "#2e2d2c",
+                  border: isShortIntroVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Introduction courte
+              </div>
+
+              <div
+                onClick={() => setIsEditorVisible(!isEditorVisible)}
+                style={{
+                  backgroundColor:
+                    introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",
+                  border: isEditorVisible ? "2px solid white" : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Présentation détaillée
+              </div>
+
+              <div
+                onClick={() => setPlatformVisible(!isPlatformVisible)}
+                style={{
+                  backgroundColor: platform.length != [] ? "green" : "#2e2d2c",
+                  border: isPlatformVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Plate-forme
+              </div>
+
+              <div
+                onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)}
+                style={{
+                  backgroundColor: releaseDate != null ? "green" : "#2e2d2c",
+                  border: isReleaseDateVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Date de sortie
+              </div>
+
+              <div
+                onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)}
+                style={{
+                  backgroundColor:
+                    selectedAgePegi.length != "" ? "green" : "#2e2d2c",
+                  border: isPegiAgeVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Pegi age & catégorie
+              </div>
+
+              <div
+                onClick={() => setIsPosterVisible(!isPosterVisible)}
+                style={{
+                  backgroundColor: urlPosterCloudinary.length != "" ? "green" : "#2e2d2c",
+                  border: isPosterVisible ? "2px solid white" : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Affiche
+              </div>
+
+              <div
+                onClick={() => setIsSoloMulti(!isSoloMulti)}
+                style={{
+                  backgroundColor: SoloMulti.length != "" ? "green" : "#2e2d2c",
+                  border: isSoloMulti ? "2px solid white" : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Solo / Multi
+              </div>
+            </div>
+          </section>
+
+          {/************ Boutons Facultatifs **********************************************************/}
+          <section className="border"  style={{cursor: nameOfGame.length >= 2 ? 'pointer' : 'not-allowed'}}>
+            <div className="flex justify-center text-white text-xl">Facultatif</div>
+            <div className="bandeauTop">
+              <div
+                onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
+                style={{
+                  backgroundColor:
+                    urlBackgroundCloudinary.length != "" ? "green" : "#2e2d2c",
+                  border: isBackgroundVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Arrière plan
+              </div>
+
+              <div
+                onClick={() => setIsCategoryVisible(!isCategoryVisible)}
+                style={{
+                  backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",
+                  border: isCategoryVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Catégorie
+              </div>
+
+              <div
+                onClick={() => setIsVideoVisible(!isVideoVisible)}
+                style={{
+                  backgroundColor: videoLink.length != "" ? "green" : "#2e2d2c",
+                  border: isVideoVisible ? "2px solid white" : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Vidéo youtube
+              </div>
+
+              <div
+                onClick={() => setIsWebsiteGameVisible(!isWebsiteGameVisible)}
+                style={{
+                  backgroundColor:
+                    webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
+                  border: isWebsiteGameVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Site officiel du jeu
+              </div>
+
+              <div
+                onClick={() =>
+                  setIsWebsiteCreatorVisible(!isWebsiteCreatorVisible)
+                }
+                style={{
+                  backgroundColor:
+                    webSiteOfThisCreator.length != "" ? "green" : "#2e2d2c",
+                  border: isWebsiteCreatorVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Site officiel des créateurs
+              </div>
+
+              <div
+                onClick={() => setIsSteamLinkVisible(!isSteamLinkVisible)}
+                style={{
+                  backgroundColor: steamLink.length != "" ? "green" : "#2e2d2c",
+                  border: isSteamLinkVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Lien vers le site Steam
+              </div>
+
+              <div
+                onClick={() => setIsEpicGamesLinkVisible(!isEpicGamesLinkVisible)}
+                style={{
+                  backgroundColor:
+                    epicGamesLink.length != "" ? "green" : "#2e2d2c",
+                  border: isEpicGamesLinkVisible
+                    ? "2px solid white"
+                    : "2px solid black",
+                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
+                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
+                }}
+              >
+                Lien vers le site Epic Games
+              </div>
+            </div>
+          </section>
+
+
+          {/*************************** LES ENCADRÉS ******************************************************/}
           {/**************** Introduction courte ***************************** */}
           {isShortIntroVisible && (
             <div className="border p-2 my-2">
@@ -486,8 +517,7 @@ export default function introductionGameForm() {
               className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
               onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
             >
-              Souhaitez-vous ajouter la présentation de vous-même ou de votre
-              équipe ?
+              Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
             </div>
           </div>
 
@@ -499,7 +529,13 @@ export default function introductionGameForm() {
                   Choisissez l'affiche du jeu{" "}
                 </p>
               
-                <ImageUpload image={setUrlPosterCloudinary} buttonText="Télécharger Affiche" tag="Affiche" isFormComplete={formComplete} />
+                <ImageUpload 
+                  urlCloudinary = {urlPosterCloudinary}
+                  setter={setUrlPosterCloudinary}
+                  buttonText="Télécharger Affiche" 
+                  tag={`Affiche - ${nameOfGame}`}
+                  nameOfGame={nameOfGame}
+                  />
                 {urlPosterCloudinary && (
                   <Image
                     src={urlPosterCloudinary}
@@ -518,7 +554,12 @@ export default function introductionGameForm() {
                   Choisissez une image pour l'arrière plan{" "}
                 </p>
                
-                <ImageUpload image={setUrlBackgroundCloudinary} buttonText="Télécharger Background" tag="Background"/>
+                <ImageUpload 
+                  urlCloudinary={urlBackgroundCloudinary} 
+                  setter={setUrlBackgroundCloudinary} 
+                  buttonText="Télécharger Background" 
+                  tag="Background" 
+                  />
 
               </div>
             )}
