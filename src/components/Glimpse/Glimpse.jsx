@@ -1,4 +1,4 @@
-// ApercuFormulaire.js 
+// ApercuFormulaire.js
 import React, { useState } from "react";
 import "../../app/styles/components.css";
 import "../../app/styles/introduction.css";
@@ -24,8 +24,8 @@ import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
 
 const pegiImages = {
-  3:  { src: logoPegi3,  title: "Pegi 3"  },
-  7:  { src: logoPegi7,  title: "Pegi 7"  },
+  3: { src: logoPegi3, title: "Pegi 3" },
+  7: { src: logoPegi7, title: "Pegi 7" },
   12: { src: logoPegi12, title: "Pegi 12" },
   16: { src: logoPegi16, title: "Pegi 16" },
   18: { src: logoPegi18, title: "Pegi 18" },
@@ -59,16 +59,20 @@ const ApercuFormulaire = ({
   steamLink,
   epicGamesLink,
   SoloMulti,
+  urlImageOne,
+  urlImageTwo,
+  urlImageThree,
 }) => {
   const [clickedDivision, setClickedDivision] = useState(null);
 
   // Formatage de la date
-  const formattedDate = releaseDate ? new Date(releaseDate).toLocaleDateString("fr-FR", {
-    day: 'numeric',  
-    month: 'long',  
-    year: 'numeric'  
-  }) : '';
-
+  const formattedDate = releaseDate
+    ? new Date(releaseDate).toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
 
   // Liste des modes de jeu
   const SoloMultis = [
@@ -78,205 +82,275 @@ const ApercuFormulaire = ({
   ];
   const displayOrder = ["Solo", "Multijoueur local", "Multijoueur en ligne"];
   return (
-    <section className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${ isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white" } `}>
-      <h3>Aperçu :</h3>
+    <>
+      <section
+        className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${
+          isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
+        } `}
+      >
+        <h3>Aperçu de la présentation de votre jeu :</h3>
 
-      <div className="flex justify-center">
-        <div className={`p-4 min-h-[50px] text-3xl font-bold text-center`}>
-          {nameOfGame}
+        <div className="flex justify-center">
+          <div className={`p-4 min-h-[50px] text-3xl font-bold text-center`}>
+            {nameOfGame}
+          </div>
         </div>
-      </div>
 
-      {/**************** Affichage des plate-formes PC et Consoles *******************/}
+        {/**************** Affichage des plate-formes PC et Consoles *******************/}
         {platform && (
-        <div className={` flex justify-center gap-2 items-center `}>
-          {platform.map((plat, index) => (
-            <div
-              key={index}
-              className={`buttonPlatform ${ isDarkMode ? "text-white border border-white" : "text-black border-2 border-gray-700 "} `}
-            >
-              {plat}
-            </div>
-          ))}
-        </div>
-      )}
-        
-      {/********************************** PEGI *******************************************************************************/}
-      <div className={`w-[95%] my-4 mx-auto flex align-middle gap-1  ${
-                  selectedAdditionalPegi.length > 0
-                    ? "justify-between"
-                    : "justify-center"
-                } `}>
+          <div className={` flex justify-center gap-2 items-center `}>
+            {platform.map((plat, index) => (
+              <div
+                key={index}
+                className={`buttonPlatform ${
+                  isDarkMode
+                    ? "text-white border border-white"
+                    : "text-black border-2 border-gray-700 "
+                } `}
+              >
+                {plat}
+              </div>
+            ))}
+          </div>
+        )}
 
-        {/**************** Affichage des images PEGI Age *******************/}
-        <div className={` flex justify-center gap-1 `}>
-          {selectedAgePegi && (
-            <div>
-              <Image
-                src={pegiImages[selectedAgePegi].src} 
-                alt={pegiImages[selectedAgePegi].title} 
-                title={pegiImages[selectedAgePegi].title}
-                width={50} 
-                height={50} 
-              />
-            </div>
-          )}
-        </div>       
-
-        {/**************** Affichage des PEGI Catégories (Violence, Multijoueur) *******************/}
-        <div className={`flex gap-1`}>
-          {selectedAdditionalPegi &&
-            Array.isArray(selectedAdditionalPegi) &&
-            selectedAdditionalPegi.length > 0 &&
-            selectedAdditionalPegi.map((pegi, index) => {
-              const pegiData = pegiImages[pegi]; // Récupère l'image et le titre
-              return pegiData ? (
+        {/********************************** PEGI *******************************************************************************/}
+        <div
+          className={`w-[95%] my-4 mx-auto flex align-middle gap-1  ${
+            selectedAdditionalPegi.length > 0
+              ? "justify-between"
+              : "justify-center"
+          } `}
+        >
+          {/**************** Affichage des images PEGI Age *******************/}
+          <div className={` flex justify-center gap-1 `}>
+            {selectedAgePegi && (
+              <div>
                 <Image
-                  key={index}
-                  src={pegiData.src}
-                  alt={pegiData.title}
-                  title={pegiData.title} // Ajoutez le titre pour l'attribut title
-                  width={50} // Ajustez la largeur selon vos besoins
-                  height={50} // Ajustez la hauteur selon vos besoins
+                  src={pegiImages[selectedAgePegi].src}
+                  alt={pegiImages[selectedAgePegi].title}
+                  title={pegiImages[selectedAgePegi].title}
+                  width={50}
+                  height={50}
                 />
-              ) : null; // Si aucune image n'est trouvée, ne rien afficher
-            })}
+              </div>
+            )}
+          </div>
+
+          {/**************** Affichage des PEGI Catégories (Violence, Multijoueur) *******************/}
+          <div className={`flex gap-1`}>
+            {selectedAdditionalPegi &&
+              Array.isArray(selectedAdditionalPegi) &&
+              selectedAdditionalPegi.length > 0 &&
+              selectedAdditionalPegi.map((pegi, index) => {
+                const pegiData = pegiImages[pegi]; // Récupère l'image et le titre
+                return pegiData ? (
+                  <Image
+                    key={index}
+                    src={pegiData.src}
+                    alt={pegiData.title}
+                    title={pegiData.title} // Ajoutez le titre pour l'attribut title
+                    width={50} // Ajustez la largeur selon vos besoins
+                    height={50} // Ajustez la hauteur selon vos besoins
+                  />
+                ) : null; // Si aucune image n'est trouvée, ne rien afficher
+              })}
+          </div>
         </div>
 
-      </div>
-        
-      {/******************* Affichage des catégories **********************/}
-      {genreOfGame && (
+        {/******************* Affichage des catégories **********************/}
+        {genreOfGame && (
           <div className={` flex justify-center gap-2 items-center `}>
             {genreOfGame.map((genre, index) => (
               <div
                 key={index}
-                style={{ fontSize: '15px', padding: '0px 4px 0px',  letterSpacing: '0.1rem'}}
-                className={
-                  `inline-flex items-center rounded-md 
-                  ${ isDarkMode == true ? "border border-white" : "border-2 border-gray-700 "} 
+                style={{
+                  fontSize: "15px",
+                  padding: "0px 4px 0px",
+                  letterSpacing: "0.1rem",
+                }}
+                className={`inline-flex items-center rounded-md 
+                  ${
+                    isDarkMode == true
+                      ? "border border-white"
+                      : "border-2 border-gray-700 "
+                  } 
                   `}
               >
                 {genre}
               </div>
             ))}
           </div>
-        )}  
-      
-      {/******************* Solo / Multi ******************************/}
-      {SoloMulti && SoloMulti.length > 0 && (
-        <div className="buttonSoloMulti-container">
-          {SoloMulti
-            .slice()
-            .sort((a, b) => displayOrder.indexOf(a) - displayOrder.indexOf(b)) // Trier selon l'ordre défini
-            .map((genre) => {
-            const icon = SoloMultis.find((item) => item.genre === genre)?.icon; // Trouver l'icône correspondante
-            return (
-              <div
-                key={genre}
-                className="buttonSoloMulti"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "10px",
-                }}
+        )}
+
+        {/******************* Solo / Multi ******************************/}
+        {SoloMulti && SoloMulti.length > 0 && (
+          <div className="buttonSoloMulti-container">
+            {SoloMulti.slice()
+              .sort((a, b) => displayOrder.indexOf(a) - displayOrder.indexOf(b)) // Trier selon l'ordre défini
+              .map((genre) => {
+                const icon = SoloMultis.find(
+                  (item) => item.genre === genre
+                )?.icon; // Trouver l'icône correspondante
+                return (
+                  <div
+                    key={genre}
+                    className="buttonSoloMulti"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "10px",
+                    }}
+                  >
+                    <span style={{ marginRight: "10px" }}>{genre}</span>
+                    {icon && (
+                      <img
+                        src={icon.src}
+                        alt={genre}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "10px",
+                        }}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+        )}
+        {/******************* Petite introduction en gras ******************************/}
+        <div className={`p-4 min-h-[50px] font-bold mx-4 `}>
+          {shortIntroduction}
+        </div>
+
+        {/********************** Description détaillée *********************************/}
+        <div
+          className={`p-4 min-h-[50px]`}
+          dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
+        />
+
+        {/******************* Vidéo youtube **********************/}
+        {videoLink && (
+          <div className="flex justify-center">
+            <iframe
+              width="560"
+              height="315"
+              src={
+                videoLink.includes("watch?v=")
+                  ? videoLink.replace("watch?v=", "embed/")
+                  : videoLink
+              }
+              allowFullScreen
+            ></iframe>
+          </div>
+        )}
+
+        <section className="mt-4 flex flex-col laptop:flex-row laptop:justify-center gap-6">
+          {/******************* Site officiel du jeu **********************/}
+          {webSiteOfThisGame && (
+            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0">
+              <a
+                href={webSiteOfThisGame}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <span style={{ marginRight: "10px" }}>{genre}</span>
-                {icon && (
-                  <img
-                    src={icon.src}
-                    alt={genre}
-                    style={{ width: "50px", height: "50px", borderRadius: "10px" }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
-      {/******************* Petite introduction en gras ******************************/}
-      <div
-        className={`p-4 min-h-[50px] font-bold mx-4 `}
-      >
-        {shortIntroduction}
-      </div>
+                Site officiel du jeu
+              </a>
+            </div>
+          )}
+          {/******************* Site officiel des créateurs **********************/}
+          {webSiteOfThisCreator && (
+            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0">
+              <a
+                href={webSiteOfThisCreator}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Site officiel des créateurs
+              </a>
+            </div>
+          )}
+        </section>
 
-      {/********************** Description détaillée *********************************/}
-      <div
-        className={`p-4 min-h-[50px]`}
-        dangerouslySetInnerHTML={{ __html: introductionOfTheGame }}
-      />
-      
-      {/******************* Vidéo youtube **********************/}
-      {videoLink && (
-        <div className="flex justify-center">
-          <iframe
-            width="560"
-            height="315"
-            src={videoLink.includes("watch?v=") ? videoLink.replace("watch?v=", "embed/") : videoLink}
-            allowFullScreen
-          ></iframe>
-        </div>
-      )}
+        {/******************* Logo Steam & EpicGames **********************/}
+        <section className="pt-6 flex justify-center gap-6">
+          {steamLink && (
+            <>
+              <a href={steamLink} target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={iconeSteam}
+                  width={50}
+                  height={50}
+                  className="w-[50px] h-[50px] hover:scale-105 transition duration-300"
+                  alt="Steam"
+                />
+              </a>
+            </>
+          )}
 
-      <section className="mt-4 flex flex-col laptop:flex-row laptop:justify-center gap-6">
-        {/******************* Site officiel du jeu **********************/}
-        {webSiteOfThisGame && (
-          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0">
-            <a href={webSiteOfThisGame} target="_blank" rel="noopener noreferrer">
-              Site officiel du jeu
-            </a>
-          </div>
-        )}
-        {/******************* Site officiel des créateurs **********************/}
-        {webSiteOfThisCreator && (
-          <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0">
-            <a href={webSiteOfThisCreator} target="_blank" rel="noopener noreferrer">
-              Site officiel des créateurs
-            </a>
-          </div>
-        )}
+          {epicGamesLink && (
+            <>
+              <a href={epicGamesLink} target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={iconeEpicGames}
+                  width={50}
+                  height={50}
+                  className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300"
+                  alt="Steam"
+                />
+              </a>
+            </>
+          )}
+        </section>
+
+        {/******************* Date de sortie du jeu **********************/}
+        <div className={`p-4 pr-6 min-h-[50px] text-right`}>
+          Sortie le {formattedDate}.
+        </div>
+        {/************** Les images d'illustration **********************/}
+          <section className="flex gap-2 justify-center">
+            {urlImageOne && (
+              <Image
+                src={urlImageOne}
+                className="w-[275px] h-[154px] py-3 inline-block"
+                width={275}
+                height={154}
+                alt={`urlImageOne - ${nameOfGame}`}
+              />
+            )}
+            {urlImageTwo && (
+              <Image
+                src={urlImageTwo}
+                className="w-[275px] h-[154px] py-3 inline-block"
+                width={275}
+                height={154}
+                alt={`${nameOfGame}`}
+              />
+            )}
+            {urlImageThree && (
+              <Image
+                src={urlImageThree}
+                className="w-[275px] h-[154px] py-3 inline-block"
+                width={275}
+                height={154}
+                alt={`${nameOfGame}`}
+              />
+            )}
+          </section>
       </section>
 
-      {/******************* Logo Steam & EpicGames **********************/}
-      <section className="pt-6 flex justify-center gap-6">
-        {steamLink && (
-          <>
-          <a href={steamLink} target="_blank" rel="noopener noreferrer">
-            <Image 
-              src={iconeSteam}
-              width={50}
-              height={50}
-              className="w-[50px] h-[50px] hover:scale-105 transition duration-300" 
-              alt="Steam" 
-            />
-          </a>
-          </>
-        )}
-
-        {epicGamesLink && (
-          <>
-          <a href={epicGamesLink} target="_blank" rel="noopener noreferrer">
-            <Image 
-              src={iconeEpicGames}
-              width={50}
-              height={50}
-              className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300" 
-              alt="Steam" 
-            />
-          </a>
-          </>
-        )}
-      </section>
-
-      {/******************* Date de sortie du jeu **********************/}
-      <div className={`p-4 pr-6 min-h-[50px] text-right`}>
-        Sortie le {formattedDate}.
-      </div>
-
-        {urlPosterCloudinary && (
-          <>
-            <p className="text-center">Affiche visible dans la page d'accueil et les résultats des recherches :</p>
+      {urlPosterCloudinary && (
+        <>
+          <section
+            className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${
+              isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
+            } `}
+          >
+            <p className="text-center">
+              Affiche visible dans la page d'accueil et les résultats des
+              recherches :
+            </p>
             <Image
               src={urlPosterCloudinary}
               className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
@@ -284,9 +358,10 @@ const ApercuFormulaire = ({
               height={311}
               alt={`${nameOfGame}`}
             />
-          </>
-        )}
-    </section>
+          </section>
+        </>
+      )}
+    </>
   );
 };
 

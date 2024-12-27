@@ -10,6 +10,7 @@ import GenreOfGame from "../GenreOfGame/GenreOfGame";
 import DatePicker from "react-datepicker";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import Image from "next/image";
+import { useEffect } from 'react';
 
 const GamePresentationSections = ({
   nameOfGame,
@@ -61,6 +62,7 @@ const GamePresentationSections = ({
   genreOfGame,
   setGenreOfGame,
 }) => {
+
   return (
       
     <div>
@@ -129,8 +131,8 @@ const GamePresentationSections = ({
       
       {/**************** Affiche [encadré] ***************************** */}
       {isPosterVisible && (
-        <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFond Bleu">
-          <p className="text-center tablet:inline-block">
+        <div className="w-[95%] tablet:w-[380px] p-4 mt-4 border grasFondBleu mx-auto">
+          <p className="text-center">
             Choisissez l'affiche du jeu{" "}
           </p>
           <ImageUpload 
@@ -141,64 +143,96 @@ const GamePresentationSections = ({
             nameOfGame={nameOfGame}
           />
           {urlPosterCloudinary && (
-            <Image
-              src={urlPosterCloudinary}
-              className="lg:w-[192px] lg:h-[311px] py-3 mx-auto inline-block ml-4"
-              width={192}
-              height={311}
-              alt={`${nameOfGame}`}
-            />
+            <div className='flex justify-center'>
+              <Image
+                src={urlPosterCloudinary}
+                className="lg:w-[192px] lg:h-[311px] py-3 mt-3 inline-block "
+                width={192}
+                height={311}
+                alt={`${nameOfGame}`}
+              />
+            </div>
           )}
         </div>
       )}
 
-      {/**************** Image d'illustration n°1 [encadré] ***************************** */}
-      {isImageOne && (
-        <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
-          <p className="text-center tablet:inline-block">
-            Choisissez une image d'illustration{" "}
-          </p>
-          <ImageUpload 
-            urlCloudinary={urlImageOne} 
-            setter={setUrlImageOne} 
-            buttonText="Télécharger une image d'illustration" 
-            tag={`Image d'illustration n°1 - ${nameOfGame}`}
-            nameOfGame={nameOfGame}
-          />
-        </div>
-      )}
+      <section className='flex flex-col tablet:flex-row w-full gap-2 justify-center'>
+        {/**************** Image d'illustration n°1 [encadré] ***************************** */}
+        {isImageOne && (
+          <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
+            <p className="text-center ">
+              Choisissez l'image d'illustration n°1{" "}
+            </p>
+            <ImageUpload 
+              urlCloudinary={urlImageOne} 
+              setter={setUrlImageOne} 
+              buttonText="Télécharger l'image n°1" 
+              tag={`Image d'illustration n°1 - ${nameOfGame}`}
+              nameOfGame={nameOfGame}
+            />
+            {urlImageOne && (
+              <Image
+                src={urlImageOne}
+                className="w-[275px] h-[154px] py-3 inline-block"
+                width={275}
+                height={154}
+                alt={`urlImageOne - ${nameOfGame}`}
+              />
+            )}
+          </div>
+        )}
 
-      {/**************** Image d'illustration n°2 [encadré] ***************************** */}
-      {isImageTwo && (
-        <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
-          <p className="text-center tablet:inline-block">
-            Choisissez une image d'illustration{" "}
-          </p>
-          <ImageUpload 
-            urlCloudinary={urlImageTwo} 
-            setter={setUrlImageTwo} 
-            buttonText="Télécharger une image d'illustration" 
-            tag={`Image d'illustration n°2 - ${nameOfGame}`}
-            nameOfGame={nameOfGame}
-          />
-        </div>
-      )}
+        {/**************** Image d'illustration n°2 [encadré] ***************************** */}
+        {isImageTwo && (
+          <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
+            <p className="text-center tablet:inline-block">
+              Choisissez l'image d'illustration n°2{" "}
+            </p>
+            <ImageUpload 
+              urlCloudinary={urlImageTwo} 
+              setter={setUrlImageTwo} 
+              buttonText="Télécharger l'image n°2" 
+              tag={`Image d'illustration n°2 - ${nameOfGame}`}
+              nameOfGame={nameOfGame}
+            />
+            {urlImageTwo && (
+              <Image
+                src={urlImageTwo}
+                className="w-[275px] h-[154px] py-3 inline-block"
+                width={275}
+                height={154}
+                alt={`${nameOfGame}`}
+              />
+            )}
+          </div>
+        )}
 
-      {/**************** Image d'illustration n°3 [encadré] ***************************** */}
-      {isImageThree && (
-        <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
-          <p className="text-center tablet:inline-block">
-            Choisissez une image d'illustration{" "}
-          </p>
-          <ImageUpload 
-            urlCloudinary={urlImageThree} 
-            setter={setUrlImageThree} 
-            buttonText="Télécharger une image d'illustration" 
-            tag={`Image d'illustration n°3 - ${nameOfGame}`}
-            nameOfGame={nameOfGame}
-          />
-        </div>
-      )}
+        {/**************** Image d'illustration n°3 [encadré] ***************************** */}
+        {isImageThree && (
+          <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
+            <p className="text-center tablet:inline-block">
+              Choisissez l'image d'illustration n°3{" "}
+            </p>
+            <ImageUpload 
+              urlCloudinary={urlImageThree} 
+              setter={setUrlImageThree} 
+              buttonText="Télécharger l'image n°3" 
+              tag={`Image d'illustration n°3 - ${nameOfGame}`}
+              nameOfGame={nameOfGame}
+            />
+            {urlImageThree && (
+              <Image
+                src={urlImageThree}
+                className="w-[275px] h-[154px] py-3 inline-block"
+                width={275}
+                height={154}
+                alt={`${nameOfGame}`}
+              />
+            )}
+          </div>
+        )}
+      </section>
+
       {/**************** Arrière plan [encadré] ***************************** */}
       {isBackgroundVisible && (
         <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">

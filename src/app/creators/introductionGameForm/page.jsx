@@ -347,6 +347,9 @@ export default function introductionGameForm() {
             isDarkMode={isDarkMode}
             steamLink={steamLink}
             epicGamesLink={epicGamesLink}
+            urlImageOne={urlImageOne}
+            urlImageTwo={urlImageTwo}
+            urlImageThree={urlImageThree}
           />
 
           {isIntroOfYourself && <UserProfileSection user={user} />}

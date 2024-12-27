@@ -43,6 +43,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
       const oldPublicId = extractPublicIdFromUrl(urlCloudinary);
       console.log("ID public de l'ancienne image à supprimer:", oldPublicId);
       await handleDeleteImage(oldPublicId); // Supprimer l'ancienne image
+      setter('');
     }
   };
 
@@ -75,7 +76,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
               handleImageUpload(); // Appeler la fonction de suppression avant l'upload
               open(); // Lancer l'upload après suppression
             }}
-            className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 inline-block ml-4"
+            className="w-[180px] mt-2 text-center mx-auto rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
             style={{
               opacity: nameOfGame.length >= 2 ? 1 : 0.5,
               pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
