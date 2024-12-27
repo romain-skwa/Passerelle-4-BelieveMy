@@ -12,7 +12,6 @@ const extractPublicIdFromUrl = (url) => {
 
 export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame }) {
   console.log("Dans le composant ImageUpload, urlCloudinary : ", urlCloudinary);
-
   // Fonction pour supprimer l'image de Cloudinary
   const handleDeleteImage = async (publicId) => {
     if (publicId) {

@@ -5,20 +5,15 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import he from "he";
 import "../../styles/formulary.css";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
-import EditorPerso from "@/components/EditorPerso/EditorPerso";
 import Glimpse from "@/components/Glimpse/Glimpse"; // Aperçu
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
-import Pegi from "@/components/Pegi/Pegi";
-import ButtonSoloMulti from "@/components/ButtonSoloMulti/ButtonSoloMulti";
-import Platform from "./../../../components/Platform/Platform";
-import GenreOfGame from "./../../../components/GenreOfGame/GenreOfGame";
-import { ImageUpload } from "./../../../components/ImageUpload/ImageUpload";
-import Image from "next/image";
+import ObligatoryButtons from "@/components/ObligatoryButtons/ObligatoryButtons";
+import OptionalButtons from "@/components/OptionalButtons/OptionalButtons";
+import GamePresentationSections from "@/components/GamePresentationSections/GamePresentationSections";
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -33,8 +28,11 @@ export default function introductionGameForm() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
-  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); console.log("urlPosterCloudinary dans le Formulaire : ", urlPosterCloudinary);
+  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); 
   const [urlBackgroundCloudinary, setUrlBackgroundCloudinary] = useState("");
+  const [urlImageOne, setUrlImageOne] = useState("");
+  const [urlImageTwo, setUrlImageTwo] = useState("");
+  const [urlImageThree, setUrlImageThree] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
@@ -61,7 +59,10 @@ export default function introductionGameForm() {
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
   const [isSteamLinkVisible, setIsSteamLinkVisible] = useState(false);
   const [isEpicGamesLinkVisible, setIsEpicGamesLinkVisible] = useState(false);
-  const [isSoloMulti, setIsSoloMulti] = useState(false); 
+  const [isSoloMulti, setIsSoloMulti] = useState(false);
+  const [isImageOne, setIsImageOne]  = useState("");
+  const [isImageTwo, setIsImageTwo]  = useState("");
+  const [isImageThree, setIsImageThree]  = useState("");
 
   const resetUrlPosterCloudinary = () => {
     setUrlPosterCloudinary(""); // Réinitialiser la valeur de urlPosterCloudinary
@@ -72,8 +73,7 @@ export default function introductionGameForm() {
   };
 
   /************* Récupérer les données concernant l'utilisateur ***************************/
-  useEffect(() => {
-    // to use the function fetchUserData when the session is defined
+  useEffect(() => { // to use the function fetchUserData only when the session is defined
     fetchUserData();
   }, [session]);
 
@@ -103,7 +103,6 @@ export default function introductionGameForm() {
   /****************** Envoyer les données à l'API createIntroduction **************************/
   const onPrepare = async (e) => {
     e.preventDefault();
-
 
     try {
       if (!urlPosterCloudinary) {return toast.error("Vous devez sélectionner un fichier image");}
@@ -178,15 +177,16 @@ export default function introductionGameForm() {
       formData.append("webSiteOfThisCreator", webSiteOfThisCreator);
       formData.append("isDarkMode", isDarkMode.toString());
       formData.append("isIntroOfYourself", isIntroOfYourself.toString());
+      // Ajout conditionnel pour les images d'illustration
+      if (urlImageOne) { formData.append("urlImageOneCloudinary", urlImageOne); }
+      if (urlImageTwo) { formData.append("urlImageTwoCloudinary", urlImageTwo); }
+      if (urlImageThree) { formData.append("urlImageThreeCloudinary", urlImageThree); }
+
       // Ajout conditionnel pour urlImageBackground
       if (urlBackgroundCloudinary) {
         formData.append("urlBackgroundCloudinary", urlBackgroundCloudinary);
       }
 
-      // Debugging
-      /*for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-      }*/
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
       // Redirect
@@ -208,7 +208,7 @@ export default function introductionGameForm() {
             {session?.user.username}, sur cette page, vous êtes invité à remplir de présentation de votre jeux.
           </p>
 
-          <div className="laptop:flex items-center mb-3">
+          <div className="laptop:flex items-center mb-3">{/* Input Nom du Jeu*/}
             <input
               type="text"
               name="nameOfGame"
@@ -231,285 +231,71 @@ export default function introductionGameForm() {
           </div>
 
           {/************ Boutons Obligatoires **********************************************************/}
-
-          <section className="border mb-3" style={{cursor: nameOfGame.length >= 2 ? 'pointer' : 'not-allowed'}}>
-            <div className="flex justify-center text-white text-xl">Obligatoire</div>
-            <div className="bandeauTop">
-              <div
-                onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
-                style={{
-                  backgroundColor:
-                    shortIntroduction.length > 1 ? "green" : "#2e2d2c",
-                  border: isShortIntroVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Introduction courte
-              </div>
-
-              <div
-                onClick={() => setIsEditorVisible(!isEditorVisible)}
-                style={{
-                  backgroundColor:
-                    introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",
-                  border: isEditorVisible ? "2px solid white" : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Présentation détaillée
-              </div>
-
-              <div
-                onClick={() => setPlatformVisible(!isPlatformVisible)}
-                style={{
-                  backgroundColor: platform.length != [] ? "green" : "#2e2d2c",
-                  border: isPlatformVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Plate-forme
-              </div>
-
-              <div
-                onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)}
-                style={{
-                  backgroundColor: releaseDate != null ? "green" : "#2e2d2c",
-                  border: isReleaseDateVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Date de sortie
-              </div>
-
-              <div
-                onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)}
-                style={{
-                  backgroundColor:
-                    selectedAgePegi.length != "" ? "green" : "#2e2d2c",
-                  border: isPegiAgeVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Pegi age & catégorie
-              </div>
-
-              <div
-                onClick={() => setIsPosterVisible(!isPosterVisible)}
-                style={{
-                  backgroundColor: urlPosterCloudinary.length != "" ? "green" : "#2e2d2c",
-                  border: isPosterVisible ? "2px solid white" : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Affiche
-              </div>
-
-              <div
-                onClick={() => setIsSoloMulti(!isSoloMulti)}
-                style={{
-                  backgroundColor: SoloMulti.length != "" ? "green" : "#2e2d2c",
-                  border: isSoloMulti ? "2px solid white" : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Solo / Multi
-              </div>
-            </div>
-          </section>
+          <ObligatoryButtons
+            nameOfGame={nameOfGame}
+            shortIntroduction={shortIntroduction}
+            introductionOfTheGame={introductionOfTheGame}
+            platform={platform}
+            releaseDate={releaseDate}
+            selectedAgePegi={selectedAgePegi}
+            urlPosterCloudinary={urlPosterCloudinary}
+            SoloMulti={SoloMulti}
+            isShortIntroVisible={isShortIntroVisible} setIsShortIntroVisible={setIsShortIntroVisible}
+            isEditorVisible={isEditorVisible} setIsEditorVisible={setIsEditorVisible}
+            isPlatformVisible={isPlatformVisible} setPlatformVisible={setPlatformVisible}
+            isReleaseDateVisible={isReleaseDateVisible} setIsReleaseDateVisible={setIsReleaseDateVisible}
+            isPegiAgeVisible={isPegiAgeVisible} setIsPegiAgeVisible={setIsPegiAgeVisible}
+            isPosterVisible={isPosterVisible} setIsPosterVisible={setIsPosterVisible}
+            isSoloMulti={isSoloMulti} setIsSoloMulti={setIsSoloMulti}
+          />
 
           {/************ Boutons Facultatifs **********************************************************/}
-          <section className="border"  style={{cursor: nameOfGame.length >= 2 ? 'pointer' : 'not-allowed'}}>
-            <div className="flex justify-center text-white text-xl">Facultatif</div>
-            <div className="bandeauTop">
-              <div
-                onClick={() => setIsBackgroundVisible(!isBackgroundVisible)}
-                style={{
-                  backgroundColor:
-                    urlBackgroundCloudinary.length != "" ? "green" : "#2e2d2c",
-                  border: isBackgroundVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Arrière plan
-              </div>
-
-              <div
-                onClick={() => setIsCategoryVisible(!isCategoryVisible)}
-                style={{
-                  backgroundColor: genreOfGame.length != "" ? "green" : "#2e2d2c",
-                  border: isCategoryVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Catégorie
-              </div>
-
-              <div
-                onClick={() => setIsVideoVisible(!isVideoVisible)}
-                style={{
-                  backgroundColor: videoLink.length != "" ? "green" : "#2e2d2c",
-                  border: isVideoVisible ? "2px solid white" : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Vidéo youtube
-              </div>
-
-              <div
-                onClick={() => setIsWebsiteGameVisible(!isWebsiteGameVisible)}
-                style={{
-                  backgroundColor:
-                    webSiteOfThisGame.length != "" ? "green" : "#2e2d2c",
-                  border: isWebsiteGameVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Site officiel du jeu
-              </div>
-
-              <div
-                onClick={() =>
-                  setIsWebsiteCreatorVisible(!isWebsiteCreatorVisible)
-                }
-                style={{
-                  backgroundColor:
-                    webSiteOfThisCreator.length != "" ? "green" : "#2e2d2c",
-                  border: isWebsiteCreatorVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Site officiel des créateurs
-              </div>
-
-              <div
-                onClick={() => setIsSteamLinkVisible(!isSteamLinkVisible)}
-                style={{
-                  backgroundColor: steamLink.length != "" ? "green" : "#2e2d2c",
-                  border: isSteamLinkVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Lien vers le site Steam
-              </div>
-
-              <div
-                onClick={() => setIsEpicGamesLinkVisible(!isEpicGamesLinkVisible)}
-                style={{
-                  backgroundColor:
-                    epicGamesLink.length != "" ? "green" : "#2e2d2c",
-                  border: isEpicGamesLinkVisible
-                    ? "2px solid white"
-                    : "2px solid black",
-                  opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-                  pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-                }}
-              >
-                Lien vers le site Epic Games
-              </div>
-            </div>
-          </section>
-
+          <OptionalButtons
+            nameOfGame={nameOfGame}
+            urlBackgroundCloudinary={urlBackgroundCloudinary}
+            genreOfGame={genreOfGame}
+            videoLink={videoLink}
+            webSiteOfThisGame={webSiteOfThisGame}
+            webSiteOfThisCreator={webSiteOfThisCreator}
+            steamLink={steamLink}
+            epicGamesLink={epicGamesLink}
+            isImageOne={isImageOne} setIsImageOne={setIsImageOne} urlImageOne={urlImageOne} setUrlImageOne={setUrlImageOne}
+            isImageTwo={isImageTwo} setIsImageTwo={setIsImageTwo} urlImageTwo={urlImageTwo} setUrlImageTwo={setUrlImageTwo}
+            isImageThree={isImageThree} setIsImageThree={setIsImageThree} urlImageThree={urlImageThree} setUrlImageThree={setUrlImageThree}
+            isBackgroundVisible={isBackgroundVisible} setIsBackgroundVisible={setIsBackgroundVisible}
+            isCategoryVisible={isCategoryVisible} setIsCategoryVisible={setIsCategoryVisible}
+            isVideoVisible={isVideoVisible} setIsVideoVisible={setIsVideoVisible}
+            isWebsiteGameVisible={isWebsiteGameVisible} setIsWebsiteGameVisible={setIsWebsiteGameVisible}
+            isWebsiteCreatorVisible={isWebsiteCreatorVisible} setIsWebsiteCreatorVisible={setIsWebsiteCreatorVisible}
+            isSteamLinkVisible={isSteamLinkVisible} setIsSteamLinkVisible={setIsSteamLinkVisible}
+            isEpicGamesLinkVisible={isEpicGamesLinkVisible} setIsEpicGamesLinkVisible={setIsEpicGamesLinkVisible}
+          />
 
           {/*************************** LES ENCADRÉS ******************************************************/}
-          {/**************** Introduction courte ***************************** */}
-          {isShortIntroVisible && (
-            <div className="border p-2 my-2">
-              <p
-                className="text-white text-center font-bold mb-3"
-                style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
-              >
-                Cette introduction courte sera affichée en gras
-              </p>
-              <textarea
-                name="shortIntroduction"
-                id="shortIntroduction"
-                placeholder="Cette introduction courte sera affichée en gras"
-                value={shortIntroduction}
-                onChange={(e) => setShortIntroduction(e.target.value)}
-              />
-            </div>
-          )}
-
-          {/**************** Editeur de texte ********************************************** */}
-          {isEditorVisible && (
-            <EditorPerso
-              introductionOfTheGame={introductionOfTheGame}
-              setIntroductionOfTheGame={setIntroductionOfTheGame}
-              onTextChange={(newText) => {
-                setIntroductionOfTheGame(newText);
-              }}
-            />
-          )}
-
-          {isPlatformVisible && (
-            <Platform platform={platform} setPlatform={setPlatform} />
-          )}
-
-          {/**************** Date ***************************** */}
-          {isReleaseDateVisible && (
-            <div className="my-2 flex">
-              <p
-                className="text-white font-bold mr-2"
-                style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
-              >
-                Date de sortie :
-              </p>
-              <DatePicker
-                className="pl-2"
-                selected={releaseDate}
-                dateFormat="dd/MM/yyyy"
-                id="releaseDate"
-                required
-                onChange={(date) => setReleaseDate(date)}
-              />
-            </div>
-          )}
-
-          {/**************** Les deux catégories de PEGI ***************************** */}
-          {isPegiAgeVisible && (
-            <Pegi
-              selectedAgePegi={selectedAgePegi}
-              setSelectedAgePegi={setSelectedAgePegi}
-              selectedAdditionalPegi={selectedAdditionalPegi}
-              setSelectedAdditionalPegi={setSelectedAdditionalPegi}
-            />
-          )}
-
-          {/**************** Sole ou Multi ***************************** */}
-          {isSoloMulti && (
-            <ButtonSoloMulti SoloMulti={SoloMulti} setSoloMulti={setSoloMulti} />
-          )}
+          <GamePresentationSections
+            nameOfGame={nameOfGame}
+            isShortIntroVisible={isShortIntroVisible} setIsShortIntroVisible={setIsShortIntroVisible}
+            shortIntroduction={shortIntroduction} setShortIntroduction={setShortIntroduction}
+            isEditorVisible={isEditorVisible} 
+            introductionOfTheGame={introductionOfTheGame} setIntroductionOfTheGame={setIntroductionOfTheGame}
+            isPlatformVisible={isPlatformVisible} platform={platform} setPlatform={setPlatform}
+            isReleaseDateVisible={isReleaseDateVisible}
+            releaseDate={releaseDate} setReleaseDate={setReleaseDate}
+            isPegiAgeVisible={isPegiAgeVisible} selectedAgePegi={selectedAgePegi} setSelectedAgePegi={setSelectedAgePegi}
+            selectedAdditionalPegi={selectedAdditionalPegi} setSelectedAdditionalPegi={setSelectedAdditionalPegi}
+            isSoloMulti={isSoloMulti} SoloMulti={SoloMulti} setSoloMulti={setSoloMulti}
+            isPosterVisible={isPosterVisible} urlPosterCloudinary={urlPosterCloudinary} setUrlPosterCloudinary={setUrlPosterCloudinary}
+            isImageOne={isImageOne} urlImageOne={urlImageOne} setUrlImageOne={setUrlImageOne}
+            isImageTwo={isImageTwo} urlImageTwo={urlImageTwo} setUrlImageTwo={setUrlImageTwo}
+            isImageThree={isImageThree} urlImageThree={urlImageThree} setUrlImageThree={setUrlImageThree}
+            isBackgroundVisible={isBackgroundVisible} urlBackgroundCloudinary={urlBackgroundCloudinary} setUrlBackgroundCloudinary={setUrlBackgroundCloudinary}
+            isVideoVisible={isVideoVisible} videoLink={videoLink} setVideoLink={setVideoLink}
+            isWebsiteGameVisible={isWebsiteGameVisible} webSiteOfThisGame={webSiteOfThisGame} setWebSiteOfThisGame={setWebSiteOfThisGame}
+            isWebsiteCreatorVisible={isWebsiteCreatorVisible} webSiteOfThisCreator={webSiteOfThisCreator} setWebSiteOfThisCreator={setWebSiteOfThisCreator}
+            isSteamLinkVisible={isSteamLinkVisible} steamLink={steamLink} setSteamLink={setSteamLink}
+            isEpicGamesLinkVisible={isEpicGamesLinkVisible} epicGamesLink={epicGamesLink} setEpicGamesLink={setEpicGamesLink}
+            isCategoryVisible={isCategoryVisible} genreOfGame={genreOfGame} setGenreOfGame={setGenreOfGame}
+          />
 
           {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
           <div className="flex justify-center">
@@ -521,116 +307,6 @@ export default function introductionGameForm() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-3">
-            {/**************** Affiche [encadré] ***************************** */}
-            {isPosterVisible && (
-              <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
-                <p className="text-center tablet:inline-block">
-                  Choisissez l'affiche du jeu{" "}
-                </p>
-              
-                <ImageUpload 
-                  urlCloudinary = {urlPosterCloudinary}
-                  setter={setUrlPosterCloudinary}
-                  buttonText="Télécharger Affiche" 
-                  tag={`Affiche - ${nameOfGame}`}
-                  nameOfGame={nameOfGame}
-                  />
-                {urlPosterCloudinary && (
-                  <Image
-                    src={urlPosterCloudinary}
-                    className="lg:w-[192px] lg:h-[311px] py-3 mx-auto inline-block ml-4"
-                    width={192}
-                    height={311}
-                    alt={`${nameOfGame}`}
-                  />
-                )}
-              </div>
-            )}
-            {/**************** Arrière plan [encadré] ***************************** */}
-            {isBackgroundVisible && (
-              <div className="w-[95%] tablet:w-[60%] p-1 pl-2 mt-4 border grasFondBleu">
-                <p className="text-center tablet:inline-block">
-                  Choisissez une image pour l'arrière plan{" "}
-                </p>
-               
-                <ImageUpload 
-                  urlCloudinary={urlBackgroundCloudinary} 
-                  setter={setUrlBackgroundCloudinary} 
-                  buttonText="Télécharger Background" 
-                  tag="Background" 
-                  />
-
-              </div>
-            )}
-            {/**************** Lien vidéo Youtube [encadré] ***************************** */}
-            {isVideoVisible && (
-              <input
-                type="url"
-                name="videoLink"
-                placeholder="Lien YouTube de la vidéo"
-                className="block w-[95%] tablet:w-[60%] p-1 pl-2 m-2"
-                value={videoLink}
-                onChange={(e) => setVideoLink(e.target.value)}
-              />
-            )}
-
-            {/**************** Lien Site officiel du jeu [encadré]***************************** */}
-            {isWebsiteGameVisible && (
-              <input
-                type="url"
-                name="webSiteOfThisGame"
-                placeholder="Lien vers le site officiel du jeu"
-                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
-                value={webSiteOfThisGame}
-                onChange={(e) => setWebSiteOfThisGame(e.target.value)}
-              />
-            )}
-
-            {/**************** Lien Site officiel des créateurs [encadré] ***************************** */}
-            {isWebsiteCreatorVisible && (
-              <input
-                type="url"
-                name="webSiteOfThisCreator"
-                placeholder="Lien vers le site officiel du/des créateur(s)"
-                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
-                value={webSiteOfThisCreator}
-                onChange={(e) => setWebSiteOfThisCreator(e.target.value)}
-              />
-            )}
-
-            {/**************** Lien Steam [encadré] ***************************** */}
-            {isSteamLinkVisible && (
-              <input
-                type="url"
-                name="steamLink"
-                placeholder="Lien vers le site Steam"
-                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
-                value={steamLink}
-                onChange={(e) => setSteamLink(e.target.value)}
-              />
-            )}
-
-            {/**************** Lien Epic Games [encadré] ***************************** */}
-            {isEpicGamesLinkVisible && (
-              <input
-                type="url"
-                name="epicGamesLink"
-                placeholder="Lien vers le site Epic Games"
-                className="block w-[95%] tablet:w-[60%] p-1 pl-2"
-                value={epicGamesLink}
-                onChange={(e) => setEpicGamesLink(e.target.value)}
-              />
-            )}
-          </div>
-
-          {isCategoryVisible && (
-            <GenreOfGame
-              selectedGenres={genreOfGame}
-              setSelectedGenres={setGenreOfGame}
-            />
-          )}
-          
           <div className="flex justify-center">
             <button
               className="bg-green-500 p-3 w-60 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
@@ -650,8 +326,8 @@ export default function introductionGameForm() {
 
       <section style={{
         backgroundImage: urlBackgroundCloudinary ? `url(${urlBackgroundCloudinary})` : 'none',
-        backgroundSize: 'cover', // Optionnel, pour couvrir tout l'espace
-        backgroundPosition: 'center', // Optionnel, pour centrer l'image 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         }}>
 
         <Glimpse
