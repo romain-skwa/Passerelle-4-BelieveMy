@@ -76,7 +76,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
               handleImageUpload(); // Appeler la fonction de suppression avant l'upload
               open(); // Lancer l'upload après suppression
             }}
-            className="w-[180px] mt-2 text-center mx-auto rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+            className="w-[180px] mt-2 text-center mx-auto rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
             style={{
               opacity: nameOfGame.length >= 2 ? 1 : 0.5,
               pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',

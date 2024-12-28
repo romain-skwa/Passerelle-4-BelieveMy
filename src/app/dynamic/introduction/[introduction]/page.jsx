@@ -49,7 +49,19 @@ export default function IntroductionGame() {
   const [backgroundImage, setBackgroundImage] = useState();
   /************************************************ */
   const [currentUrl, setCurrentUrl] = useState(); console.log(`currentUrl : `, currentUrl);
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
+
   // Récupérer l'URL actuelle
   useEffect(() => {
     // Assurez-vous que le code est exécuté uniquement côté client
@@ -456,6 +468,39 @@ export default function IntroductionGame() {
               Sortie le {formattedDate}.
             </div>
 
+            {/************** Les images d'illustration **********************/}
+            <section className="flex gap-2 justify-center">
+              {game.urlImageOneCloudinary && (
+                <Image
+                  src={game.urlImageOneCloudinary}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  alt={`urlImageOne - ${game.nameOfGame}`}
+                  onClick={() => openModal(game.urlImageOneCloudinary)} 
+                />
+              )}
+              {game.urlImageTwoCloudinary && (
+                <Image
+                  src={game.urlImageTwoCloudinary}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  alt={`${game.nameOfGame}`}
+                  onClick={() => openModal(game.urlImageTwoCloudinary)} 
+                />
+              )}
+              {game.urlImageThreeCloudinary && (
+                <Image
+                  src={game.urlImageThreeCloudinary}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  alt={`${game.nameOfGame}`}
+                  onClick={() => openModal(game.urlImageThreeCloudinary)}
+                />
+              )}
+            </section>
             {/************ Affichage Nom du créateur **********************/}
             {user ? (
               <UserProfileSection user={user} />
@@ -470,6 +515,29 @@ export default function IntroductionGame() {
             )}
             <Share currentUrl={currentUrl} />
         </section>
+      )}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"
+          onClick={closeModal} // Ferme la modal si on clique en dehors
+        >
+          <div
+            className="relative bg-white rounded-lg p-4"
+            onClick={(e) => e.stopPropagation()} // Empêche la fermeture si on clique à l'intérieur
+          >
+            <button className="absolute top-2 right-2 text-black" onClick={closeModal}>
+              &times; {/* Symbole de fermeture */}
+            </button>
+            {selectedImage && (
+              <Image
+                src={selectedImage}
+                alt="Image agrandie"
+                width={800} 
+                height={600}
+              />
+            )}
+          </div>
+        </div>
       )}
     </GeneralLayout>
   );

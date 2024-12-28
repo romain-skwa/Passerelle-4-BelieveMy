@@ -64,6 +64,18 @@ const ApercuFormulaire = ({
   urlImageThree,
 }) => {
   const [clickedDivision, setClickedDivision] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
 
   // Formatage de la date
   const formattedDate = releaseDate
@@ -309,57 +321,85 @@ const ApercuFormulaire = ({
           Sortie le {formattedDate}.
         </div>
         {/************** Les images d'illustration **********************/}
-          <section className="flex gap-2 justify-center">
-            {urlImageOne && (
-              <Image
-                src={urlImageOne}
-                className="w-[275px] h-[154px] py-3 inline-block"
-                width={275}
-                height={154}
-                alt={`urlImageOne - ${nameOfGame}`}
-              />
-            )}
-            {urlImageTwo && (
-              <Image
-                src={urlImageTwo}
-                className="w-[275px] h-[154px] py-3 inline-block"
-                width={275}
-                height={154}
-                alt={`${nameOfGame}`}
-              />
-            )}
-            {urlImageThree && (
-              <Image
-                src={urlImageThree}
-                className="w-[275px] h-[154px] py-3 inline-block"
-                width={275}
-                height={154}
-                alt={`${nameOfGame}`}
-              />
-            )}
-          </section>
+        <section className="flex gap-2 justify-center">
+          {urlImageOne && (
+            <Image
+              src={urlImageOne}
+              className="w-[275px] h-[154px] py-3 inline-block"
+              width={275}
+              height={154}
+              alt={`urlImageOne - ${nameOfGame}`}
+              onClick={() => openModal(urlImageOne)}
+            />
+          )}
+          {urlImageTwo && (
+            <Image
+              src={urlImageTwo}
+              className="w-[275px] h-[154px] py-3 inline-block"
+              width={275}
+              height={154}
+              alt={`${nameOfGame}`}
+              onClick={() => openModal(urlImageTwo)}
+            />
+          )}
+          {urlImageThree && (
+            <Image
+              src={urlImageThree}
+              className="w-[275px] h-[154px] py-3 inline-block"
+              width={275}
+              height={154}
+              alt={`${nameOfGame}`}
+              onClick={() => openModal(urlImageThree)}
+            />
+          )}
+        </section>
       </section>
 
       {urlPosterCloudinary && (
-        <>
-          <section
-            className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${
-              isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
-            } `}
+        <section
+          className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${
+            isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
+          } `}
+        >
+          <p className="text-center">
+            Affiche visible dans la page d'accueil et les résultats des recherches :
+          </p>
+          <Image
+            src={urlPosterCloudinary}
+            className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
+            width={192}
+            height={311}
+            alt={`${nameOfGame}`}
+          />
+        </section>
+      )}
+
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"
+          onClick={closeModal} // Close modal when clicking on the backdrop
+        >
+          <div
+            className="relative bg-white rounded-lg p-4"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
           >
-            <p className="text-center">
-              Affiche visible dans la page d'accueil et les résultats des
-              recherches :
-            </p>
-            <Image
-              src={urlPosterCloudinary}
-              className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
-              width={192}
-              height={311}
-              alt={`${nameOfGame}`}
-            />
-          </section>
-        </>
+            <button
+              className="absolute top-2 right-2 text-black"
+              onClick={closeModal}
+            >
+              &times; {/* Symbole de fermeture */}
+            </button>
+
+            {selectedImage && (
+              <Image
+                src={selectedImage}
+                alt="Image agrandie"
+                width={800} // Ajustez la taille selon vos besoins
+                height={600} // Ajustez la taille selon vos besoins
+              />
+            )}
+          </div>
+        </div>
       )}
     </>
   );
