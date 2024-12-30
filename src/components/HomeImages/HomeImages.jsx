@@ -1,3 +1,5 @@
+// components/HomeImages/HomeImages.js 
+// CE COMPOSANT EST DORENAVANT INUTILISÉ
 import Image from "next/image";
 import Link from "next/link";
 

@@ -4,7 +4,7 @@
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import Share from "@/components/Share/Share";
-import { useParams, usePathname, useSearchParams  } from "next/navigation"; // Avec le routeur App, next/Router ne peut pas être utilisé
+import { usePathname, useSearchParams  } from "next/navigation"; // Avec le routeur App, next/Router ne peut pas être utilisé
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import he from "he";
@@ -32,13 +32,14 @@ import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
 
-export default function IntroductionGame() {
+export default function IntroductionGame({params: {introduction}}) {
   // Variable
-  const params = useParams();
   const pathname = usePathname(); // Récupérer le chemin actuel
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire  
-  const nameofgame = decodeURIComponent(params.introduction); // Important de mettre le nom du dossier [profilecreators]
-
+  const nameofgame = decodeURIComponent(introduction); 
+  /* Malgré le décodage, certains noms de jeux contiennent toujours de l'encodage. C'est normal. leur nom a été enregistré tel quel */
+  console.log(`introduction : `, introduction);
+  console.log(`nameofgame : `, nameofgame);
   // State
   const [game, setgame] = useState({});
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
@@ -48,7 +49,7 @@ export default function IntroductionGame() {
   const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState();
   /************************************************ */
-  const [currentUrl, setCurrentUrl] = useState(); console.log(`currentUrl : `, currentUrl);
+  const [currentUrl, setCurrentUrl] = useState(); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 

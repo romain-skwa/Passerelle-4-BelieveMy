@@ -48,7 +48,7 @@ export default function Login() {
 
     // Connect the user
     try {
-      // Credentials est un provider : un service tiers utilisé pour l'dientification des utilisateurs
+      // Credentials est un provider : un service tiers utilisé pour l'identification des utilisateurs
       const response = await signIn(
         "credentials" /* Ne jamais mettre de majuscule dans ce nom */,
         {
@@ -114,6 +114,11 @@ export default function Login() {
             <ButtonForm formButton>S'inscrire</ButtonForm>
           </Link>
         </div>
+        <div className="flex justify-center">
+        <Link href="../../creators/resetPassword">
+          <ButtonForm formButton>Mot de passe oublié ?</ButtonForm>
+        </Link>
+      </div>
       </form>
     </GeneralLayout>
   );
