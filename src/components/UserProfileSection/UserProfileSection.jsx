@@ -29,10 +29,10 @@ const UserProfileSection = ({user}) => {
       {user.websiteUrl && <p><a href={user.websiteUrl}><strong>{user.websiteUrl}</strong></a></p>}
 
       {/* Affichage des URL des réseaux sociaux */}
-      {user.discordUrl && <a href={user.discordUrl}><Image src={logoDiscord} alt="Logo Discord" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-black bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
-      {user.twitchUrl && <a href={user.twitchUrl}><Image src={logoTwitch} alt="Logo Twitch" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-black bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
-      {user.itchIoUrl && <a href={user.itchIoUrl}><Image src={logoItchi} alt="Logo Itch.io" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-black bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
-      {user.twitterUrl && <a href={user.twitterUrl}><Image src={logoTwitter} alt="Logo Twitter" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-white bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
+      {user.discordUrl && <a href={user.discordUrl}><Image src={logoDiscord} unoptimized={true} alt="Logo Discord" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-black bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
+      {user.twitchUrl && <a href={user.twitchUrl}><Image src={logoTwitch} unoptimized={true} alt="Logo Twitch" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-black bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
+      {user.itchIoUrl && <a href={user.itchIoUrl}><Image src={logoItchi} unoptimized={true} alt="Logo Itch.io" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-black bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
+      {user.twitterUrl && <a href={user.twitterUrl}><Image src={logoTwitter} unoptimized={true} alt="Logo Twitter" className={`w-9 h-9 mr-3 ${user.isDarkMode ? 'bg-white bg-opacity-50' : ''} rounded-md p-1 inline`} /></a>}
 
       {/* Affichage des autres jeux */}
       {user.nameOtherGames1 && user.linkOtherGame1 && (

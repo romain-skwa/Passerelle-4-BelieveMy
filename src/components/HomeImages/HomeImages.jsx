@@ -19,6 +19,7 @@ const HomeImages = ({ introductionsImages }) => {
               height={311}
               className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300" // Ajoutez les classes pour l'effet hover
               alt={`${post.nameofgame}`}
+              unoptimized={true}
             />
           </Link>
         </div>

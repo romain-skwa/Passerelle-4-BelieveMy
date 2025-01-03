@@ -86,6 +86,7 @@ export default function SearchIntroductionGame() {
                           layout="fill" // Utilisez layout="fill" pour remplir le conteneur
                           objectFit="cover" // Utilisez objectFit pour couvrir le conteneur
                           alt={`${game.urlPoster}`}
+                          unoptimized={true}
                         />
                       </Link>
                     </div>

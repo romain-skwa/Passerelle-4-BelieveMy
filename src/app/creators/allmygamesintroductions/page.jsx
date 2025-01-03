@@ -52,6 +52,7 @@ export default async function Allmygamesintroductions() {
             width={400}
             height={300}
             className="w-48"
+            unoptimized={true}
           />
         </div>
       ))}

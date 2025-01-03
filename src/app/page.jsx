@@ -10,9 +10,7 @@ import Link from "next/link";
 async function fetchImages() {
   try {
     const response = await fetch(`http://localhost:3000/api/homeImages`, {
-      next: {
-        revalidate: 60,
-      },
+      cache: "no-store", // pour un rendu coté serveur
     }); // API à l'URL absolue
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des images");
@@ -49,6 +47,7 @@ export default async function Index() {
                     height={311}
                     className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300" // Ajoutez les classes pour l'effet hover
                     alt={`${post.nameofgame}`}
+                    unoptimized={true}
                   />
                 </Link>
               </div>

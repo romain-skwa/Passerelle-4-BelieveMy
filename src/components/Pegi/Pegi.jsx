@@ -34,7 +34,7 @@ const Pegi = ({
     <section className="border my-2">
       <div className="pegi">
         <label>
-          <Image src={logoPegi3} alt="Logo Pegi 3" />
+          <Image src={logoPegi3} alt="Logo Pegi 3" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="radio"
@@ -46,7 +46,7 @@ const Pegi = ({
         </label>
 
         <label>
-          <Image src={logoPegi7} alt="Logo Pegi 7" />
+          <Image src={logoPegi7} alt="Logo Pegi 7" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="radio"
@@ -58,7 +58,7 @@ const Pegi = ({
         </label>
 
         <label>
-          <Image src={logoPegi12} alt="Logo Pegi 12" />
+          <Image src={logoPegi12} alt="Logo Pegi 12" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="radio"
@@ -70,7 +70,7 @@ const Pegi = ({
         </label>
 
         <label>
-          <Image src={logoPegi16} alt="Logo Pegi 16" />
+          <Image src={logoPegi16} alt="Logo Pegi 16" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="radio"
@@ -82,7 +82,7 @@ const Pegi = ({
         </label>
 
         <label>
-          <Image src={logoPegi18} alt="Logo Pegi 18" />
+          <Image src={logoPegi18} alt="Logo Pegi 18" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="radio"
@@ -96,7 +96,7 @@ const Pegi = ({
       {/******************* Catégories *********************************************************************************** */}
       <div className="pegi flex-wrap">
         <label>
-          <Image src={logoPegiSexe} alt="Logo Pegi Sexe" title="Sexe" />
+          <Image src={logoPegiSexe} alt="Logo Pegi Sexe" title="Sexe" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="checkbox"
@@ -107,7 +107,7 @@ const Pegi = ({
           </div>
         </label>
         <label>
-          <Image src={logoPegiNudite} alt="Logo Pegi Nudité" title="Nudité" />
+          <Image src={logoPegiNudite} alt="Logo Pegi Nudité" title="Nudité" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="checkbox"
@@ -122,6 +122,7 @@ const Pegi = ({
             src={logoPegiJeuxHasard}
             alt="Logo Pegi Jeux de Hasard"
             title="Jeux de Hasard"
+            unoptimized={true}
           />
           <div className="flex justify-center pt-1">
             <input
@@ -137,6 +138,7 @@ const Pegi = ({
             src={logoPegiViolence}
             alt="Logo Pegi Violence"
             title="Violence"
+            unoptimized={true}
           />
           <div className="flex justify-center pt-1">
             <input
@@ -152,6 +154,7 @@ const Pegi = ({
             src={logoPegiLangageGrossier}
             alt="Logo Pegi Langage Grossier"
             title="Langage Grossier"
+            unoptimized={true}
           />
           <div className="flex justify-center pt-1">
             <input
@@ -163,7 +166,7 @@ const Pegi = ({
           </div>
         </label>
         <label>
-          <Image src={logoPegiPeur} alt="Logo Pegi Peur" title="Peur" />
+          <Image src={logoPegiPeur} alt="Logo Pegi Peur" title="Peur" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="checkbox"
@@ -174,7 +177,7 @@ const Pegi = ({
           </div>
         </label>
         <label>
-          <Image src={logoPegiDrogue} alt="Logo Pegi Drogue" title="Drogue" />
+          <Image src={logoPegiDrogue} alt="Logo Pegi Drogue" title="Drogue" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="checkbox"
@@ -189,6 +192,7 @@ const Pegi = ({
             src={logoPegiDiscrimination}
             alt="Logo Pegi Discrimination"
             title="Discrimination"
+            unoptimized={true}
           />
           <div className="flex justify-center pt-1">
             <input
@@ -200,7 +204,7 @@ const Pegi = ({
           </div>
         </label>
         <label>
-          <Image src={logoPegiOnline} alt="Logo Pegi Online" title="En ligne" />
+          <Image src={logoPegiOnline} alt="Logo Pegi Online" title="En ligne" unoptimized={true} />
           <div className="flex justify-center pt-1">
             <input
               type="checkbox"

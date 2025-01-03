@@ -12,13 +12,13 @@ return(
     <>
         <section className="w-[3.25rem] overflow-hidden">
             <div className="flex gap-1 allIconSocial">
-                <Image src={logoDiscord} alt="Logo Discord" className="w-[1.5rem]" />
-                <Image src={logoYoutube} alt="Logo Youtube" className="w-[1.5rem]" />
-                <Image src={logoInstagram} alt="Logo instagram" className="w-[1.5rem]" />
-                <Image src={logoFacebook} alt="Logo facebook" className="w-[1.5rem]" />
-                <Image src={logoTwitch} alt="Logo twitch" className="w-[1.5rem]" />
-                <Image src={logoDiscord} alt="Logo Discord" className="w-[1.5rem]" />
-                <Image src={logoYoutube} alt="Logo Youtube" className="w-[1.5rem]" />
+                <Image src={logoDiscord} alt="Logo Discord" className="w-[1.5rem]" unoptimized={true} />
+                <Image src={logoYoutube} alt="Logo Youtube" className="w-[1.5rem]" unoptimized={true} />
+                <Image src={logoInstagram} alt="Logo instagram" className="w-[1.5rem]" unoptimized={true} />
+                <Image src={logoFacebook} alt="Logo facebook" className="w-[1.5rem]" unoptimized={true} />
+                <Image src={logoTwitch} alt="Logo twitch" className="w-[1.5rem]" unoptimized={true} />
+                <Image src={logoDiscord} alt="Logo Discord" className="w-[1.5rem]" unoptimized={true} />
+                <Image src={logoYoutube} alt="Logo Youtube" className="w-[1.5rem]" unoptimized={true} />
             </div>
         </section>
    </>

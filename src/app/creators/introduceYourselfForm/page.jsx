@@ -11,6 +11,7 @@ import logoDiscord from "../../../../public/logo/discord-logo.png";
 import logoTwitch from "../../../../public/logo/twitch_logo.png";
 import logoItchi from "../../../../public/logo/itch-io-icon.png";
 import logoTwitter from "../../../../public/logo/x__twitter-logo.png";
+import Loading from "@/components/Loading/Loading";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState("");
@@ -33,6 +34,7 @@ const introduceYourself = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -114,6 +116,7 @@ const introduceYourself = () => {
         if (data.user.twitterUrl) {
           setTwitterUrl(data.user.twitterUrl);
         }
+        setLoading(false);
       } catch (err) {
         setError(err.message);
       }
@@ -154,15 +157,19 @@ const introduceYourself = () => {
         isDarkMode
       );
       toast.success("Informations mises à jour avec succès !");
+      setLoading(false);
     } catch (error) {
       console.error(`error dans la page introduceYourself`, error); // Affichez l'erreur dans la console
       toast.error("Erreur lors de la mise à jour des informations");
     }
   };
   /********************************************************************************************** */
-
+console.log(`loading `,loading);
   return (
     <GeneralLayout>
+      {loading ? (
+        <Loading /> // Affiche le composant Loading pendant le chargement
+      ) : (
       <div className="introduceYourself w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border bg-black/30 text-center ">
         <h1 className="text-4xl">Présentez-vous</h1>
         <form onSubmit={handleSubmit}>
@@ -284,6 +291,7 @@ const introduceYourself = () => {
                   src={logoDiscord}
                   alt="Logo Discord"
                   className="w-9 h-9 mr-3 bg-black bg-opacity-50 rounded-md p-1"
+                  unoptimized={true}
                 />
               </div>
               <input
@@ -300,6 +308,7 @@ const introduceYourself = () => {
                   src={logoTwitch}
                   alt="Logo Twitch"
                   className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
+                  unoptimized={true}
                 />
               </div>
               <input
@@ -316,6 +325,7 @@ const introduceYourself = () => {
                   src={logoItchi}
                   alt="Logo Itchi.io"
                   className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
+                  unoptimized={true}
                 />
               </div>
               <input
@@ -332,6 +342,7 @@ const introduceYourself = () => {
                   src={logoTwitter}
                   alt="Logo Twitter"
                   className="w-8 h-8 mr-3 bg-white bg-opacity-50 rounded-md p-1"
+                  unoptimized={true}
                 />
               </div>
               <input
@@ -377,6 +388,8 @@ const introduceYourself = () => {
           </button>
         </form>
       </div>
+      )
+    }
     </GeneralLayout>
   );
 };

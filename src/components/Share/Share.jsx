@@ -3,8 +3,8 @@ import Image from "next/image";
 import logoTwitter from "../../../public/logo/x__twitter-logo.png";
 import logoFacebook from "../../../public/logo/facebook_logo.png";
 
-// Composant Share qui prend currentUrl et title en props
-export default function Share({ currentUrl, title }) {
+// Composant Share qui prend currentUrl en props
+export default function Share({ currentUrl }) {
   const [shareMessage, setShareMessage] = useState("");
 
   // Pour l'exemple, la variable LadresseYoutube remplace currentUrl dans le code !!
@@ -15,7 +15,7 @@ export default function Share({ currentUrl, title }) {
     if (currentUrl ) { // Placer currentUrl AVANT le reste pour que l'encadré youtube s'affiche.
       setShareMessage(`${ladresseYoutube}`);
     }
-  }, [currentUrl]); // Recalculer quand currentUrl ou title change
+  }, [currentUrl]); // Recalculer quand currentUrl change
 
   // URL de partage sur Twitter
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(ladresseYoutube)}`;
@@ -25,13 +25,14 @@ export default function Share({ currentUrl, title }) {
 
   return (
     <div>
-      <p className='flex justify-center text-sm'>Partagez cette page :</p>
+      <p className='flex justify-center text-sm my-2'>Partagez cette page :</p>
       <div className='flex justify-center gap-2'>
         <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
           <Image
             src={logoTwitter}
             alt="Logo Twitter"
             className="w-7 h-7 bg-white rounded-md p-1"
+            unoptimized={true}
           />
         </a>
  
@@ -40,6 +41,7 @@ export default function Share({ currentUrl, title }) {
             src={logoFacebook}
             alt="Logo Facebook"
             className="w-7 h-7 bg-white rounded-md p-1"
+            unoptimized={true}
           />
         </a>
       </div>

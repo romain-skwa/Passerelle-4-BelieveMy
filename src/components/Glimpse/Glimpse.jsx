@@ -144,6 +144,7 @@ const ApercuFormulaire = ({
                   title={pegiImages[selectedAgePegi].title}
                   width={50}
                   height={50}
+                  unoptimized={true}
                 />
               </div>
             )}
@@ -161,9 +162,10 @@ const ApercuFormulaire = ({
                     key={index}
                     src={pegiData.src}
                     alt={pegiData.title}
-                    title={pegiData.title} // Ajoutez le titre pour l'attribut title
-                    width={50} // Ajustez la largeur selon vos besoins
-                    height={50} // Ajustez la hauteur selon vos besoins
+                    title={pegiData.title} 
+                    width={50} 
+                    height={50} 
+                    unoptimized={true}
                   />
                 ) : null; // Si aucune image n'est trouvée, ne rien afficher
               })}
@@ -296,6 +298,7 @@ const ApercuFormulaire = ({
                   height={50}
                   className="w-[50px] h-[50px] hover:scale-105 transition duration-300"
                   alt="Steam"
+                  unoptimized={true}
                 />
               </a>
             </>
@@ -310,6 +313,7 @@ const ApercuFormulaire = ({
                   height={50}
                   className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300"
                   alt="Steam"
+                  unoptimized={true}
                 />
               </a>
             </>
@@ -328,6 +332,7 @@ const ApercuFormulaire = ({
               className="w-[275px] h-[154px] py-3 inline-block"
               width={275}
               height={154}
+              unoptimized={true}
               alt={`urlImageOne - ${nameOfGame}`}
               onClick={() => openModal(urlImageOne)}
             />
@@ -338,6 +343,7 @@ const ApercuFormulaire = ({
               className="w-[275px] h-[154px] py-3 inline-block"
               width={275}
               height={154}
+              unoptimized={true}
               alt={`${nameOfGame}`}
               onClick={() => openModal(urlImageTwo)}
             />
@@ -348,6 +354,7 @@ const ApercuFormulaire = ({
               className="w-[275px] h-[154px] py-3 inline-block"
               width={275}
               height={154}
+              unoptimized={true}
               alt={`${nameOfGame}`}
               onClick={() => openModal(urlImageThree)}
             />
@@ -369,6 +376,7 @@ const ApercuFormulaire = ({
             className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
             width={192}
             height={311}
+            unoptimized={true}
             alt={`${nameOfGame}`}
           />
         </section>
@@ -394,8 +402,9 @@ const ApercuFormulaire = ({
               <Image
                 src={selectedImage}
                 alt="Image agrandie"
-                width={800} // Ajustez la taille selon vos besoins
-                height={600} // Ajustez la taille selon vos besoins
+                width={800}
+                height={600} 
+                unoptimized={true}
               />
             )}
           </div>

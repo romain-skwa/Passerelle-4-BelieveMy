@@ -1,6 +1,7 @@
 "use client";
 // INTRODUCTION OF ONE GAME
 // Dynamic page
+import { useSession } from "next-auth/react";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import Share from "@/components/Share/Share";
@@ -31,6 +32,7 @@ import iconeEpicGames from "/public/icons/epicGamesIcon.png";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
+import UpdateIntro from "@/components/UpdateIntro/UpdateIntro";
 
 export default function IntroductionGame({params: {introduction}}) {
   // Variable
@@ -38,12 +40,12 @@ export default function IntroductionGame({params: {introduction}}) {
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire  
   const nameofgame = decodeURIComponent(introduction); 
   /* Malgré le décodage, certains noms de jeux contiennent toujours de l'encodage. C'est normal. leur nom a été enregistré tel quel */
-  console.log(`introduction : `, introduction);
-  console.log(`nameofgame : `, nameofgame);
+
   // State
-  const [game, setgame] = useState({});
+  const { data: session } = useSession(); //console.log(`data dans la page de présentation : `, session);
+  const [game, setgame] = useState({}); console.log(`Contenu de game dans la page de présentation : `, game);
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
-  const [user, setUser] = useState(); // When the bio of the creator of this game is called
+  const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
   const encodedUsername = encodeURIComponent(username);
   const [loading, setLoading] = useState(true);
@@ -63,7 +65,7 @@ export default function IntroductionGame({params: {introduction}}) {
     setSelectedImage(null);
   };
 
-  // Récupérer l'URL actuelle
+  // Récupérer l'URL actuelle pour les éventuels partages sur les réseaux sociaux
   useEffect(() => {
     // Assurez-vous que le code est exécuté uniquement côté client
     if (typeof window !== "undefined") {
@@ -101,7 +103,7 @@ export default function IntroductionGame({params: {introduction}}) {
     }
 
     setgame(data.game);
-    setCreatorOfThisGame(data.game.username);
+    setCreatorOfThisGame(encodeURIComponent(data.game.username));
     setLoading(false);
   };
 
@@ -122,7 +124,7 @@ export default function IntroductionGame({params: {introduction}}) {
 
         if (!response.ok) {toast.error("Une erreur est intervenue");}
 
-        setUser(data.user); // Mettez à jour l'état `user` avec les données récupérées
+        setUserBio(data.user); // Mettez à jour l'état `user` avec les données récupérées
       };
 
       fetchDataCreatorOfThisGame();
@@ -278,6 +280,7 @@ export default function IntroductionGame({params: {introduction}}) {
                     title={pegiImage.title}
                     width={50}
                     height={50}
+                    unoptimized={true}
                   />
                 )}
 
@@ -296,6 +299,7 @@ export default function IntroductionGame({params: {introduction}}) {
                           title={pegiData.title}
                           width={50}
                           height={50}
+                          unoptimized={true}
                         />
                       ) : null; // Si aucune image n'est trouvée, ne rien afficher
                     })}
@@ -440,6 +444,7 @@ export default function IntroductionGame({params: {introduction}}) {
                       height={50}
                       className="w-[50px] h-[50px] hover:scale-105 transition duration-300"
                       alt="Steam"
+                      unoptimized={true}
                     />
                   </a>
                 </>
@@ -458,16 +463,12 @@ export default function IntroductionGame({params: {introduction}}) {
                       height={40}
                       className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300"
                       alt="Steam"
+                      unoptimized={true}
                     />
                   </a>
                 </>
               )}
             </section>
-
-            {/******************* Date de sortie du jeu **********************/}
-            <div className={"p-4 pr-6 min-h-[50px] text-right"}>
-              Sortie le {formattedDate}.
-            </div>
 
             {/************** Les images d'illustration **********************/}
             <section className="flex gap-2 justify-center">
@@ -477,7 +478,8 @@ export default function IntroductionGame({params: {introduction}}) {
                   className="w-[275px] h-[154px] py-3 inline-block"
                   width={275}
                   height={154}
-                  alt={`urlImageOne - ${game.nameOfGame}`}
+                  unoptimized={true}
+                  alt={`urlImageOne - ${game.nameofgame}`}
                   onClick={() => openModal(game.urlImageOneCloudinary)} 
                 />
               )}
@@ -487,7 +489,8 @@ export default function IntroductionGame({params: {introduction}}) {
                   className="w-[275px] h-[154px] py-3 inline-block"
                   width={275}
                   height={154}
-                  alt={`${game.nameOfGame}`}
+                  unoptimized={true}
+                  alt={`${game.nameofgame}`}
                   onClick={() => openModal(game.urlImageTwoCloudinary)} 
                 />
               )}
@@ -497,24 +500,42 @@ export default function IntroductionGame({params: {introduction}}) {
                   className="w-[275px] h-[154px] py-3 inline-block"
                   width={275}
                   height={154}
-                  alt={`${game.nameOfGame}`}
+                  unoptimized={true}
+                  alt={`${game.nameofgame}`}
                   onClick={() => openModal(game.urlImageThreeCloudinary)}
                 />
               )}
             </section>
-            {/************ Affichage Nom du créateur **********************/}
-            {user ? (
-              <UserProfileSection user={user} />
-            ) : (
-              <div className="p-4">
-                <Link
-                  href={`../../../dynamic/profilecreators/@${encodedUsername}`}
-                >
-                  Jeu créé par {decodeURIComponent(game.username)}
-                </Link>
-              </div>
+
+            {/************ Affichage Nom du créateur ou de sa Bio**********************/}
+            {userBio ? (
+              <>
+                {/******************* Date de sortie du jeu **********************/}
+                <div className={"p-4 pr-6 min-h-[50px] text-right"}>
+                  Sortie : {formattedDate}.
+                </div>
+                <UserProfileSection user={userBio} />
+              </>
+              ) : (
+              <section className="flex justify-between">
+                <div className="p-4 inline-block">
+                  <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
+                    Jeu créé par {decodeURIComponent(game.username)}
+                  </Link>
+                </div>
+                {/******************* Date de sortie du jeu **********************/}
+                <div className={"p-4 pr-6 min-h-[50px] text-right"}>
+                  Sortie : {formattedDate}.
+                </div>
+              </section>
             )}
+
             <Share currentUrl={currentUrl} />
+            {session && session.user.email === game.email ? (
+              
+            <UpdateIntro game={game} />
+           /* <span>voila voila {game.nameofgame?.trim() || "Nom du jeu indisponible"}</span>*/
+            ) : null}
         </section>
       )}
       {isModalOpen && (
@@ -535,9 +556,10 @@ export default function IntroductionGame({params: {introduction}}) {
                 alt="Image agrandie"
                 width={800} 
                 height={600}
+                unoptimized={true}
               />
             )}
-          </div>
+          </div> 
         </div>
       )}
     </GeneralLayout>

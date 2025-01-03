@@ -40,6 +40,7 @@ export default function Header({background}) {
             alt="Drapeau Grande Bretagne"
             className="inline-block mr-3 w-7 h-5"
             loading="eager"
+            unoptimized={true}
             priority
           />
           <Image
@@ -47,6 +48,7 @@ export default function Header({background}) {
             alt="Drapeau France"
             className="inline-block w-7 h-5"
             loading="eager"
+            unoptimized={true}
           />
         </div>
 
@@ -58,11 +60,11 @@ export default function Header({background}) {
           <SocialFrame />{/* Visible seulement sur téléphone */}
         </div>
         <div className="hidden tablet:flex h-8 w-[75px] tablet:w-[150px] mt-1 mr-3 mb-3 gap-2 flex-row-reverse">
-            <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7" />
-            <Image src={logoFacebook}  alt="Logo facebook" className="w-7 h-7 " />
-            <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7" />
-            <Image src={logoDiscord} alt="Logo Discord" className="w-8 h-8" />
-            <Image src={logoYoutube} alt="Logo Youtube" className="w-7 h-7" />            
+            <Image src={logoInstagram} alt="Logo instagram" className="w-7 h-7" unoptimized={true} />
+            <Image src={logoFacebook}  alt="Logo facebook" className="w-7 h-7 " unoptimized={true} />
+            <Image src={logoTwitch} alt="Logo twitch" className="w-7 h-7" unoptimized={true} />
+            <Image src={logoDiscord} alt="Logo Discord" className="w-8 h-8" unoptimized={true} />
+            <Image src={logoYoutube} alt="Logo Youtube" className="w-7 h-7" unoptimized={true} />            
         </div>
       </section>
 
@@ -102,6 +104,7 @@ export default function Header({background}) {
                   src={searchIconWhite}
                   alt="Search Icon"
                   className="mt-[2px] ml-[10px] w-5 h-5 cursor-pointer"
+                  unoptimized={true}
                 />
               </Link>
             </div>
@@ -167,6 +170,7 @@ export default function Header({background}) {
             src={homeIconWhite}
             alt="Home Icon"
             className="w-5 h-5"
+            unoptimized={true}
           />
         </Link>
         {/* --------Icone SEARCH visible sur écran mobiles------------ */}
@@ -176,6 +180,7 @@ export default function Header({background}) {
             src={searchIconWhite}
             alt="Search Icon"
             className="w-4 h-4"
+            unoptimized={true}
           />
         </Link>
         </div>

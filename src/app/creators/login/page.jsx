@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useState } from "react";
-import { useRef } from 'react';
+import { useRef } from "react";
 
 export default function Login() {
   // Variable
@@ -69,7 +69,6 @@ export default function Login() {
 
     // Redirect
     router.replace("/");
-
   };
   return (
     <GeneralLayout>
@@ -81,9 +80,17 @@ export default function Login() {
             required
             onFocus={handleFocus}
             ref={emailInputRef}
-            className={focused.email ? "focused input-register-section" : "input-register-section"}
+            className={
+              focused.email
+                ? "focused input-register-section"
+                : "input-register-section"
+            }
           />
-          <label htmlFor="email" className="label" onClick={() => handleLabelClick(emailInputRef)}>
+          <label
+            htmlFor="email"
+            className="label"
+            onClick={() => handleLabelClick(emailInputRef)}
+          >
             Courriel
           </label>
         </div>
@@ -95,11 +102,19 @@ export default function Login() {
             required
             onFocus={handleFocus}
             ref={passwordInputRef}
-            className={focused.password ? "focused input-register-section" : "input-register-section"}
+            className={
+              focused.password
+                ? "focused input-register-section"
+                : "input-register-section"
+            }
           />
 
-          <label htmlFor="password" className="label" onClick={() => handleLabelClick(passwordInputRef)}>
-              Mot de passe
+          <label
+            htmlFor="password"
+            className="label"
+            onClick={() => handleLabelClick(passwordInputRef)}
+          >
+            Mot de passe
           </label>
         </div>
 
@@ -115,10 +130,10 @@ export default function Login() {
           </Link>
         </div>
         <div className="flex justify-center">
-        <Link href="../../creators/resetPassword">
-          <ButtonForm formButton>Mot de passe oublié ?</ButtonForm>
-        </Link>
-      </div>
+          <Link href="../../creators/resetPassword">
+            <ButtonForm formButton>Mot de passe oublié ?</ButtonForm>
+          </Link>
+        </div>
       </form>
     </GeneralLayout>
   );

@@ -150,6 +150,7 @@ const GamePresentationSections = ({
                 width={192}
                 height={311}
                 alt={`${nameOfGame}`}
+                unoptimized={true}
               />
             </div>
           )}
@@ -177,6 +178,7 @@ const GamePresentationSections = ({
                 width={275}
                 height={154}
                 alt={`urlImageOne - ${nameOfGame}`}
+                unoptimized={true}
               />
             )}
           </div>
@@ -202,6 +204,7 @@ const GamePresentationSections = ({
                 width={275}
                 height={154}
                 alt={`${nameOfGame}`}
+                unoptimized={true}
               />
             )}
           </div>
@@ -227,6 +230,7 @@ const GamePresentationSections = ({
                 width={275}
                 height={154}
                 alt={`${nameOfGame}`}
+                unoptimized={true}
               />
             )}
           </div>
