@@ -31,7 +31,7 @@ const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
           key={genre}
           onClick={() => handleSoloMultiClick(genre)}
           className={`buttonSoloMulti ${
-            SoloMulti.includes(genre) ? "text-white bg-green-800" : " bg-white"
+            SoloMulti.includes(genre) ? "text-white bg-green-800" : "text-black bg-white"
           }`}
           style={{
             display: "flex",

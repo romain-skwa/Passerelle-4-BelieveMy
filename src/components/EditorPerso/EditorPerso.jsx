@@ -1185,6 +1185,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
         onChange={handleTextChange}
         onKeyDown={handleKeyDown} 
         placeholder="Entrez votre texte ici..."
+        className='text-black'
       />
       
     </div>    

@@ -38,12 +38,11 @@ export default function IntroductionGame({params: {introduction}}) {
   // Variable
   const pathname = usePathname(); // Récupérer le chemin actuel
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire  
-  const nameofgame = decodeURIComponent(introduction); 
-  /* Malgré le décodage, certains noms de jeux contiennent toujours de l'encodage. C'est normal. leur nom a été enregistré tel quel */
+  const nameofgame = (introduction); 
 
   // State
   const { data: session } = useSession(); //console.log(`data dans la page de présentation : `, session);
-  const [game, setgame] = useState({}); console.log(`Contenu de game dans la page de présentation : `, game);
+  const [game, setgame] = useState({}); //console.log(`Contenu de game dans la page de présentation : `, game);
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
@@ -54,7 +53,7 @@ export default function IntroductionGame({params: {introduction}}) {
   const [currentUrl, setCurrentUrl] = useState(); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-
+ 
   const openModal = (image) => {
     setSelectedImage(image);
     setIsModalOpen(true);
@@ -75,7 +74,7 @@ export default function IntroductionGame({params: {introduction}}) {
   }, [pathname, searchParams]);  // Re-déclencher lorsque le chemin ou les paramètres changent
 
   useEffect(() => {
-    if (!nameofgame) {
+    if (!game) {
       notFound();
     }
 
@@ -374,7 +373,7 @@ export default function IntroductionGame({params: {introduction}}) {
             {/******************** Introduction courte en gras **********************************************/}
             {game.shortIntroduction ? (
               <div className="p-4 min-h-[50px] font-bold mx-4">
-                {game.shortIntroduction}
+                {he.decode(game.shortIntroduction)}
               </div>
             ) : null}
             {/******************** Présentation détaillée ************************************************/}
@@ -533,8 +532,7 @@ export default function IntroductionGame({params: {introduction}}) {
             <Share currentUrl={currentUrl} />
             {session && session.user.email === game.email ? (
               
-            <UpdateIntro game={game} />
-           /* <span>voila voila {game.nameofgame?.trim() || "Nom du jeu indisponible"}</span>*/
+            <UpdateIntro game={game} fetchgameData={fetchgameData} setLoading={setLoading} />
             ) : null}
         </section>
       )}

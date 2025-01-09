@@ -2,6 +2,9 @@ import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
+
+
+
     // Get the nameofgame from the request body
     const data = await request.json();
     const { nameofgame } = data;

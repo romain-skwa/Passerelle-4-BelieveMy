@@ -18,6 +18,7 @@
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
+    "cors": "^2.8.5",
     "dompurify": "^3.1.7",
     "he": "^1.2.0",
     "moment-timezone": "^0.5.45",

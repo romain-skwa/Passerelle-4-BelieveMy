@@ -51,7 +51,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
     if (typeof result.info === "object" && "secure_url" in result.info) {
       // Mettre à jour l'URL de l'image avec la nouvelle image
       setter(result.info.secure_url);
-      console.log("Image info:", result.info);
+     // console.log("Image info:", result.info);
     }
   };
 

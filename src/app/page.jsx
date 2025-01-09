@@ -16,6 +16,7 @@ async function fetchImages() {
       throw new Error("Erreur lors de la récupération des images");
     }
     const data = await response.json();
+    
     return { introductionsImages: data || [] }; // Assurez-vous que vous renvoyez toujours un tableau
   } catch (error) {
     return { introductionsImages: [], error: error.message }; // Si erreur, renvoyez un tableau vide
@@ -25,7 +26,7 @@ async function fetchImages() {
 // Ce composant sera rendu côté serveur (Server Component)
 export default async function Index() {
   const { introductionsImages, error } = await fetchImages(); // Appel API côté serveur
-
+  //console.log(`introductionsImages `, introductionsImages);
   return (
     <GeneralLayout>
       <ConnectedUser />
@@ -40,7 +41,7 @@ export default async function Index() {
         <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
             {introductionsImages.map((post) => (
               <div key={post._id} className="mt-2 relative overflow-hidden tablet:shadow-xl shadow-black">
-                <Link href={`dynamic/introduction/${encodeURIComponent(post.nameofgame)}`}>
+                <Link href={`dynamic/introduction/${post.nameofgame}`}>
                   <Image
                     src={post.urlPosterCloudinary ? `${post.urlPosterCloudinary}` : `/presentation/${post.urlPoster}`} // Condition pour choisir l'URL de l'image
                     width={192}

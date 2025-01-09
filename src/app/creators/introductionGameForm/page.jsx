@@ -37,7 +37,7 @@ export default function introductionGameForm() {
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
   const [selectedAdditionalPegi, setSelectedAdditionalPegi] = useState([]);
-  const [releaseDate, setReleaseDate] = useState(null);
+  const [releaseDate, setReleaseDate] = useState(new Date()); console.log(`releaseDate : `, releaseDate);
   const [platform, setPlatform] = useState([]);
   const [webSiteOfThisGame, setWebSiteOfThisGame] = useState("");
   const [webSiteOfThisCreator, setWebSiteOfThisCreator] = useState("");
@@ -139,7 +139,7 @@ export default function introductionGameForm() {
         return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
 
-      // Vérification de la date de sortie
+      // Vérification du format de la date de sortie
       if (releaseDate) {
         const releaseDateString = releaseDate.toLocaleDateString("fr-FR"); // Format de la date en français
         const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
@@ -159,10 +159,10 @@ export default function introductionGameForm() {
       }
 
       // Function to send the data to createIntroduction function
-      const formData = new FormData();
+      const formData = new FormData(); 
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
-      formData.append("shortIntroduction", shortIntroduction);
-      formData.append("introductionOfTheGame",he.encode(introductionOfTheGame));
+      formData.append("shortIntroduction", he.encode(shortIntroduction));
+      formData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
       formData.append("platform", JSON.stringify(platform));
       formData.append("releaseDate", releaseDate);
       formData.append("urlPosterCloudinary", urlPosterCloudinary);
@@ -186,6 +186,7 @@ export default function introductionGameForm() {
       if (urlBackgroundCloudinary) {
         formData.append("urlBackgroundCloudinary", urlBackgroundCloudinary);
       }
+      console.log('Form data:', formData); 
 
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
