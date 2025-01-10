@@ -8,8 +8,9 @@ export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState('fr'); // Valeur par défaut
 
   useEffect(() => {
-    const userLanguage = navigator.language || navigator.userLanguage; // Pour les anciens navigateurs
-    setLanguage(userLanguage);
+    const userLanguages = navigator.languages || [navigator.language]; // Récupère les langues préférées
+    const detectedLanguage = userLanguages.find(lang => lang.startsWith('fr')) || 'fr'; // Détecte le français
+    setLanguage(detectedLanguage); console.log(detectedLanguage);
   }, []);
 
   // Définir la fonction changeLanguage
@@ -18,7 +19,7 @@ export const LanguageProvider = ({ children }) => {
   };
   
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, changeLanguage  }}>
+    <LanguageContext.Provider value={{ language, setLanguage, changeLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

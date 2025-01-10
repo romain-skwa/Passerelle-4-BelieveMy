@@ -32,8 +32,7 @@ export default function Header({background}) {
       setSearchTerm(event.target.value); // Met à jour l'état avec la valeur de l'input    
     };
 
-      // Fonctions pour changer la langue
-
+  // Fonctions pour changer la langue
   const handleChangeToEnglish = () => {
     changeLanguage('en'); // Change la langue à l'anglais
   };
@@ -90,7 +89,7 @@ export default function Header({background}) {
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4 ">
             <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
-               Accueil
+               {language == "fr" ? "Accueil" : "Home" }
             </Link>
           </div>
           {/* ----------------Recherche------------------------- */}
@@ -101,7 +100,7 @@ export default function Header({background}) {
               href="../../" 
               className="border px-4 pb-1 pt-[3px] rounded-2xl"
               >
-              Rechercher
+              {language == "fr" ? "Rechercher" : "Search" }
             </div>
           </div>
           )}
@@ -134,13 +133,13 @@ export default function Header({background}) {
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
                 pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
                   <Link href="../../creators/introduceYourselfForm">
-                    Présentez-vous
+                    { language == "fr" ? "Présentez vous" : "Introduce yourself" }
                   </Link>
                 </div>
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
                 pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
                   <Link href="../../creators/introductionGameForm">
-                    Présentez votre jeu
+                    { language == "fr" ? "Présentez votre jeu" : "Introduce your game" }
                   </Link>
                 </div>
               </>
@@ -151,7 +150,7 @@ export default function Header({background}) {
             {/* ----------------Comment présenter------------------------- */}
             <div className={`border text-center mt-4 laptop:mt-0 bg-black/70 px-4 pb-2 pt-[3px] laptop:ml-3 rounded-2xl 
               ${ !session?.user?.email ? "flex-grow" : "" }`}>
-              Comment présenter votre jeu ?
+              { language == "fr" ? "Comment présenter votre jeu ?" : "How to introduce your game" }
             </div>
           </div>
         </div>
@@ -163,15 +162,19 @@ export default function Header({background}) {
           <div className="mr-0 laptop:mr-4 flex justify-end" /* Part right */>
             {session?.user?.email ? (
               <div className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent" onClick={() => signOut()}>
-                Se déconnecter
+                { language == "fr" ? "Se déconnecter" : "Log out" }
               </div>
             ) : (
               <>
                 <div className="border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent">
-                  <Link href="../../creators/login">Se connecter</Link>
+                  <Link href="../../creators/login">
+                    { language == "fr" ? "Se connecter" : "Login" }
+                  </Link>
                 </div>
                 <div className="ml-3 mr-0 laptop:mr-2 flex justify-end border bg-black/70 laptop:bg-transparent rounded-2xl py-1 px-3">
-                  <Link href="../../creators/register">S'inscrire</Link>
+                  <Link href="../../creators/register">
+                    { language == "fr" ? "S'inscrire" : "Sign up" }
+                  </Link>
                 </div>
               </>
             )}

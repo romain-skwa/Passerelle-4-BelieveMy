@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import Image from "next/image";
 import logoTwitter from "../../../public/logo/x__twitter-logo.png";
 import logoFacebook from "../../../public/logo/facebook_logo.png";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 // Composant Share qui prend currentUrl en props
 export default function Share({ currentUrl }) {
   const [shareMessage, setShareMessage] = useState("");
+  const { language } = useLanguage();
 
   // Pour l'exemple, la variable LadresseYoutube remplace currentUrl dans le code !!
   let ladresseYoutube = "https://www.youtube.com/@anayanosekai/videos";
@@ -25,7 +27,7 @@ export default function Share({ currentUrl }) {
 
   return (
     <div>
-      <p className='flex justify-center text-sm my-2'>Partagez cette page :</p>
+      <p className='flex justify-center text-sm my-2'>{language === "fr" ? "Partagez cette page :" : "Share : "}</p>
       <div className='flex justify-center gap-2'>
         <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
           <Image

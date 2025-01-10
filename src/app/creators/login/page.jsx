@@ -95,7 +95,7 @@ export default function Login() {
             className="label"
             onClick={() => handleLabelClick(emailInputRef)}
           >
-            Courriel
+            { language == "fr" ? "Courriel" : "Email" }
           </label>
         </div>
 
@@ -118,19 +118,19 @@ export default function Login() {
             className="label"
             onClick={() => handleLabelClick(passwordInputRef)}
           >
-            Mot de passe
+            { language == "fr" ? "Mot de passe" : "Password" }
           </label>
         </div>
 
         {/*----------------------*/}
 
         <div className="flex justify-center">
-          <ButtonForm>Se connecter</ButtonForm>
+          <ButtonForm>{ language == "fr" ? "Se connecter" : "Login" }</ButtonForm>
         </div>
 
         <div className="flex justify-center">
           <Link href="../../creators/register">
-            <ButtonForm formButton>S'inscrire</ButtonForm>
+            <ButtonForm formButton>{ language == "fr" ? "S'inscrire" : "Sign up" }</ButtonForm>
           </Link>
         </div>
         <div className="flex justify-center">
