@@ -12,23 +12,35 @@ import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import SocialFrame from "@/components/SocialFrame/SocialFrame";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 export default function Header({background}) {
   const { data: session } = useSession();
+  const { language, changeLanguage } = useLanguage();
 
-      // État pour gérer la visibilité de la zone de recherche
-      const [isSearchVisible, setSearchVisible] = useState(false);
+    // État pour gérer la visibilité de la zone de recherche
+    const [isSearchVisible, setSearchVisible] = useState(false);
 
-      // Fonction pour gérer le clic sur le bouton "Rechercher"  
-      const handleSearchClick = () => {  
-          setSearchVisible(!isSearchVisible); // Alterne la visibilité  
-      };
+    // Fonction pour gérer le clic sur le bouton "Rechercher"  
+    const handleSearchClick = () => {  
+        setSearchVisible(!isSearchVisible); // Alterne la visibilité  
+    };
 
-      const [searchTerm, setSearchTerm] = useState(''); // État pour le mot clé
+    const [searchTerm, setSearchTerm] = useState(''); // État pour le mot clé
 
-      const handleSearchChange = (event) => {    
-        setSearchTerm(event.target.value); // Met à jour l'état avec la valeur de l'input    
-      };
+    const handleSearchChange = (event) => {    
+      setSearchTerm(event.target.value); // Met à jour l'état avec la valeur de l'input    
+    };
+
+      // Fonctions pour changer la langue
+
+  const handleChangeToEnglish = () => {
+    changeLanguage('en'); // Change la langue à l'anglais
+  };
+
+  const handleChangeToFrench = () => {
+    changeLanguage('fr'); // Change la langue au français
+  };
 
   return (
   <header className={`text-white pb-2 ${background}`}>
@@ -38,17 +50,19 @@ export default function Header({background}) {
           <Image
             src={flagBG}
             alt="Drapeau Grande Bretagne"
-            className="inline-block mr-3 w-7 h-5"
+            className="inline-block mr-3 w-7 h-5 cursor-pointer"
             loading="eager"
             unoptimized={true}
+            onClick={handleChangeToEnglish} 
             priority
           />
           <Image
             src={flagFrance}
             alt="Drapeau France"
-            className="inline-block w-7 h-5"
+            className="inline-block w-7 h-5 cursor-pointer"
             loading="eager"
             unoptimized={true}
+            onClick={handleChangeToFrench} 
           />
         </div>
 

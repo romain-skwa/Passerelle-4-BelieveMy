@@ -10,11 +10,12 @@ import { signIn } from "next-auth/react";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { useState } from "react";
 import { useRef } from "react";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 export default function Login() {
   // Variable
   const router = useRouter();
-
+  const { language } = useLanguage();
   const [focused, setFocused] = useState({ email: false, password: false });
 
   const handleFocus = (event) => {
@@ -69,9 +70,12 @@ export default function Login() {
 
     // Redirect
     router.replace("/");
+
   };
+ 
   return (
     <GeneralLayout>
+      Langue détectée : {language}
       <form action={prepareLogin} className="mt-36">
         <div className="input-component">
           <input
