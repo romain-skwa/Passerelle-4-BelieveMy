@@ -40,10 +40,10 @@ export default function IntroductionGame({ params: { introduction } }) {
   const pathname = usePathname(); // Récupérer le chemin actuel
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire
   const nameofgame = introduction;
-  const { language } = useLanguage();
+  const { language } = useLanguage();console.log(`language dans la page de présentation : `, language);
 
   // State
-  const { data: session } = useSession(); //console.log(`data dans la page de présentation : `, session);
+  const { data: session } = useSession(); 
   const [game, setgame] = useState({}); //console.log(`Contenu de game dans la page de présentation : `, game);
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
@@ -234,22 +234,31 @@ export default function IntroductionGame({ params: { introduction } }) {
     { genre: "Multijoueur local", icon: MultiPlayersLocal },
     { genre: "Multijoueur en ligne", icon: MultiPlayersOnline },
   ];
-  const displayOrder = ["Solo", "Multiplayer local", "Multijoueur en ligne"];
+
+  const [isFrench, setIsFrench]  = useState(true); console.log(`isFrench : `, isFrench);
+
+  useEffect(() => {
+    if(language == "fr"){
+      setIsFrench(true)
+    }else{
+      setIsFrench(false)
+    }
+  }, [language])
 
   const translations = {
     "Multijoueur en ligne": {
-      fr: "Multijoueur en ligne",
-      en: "Multiplayer online",
+      true: "Multijoueur en ligne",
+      false: "Multiplayer online",
     },
 
     "Multijoueur local": {
-      fr: "Multijoueur local",
-      en: "Local multiplayer",
+      true: "Multijoueur local",
+      false: "Local multiplayer",
     },
 
     Solo: {
-      fr: "Solo",
-      en: "Solo",
+      true: "Solo",
+      false: "Solo",
     },
   };
 
@@ -362,7 +371,7 @@ export default function IntroductionGame({ params: { introduction } }) {
             <div className="flex justify-center mt-4 pb-2 gap-5 ">
               {game.SoloMulti.map((genre) => {
                 const icon = SoloMultis.find((item) => item.genre === genre)?.icon; // Trouver l'icône correspondante
-                const translatedGenre = translations[genre][language];
+                const translatedGenre = translations[genre][isFrench];
                   return (
                     <div
                       key={genre}

@@ -5,12 +5,22 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('fr'); // Valeur par défaut
+  const [language, setLanguage] = useState(''); // Valeur par défaut
+  console.log(`language dans le contexte : `, language);
 
   useEffect(() => {
     const userLanguages = navigator.languages || [navigator.language]; // Récupère les langues préférées
-    const detectedLanguage = userLanguages.find(lang => lang.startsWith('fr')) || 'fr'; // Détecte le français
-    setLanguage(detectedLanguage); console.log(detectedLanguage);
+    console.log(`userLanguages : `, userLanguages);
+
+    // Vérifie si la première langue est française ou un de ses dérivés
+    const firstLanguage = userLanguages[0];
+    const isFrenchPreferred = firstLanguage.startsWith('fr');
+
+    // Détermine la langue détectée
+    const detectedLanguage = isFrenchPreferred ? 'fr' : firstLanguage;
+
+    setLanguage(detectedLanguage);
+    console.log(`detectedLanguage : `, detectedLanguage);
   }, []);
 
   // Définir la fonction changeLanguage

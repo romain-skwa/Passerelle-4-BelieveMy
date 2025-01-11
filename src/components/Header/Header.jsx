@@ -16,7 +16,7 @@ import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 export default function Header({background}) {
   const { data: session } = useSession();
-  const { language, changeLanguage } = useLanguage();
+  const { language, changeLanguage } = useLanguage();console.log(`language dans le composant Header: `, language);
 
     // État pour gérer la visibilité de la zone de recherche
     const [isSearchVisible, setSearchVisible] = useState(false);
