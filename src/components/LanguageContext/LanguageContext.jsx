@@ -6,11 +6,9 @@ const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState(''); // Valeur par défaut
-  console.log(`language dans le contexte : `, language);
 
   useEffect(() => {
     const userLanguages = navigator.languages || [navigator.language]; // Récupère les langues préférées
-    console.log(`userLanguages : `, userLanguages);
 
     // Vérifie si la première langue est française ou un de ses dérivés
     const firstLanguage = userLanguages[0];
@@ -20,7 +18,6 @@ export const LanguageProvider = ({ children }) => {
     const detectedLanguage = isFrenchPreferred ? 'fr' : firstLanguage;
 
     setLanguage(detectedLanguage);
-    console.log(`detectedLanguage : `, detectedLanguage);
   }, []);
 
   // Définir la fonction changeLanguage

@@ -17,6 +17,12 @@ export async function POST(request) {
         // Retirer .limit(1) pour récupérer tous les jeux correspondants
         const games = await db.collection("introduction-database").find({
             nameofgame: { $regex: new RegExp(regexPattern, 'i') }
+        }, {
+            projection: { // Projection pour récupérer uniquement les champs nécessaires
+                nameofgame: 1,
+                urlPosterCloudinary: 1,
+                urlPoster: 1
+            }
         }).toArray(); // Récupérer tous les jeux
 
         // Vérifier si des jeux ont été trouvés

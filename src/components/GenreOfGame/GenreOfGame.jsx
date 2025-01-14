@@ -24,7 +24,7 @@ const GenreOfGame = ({ selectedGenres, setSelectedGenres }) => {
         // Si le genre est déjà sélectionné, le retirer
         return prevSelected.filter((g) => g !== genre);
       } else {
-        // Sinon, l'ajouter
+        // Sinon, l'ajouter 
         return [...prevSelected, genre];
       }
     });
@@ -32,7 +32,7 @@ const GenreOfGame = ({ selectedGenres, setSelectedGenres }) => {
 
   return (
     <div className="my-4">
-      <p className="text-white font-bold mb-2 text-center">Sélectionnez le ou les genres du jeu :</p>
+      <p className="text-white font-bold mb-2 text-center">Sélectionnez une ou plusieurs catégories :</p>
       <div className='w-[200px] mx-auto'>
         {genres.map((genre) => (
           <label key={genre.id} className="block">

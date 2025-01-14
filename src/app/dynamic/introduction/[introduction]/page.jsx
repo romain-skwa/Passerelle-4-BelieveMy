@@ -40,7 +40,7 @@ export default function IntroductionGame({ params: { introduction } }) {
   const pathname = usePathname(); // Récupérer le chemin actuel
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire
   const nameofgame = introduction;
-  const { language } = useLanguage();console.log(`language dans la page de présentation : `, language);
+  const { language } = useLanguage();
 
   // State
   const { data: session } = useSession(); 
@@ -235,7 +235,7 @@ export default function IntroductionGame({ params: { introduction } }) {
     { genre: "Multijoueur en ligne", icon: MultiPlayersOnline },
   ];
 
-  const [isFrench, setIsFrench]  = useState(true); console.log(`isFrench : `, isFrench);
+  const [isFrench, setIsFrench]  = useState(true);
 
   useEffect(() => {
     if(language == "fr"){

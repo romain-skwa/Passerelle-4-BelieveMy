@@ -13,11 +13,12 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import SocialFrame from "@/components/SocialFrame/SocialFrame";
 import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import SearchModal from '@/components/SearchModal/SearchModal'; 
 
 export default function Header({background}) {
   const { data: session } = useSession();
-  const { language, changeLanguage } = useLanguage();console.log(`language dans le composant Header: `, language);
-
+  const { language, changeLanguage } = useLanguage();
+  const [isModalSearchOpen, setModalSearchOpen] = useState(false);
     // État pour gérer la visibilité de la zone de recherche
     const [isSearchVisible, setSearchVisible] = useState(false);
 
@@ -39,6 +40,14 @@ export default function Header({background}) {
 
   const handleChangeToFrench = () => {
     changeLanguage('fr'); // Change la langue au français
+  };
+
+  // Fonction Recherche Modal Catégorie
+  const handleSelectGenre = (genre) => {
+    // Ici, vous pouvez envoyer le genre au moteur de recherche
+    console.log(`Genre sélectionné : ${genre}`);
+    // Vous pouvez également rediriger vers la page de résultats
+    // Link vers la page de résultats avec le genre
   };
 
   return (
@@ -85,9 +94,9 @@ export default function Header({background}) {
       {/* ------------------------------------------------------------------------------------ */}
 
       <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative "> {/* Part left */}
-        <div style={{ display: 'flex', alignItems: 'center' }} className="w-[65%] laptop:w-[25%] flex justify-center laptop:justify-start">
+        <div style={{ display: 'flex', alignItems: 'center' }} className="w-[65%] laptop:w-[31%] flex justify-center laptop:justify-start">
           {/* ----------------Accueil------------------------- */}
-          <div className="text-center hidden laptop:block laptop:mr-4 ">
+          <div className="text-center hidden laptop:block laptop:mr-4">
             <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
                {language == "fr" ? "Accueil" : "Home" }
             </Link>
@@ -105,7 +114,7 @@ export default function Header({background}) {
           </div>
           )}
           {isSearchVisible && ( 
-            <div className="flex border rounded-2xl px-4 py-1 w-[100%] tablet:w-[295px]" >
+            <div className="flex border rounded-2xl px-4 py-1 w-[100%] tablet:w-[475px]" >
               <input 
                 type="text" 
                 value={searchTerm} // Lien avec l'état
@@ -120,7 +129,19 @@ export default function Header({background}) {
                   unoptimized={true}
                 />
               </Link>
-            </div>
+              <div 
+                className="ml-4 cursor-pointer" 
+                onClick={() => setModalSearchOpen(true)} // Ouvre le modal
+                >
+                Recherche détaillée
+              </div>
+            </div>            
+            )}
+            {isModalSearchOpen && (
+            <SearchModal
+              onClose={() => setModalSearchOpen(false)}
+              onSelectGenre={handleSelectGenre}
+            />
             )}
         </div>
 

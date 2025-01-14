@@ -67,35 +67,44 @@ export default function SearchIntroductionGame() {
         <Loading />
       ) : (
         <>
-          <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
+          <div className="flex justify-center w-full bg-green-400">
+            <h1>Résultats pour : {nameofgame}</h1>
+          </div>
+          <ul className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
             {games.length > 0 ? (
-              games.map(
-                (game) =>
-                  game.urlPoster && (
-                    <div
-                      key={game._id}
-                      className="mt-2 relative w-[150px] tablet:w-[192px] h-[243px] tablet:h-[311px] overflow-hidden tablet:shadow-xl shadow-black"
+              games.map((game) =>
+                game.urlPoster || game.urlPosterCloudinary ? ( // Vérifie si l'un des deux existe
+                  <li
+                    key={game._id}
+                    className="mt-2 relative w-[150px] tablet:w-[192px] h-[243px] tablet:h-[311px] overflow-hidden tablet:shadow-xl shadow-black"
+                  >
+                    <Link
+                      href={`/dynamic/introduction/${(
+                        game.nameofgame
+                      )}`}
                     >
-                      <Link
-                        href={`/dynamic/introduction/${encodeURIComponent(
-                          game.nameofgame
-                        )}`}
-                      >
-                        <Image
-                          src={`/presentation/${game.urlPoster}`}
-                          layout="fill" // Utilisez layout="fill" pour remplir le conteneur
-                          objectFit="cover" // Utilisez objectFit pour couvrir le conteneur
-                          alt={`${game.urlPoster}`}
-                          unoptimized={true}
-                        />
-                      </Link>
-                    </div>
-                  )
+                      <Image
+                        src={
+                          game.urlPosterCloudinary ||
+                          `/presentation/${game.urlPoster}`
+                        } // Utilise urlPosterCloudinary si disponible, sinon urlPoster
+                        layout="fill"
+                        objectFit="cover"
+                        alt={game.nameofgame || "Image du jeu"}
+                        unoptimized={true}
+                      />
+                    </Link>
+                  </li>
+                ) : (
+                  <p key={game._id}>
+                    Image non disponible pour {game.nameofgame}
+                  </p> // Si aucune des deux n'est présente
+                )
               )
             ) : (
-              <p>Aucun jeu trouvé</p>
+              <p>Aucun jeu trouvé pour ces critères.</p>
             )}
-          </section>
+          </ul>
         </>
       )}
     </GeneralLayout>
