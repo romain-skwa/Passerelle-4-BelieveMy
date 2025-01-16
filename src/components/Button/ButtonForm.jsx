@@ -2,10 +2,7 @@
 
 import { useFormStatus } from "react-dom"; // Pour connaitre le status actuel du formulaire
 
-export default function ButtonForm({
-  children,
-  formButton,
-}) {
+export default function ButtonForm({ children,formButton }) {
   const { pending } = useFormStatus(); // Peut être = à true, false ou undefined.
   return (
     // En français, "disabled" se traduit par "désactivé" ou "inactif".

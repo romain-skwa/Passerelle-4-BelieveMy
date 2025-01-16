@@ -48,7 +48,7 @@ export const newCreatorData = async (
     // Select the "créateurs" collection
     let user = await db
       .collection("créateurs")
-      .find({ email })
+      .find({ email }) // Might be writted .find({email: email})
       .limit(1)
       .toArray();
 
@@ -61,12 +61,12 @@ export const newCreatorData = async (
     // 2 -- Verify if this pseudo is already used
     let pseudo = await db
       .collection("créateurs")
-      .find({ username })
+      .find({ username })// Might be writted .find({username: username})
       .limit(1)
       .toArray();
 
     // If the pseudo is already used
-    if (user.length !== 0) {
+    if (pseudo.length !== 0) {
       await client.close();
       throw new Error("Ce pseudo est déjà utilisé");
     }

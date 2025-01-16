@@ -8,12 +8,15 @@ import { LanguageProvider } from "@/components/LanguageContext/LanguageContext";
 export const metadata = {
   title: "This is my game",
   description: "Introduce your video game by yourself",
+  icons: {
+    icon: "/public/icons/favicon.ico", // Chemin vers votre favicon
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <body className="small:bg-villeretroSmall  laptop:bg-villeretro2">
+      <body className="small:bg-villeretroSmall laptop:bg-villeretro2">
         <LanguageProvider>
           <AuthProvider>{children}</AuthProvider>
         </LanguageProvider>

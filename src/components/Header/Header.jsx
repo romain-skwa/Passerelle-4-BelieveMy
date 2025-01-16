@@ -135,7 +135,7 @@ export default function Header({background}) {
                 >
                 Recherche détaillée
               </div>
-            </div>            
+            </div>
             )}
             {isModalSearchOpen && (
             <SearchModal

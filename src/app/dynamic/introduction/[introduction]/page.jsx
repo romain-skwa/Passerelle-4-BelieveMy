@@ -571,6 +571,7 @@ export default function IntroductionGame({ params: { introduction } }) {
           )}
 
           <Share currentUrl={currentUrl} />
+          
           {session && session.user.email === game.email ? (
             <UpdateIntro
               game={game}

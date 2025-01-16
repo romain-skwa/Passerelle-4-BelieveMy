@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState(''); // Valeur par défaut
+  const [language, setLanguage] = useState('fr'); // Valeur par défaut
 
   useEffect(() => {
     const userLanguages = navigator.languages || [navigator.language]; // Récupère les langues préférées

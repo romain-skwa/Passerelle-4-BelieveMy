@@ -17,9 +17,15 @@ const genres = [
   { id: 'Independant', label: 'Indépendant' },
 ];
 
+const platforms = [
+  'Windows', 'Mac', 'Linux', 'PS5', 'PS4', 'Xbox One', 'Xbox Series X/S', 
+  'Switch', '3DS', 'iOS', 'Android'
+];
+
 export default function SearchModal({ onClose, onSelectGenre }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const router = useRouter(); // Utilisation du hook useRouter
+  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const router = useRouter();
 
   const handleGenreToggle = (genreId) => {
     setSelectedGenres((prevSelectedGenres) => {
@@ -31,21 +37,39 @@ export default function SearchModal({ onClose, onSelectGenre }) {
     });
   };
 
+  const handlePlatformToggle = (platform) => {
+    setSelectedPlatforms((prevSelectedPlatforms) => {
+      if (prevSelectedPlatforms.includes(platform)) {
+        return prevSelectedPlatforms.filter((item) => item !== platform);
+      } else {
+        return [...prevSelectedPlatforms, platform];
+      }
+    });
+  };
+
   const handleSearchClick = () => {
-    if (selectedGenres.length > 0) {
-        console.log("Genres sélectionnés:", selectedGenres);
-      // Navigation vers la page des résultats avec les genres sélectionnés
-      router.push(`/dynamic/GenreSearchResults/${encodeURIComponent(selectedGenres.join(','))}`);
-      console.log(`/dynamic/GenreSearchResults/${encodeURIComponent(selectedGenres.join(','))}`);
-      onClose(); // Ferme la modale après la redirection
-    }
+    // Génère l'URL avec les genres et plateformes comme search params
+    const genresParam = selectedGenres.length > 0 ? selectedGenres.join(',') : '';
+    const platformsParam = selectedPlatforms.length > 0 ? selectedPlatforms.join(',') : '';
+    
+    const query = new URLSearchParams();
+    if (genresParam) query.set('genres', genresParam);
+    if (platformsParam) query.set('platforms', platformsParam);
+
+    // Navigue vers la page des résultats en ajoutant les query params
+    router.push(`/dynamic/searchResultsDetails/searchResultsDetails?${query.toString()}`);
+    console.log(`/dynamic/searchResultsDetails/searchResultsDetails?${query.toString()}`);
+    onClose(); // Ferme la modale après la redirection
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 text-black">
       <div className="bg-white rounded-lg p-4 z-50">
         <h2 className="text-lg font-bold">Sélectionnez une catégorie</h2>
+
+        <section className='flex'>
         <div className="mt-2">
+          <h3 className="text-md font-semibold">Genres</h3>
           {genres.map((genre) => (
             <div
               key={genre.id}
@@ -60,11 +84,26 @@ export default function SearchModal({ onClose, onSelectGenre }) {
         </div>
 
         <div className="mt-4">
-          {/* Lien qui redirige l'utilisateur vers les résultats de recherche */}
-          {selectedGenres.length > 0 && (
+          <h3 className="text-md font-semibold">Plateformes</h3>
+          {platforms.map((platform) => (
+            <div
+              key={platform}
+              className={`p-2 cursor-pointer hover:bg-gray-200 ${
+                selectedPlatforms.includes(platform) ? 'bg-blue-200' : ''
+              }`}
+              onClick={() => handlePlatformToggle(platform)}
+            >
+              {platform}
+            </div>
+          ))}
+        </div>
+        </section>
+
+        <div className="mt-4">
+          {(selectedGenres.length > 0 || selectedPlatforms.length > 0) && (
             <button
               className="bg-green-500 px-4 py-2 rounded text-white"
-              onClick={handleSearchClick} // Gère la navigation dans la modale
+              onClick={handleSearchClick}
             >
               Rechercher
             </button>
