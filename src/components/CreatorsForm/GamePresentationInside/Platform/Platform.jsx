@@ -1,5 +1,5 @@
 import React from 'react';
-import "../../app/styles/formulary.css";
+import "@/app/styles/formulary.css";
 
 const ButtonPlatform = ({platform, setPlatform}) => {
     // Liste des plateformes

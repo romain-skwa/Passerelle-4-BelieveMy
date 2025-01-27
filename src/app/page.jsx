@@ -7,9 +7,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 // API: Récupération des images côté serveur
-async function fetchImages() {
+async function fetchImages(count) {
   try {
-    const response = await fetch(`http://localhost:3000/api/homeImages`, {
+    const response = await fetch(`http://localhost:3000/api/homeImages?count=${count}`, {
       cache: "no-store", // pour un rendu coté serveur
     }); // API à l'URL absolue
     if (!response.ok) {
@@ -24,37 +24,48 @@ async function fetchImages() {
 }
 
 // Ce composant sera rendu côté serveur (Server Component)
-export default async function Index() {
-  const { introductionsImages, error } = await fetchImages(); // Appel API côté serveur
-  //console.log(`introductionsImages `, introductionsImages);
+export default async function Index({ searchParams }) {
+  const count = parseInt(searchParams.count) || 10; // Récupérer le nombre d'images depuis les paramètres d'URL
+  const { introductionsImages, error } = await fetchImages(count);
+
   return (
     <GeneralLayout>
-      <ConnectedUser />
-      <ToastNotification error={error} />{/* Affichez ToastNotification si une erreur existe */}
-      
-      {error && <div className="error-message">{error}</div>}{" "}{/* Si aucune erreur et des images sont chargées */}
+      <ConnectedUser  />
+      <ToastNotification error={error} />
+      {error && <div className="error-message">{error}</div>}
 
-      {/* Vous pouvez aussi afficher l'erreur dans l'UI */}
       {introductionsImages.length === 0 ? (
         <Loading />
       ) : (
         <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
-            {introductionsImages.map((post) => (
-              <div key={post._id} className="mt-2 relative overflow-hidden tablet:shadow-xl shadow-black">
-                <Link href={`dynamic/introduction/${post.nameofgame}`}>
+          {introductionsImages.map((post) => (
+            <div key={post._id} className="rounded mt-2 relative overflow-hidden tablet:shadow-xl bg-black/70" style={{ boxShadow: '5px 5px 8px rgba(0, 0, 0, 0.8)', padding: '10px' }}>
+              <Link href={`dynamic/introduction/${post.nameofgame}`}>
+                <div className="relative">
                   <Image
-                    src={post.urlPosterCloudinary ? `${post.urlPosterCloudinary}` : `/presentation/${post.urlPoster}`} // Condition pour choisir l'URL de l'image
+                    src={post.urlPosterCloudinary ? `${post.urlPosterCloudinary}` : `/presentation/${post.urlPoster}`}
                     width={192}
                     height={311}
-                    className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300" // Ajoutez les classes pour l'effet hover
+                    className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
                     alt={`${post.nameofgame}`}
+                    title={decodeURIComponent(post.nameofgame)}
                     unoptimized={true}
                   />
-                </Link>
+                </div>
+              </Link>
+              <div className="text-center mt-2 font-semibold capitalize text-white">
+                {decodeURIComponent(post.nameofgame).length > 16 ? `${decodeURIComponent(post.nameofgame).slice(0, 16)}...` : decodeURIComponent(post.nameofgame)}
               </div>
-            ))}{" "}
+            </div>
+          ))}
         </section>
       )}
+      <div className="flex justify-center mt-4">
+        <Link href={`?count=${count + 10}#bottom`} className="bg-blue-500 text-white px-4 py-2 rounded">
+          Charger plus d'images
+        </Link>
+      </div>
+      <div id="bottom" /> 
     </GeneralLayout>
   );
 }

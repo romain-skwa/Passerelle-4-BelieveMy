@@ -80,6 +80,7 @@ export const createIntroduction = async (formData) => {
    
     // Add the post to the database
     await db.collection("introduction-database").insertOne(introductionData);
+
   } catch (e) {
     console.error(e); // Log the error for debugging
     throw new Error("Une erreur est survenue lors de l'enregistrement des données.");

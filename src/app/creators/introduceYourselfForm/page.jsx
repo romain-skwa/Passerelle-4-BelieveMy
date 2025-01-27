@@ -164,7 +164,6 @@ const introduceYourself = () => {
     }
   };
   /********************************************************************************************** */
-console.log(`loading `,loading);
   return (
     <GeneralLayout>
       {loading ? (

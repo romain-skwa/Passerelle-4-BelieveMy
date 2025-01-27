@@ -11,6 +11,8 @@ export default () => {
         NEXT_PUBLIC_UPLOAD_PRESET: "ml_default",
         NEXT_PUBLIC_CLOUDINARY_API_KEY: "865282161267678",
         NEXT_PUBLIC_CLOUDINARY_API_SECRET: "_eVZpxeOYr_uTs-MZQufmaok8Y4",
+        MAIL_USERNAME: "believeromain@gmail.com",
+        MAIL_PASSWORD: "25gjwE34G4rZmB",
       },
       images: {
         remotePatterns: [
@@ -33,6 +35,8 @@ export default () => {
         NEXT_PUBLIC_UPLOAD_PRESET: "ml_default",
         NEXT_PUBLIC_CLOUDINARY_API_KEY: "865282161267678",
         NEXT_PUBLIC_CLOUDINARY_API_SECRET: "_eVZpxeOYr_uTs-MZQufmaok8Y4",
+        MAIL_USERNAME: "believeromain@gmail.com",
+        MAIL_PASSWORD: "25gjwE34G4rZmB",
       },
       images: {
         remotePatterns: [

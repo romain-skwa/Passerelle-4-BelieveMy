@@ -5,6 +5,10 @@ export async function GET(req) {
   let introductionsImages = [];
   let client;
 
+  // Get the parameter "count" from the URL
+  const { searchParams } = new URL(req.url);
+  const count = parseInt(searchParams.get("count")) || 10; // By default, 10 images
+
   try {
     // Connect to the MongoDB cluster
     client = await MongoClient.connect(process.env.MONGODB_CLIENT);
@@ -15,8 +19,9 @@ export async function GET(req) {
     // Select the introductions collection
     introductionsImages = await db
       .collection("introduction-database")
-      .find({}, { projection: { urlPoster: 1, nameofgame: 1, urlPosterCloudinary:1 } })
-      .sort({ creation: 1 })
+      .find({}, { projection: { urlPoster: 1, nameofgame: 1, urlPosterCloudinary: 1 } })
+      .sort({ creation: -1 }) // The most recent data will be get first
+      .limit(count) // Limit the quantity of images
       .toArray();
 
     // Format

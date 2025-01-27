@@ -17,7 +17,7 @@ module.exports = {
       screens: {
         tablet: '600px',
         laptop: '1280px',
-        largeScreen: '1400px',
+        largeScreen: '1500px',
       },
     },
     textTransform: {

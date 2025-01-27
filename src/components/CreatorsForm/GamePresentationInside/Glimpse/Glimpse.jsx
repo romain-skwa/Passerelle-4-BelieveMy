@@ -1,7 +1,7 @@
 // ApercuFormulaire.js
 import React, { useState } from "react";
-import "../../app/styles/components.css";
-import "../../app/styles/introduction.css";
+import "@/app/styles/components.css";
+import "@/app/styles/introduction.css";
 import Image from "next/image";
 import logoPegi3 from "/public/logo/pegi_3.jpg";
 import logoPegi7 from "/public/logo/pegi_7.jpg";

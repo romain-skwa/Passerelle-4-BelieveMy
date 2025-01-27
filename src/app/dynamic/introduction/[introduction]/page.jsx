@@ -2,16 +2,16 @@
 // INTRODUCTION OF ONE GAME
 // Dynamic page
 import { useSession } from "next-auth/react";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
-import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
-import Share from "@/components/Share/Share";
 import { usePathname, useSearchParams } from "next/navigation"; // Avec le routeur App, next/Router ne peut pas être utilisé
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Link from "next/link";
 import he from "he";
 import "../../../styles/introduction.css";
-import { toast } from "react-toastify";
 import Image from "next/image";
+import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
+import Share from "@/components/CreatorsForm/IntroGame/Share/Share";
 import logoPegi3 from "/public/logo/pegi_3.jpg";
 import logoPegi7 from "/public/logo/pegi_7.jpg";
 import logoPegi12 from "/public/logo/pegi_12.jpg";
@@ -32,7 +32,7 @@ import iconeEpicGames from "/public/icons/epicGamesIcon.png";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/multiOnline2.jpg";
-import UpdateIntro from "@/components/UpdateIntro/UpdateIntro";
+import UpdateIntro from "@/components/CreatorsForm/IntroGame/UpdateIntro/UpdateIntro";
 import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 export default function IntroductionGame({ params: { introduction } }) {
@@ -43,8 +43,8 @@ export default function IntroductionGame({ params: { introduction } }) {
   const { language } = useLanguage();
 
   // State
-  const { data: session } = useSession(); 
-  const [game, setgame] = useState({}); //console.log(`Contenu de game dans la page de présentation : `, game);
+  const { data: session } = useSession();
+  const [game, setgame] = useState({});
   const [creatorOfThisGame, setCreatorOfThisGame] = useState();
   const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
@@ -235,15 +235,15 @@ export default function IntroductionGame({ params: { introduction } }) {
     { genre: "Multijoueur en ligne", icon: MultiPlayersOnline },
   ];
 
-  const [isFrench, setIsFrench]  = useState(true);
+  const [isFrench, setIsFrench] = useState(true);
 
   useEffect(() => {
-    if(language == "fr"){
-      setIsFrench(true)
-    }else{
-      setIsFrench(false)
+    if (language == "fr") {
+      setIsFrench(true);
+    } else {
+      setIsFrench(false);
     }
-  }, [language])
+  }, [language]);
 
   const translations = {
     "Multijoueur en ligne": {
@@ -370,35 +370,37 @@ export default function IntroductionGame({ params: { introduction } }) {
           {game.SoloMulti && game.SoloMulti.length > 0 && (
             <div className="flex justify-center mt-4 pb-2 gap-5 ">
               {game.SoloMulti.map((genre) => {
-                const icon = SoloMultis.find((item) => item.genre === genre)?.icon; // Trouver l'icône correspondante
+                const icon = SoloMultis.find(
+                  (item) => item.genre === genre
+                )?.icon; // Trouver l'icône correspondante
                 const translatedGenre = translations[genre][isFrench];
-                  return (
-                    <div
-                      key={genre}
-                      className="buttonSoloMulti"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        padding: "10px",
-                      }}
-                    >
-                      <span style={{ marginRight: "10px" }}>
-                        {translatedGenre}
-                      </span>
-                      {icon && (
-                        <img
-                          src={icon.src}
-                          alt={genre}
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      )}
-                    </div>
-                  );
-                })}
+                return (
+                  <div
+                    key={genre}
+                    className="buttonSoloMulti"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "10px",
+                    }}
+                  >
+                    <span style={{ marginRight: "10px" }}>
+                      {translatedGenre}
+                    </span>
+                    {icon && (
+                      <img
+                        src={icon.src}
+                        alt={genre}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "10px",
+                        }}
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
 
@@ -550,7 +552,8 @@ export default function IntroductionGame({ params: { introduction } }) {
             <>
               {/******************* Date de sortie du jeu **********************/}
               <div className={"p-4 pr-6 min-h-[50px] text-right"}>
-              {language === "fr" ? "Date de sortie :" : "Release date : "} {formattedDate}.
+                {language === "fr" ? "Date de sortie :" : "Release date : "}{" "}
+                {formattedDate}.
               </div>
               <UserProfileSection user={userBio} />
             </>
@@ -560,18 +563,24 @@ export default function IntroductionGame({ params: { introduction } }) {
                 <Link
                   href={`../../../dynamic/profilecreators/@${encodedUsername}`}
                 >
-                  {language === "fr" ? "Jeu créé par :" : "Game created by : "} {decodeURIComponent(game.username)}
+                  {language === "fr" ? "Jeu créé par :" : "Game created by : "}{" "}
+                  {decodeURIComponent(game.username)}
                 </Link>
               </div>
               {/******************* Date de sortie du jeu **********************/}
               <div className={"p-4 pr-6 min-h-[50px] text-right"}>
-              {language === "fr" ? "Date de sortie :" : "Release date : "} {formattedDate}.
+                {language === "fr" ? "Date de sortie :" : "Release date : "}{" "}
+                {formattedDate}.
               </div>
             </section>
           )}
 
           <Share currentUrl={currentUrl} />
-          
+
+          {/*** When the visitor is *********************************************************************/}
+          {/*********************** the CREATOR of this game, *******************************************/}
+          {/************************************************ he may change the introduction *************/}
+
           {session && session.user.email === game.email ? (
             <UpdateIntro
               game={game}

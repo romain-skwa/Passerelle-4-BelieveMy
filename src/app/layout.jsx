@@ -9,7 +9,7 @@ export const metadata = {
   title: "This is my game",
   description: "Introduce your video game by yourself",
   icons: {
-    icon: "/public/icons/favicon.ico", // Chemin vers votre favicon
+    icon: "/icons/favicon.ico", // Chemin vers votre favicon
   },
 };
 

@@ -1,16 +1,14 @@
 // components/GamePresentationSections/GamePresentationSections.js
 
-import React from 'react';
-import EditorPerso from "@/components/EditorPerso/EditorPerso";
-import Platform from "../Platform/Platform";
-import Pegi from "@/components/Pegi/Pegi";
-import ButtonSoloMulti from "@/components/ButtonSoloMulti/ButtonSoloMulti";
-import GenreOfGame from "../GenreOfGame/GenreOfGame";
-//import ImageUpload from "../ImageUpload/ImageUpload";
+import React from "react";
+import EditorPerso from "@/components/CreatorsForm/GamePresentationInside/EditorPerso/EditorPerso";
+import Platform from "../GamePresentationInside/Platform/Platform";
+import Pegi from "@/components/CreatorsForm/GamePresentationInside/Pegi/Pegi";
+import ButtonSoloMulti from "@/components/CreatorsForm/GamePresentationInside/ButtonSoloMulti/ButtonSoloMulti";
+import GenreOfGame from "../GamePresentationInside/GenreOfGame/GenreOfGame";
 import DatePicker from "react-datepicker";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import Image from "next/image";
-import { useEffect } from 'react';
 
 const GamePresentationSections = ({
   nameOfGame,
@@ -35,9 +33,15 @@ const GamePresentationSections = ({
   SoloMulti,
   setSoloMulti,
   isPosterVisible,
-  isImageOne, urlImageOne, setUrlImageOne,
-  isImageTwo, urlImageTwo, setUrlImageTwo,
-  isImageThree, urlImageThree, setUrlImageThree,
+  isImageOne,
+  urlImageOne,
+  setUrlImageOne,
+  isImageTwo,
+  urlImageTwo,
+  setUrlImageTwo,
+  isImageThree,
+  urlImageThree,
+  setUrlImageThree,
   urlPosterCloudinary,
   setUrlPosterCloudinary,
   isBackgroundVisible,
@@ -62,14 +66,15 @@ const GamePresentationSections = ({
   genreOfGame,
   setGenreOfGame,
 }) => {
-
   return (
-      
     <div>
       {/**************** Introduction courte ***************************** */}
       {isShortIntroVisible && (
         <div className="border p-2 my-2">
-          <p className="text-white text-center font-bold mb-3" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
+          <p
+            className="text-white text-center font-bold mb-3"
+            style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+          >
             Cette introduction courte sera affichée en gras
           </p>
           <textarea
@@ -100,7 +105,10 @@ const GamePresentationSections = ({
       {/**************** Date ***************************** */}
       {isReleaseDateVisible && (
         <div className="my-2 flex">
-          <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
+          <p
+            className="text-white font-bold mr-2"
+            style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+          >
             Date de sortie :
           </p>
           <DatePicker
@@ -128,22 +136,20 @@ const GamePresentationSections = ({
       {isSoloMulti && (
         <ButtonSoloMulti SoloMulti={SoloMulti} setSoloMulti={setSoloMulti} />
       )}
-      
+
       {/**************** Affiche [encadré] ***************************** */}
       {isPosterVisible && (
         <div className="w-[95%] tablet:w-[380px] p-4 mt-4 border grasFondBleu mx-auto">
-          <p className="text-center">
-            Choisissez l'affiche du jeu{" "}
-          </p>
-          <ImageUpload 
+          <p className="text-center">Choisissez l'affiche du jeu </p>
+          <ImageUpload
             urlCloudinary={urlPosterCloudinary}
             setter={setUrlPosterCloudinary}
-            buttonText="Télécharger Affiche" 
+            buttonText="Télécharger Affiche"
             tag={`Affiche - ${nameOfGame}`}
             nameOfGame={nameOfGame}
           />
           {urlPosterCloudinary && (
-            <div className='flex justify-center'>
+            <div className="flex justify-center">
               <Image
                 src={urlPosterCloudinary}
                 className="lg:w-[192px] lg:h-[311px] py-3 mt-3 inline-block "
@@ -157,17 +163,17 @@ const GamePresentationSections = ({
         </div>
       )}
 
-      <section className='flex flex-col tablet:flex-row w-full gap-2 justify-center'>
+      <section className="flex flex-col tablet:flex-row w-full gap-2 justify-center">
         {/**************** Image d'illustration n°1 [encadré] ***************************** */}
         {isImageOne && (
           <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
             <p className="text-center ">
               Choisissez l'image d'illustration n°1{" "}
             </p>
-            <ImageUpload 
-              urlCloudinary={urlImageOne} 
-              setter={setUrlImageOne} 
-              buttonText="Télécharger l'image n°1" 
+            <ImageUpload
+              urlCloudinary={urlImageOne}
+              setter={setUrlImageOne}
+              buttonText="Télécharger l'image n°1"
               tag={`Image d'illustration n°1 - ${nameOfGame}`}
               nameOfGame={nameOfGame}
             />
@@ -190,10 +196,10 @@ const GamePresentationSections = ({
             <p className="text-center tablet:inline-block">
               Choisissez l'image d'illustration n°2{" "}
             </p>
-            <ImageUpload 
-              urlCloudinary={urlImageTwo} 
-              setter={setUrlImageTwo} 
-              buttonText="Télécharger l'image n°2" 
+            <ImageUpload
+              urlCloudinary={urlImageTwo}
+              setter={setUrlImageTwo}
+              buttonText="Télécharger l'image n°2"
               tag={`Image d'illustration n°2 - ${nameOfGame}`}
               nameOfGame={nameOfGame}
             />
@@ -216,10 +222,10 @@ const GamePresentationSections = ({
             <p className="text-center tablet:inline-block">
               Choisissez l'image d'illustration n°3{" "}
             </p>
-            <ImageUpload 
-              urlCloudinary={urlImageThree} 
-              setter={setUrlImageThree} 
-              buttonText="Télécharger l'image n°3" 
+            <ImageUpload
+              urlCloudinary={urlImageThree}
+              setter={setUrlImageThree}
+              buttonText="Télécharger l'image n°3"
               tag={`Image d'illustration n°3 - ${nameOfGame}`}
               nameOfGame={nameOfGame}
             />
@@ -243,11 +249,11 @@ const GamePresentationSections = ({
           <p className="text-center tablet:inline-block">
             Choisissez une image pour l'arrière plan{" "}
           </p>
-          <ImageUpload 
-            urlCloudinary={urlBackgroundCloudinary} 
-            setter={setUrlBackgroundCloudinary} 
-            buttonText="Télécharger Background" 
-            tag="Background" 
+          <ImageUpload
+            urlCloudinary={urlBackgroundCloudinary}
+            setter={setUrlBackgroundCloudinary}
+            buttonText="Télécharger Background"
+            tag="Background"
             nameOfGame={nameOfGame}
           />
         </div>
@@ -312,7 +318,7 @@ const GamePresentationSections = ({
           onChange={(e) => setEpicGamesLink(e.target.value)}
         />
       )}
-      
+
       {/**************** Catégories [encadré] ***************************** */}
       {isCategoryVisible && (
         <GenreOfGame

@@ -6,6 +6,7 @@ import { MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { toast } from "react-toastify";
+import { sendEmail } from "@/nodemailer";
 
 export const newCreatorData = async (
   username,
@@ -84,10 +85,20 @@ export const newCreatorData = async (
       url: "",
       creation: new Date(),
     });
-  } catch (error) {
-    await client.close(); // On ferme la connexion au cluster
-    throw new Error(error);
-  }
+
+    // 5 -- Envoi de l'email de confirmation
+    try {
+      await sendEmail(email, 'Bienvenue sur notre site !', `Bonjour ${username}, merci de vous être inscrit !`);
+      console.log('Le courriel a bien été envoyé');
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi de l\'email:', error);
+      console.log('Erreur lors de l\'envoi de l\'email:', error);
+      return { success: false, message: 'Erreur lors de l\'envoi de l\'email.' };
+      }
+    } catch (error) {
+      await client.close(); // On ferme la connexion au cluster
+      throw new Error(error);
+    }
 
   await client.close(); // Quand tout est fini, on ferme la connexion.
 };

@@ -14,17 +14,20 @@ import { signOut, useSession } from "next-auth/react";
 import SocialFrame from "@/components/SocialFrame/SocialFrame";
 import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 import SearchModal from '@/components/SearchModal/SearchModal'; 
+import { useRouter } from 'next/navigation';
 
 export default function Header({background}) {
   const { data: session } = useSession();
   const { language, changeLanguage } = useLanguage();
   const [isModalSearchOpen, setModalSearchOpen] = useState(false);
+  const router = useRouter();
+
     // État pour gérer la visibilité de la zone de recherche
     const [isSearchVisible, setSearchVisible] = useState(false);
 
     // Fonction pour gérer le clic sur le bouton "Rechercher"  
     const handleSearchClick = () => {  
-        setSearchVisible(!isSearchVisible); // Alterne la visibilité  
+      setSearchVisible(!isSearchVisible); // Alterne la visibilité  
     };
 
     const [searchTerm, setSearchTerm] = useState(''); // État pour le mot clé
@@ -33,21 +36,13 @@ export default function Header({background}) {
       setSearchTerm(event.target.value); // Met à jour l'état avec la valeur de l'input    
     };
 
-  // Fonctions pour changer la langue
+  // Function to change the language
   const handleChangeToEnglish = () => {
     changeLanguage('en'); // Change la langue à l'anglais
   };
 
   const handleChangeToFrench = () => {
     changeLanguage('fr'); // Change la langue au français
-  };
-
-  // Fonction Recherche Modal Catégorie
-  const handleSelectGenre = (genre) => {
-    // Ici, vous pouvez envoyer le genre au moteur de recherche
-    console.log(`Genre sélectionné : ${genre}`);
-    // Vous pouvez également rediriger vers la page de résultats
-    // Link vers la page de résultats avec le genre
   };
 
   return (
@@ -93,8 +88,8 @@ export default function Header({background}) {
       {/* ----------------LIGNE 2------------------------------------------------------------- */}
       {/* ------------------------------------------------------------------------------------ */}
 
-      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative "> {/* Part left */}
-        <div style={{ display: 'flex', alignItems: 'center' }} className="w-[65%] laptop:w-[31%] flex justify-center laptop:justify-start">
+      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative h-14"> {/* Part left */}
+        <div style={{ display: 'flex', alignItems: 'center' }} className={`w-[65%] laptop:w-[25%] flex justify-center laptop:justify-start`}>
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4">
             <Link href="../../" className="border px-4 pb-1 pt-[3px] rounded-2xl">
@@ -103,25 +98,42 @@ export default function Header({background}) {
           </div>
           {/* ----------------Recherche------------------------- */}
           {!isSearchVisible && ( 
-          <div className="text-center m-2 laptop:m-0 hidden laptop:block">
-            <div 
-              onClick={handleSearchClick} 
-              href="../../" 
-              className="border px-4 pb-1 pt-[3px] rounded-2xl"
-              >
-              {language == "fr" ? "Rechercher" : "Search" }
+            <>
+            <div className="text-center m-2 laptop:m-0 hidden largeScreen:block" /* Over 1500px */ >
+              <div 
+                onClick={() => {handleSearchClick()}} 
+                href="../../" 
+                className="border px-4 pb-1 pt-[3px] rounded-2xl"
+                >
+                {language == "fr" ? "Rechercher" : "Search" }
+              </div>
             </div>
-          </div>
+            <div className="text-center m-2 laptop:m-0 hidden laptop:block largeScreen:hidden" /* Under 1500px */>
+              <div 
+                onClick={() => setModalSearchOpen(true)}
+                href="../../" 
+                className="border px-4 pb-1 pt-[3px] rounded-2xl"
+                >
+                {language == "fr" ? "Rechercher" : "Search" }
+              </div>
+            </div>
+          </>
           )}
           {isSearchVisible && ( 
-            <div className="flex border rounded-2xl px-4 py-1 w-[100%] tablet:w-[475px]" >
+            <div className="flex flex-col translate-y-3">
+              <div className="flex border rounded-2xl px-4 py-1 w-[100%] ">
               <input 
                 type="text" 
                 value={searchTerm} // Lien avec l'état
                 onChange={handleSearchChange} // Gestion du changement
-                className="text-black placeholder-gray-500 outline-none px-1 w-[100%] tablet:w-[245px]" // Appliquez la couleur ici
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {          
+                    router.push(`/dynamic/searchResult/${encodeURIComponent(searchTerm)}`); // Redirection when "Enter" is pressed    
+                  }          
+                }}
+                className="text-black placeholder-gray-500 outline-none px-1 tablet:w-[245px]"
               />
-              <Link href={`/dynamic/searchResult/${encodeURIComponent(searchTerm)}`}>
+              <Link href={`/dynamic/searchResult/${encodeURIComponent(searchTerm)}`}> {/* Link to result Page*/}
                 <Image
                   src={searchIconWhite}
                   alt="Search Icon"
@@ -129,8 +141,10 @@ export default function Header({background}) {
                   unoptimized={true}
                 />
               </Link>
+              </div>
+              
               <div 
-                className="ml-4 cursor-pointer" 
+                className="text-center text-sm cursor-pointer" 
                 onClick={() => setModalSearchOpen(true)} // Ouvre le modal
                 >
                 Recherche détaillée
@@ -140,27 +154,26 @@ export default function Header({background}) {
             {isModalSearchOpen && (
             <SearchModal
               onClose={() => setModalSearchOpen(false)}
-              onSelectGenre={handleSelectGenre}
             />
             )}
         </div>
 
 
-        {/* ----------------Formulaire Présentation------------------------- */}
-        <div className="order-last laptop:order-none"  /* Part Middle */>
-          <div className={`flex flex-col laptop:flex-row pb-3 laptop:pb-0`}>
+        {/* ----------------Formulaires Présentation------------------------- */}
+        <div className={`border-last flex justify-center laptop:order-none  "flex-grow" `}/* Part Middle */>
+          <div className={`flex flex-col laptop:flex-row  pb-3 laptop:pb-0`}>
             {session?.user?.email ? (
               <>
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
                 pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
                   <Link href="../../creators/introduceYourselfForm">
-                    { language == "fr" ? "Présentez vous" : "Introduce yourself" }
+                    { language == "fr" ? "Votre profil" : "Your profile" } {/* The creator introduce himself */}
                   </Link>
                 </div>
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
                 pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
                   <Link href="../../creators/introductionGameForm">
-                    { language == "fr" ? "Présentez votre jeu" : "Introduce your game" }
+                    { language == "fr" ? "Présentez votre jeu" : "Introduce your game" } {/* The creator introduce his GAME */}
                   </Link>
                 </div>
               </>
@@ -170,7 +183,7 @@ export default function Header({background}) {
 
             {/* ----------------Comment présenter------------------------- */}
             <div className={`border text-center mt-4 laptop:mt-0 bg-black/70 px-4 pb-2 pt-[3px] laptop:ml-3 rounded-2xl 
-              ${ !session?.user?.email ? "flex-grow" : "" }`}>
+              `}>
               { language == "fr" ? "Comment présenter votre jeu ?" : "How to introduce your game" }
             </div>
           </div>
@@ -202,25 +215,25 @@ export default function Header({background}) {
           </div>
           
         
-        {/* --------Icone HOME visible sur écran mobiles------------ */}
-        <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px] opacity-100 absolute left-0 ml-4 top-[6px] laptop:hidden">
-          <Image
-            src={homeIconWhite}
-            alt="Home Icon"
-            className="w-5 h-5"
-            unoptimized={true}
-          />
-        </Link>
-        {/* --------Icone SEARCH visible sur écran mobiles------------ */}
-        <Link href="../../" className="absolute right-0 mr-4 top-[7px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
-          <Image
-            onClick={handleSearchClick} 
-            src={searchIconWhite}
-            alt="Search Icon"
-            className="w-4 h-4"
-            unoptimized={true}
-          />
-        </Link>
+          {/* --------Icone HOME visible sur écran mobiles---------------------------------------------------------------- */}
+          <Link href="../../" className="border bg-black/70 rounded-2xl p-[10px] opacity-100 absolute left-0 ml-4 top-[6px] laptop:hidden">
+            <Image
+              src={homeIconWhite}
+              alt="Home Icon"
+              className="w-5 h-5"
+              unoptimized={true}
+            />
+          </Link>
+          {/* --------Icone SEARCH visible sur écran mobiles------------ */}
+          <div className="absolute right-0 mr-4 top-[7px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
+            <Image
+              src={searchIconWhite}
+              onClick={() => setModalSearchOpen(true)}
+              alt="Search Icon"
+              className="w-4 h-4"
+              unoptimized={true}
+            />
+          </div>
         </div>
       </section>
     </header>

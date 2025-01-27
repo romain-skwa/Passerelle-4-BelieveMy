@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Image from "next/image";
-import logoTwitter from "../../../public/logo/x__twitter-logo.png";
-import logoFacebook from "../../../public/logo/facebook_logo.png";
+import logoTwitter from "/public/logo/x__twitter-logo.png";
+import logoFacebook from "/public/logo/facebook_logo.png";
 import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 // Composant Share qui prend currentUrl en props

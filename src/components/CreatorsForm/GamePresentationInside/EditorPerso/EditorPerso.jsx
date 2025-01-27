@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import "../../app/styles/formulary.css";
+import "@/app/styles/formulary.css";
 import { useClickOutside } from '@mantine/hooks';
 
 function MyTextArea({onTextChange, introductionOfTheGame, setIntroductionOfTheGame}) {

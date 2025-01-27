@@ -7,10 +7,7 @@ export async function POST(request) {
   try {
     // Récupère et valide les données envoyées dans la requête
     const data = await request.json();
-    const { genres = [], platforms = [] } = data; // Récupération des genres et plateformes
-
-    console.log("Genres reçus dans l'API:", genres);
-    console.log("Plateformes reçues dans l'API:", platforms);
+    const { genres = [], platforms = [], searchTerm = '' } = data; // Récupération des genres et plateformes
 
     client = await MongoClient.connect(process.env.MONGODB_CLIENT);
     const db = client.db(process.env.MONGODB_DATABASE);
@@ -23,9 +20,12 @@ export async function POST(request) {
     if (platforms && Array.isArray(platforms) && platforms.length > 0) {
       query.platform = { $in: platforms }; // Cherche dans plusieurs plateformes
     }
+    if (searchTerm) {
+      query.nameofgame = { $regex: new RegExp(searchTerm, 'i') }; // Exemple d'utilisation de la recherche textuelle    
+    }
 
     // Log de la requête MongoDB avant de l'exécuter
-    console.log("Requête MongoDB avec genres et plateformes:", query);
+      //console.log("Requête MongoDB avec genres et plateformes:", query);
 
     const games = await db.collection("introduction-database").find(query, {
       projection: { // Projection pour récupérer uniquement les champs nécessaires
@@ -36,7 +36,7 @@ export async function POST(request) {
     }).toArray();
 
     // Log des résultats de la requête MongoDB
-    console.log("Jeux récupérés de la base de données:", games);
+      //console.log("Jeux récupérés de la base de données:", games);
 
     if (games.length === 0) {
       return NextResponse.json({ games: [], error: "Aucun jeu trouvé" }, { status: 404 });
@@ -51,7 +51,7 @@ export async function POST(request) {
     await client.close();
 
     // Log de la fermeture de la connexion
-    console.log("Connexion à MongoDB fermée avec succès.");
+      //console.log("Connexion à MongoDB fermée avec succès.");
 
     return NextResponse.json({ games: formattedGames }, { status: 200 });
 
