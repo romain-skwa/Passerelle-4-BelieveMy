@@ -169,8 +169,10 @@ const introduceYourself = () => {
       {loading ? (
         <Loading /> // Affiche le composant Loading pendant le chargement
       ) : (
-      <div className="introduceYourself w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border bg-black/30 text-center ">
-        <h1 className="text-4xl">Présentez-vous</h1>
+      <div className="introduceYourself w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center ">
+        <h1 className="text-4xl text-white mb-2" style={{ textShadow: '4px 4px 6px rgba(0, 0, 0, 0.8)' }}>
+          Présentez-vous
+        </h1>
         <form onSubmit={handleSubmit}>
           <textarea
             value={bio}
@@ -179,7 +181,7 @@ const introduceYourself = () => {
             placeholder="Présentez votre parcours. Evoquez vos jeux. C'est à vous..."
           />
           <br />
-          <div className="linksOtherGames ">
+          <div className="linksOtherGames">
             <input
               type="text"
               value={nameOtherGames1}

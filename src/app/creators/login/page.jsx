@@ -75,7 +75,6 @@ export default function Login() {
  
   return (
     <GeneralLayout>
-      Langue détectée : {language}
       <form action={prepareLogin} className="mt-36">
         <div className="input-component">
           <input

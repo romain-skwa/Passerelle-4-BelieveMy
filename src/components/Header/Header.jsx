@@ -88,7 +88,7 @@ export default function Header({background}) {
       {/* ----------------LIGNE 2------------------------------------------------------------- */}
       {/* ------------------------------------------------------------------------------------ */}
 
-      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative h-14"> {/* Part left */}
+      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative "> {/* Part left */}
         <div style={{ display: 'flex', alignItems: 'center' }} className={`w-[65%] laptop:w-[25%] flex justify-center laptop:justify-start`}>
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4">
@@ -160,18 +160,16 @@ export default function Header({background}) {
 
 
         {/* ----------------Formulaires Présentation------------------------- */}
-        <div className={`border-last flex justify-center laptop:order-none  "flex-grow" `}/* Part Middle */>
-          <div className={`flex flex-col laptop:flex-row  pb-3 laptop:pb-0`}>
+        <div className={`order-last flex justify-center laptop:order-none flex-grow`}/* Part Middle */>
+          <div className={`flex flex-col laptop:flex-row pb-3 laptop:pb-0`}>
             {session?.user?.email ? (
               <>
-                <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
-                pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
+                <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
                   <Link href="../../creators/introduceYourselfForm">
                     { language == "fr" ? "Votre profil" : "Your profile" } {/* The creator introduce himself */}
                   </Link>
                 </div>
-                <div className="cursor-pointer border text-center rounded-2xl bg-black/70 mt-2 laptop:mt-0 px-4 
-                pt-[3px] laptop:ml-3 pl-4 pb-2 laptop:pb-0 order-last laptop:order-none">
+                <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
                   <Link href="../../creators/introductionGameForm">
                     { language == "fr" ? "Présentez votre jeu" : "Introduce your game" } {/* The creator introduce his GAME */}
                   </Link>
@@ -182,8 +180,7 @@ export default function Header({background}) {
             )}
 
             {/* ----------------Comment présenter------------------------- */}
-            <div className={`border text-center mt-4 laptop:mt-0 bg-black/70 px-4 pb-2 pt-[3px] laptop:ml-3 rounded-2xl 
-              `}>
+            <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
               { language == "fr" ? "Comment présenter votre jeu ?" : "How to introduce your game" }
             </div>
           </div>

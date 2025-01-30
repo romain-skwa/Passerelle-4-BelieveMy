@@ -284,7 +284,7 @@ export default function IntroductionGame({ params: { introduction } }) {
                     padding: "1px 4px",
                     letterSpacing: "0.1rem",
                   }}
-                  className={`inline-flex items-center rounded-md h-auto
+                  className={`buttonPlatform
                         ${
                           isDarkMode == true
                             ? " border border-white"
@@ -558,17 +558,15 @@ export default function IntroductionGame({ params: { introduction } }) {
               <UserProfileSection user={userBio} />
             </>
           ) : (
-            <section className="flex justify-between">
-              <div className="p-4 inline-block">
-                <Link
-                  href={`../../../dynamic/profilecreators/@${encodedUsername}`}
-                >
+            <section className="tablet:flex tablet:justify-between">
+              <div className="p-1 tablet:p-4 tablet:inline-block text-center">
+                <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
                   {language === "fr" ? "Jeu créé par :" : "Game created by : "}{" "}
                   {decodeURIComponent(game.username)}
                 </Link>
               </div>
               {/******************* Date de sortie du jeu **********************/}
-              <div className={"p-4 pr-6 min-h-[50px] text-right"}>
+              <div className={"p-1 tablet:p-4 pr-6 tablet:min-h-[50px] text-center tablet:text-right"}>
                 {language === "fr" ? "Date de sortie :" : "Release date : "}{" "}
                 {formattedDate}.
               </div>

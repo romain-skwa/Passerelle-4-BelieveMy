@@ -1,5 +1,4 @@
 // HOME
-import ConnectedUser from "@/components/ConnectedUser/ConnectedUser";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import Loading from "@/components/Loading/Loading";
 import ToastNotification from "@/components/ToastNotification/ToastNotification"; // Importez le ToastNotification
@@ -30,7 +29,6 @@ export default async function Index({ searchParams }) {
 
   return (
     <GeneralLayout>
-      <ConnectedUser  />
       <ToastNotification error={error} />
       {error && <div className="error-message">{error}</div>}
 
@@ -46,7 +44,7 @@ export default async function Index({ searchParams }) {
                     src={post.urlPosterCloudinary ? `${post.urlPosterCloudinary}` : `/presentation/${post.urlPoster}`}
                     width={192}
                     height={311}
-                    className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
+                    className="w-[146px] h-[240px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
                     alt={`${post.nameofgame}`}
                     title={decodeURIComponent(post.nameofgame)}
                     unoptimized={true}
@@ -61,8 +59,8 @@ export default async function Index({ searchParams }) {
         </section>
       )}
       <div className="flex justify-center mt-4">
-        <Link href={`?count=${count + 10}#bottom`} className="bg-blue-500 text-white px-4 py-2 rounded">
-          Charger plus d'images
+        <Link href={`?count=${count + 10}#bottom`} className=" rounded-2xl text-white border bg-black/70 px-4 py-2 ">
+          Voir plus de jeux
         </Link>
       </div>
       <div id="bottom" /> 

@@ -1,7 +1,9 @@
 import React from 'react';
-
+const colorDark = "linear-gradient(70deg, rgba(25,21,70,1) 0%, rgba(9,9,121,0.5) 35%, rgba(25,21,70,1) 100%)";
 const ObligatoryButtons = ({
   nameOfGame,
+  isDarkMode,
+  setIsDarkMode,
   shortIntroduction,
   introductionOfTheGame,
   platform,
@@ -9,107 +11,60 @@ const ObligatoryButtons = ({
   selectedAgePegi,
   urlPosterCloudinary,
   SoloMulti,
-  isShortIntroVisible,
-  setIsShortIntroVisible,
-  isEditorVisible,
-  setIsEditorVisible,
-  isPlatformVisible,
-  setPlatformVisible,
-  isReleaseDateVisible,
-  setIsReleaseDateVisible,
-  isPegiAgeVisible,
-  setIsPegiAgeVisible,
-  isPosterVisible,
-  setIsPosterVisible,
-  isSoloMulti,
-  setIsSoloMulti,
 }) => {
   return (
-    <section className="border mb-3" style={{ cursor: nameOfGame.length >= 2 ? 'pointer' : 'not-allowed' }}>
-      <div className="flex justify-center text-white text-xl">Obligatoire</div>
+    <section className="w-[241px] p-2 mb-3 rounded-xl font-bold neuphormismUndergroung">
+      <div className="flex justify-center mt-3 laptop:mt-0 mx-auto">
+        <div
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          className="p-2 bg-black text-white w-[200px] cursor-pointer rounded-xl"
+        >
+          Texte noir et fond blanc
+        </div>
+      </div>
+
+      <div className="flex justify-center text-white text-xl mb-2">Obligatoire</div>
       <div className="bandeauTop">
-        <div
-          onClick={() => setIsShortIntroVisible(!isShortIntroVisible)}
-          style={{
-            backgroundColor: shortIntroduction.length > 1 ? "green" : "#2e2d2c",
-            border: isShortIntroVisible ? "2px solid white" : "2px solid black",
-            opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-            pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-          }}
-        >
-          Introduction courte
+        <div style={{ backgroundImage: colorDark }}>
+          <div style={{ backgroundColor: shortIntroduction.length > 1 ? "green" : "transparent", padding: '0.3rem 0.5rem' }}>
+            Introduction courte
+          </div>
         </div>
 
-        <div
-          onClick={() => setIsEditorVisible(!isEditorVisible)}
-          style={{
-            backgroundColor: introductionOfTheGame.length > 1 ? "green" : "#2e2d2c",
-            border: isEditorVisible ? "2px solid white" : "2px solid black",
-            opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-            pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-          }}
-        >
-          Présentation détaillée
+        <div style={{ backgroundImage: colorDark }}>
+          <div style={{  backgroundColor: introductionOfTheGame.length > 1 ? "green" : "transparent", padding: '0.3rem 0.5rem' }}>
+            Présentation détaillée
+          </div>
         </div>
 
-        <div
-          onClick={() => setPlatformVisible(!isPlatformVisible)}
-          style={{
-            backgroundColor: platform.length !== 0 ? "green" : "#2e2d2c",
-            border: isPlatformVisible ? "2px solid white" : "2px solid black",
-            opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-            pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-          }}
-        >
-          Plate-forme
+        <div style={{ backgroundImage: colorDark }}>
+          <div style={{ background: platform.length !== 0 ? "green" : "transparent", padding: '0.3rem 0.5rem' }}>
+            Plate-forme
+          </div>
         </div>
 
-        <div
-          onClick={() => setIsReleaseDateVisible(!isReleaseDateVisible)}
-          style={{
-            backgroundColor: releaseDate !== null ? "green" : "#2e2d2c",
-            border: isReleaseDateVisible ? "2px solid white" : "2px solid black",
-            opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-            pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-          }}
-        >
-          Date de sortie
+        <div style={{ backgroundImage: colorDark }}>
+          <div style={{ backgroundColor: releaseDate !== null ? "green" : "transparent", padding: '0.3rem 0.5rem' }}>
+            Date de sortie
+          </div>
         </div>
 
-        <div
-          onClick={() => setIsPegiAgeVisible(!isPegiAgeVisible)}
-          style={{
-            backgroundColor: selectedAgePegi.length != "" ? "green" : "#2e2d2c",
-            border: isPegiAgeVisible ? "2px solid white" : "2px solid black",
-            opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-            pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-          }}
-        >
-          Pegi age & catégorie
+        <div style={{ backgroundImage: colorDark }}>
+          <div style={{ backgroundColor: selectedAgePegi.length != "" ? "green" : "transparent", padding: '0.3rem 0.5rem' }}>
+            Pegi age & catégorie
+          </div>
         </div>
 
-        <div
-          onClick={() => setIsPosterVisible(!isPosterVisible)}
-          style={{
-            backgroundColor: urlPosterCloudinary.length != "" ? "green" : "#2e2d2c",
-            border: isPosterVisible ? "2px solid white" : "2px solid black",
-            opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-            pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-          }}
-        >
-          Affiche
+        <div style={{ backgroundImage: colorDark }}>
+          <div style={{ backgroundColor: urlPosterCloudinary.length != "" ? "green" : "transparent", padding: '0.3rem 0.5rem' }}>
+            Affiche
+          </div>
         </div>
 
-        <div
-          onClick={() => setIsSoloMulti(!isSoloMulti)}
-          style={{
-            backgroundColor: SoloMulti.length != "" ? "green" : "#2e2d2c",
-            border: isSoloMulti ? "2px solid white" : "2px solid black",
-            opacity: nameOfGame.length >= 2 ? 1 : 0.5,
-            pointerEvents: nameOfGame.length >= 2 ? 'auto' : 'none',
-          }}
-        >
-          Solo / Multi
+        <div style={{ backgroundImage: colorDark }}>
+          <div style={{ backgroundColor: SoloMulti.length != "" ? "green" : "transparent", padding: '0.3rem 0.5rem' }}>
+            Solo / Multi
+          </div>
         </div>
       </div>
     </section>

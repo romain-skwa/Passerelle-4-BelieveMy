@@ -126,6 +126,7 @@ h3 {
 /********** shortIntroduction ***********************/
 #shortIntroduction {
   width: 100%;
+  margin-inline: 1rem;
   min-height: 9vh;
   padding: 0.5rem 1rem;
   border-radius: 0.7rem;
@@ -148,13 +149,12 @@ h3 {
   background-color: rgba(148, 163, 184, 0.7);
 }
 /********** Platform *******************/
-.buttonPlatform-container {
+.buttonSoloMulti-container {
   display: flex;
   flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'espace est insuffisant */
   justify-content: center;
   color: white;
-  text-shadow: 2px 2px 5px black;
-  border: 1px white solid;
+  text-shadow: 2px 2px 4px rgb(30, 25, 25);
   margin-top: 1rem;
   padding: 1rem;
 }
@@ -191,6 +191,7 @@ h3 {
 /*******************************************************/
 .bandeauTop {
   display: flex;
+  flex-direction: column;
   gap: 0.7rem;
   justify-content: center;
   flex-wrap: wrap;
@@ -199,15 +200,15 @@ h3 {
 }
 
 .bandeauTop div {
+  width: 220px;
   border: 1px solid grey;
-  padding: 0.3rem 0.5rem;
+  
   background-color: rgb(114, 2, 2);
   color: white;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
   font-weight: 600;
   border-radius: 10px;
   transition: background-color 0.3s;
-  cursor: pointer;
 }
 
 @media (max-width: 600px) {

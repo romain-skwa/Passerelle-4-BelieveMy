@@ -7,3 +7,9 @@
         inset  -5px -5px 10px black, 
         inset  5px 5px 10px rgb(135, 134, 134);
 }
+
+.neuphormismUndergroung{
+    box-shadow: 
+    inset  -5px -5px 10px rgb(135, 134, 134), 
+    inset  5px 5px 10px black;
+}

@@ -31,7 +31,7 @@ const Pegi = ({
   };
 
   return (
-    <section className="border my-2">
+    <section className="my-2">
       <div className="pegi">
         <label>
           <Image src={logoPegi3} alt="Logo Pegi 3" unoptimized={true} />

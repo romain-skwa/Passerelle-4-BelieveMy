@@ -287,8 +287,12 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       className="w-[95vw] tablet:w-[84vw] laptop:w-[95%] mx-auto border p-2 mt-4"
       style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
     >
+      <div className="text-3xl">
+        Il vous est possible de modifier la description de votre jeu
+      </div>
+
       {/* Fond noir et Texte blanc */}
-      <div className="flex justify-center laptop:inline-block mt-3 laptop:mt-0">
+      <div className="flex justify-center w-full laptop:my-3">
         <div
           onClick={() => setIsDarkModeUpdate(!isDarkModeUpdate || "")}
           className="p-2 bg-black text-white inline-block ml-2 cursor-pointer"
@@ -296,10 +300,8 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
           Texte noir et fond blanc
         </div>
       </div>
+
       {/* Nom */}
-      <div className="text-3xl">
-        Il vous est possible de modifier la description de votre jeu
-      </div>
       <input
         type="text"
         name="nameOfGameUpdate"

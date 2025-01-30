@@ -30,16 +30,18 @@ const ButtonPlatform = ({platform, setPlatform}) => {
       };
 
     return (
-    <div className='buttonPlatform-container'>
-        {platforms.map((platformName) => (
-        <div
-            key={platformName}
-            onClick={() => handlePlatformClick(platformName)}
-            className={`buttonPlatform ${platform.includes(platformName) ? 'bg-green-900 border border-white' : 'bg-gray-800 border-2 border-gray-600'}`}
-        >
-            {platformName}
-        </div>
-        ))}
+    <div className='flex justify-center'>
+      {platforms.map((platformName) => (
+      <div
+          key={platformName}
+          onClick={() => handlePlatformClick(platformName)}
+          className={`buttonPlatform ${platform.includes(platformName) 
+            ? 'bg-green-900 border border-white text-white' 
+            : 'bg-gray-800 border-2 border-gray-600 text-white'}`}
+      >
+          {platformName}
+      </div>
+      ))}
     </div>
     );
 };

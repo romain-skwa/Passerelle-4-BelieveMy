@@ -37,7 +37,7 @@ export default function introductionGameForm() {
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
   const [selectedAdditionalPegi, setSelectedAdditionalPegi] = useState([]);
-  const [releaseDate, setReleaseDate] = useState(new Date());
+  const [releaseDate, setReleaseDate] = useState(null); console.log(`releaseDate : `, releaseDate);
   const [platform, setPlatform] = useState([]);
   const [webSiteOfThisGame, setWebSiteOfThisGame] = useState("");
   const [webSiteOfThisCreator, setWebSiteOfThisCreator] = useState("");
@@ -45,24 +45,6 @@ export default function introductionGameForm() {
   const [steamLink, setSteamLink] = useState("");
   const [epicGamesLink, setEpicGamesLink] = useState("");
   const [SoloMulti, setSoloMulti] = useState([]);
-
-  const [isShortIntroVisible, setIsShortIntroVisible] = useState(false);
-  const [isEditorVisible, setIsEditorVisible] = useState(false);
-  const [isPlatformVisible, setPlatformVisible] = useState(false);
-  const [isReleaseDateVisible, setIsReleaseDateVisible] = useState(false);
-  const [isPegiAgeVisible, setIsPegiAgeVisible] = useState(false);
-  const [isPosterVisible, setIsPosterVisible] = useState(false);
-  const [isBackgroundVisible, setIsBackgroundVisible] = useState(false);
-  const [isVideoVisible, setIsVideoVisible] = useState(false);
-  const [isWebsiteGameVisible, setIsWebsiteGameVisible] = useState(false);
-  const [isWebsiteCreatorVisible, setIsWebsiteCreatorVisible] = useState(false);
-  const [isCategoryVisible, setIsCategoryVisible] = useState(false);
-  const [isSteamLinkVisible, setIsSteamLinkVisible] = useState(false);
-  const [isEpicGamesLinkVisible, setIsEpicGamesLinkVisible] = useState(false);
-  const [isSoloMulti, setIsSoloMulti] = useState(false);
-  const [isImageOne, setIsImageOne] = useState("");
-  const [isImageTwo, setIsImageTwo] = useState("");
-  const [isImageThree, setIsImageThree] = useState("");
 
   const resetUrlPosterCloudinary = () => {
     setUrlPosterCloudinary(""); // Réinitialiser la valeur de urlPosterCloudinary
@@ -233,159 +215,88 @@ export default function introductionGameForm() {
       <section>
         <form
           onSubmit={onPrepare}
-          className="w-[95vw] tablet:w-[84vw] laptop:w-[54vw] mx-auto border p-2"
-          style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
+          className="w-[95vw] largeScreen:w-[65vw] mx-auto p-2 text-white font-bold border border-purple-600 rounded-3xl"
         >
-          <p>
-            {session?.user.username}, sur cette page, vous êtes invité à remplir
+          <p className="m-4">
+            {session?.user.username.charAt(0).toUpperCase() + session?.user.username.slice(1)}, sur cette page, vous êtes invité à remplir
             de présentation de votre jeux.
           </p>
 
-          <div className="laptop:flex items-center mb-3">
-            {/* Input Nom du Jeu*/}
-            <input
-              type="text"
-              name="nameOfGame"
-              placeholder="Nom du jeu"
-              className="px-3 py-2 rounded-md w-full laptop:w-[70%] flex-grow"
-              maxLength={80}
-              size={80}
-              value={nameOfGame}
-              onChange={(e) => setNameOfGame(e.target.value)}
-            />
+          <section className="flex" /* colonne + choix */>
+            <div className="mr-4 hidden laptop:block">
+              {/************ Boutons Obligatoires **********************************************************/}
+              <ObligatoryButtons
+                nameOfGame={nameOfGame}
+                isDarkMode={isDarkMode}
+                setIsDarkMode={setIsDarkMode}
+                shortIntroduction={shortIntroduction}
+                introductionOfTheGame={introductionOfTheGame}
+                platform={platform}
+                releaseDate={releaseDate}
+                selectedAgePegi={selectedAgePegi}
+                urlPosterCloudinary={urlPosterCloudinary}
+                SoloMulti={SoloMulti}
+              />
 
-            <div className="flex justify-center laptop:inline-block mt-3 laptop:mt-0">
-              <div
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className="p-2 bg-black text-white inline-block ml-2 cursor-pointer"
-              >
-                Texte noir et fond blanc
-              </div>
+              {/************ Boutons Facultatifs **********************************************************/}
+              <OptionalButtons
+                nameOfGame={nameOfGame}
+                setNameOfGame={setNameOfGame}
+                urlBackgroundCloudinary={urlBackgroundCloudinary}
+                genreOfGame={genreOfGame}
+                videoLink={videoLink}
+                webSiteOfThisGame={webSiteOfThisGame}
+                webSiteOfThisCreator={webSiteOfThisCreator}
+                steamLink={steamLink}
+                epicGamesLink={epicGamesLink}
+                urlImageOne={urlImageOne}
+                urlImageTwo={urlImageTwo}
+                urlImageThree={urlImageThree}            
+              />
             </div>
-          </div>
 
-          {/************ Boutons Obligatoires **********************************************************/}
-          <ObligatoryButtons
-            nameOfGame={nameOfGame}
-            shortIntroduction={shortIntroduction}
-            introductionOfTheGame={introductionOfTheGame}
-            platform={platform}
-            releaseDate={releaseDate}
-            selectedAgePegi={selectedAgePegi}
-            urlPosterCloudinary={urlPosterCloudinary}
-            SoloMulti={SoloMulti}
-            isShortIntroVisible={isShortIntroVisible}
-            setIsShortIntroVisible={setIsShortIntroVisible}
-            isEditorVisible={isEditorVisible}
-            setIsEditorVisible={setIsEditorVisible}
-            isPlatformVisible={isPlatformVisible}
-            setPlatformVisible={setPlatformVisible}
-            isReleaseDateVisible={isReleaseDateVisible}
-            setIsReleaseDateVisible={setIsReleaseDateVisible}
-            isPegiAgeVisible={isPegiAgeVisible}
-            setIsPegiAgeVisible={setIsPegiAgeVisible}
-            isPosterVisible={isPosterVisible}
-            setIsPosterVisible={setIsPosterVisible}
-            isSoloMulti={isSoloMulti}
-            setIsSoloMulti={setIsSoloMulti}
-          />
-
-          {/************ Boutons Facultatifs **********************************************************/}
-          <OptionalButtons
-            nameOfGame={nameOfGame}
-            urlBackgroundCloudinary={urlBackgroundCloudinary}
-            genreOfGame={genreOfGame}
-            videoLink={videoLink}
-            webSiteOfThisGame={webSiteOfThisGame}
-            webSiteOfThisCreator={webSiteOfThisCreator}
-            steamLink={steamLink}
-            epicGamesLink={epicGamesLink}
-            isImageOne={isImageOne}
-            setIsImageOne={setIsImageOne}
-            urlImageOne={urlImageOne}
-            setUrlImageOne={setUrlImageOne}
-            isImageTwo={isImageTwo}
-            setIsImageTwo={setIsImageTwo}
-            urlImageTwo={urlImageTwo}
-            setUrlImageTwo={setUrlImageTwo}
-            isImageThree={isImageThree}
-            setIsImageThree={setIsImageThree}
-            urlImageThree={urlImageThree}
-            setUrlImageThree={setUrlImageThree}
-            isBackgroundVisible={isBackgroundVisible}
-            setIsBackgroundVisible={setIsBackgroundVisible}
-            isCategoryVisible={isCategoryVisible}
-            setIsCategoryVisible={setIsCategoryVisible}
-            isVideoVisible={isVideoVisible}
-            setIsVideoVisible={setIsVideoVisible}
-            isWebsiteGameVisible={isWebsiteGameVisible}
-            setIsWebsiteGameVisible={setIsWebsiteGameVisible}
-            isWebsiteCreatorVisible={isWebsiteCreatorVisible}
-            setIsWebsiteCreatorVisible={setIsWebsiteCreatorVisible}
-            isSteamLinkVisible={isSteamLinkVisible}
-            setIsSteamLinkVisible={setIsSteamLinkVisible}
-            isEpicGamesLinkVisible={isEpicGamesLinkVisible}
-            setIsEpicGamesLinkVisible={setIsEpicGamesLinkVisible}
-          />
-
-          {/*************************** LES ENCADRÉS ******************************************************/}
-          <GamePresentationSections
-            nameOfGame={nameOfGame}
-            isShortIntroVisible={isShortIntroVisible}
-            setIsShortIntroVisible={setIsShortIntroVisible}
-            shortIntroduction={shortIntroduction}
-            setShortIntroduction={setShortIntroduction}
-            isEditorVisible={isEditorVisible}
-            introductionOfTheGame={introductionOfTheGame}
-            setIntroductionOfTheGame={setIntroductionOfTheGame}
-            isPlatformVisible={isPlatformVisible}
-            platform={platform}
-            setPlatform={setPlatform}
-            isReleaseDateVisible={isReleaseDateVisible}
-            releaseDate={releaseDate}
-            setReleaseDate={setReleaseDate}
-            isPegiAgeVisible={isPegiAgeVisible}
-            selectedAgePegi={selectedAgePegi}
-            setSelectedAgePegi={setSelectedAgePegi}
-            selectedAdditionalPegi={selectedAdditionalPegi}
-            setSelectedAdditionalPegi={setSelectedAdditionalPegi}
-            isSoloMulti={isSoloMulti}
-            SoloMulti={SoloMulti}
-            setSoloMulti={setSoloMulti}
-            isPosterVisible={isPosterVisible}
-            urlPosterCloudinary={urlPosterCloudinary}
-            setUrlPosterCloudinary={setUrlPosterCloudinary}
-            isImageOne={isImageOne}
-            urlImageOne={urlImageOne}
-            setUrlImageOne={setUrlImageOne}
-            isImageTwo={isImageTwo}
-            urlImageTwo={urlImageTwo}
-            setUrlImageTwo={setUrlImageTwo}
-            isImageThree={isImageThree}
-            urlImageThree={urlImageThree}
-            setUrlImageThree={setUrlImageThree}
-            isBackgroundVisible={isBackgroundVisible}
-            urlBackgroundCloudinary={urlBackgroundCloudinary}
-            setUrlBackgroundCloudinary={setUrlBackgroundCloudinary}
-            isVideoVisible={isVideoVisible}
-            videoLink={videoLink}
-            setVideoLink={setVideoLink}
-            isWebsiteGameVisible={isWebsiteGameVisible}
-            webSiteOfThisGame={webSiteOfThisGame}
-            setWebSiteOfThisGame={setWebSiteOfThisGame}
-            isWebsiteCreatorVisible={isWebsiteCreatorVisible}
-            webSiteOfThisCreator={webSiteOfThisCreator}
-            setWebSiteOfThisCreator={setWebSiteOfThisCreator}
-            isSteamLinkVisible={isSteamLinkVisible}
-            steamLink={steamLink}
-            setSteamLink={setSteamLink}
-            isEpicGamesLinkVisible={isEpicGamesLinkVisible}
-            epicGamesLink={epicGamesLink}
-            setEpicGamesLink={setEpicGamesLink}
-            isCategoryVisible={isCategoryVisible}
-            genreOfGame={genreOfGame}
-            setGenreOfGame={setGenreOfGame}
-          />
+            {/*************************** LES ENCADRÉS ******************************************************/}
+            <GamePresentationSections
+              nameOfGame={nameOfGame}
+              setNameOfGame={setNameOfGame}
+              shortIntroduction={shortIntroduction}
+              setShortIntroduction={setShortIntroduction}
+              introductionOfTheGame={introductionOfTheGame}
+              setIntroductionOfTheGame={setIntroductionOfTheGame}
+              platform={platform}
+              setPlatform={setPlatform}
+              releaseDate={releaseDate}
+              setReleaseDate={setReleaseDate}
+              selectedAgePegi={selectedAgePegi}
+              setSelectedAgePegi={setSelectedAgePegi}
+              selectedAdditionalPegi={selectedAdditionalPegi}
+              setSelectedAdditionalPegi={setSelectedAdditionalPegi}
+              SoloMulti={SoloMulti}
+              setSoloMulti={setSoloMulti}
+              urlPosterCloudinary={urlPosterCloudinary}
+              setUrlPosterCloudinary={setUrlPosterCloudinary}
+              urlImageOne={urlImageOne}
+              setUrlImageOne={setUrlImageOne}
+              urlImageTwo={urlImageTwo}
+              setUrlImageTwo={setUrlImageTwo}
+              urlImageThree={urlImageThree}
+              setUrlImageThree={setUrlImageThree}
+              urlBackgroundCloudinary={urlBackgroundCloudinary}
+              setUrlBackgroundCloudinary={setUrlBackgroundCloudinary}
+              videoLink={videoLink}
+              setVideoLink={setVideoLink}
+              webSiteOfThisGame={webSiteOfThisGame}
+              setWebSiteOfThisGame={setWebSiteOfThisGame}
+              webSiteOfThisCreator={webSiteOfThisCreator}
+              setWebSiteOfThisCreator={setWebSiteOfThisCreator}
+              steamLink={steamLink}
+              setSteamLink={setSteamLink}
+              epicGamesLink={epicGamesLink}
+              setEpicGamesLink={setEpicGamesLink}
+              genreOfGame={genreOfGame}
+              setGenreOfGame={setGenreOfGame}
+            />
+          </section>
 
           {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
           <div className="flex justify-center">

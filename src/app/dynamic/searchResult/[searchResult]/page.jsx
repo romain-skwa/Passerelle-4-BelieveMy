@@ -57,7 +57,7 @@ export default function SearchIntroductionGame() {
         "Une erreur est survenue lors de la récupération des données."
       );
     } finally {
-      setLoading(false); // Fin du chargement
+      setLoading(false); // End of loading
     }
   };
 
@@ -68,41 +68,58 @@ export default function SearchIntroductionGame() {
       ) : (
         <>
           <div className="bg-[rgba(3,3,3,0.8)] w-[95vw] tablet:w-[85vw] laptop:w-[900px] mx-auto rounded-md py-4 px-6 lg:w-2/3 neuphormism">
-
-          <div className="flex justify-center w-full text-white text-center">
-            <h1>Résultats de la recherche : <br></br> <span className="text-3xl">{nameofgame}</span></h1>
-          </div>
-          <ul className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
-            {games.length > 0 ? (
-              games.map((game) =>
-                game.urlPoster || game.urlPosterCloudinary ? ( // Vérifie si l'un des deux existe
-                  <li
-                    key={game._id}
-                    className="mt-2 relative w-[150px] tablet:w-[192px] h-[243px] tablet:h-[311px] rounded-xl overflow-hidden tablet:shadow-xl shadow-black"
-                    style={{ boxShadow: '5px 5px 8px rgba(0, 0, 0, 0.8)' }}
-                  >
-                    <Link
-                      href={`/dynamic/introduction/${(game.nameofgame)}`}
+            <div className="flex justify-center w-full text-white text-center">
+              <h1>
+                Résultats de la recherche : <br></br>{" "}
+                <span className="text-3xl">{nameofgame}</span>
+              </h1>
+            </div>
+            <ul className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
+              {games.length > 0 ? (
+                games.map((game) =>
+                  game.urlPoster || game.urlPosterCloudinary ? ( // Check if these data exist
+                    <li
+                      key={game._id}
+                      className="rounded mt-2 relative overflow-hidden tablet:shadow-xl bg-black/70"
+                      style={{
+                        boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.8)",
+                        padding: "10px",
+                      }}
                     >
-                      <Image
-                        src={ game.urlPosterCloudinary || `/presentation/${game.urlPoster}` } // Utilise urlPosterCloudinary si disponible, sinon urlPoster
-                        width={192} height={311}
-                        className=" w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
-                        alt={game.nameofgame || "Image du jeu"}
-                        unoptimized={true}
-                      />
-                    </Link>
-                  </li>
-                ) : (
-                  <p key={game._id}>
-                    Image non disponible pour {game.nameofgame}
-                  </p> // Si aucune des deux n'est présente
+                      <Link href={`/dynamic/introduction/${game.nameofgame}`}>
+                        <div className="relative">
+                          <Image
+                            src={
+                              game.urlPosterCloudinary ||
+                              `/presentation/${game.urlPoster}`
+                            } // When urlPosterCloudinary exist, or urlPoster
+                            width={192}
+                            height={311}
+                            className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
+                            alt={game.nameofgame || "Image du jeu"}
+                            unoptimized={true}
+                          />
+                        </div>
+                      </Link>
+                      <div className="text-center mt-2 font-semibold capitalize text-white">
+                        {decodeURIComponent(game.nameofgame).length > 16
+                          ? `${decodeURIComponent(game.nameofgame).slice(
+                              0,
+                              16
+                            )}...`
+                          : decodeURIComponent(game.nameofgame)}
+                      </div>
+                    </li>
+                  ) : (
+                    <p key={game._id}>
+                      Image non disponible pour {game.nameofgame}
+                    </p> // When none of these data exist
+                  )
                 )
-              )
-            ) : (
-              <p>Aucun jeu trouvé pour ces critères.</p>
-            )}
-          </ul>
+              ) : (
+                <p className="text-white">Aucun jeu trouvé pour ces critères.</p>
+              )}
+            </ul>
           </div>
         </>
       )}

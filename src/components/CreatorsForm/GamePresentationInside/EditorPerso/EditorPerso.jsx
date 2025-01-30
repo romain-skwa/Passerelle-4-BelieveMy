@@ -1096,12 +1096,12 @@ const addBackgroundTag = (newColorBackgroundText) => {
   }, [text]);
 
   return (
-    <div className='border mt-4 p-2'>
+    <div className='mt-4 p-2'>
       <p className='text-white text-center font-bold mb-3' style={{textShadow: "2px 2px 7px rgba(0, 0, 0, 1)",}}>
           Dans cette présentation, vous choisissez la mise forme du texte
       </p>
 
-      <section className='py-2 flex'>
+      <section className='py-2 laptop:flex'>
         <div className='boutonGris bouton' onClick={handleUndo}><img className='w-[80%]' src="/icons/undo-icon.png" alt="icon undo" /></div>
         <div className='boutonGris bouton' onClick={handleRedo}><img className='w-[80%]' src="/icons/redo-icon.png" alt="icon redo" /></div>
         <div className='longBoutonGris bouton' onClick={handleH2Click} title='<h2>'>Titre</div>
