@@ -12,6 +12,7 @@ import logoTwitch from "../../../../public/logo/twitch_logo.png";
 import logoItchi from "../../../../public/logo/itch-io-icon.png";
 import logoTwitter from "../../../../public/logo/x__twitter-logo.png";
 import Loading from "@/components/Loading/Loading";
+import "../../styles/introduction.css";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState("");
@@ -68,54 +69,22 @@ const introduceYourself = () => {
         }
         
         // Si elles existent, les données concernant l'utilisateur sont affichées dans les champs de texte
-        if (data.user.bio) {
-          setBio(data.user.bio);
-        }
-        if (data.user.nameOtherGames1) {
-          setNameOtherGames1(data.user.nameOtherGames1);
-        }
-        if (data.user.linkOtherGame1) {
-          setLinkOtherGame1(data.user.linkOtherGame1);
-        }
-        if (data.user.nameOtherGames2) {
-          setNameOtherGames2(data.user.nameOtherGames2);
-        }
-        if (data.user.linkOtherGame2) {
-          setLinkOtherGame2(data.user.linkOtherGame2);
-        }
-        if (data.user.nameOtherGames3) {
-          setNameOtherGames3(data.user.nameOtherGames3);
-        }
-        if (data.user.linkOtherGame3) {
-          setLinkOtherGame3(data.user.linkOtherGame3);
-        }
-        if (data.user.nameOtherGames4) {
-          setNameOtherGames4(data.user.nameOtherGames4);
-        }
-        if (data.user.linkOtherGame4) {
-          setLinkOtherGame4(data.user.linkOtherGame4);
-        }
-        if (data.user.nameOtherGames5) {
-          setNameOtherGames5(data.user.nameOtherGames5);
-        }
-        if (data.user.linkOtherGame5) {
-          setLinkOtherGame5(data.user.linkOtherGame5);
-        }
-        if (data.user.websiteUrl) {
-          setWebsiteUrl(data.user.websiteUrl);
-        }
-        if (data.user.discordUrl) {
-          setDiscordUrl(data.user.discordUrl);
-        }
-        if (data.user.twitchUrl) {
-          setTwitchUrl(data.user.twitchUrl);
-        }
-        if (data.user.itchIoUrl) {
-          setItchIoUrl(data.user.itchIoUrl);
-        }
-        if (data.user.twitterUrl) {
-          setTwitterUrl(data.user.twitterUrl);
-        }
+        if (data.user.bio) {  setBio(data.user.bio); }
+        if (data.user.nameOtherGames1) {setNameOtherGames1(data.user.nameOtherGames1); }
+        if (data.user.linkOtherGame1) {setLinkOtherGame1(data.user.linkOtherGame1); }
+        if (data.user.nameOtherGames2) {setNameOtherGames2(data.user.nameOtherGames2); }
+        if (data.user.linkOtherGame2) { setLinkOtherGame2(data.user.linkOtherGame2); }
+        if (data.user.nameOtherGames3) { setNameOtherGames3(data.user.nameOtherGames3); }
+        if (data.user.linkOtherGame3) { setLinkOtherGame3(data.user.linkOtherGame3); }
+        if (data.user.nameOtherGames4) { setNameOtherGames4(data.user.nameOtherGames4); }
+        if (data.user.linkOtherGame4) { setLinkOtherGame4(data.user.linkOtherGame4); }
+        if (data.user.nameOtherGames5) { setNameOtherGames5(data.user.nameOtherGames5); }
+        if (data.user.linkOtherGame5) { setLinkOtherGame5(data.user.linkOtherGame5); }
+        if (data.user.websiteUrl) { setWebsiteUrl(data.user.websiteUrl); }
+        if (data.user.discordUrl) { setDiscordUrl(data.user.discordUrl); }
+        if (data.user.twitchUrl) { setTwitchUrl(data.user.twitchUrl); }
+        if (data.user.itchIoUrl) { setItchIoUrl(data.user.itchIoUrl); }
+        if (data.user.twitterUrl) { setTwitterUrl(data.user.twitterUrl); }
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -177,85 +146,85 @@ const introduceYourself = () => {
           <textarea
             value={bio}
             onChange={(event) => setBio(event.target.value)}
-            className="w-[95%] lapto:w-[80%] mx-auto mb-4 p-2 h-32"
+            className="w-[95%] lapto:w-[80%] mx-auto mb-4 p-2 h-32 "
             placeholder="Présentez votre parcours. Evoquez vos jeux. C'est à vous..."
           />
           <br />
           <div className="linksOtherGames">
-            <input
-              type="text"
-              value={nameOtherGames1}
-              onChange={(event) => setNameOtherGames1(event.target.value)}
-              placeholder="Inscrivez ici le nom de votre jeu précédent n°1 :"
-              className="border-b border-gray-300 p-1 rounded-t-lg"
-            />
-            <input
-              type="url"
-              value={linkOtherGame1}
-              onChange={(event) => setLinkOtherGame1(event.target.value)}
-              placeholder="Si ce jeu est déjà référencé sur ce site, collez ici le lien"
-              className="rounded-b-lg"
-            />
+            <div className="linearUp w-[60%] mx-auto">
+              <input
+                type="text"
+                value={nameOtherGames1}
+                onChange={(event) => setNameOtherGames1(event.target.value)}
+                placeholder="Inscrivez ici le nom de votre jeu précédent n°1 :"
+              />
+              <input
+                type="url"
+                value={linkOtherGame1}
+                onChange={(event) => setLinkOtherGame1(event.target.value)}
+                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+              />
+            </div>
 
-            <input
-              type="text"
-              value={nameOtherGames2}
-              onChange={(event) => setNameOtherGames2(event.target.value)}
-              placeholder="Inscrivez ici le nom de votre jeu précédent n°2 :"
-              className="border-b border-gray-300 p-1 rounded-t-lg mt-2"
-            />
-            <input
-              type="url"
-              value={linkOtherGame2}
-              onChange={(event) => setLinkOtherGame2(event.target.value)}
-              placeholder="Si ce jeu est déjà référencé sur ce site, collez ici le lien"
-              className="rounded-b-lg"
-            />
+            <div className="linearUp w-[60%] mx-auto">
+              <input
+                type="text"
+                value={nameOtherGames2}
+                onChange={(event) => setNameOtherGames2(event.target.value)}
+                placeholder="Inscrivez ici le nom de votre jeu précédent n°2 :"
+              />
+              <input
+                type="url"
+                value={linkOtherGame2}
+                onChange={(event) => setLinkOtherGame2(event.target.value)}
+                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+              />
+            </div>
 
-            <input
-              type="text"
-              value={nameOtherGames3}
-              onChange={(event) => setNameOtherGames3(event.target.value)}
-              placeholder="Inscrivez ici le nom de votre jeu précédent n°3 :"
-              className="border-b border-gray-300 p-1 rounded-t-lg mt-2"
-            />
-            <input
-              type="url"
-              value={linkOtherGame3}
-              onChange={(event) => setLinkOtherGame3(event.target.value)}
-              placeholder="Si ce jeu est déjà référencé sur ce site, collez ici le lien"
-              className="rounded-b-lg"
-            />
+            <div className="linearUp w-[60%] mx-auto">
+              <input
+                type="text"
+                value={nameOtherGames3}
+                onChange={(event) => setNameOtherGames3(event.target.value)}
+                placeholder="Inscrivez ici le nom de votre jeu précédent n°3 :"
+              />
+              <input
+                type="url"
+                value={linkOtherGame3}
+                onChange={(event) => setLinkOtherGame3(event.target.value)}
+                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+              />
+            </div>
 
-            <input
-              type="text"
-              value={nameOtherGames4}
-              onChange={(event) => setNameOtherGames4(event.target.value)}
-              placeholder="Inscrivez ici le nom de votre jeu précédent n°4 :"
-              className="border-b border-gray-300 p-1 rounded-t-lg mt-2"
-            />
-            <input
-              type="url"
-              value={linkOtherGame4}
-              onChange={(event) => setLinkOtherGame4(event.target.value)}
-              placeholder="Si ce jeu est déjà référencé sur ce site, collez ici le lien"
-              className="rounded-b-lg"
-            />
+            <div className="linearUp w-[60%] mx-auto">
+              <input
+                type="text"
+                value={nameOtherGames4}
+                onChange={(event) => setNameOtherGames4(event.target.value)}
+                placeholder="Inscrivez ici le nom de votre jeu précédent n°4 :"
+              />
+              <input
+                type="url"
+                value={linkOtherGame4}
+                onChange={(event) => setLinkOtherGame4(event.target.value)}
+                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+              />
+            </div>
 
-            <input
-              type="text"
-              value={nameOtherGames5}
-              onChange={(event) => setNameOtherGames5(event.target.value)}
-              placeholder="Inscrivez ici le nom de votre jeu précédent n°5 :"
-              className="border-b border-gray-300 p-1 rounded-t-lg mt-2"
-            />
-            <input
-              type="url"
-              value={linkOtherGame5}
-              onChange={(event) => setLinkOtherGame5(event.target.value)}
-              placeholder="Si ce jeu est déjà référencé sur ce site, collez ici le lien"
-              className="rounded-b-lg"
-            />
+            <div className="linearUp w-[60%] mx-auto">
+              <input
+                type="text"
+                value={nameOtherGames5}
+                onChange={(event) => setNameOtherGames5(event.target.value)}
+                placeholder="Inscrivez ici le nom de votre jeu précédent n°5 :"
+              />
+              <input
+                type="url"
+                value={linkOtherGame5}
+                onChange={(event) => setLinkOtherGame5(event.target.value)}
+                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+              />
+            </div>
           </div>
 
           <br />

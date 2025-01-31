@@ -1,6 +1,6 @@
 import React from "react";
-const colorDark =
-  "linear-gradient(70deg, rgba(25,21,70,1) 0%, rgba(9,9,121,0.5) 35%, rgba(25,21,70,1) 100%)";
+const colorDark = "linear-gradient(70deg, rgba(25,21,70,1) 0%, rgba(9,9,121,0.5) 35%, rgba(25,21,70,1) 100%)";
+const greenColor = "linear-gradient(90deg, rgba(112,222,115,1) 0%, rgba(52,199,200,1) 30%, rgba(52,199,200,1) 70%, rgba(112,222,115,1) 100%)";
 
 const OptionalButtons = ({
   nameOfGame,
@@ -17,7 +17,7 @@ const OptionalButtons = ({
 }) => {
   return (
     <section className="w-[241px] p-2 font-bold rounded-xl neuphormismUndergroung">
-      <div className="flex justify-center text-white text-xl mb-2">
+      <div className="flex justify-center text-white text-xl mb-2" style={{ textShadow: '3px 3px 4px blue' }}>
         Facultatif
       </div>
       
@@ -25,7 +25,7 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor: urlImageOne.length != "" ? "green" : "transparent",
+              backgroundImage: urlImageOne.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -36,8 +36,8 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor:
-                urlImageTwo.length != "" ? "green" : "transparent",
+              backgroundImage:
+                urlImageTwo.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -48,8 +48,8 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor:
-                urlImageThree.length != "" ? "green" : "transparent",
+              backgroundImage:
+                urlImageThree.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -60,8 +60,8 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor:
-                urlBackgroundCloudinary.length != "" ? "green" : "transparent",
+              backgroundImage:
+                urlBackgroundCloudinary.length != "" ? greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -72,8 +72,8 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor:
-                genreOfGame.length != "" ? "green" : "transparent",
+              backgroundImage:
+                genreOfGame.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -84,7 +84,7 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor: videoLink.length != "" ? "green" : "transparent",
+              backgroundImage: videoLink.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -95,8 +95,8 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor:
-                webSiteOfThisGame.length != "" ? "green" : "transparent",
+              backgroundImage:
+                webSiteOfThisGame.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -107,8 +107,8 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor:
-                webSiteOfThisCreator.length != "" ? "green" : "transparent",
+              backgroundImage:
+                webSiteOfThisCreator.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -119,7 +119,7 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor: steamLink.length != "" ? "green" : "transparent",
+              backgroundImage: steamLink.length != "" ?  greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >
@@ -130,8 +130,8 @@ const OptionalButtons = ({
         <div style={{ backgroundImage: colorDark }}>
           <div
             style={{
-              backgroundColor:
-                epicGamesLink.length != "" ? "green" : "transparent",
+              backgroundImage:
+                epicGamesLink.length != "" ? greenColor : colorDark,
               padding: "0.3rem 0.5rem",
             }}
           >

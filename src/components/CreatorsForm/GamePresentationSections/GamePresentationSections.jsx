@@ -51,15 +51,15 @@ const GamePresentationSections = ({
   setGenreOfGame,
 }) => {
   return (
-    <div className="neuphormism">
+    <div className="neuphormismFormularyIntroductionGame w-full mb-4 rounded-lg">
       
-      <div className="laptop:flex items-center mb-3">
+      <div className="laptop:flex items-center mb-3 w-[100%]">
         {/* Input Nom du Jeu*/}
         <input
           type="text"
           name="nameOfGame"
           placeholder="Nom du jeu"
-          className="px-3 py-2 rounded-md w-[92%] tablet:w-[100%] mx-4 mt-4 text-black"
+          className="px-3 py-2 rounded-md w-[92%] tablet:w-[100%] mx-4 mt-4 text-white neuphormismUndergroung"
           maxLength={80}
           size={80}
           value={nameOfGame}
@@ -81,7 +81,7 @@ const GamePresentationSections = ({
           placeholder="Cette introduction courte sera affichée en gras"
           value={shortIntroduction}
           onChange={(e) => setShortIntroduction(e.target.value)}
-          className='text-black'
+          className='text-white neuphormismUndergroung'
         />
       </div>
  
@@ -129,7 +129,7 @@ const GamePresentationSections = ({
 
       {/**************** Image Affiche [encadré] ***************************** */}
 
-        <div className="w-[95%] tablet:w-[260px] p-4 mt-4 grasFondBleu mx-auto">
+        <div className="w-[95%] tablet:w-[260px] p-4 mt-4 grasFondBleu mx-auto rounded-2xl">
           <p className="text-center">Choisissez l'affiche du jeu </p>
           <ImageUpload
             urlCloudinary={urlPosterCloudinary}
@@ -152,11 +152,10 @@ const GamePresentationSections = ({
           )}
         </div>
 
-
-      <section className="flex flex-col tablet:flex-row w-[100%] gap-2 justify-center ">
+      <section className="flex flex-col tablet:flex-row w-[100%] justify-center  ">
         {/**************** Image d'illustration n°1 [encadré] ***************************** */}
 
-          <div className="w-[95%] tablet:w-[30%] p-2 mx-auto mt-4 grasFondBleu flex flex-col">
+          <div className="w-[95%] tablet:w-[28%] p-2 mx-auto mt-4 grasFondBleu flex flex-col rounded-2xl">
             <p className="text-center ">
               Choisissez l'image d'illustration n°1{" "}
             </p>
@@ -180,7 +179,7 @@ const GamePresentationSections = ({
           </div>
 
         {/**************** Image d'illustration n°2 [encadré] ***************************** */}
-          <div className="w-[95%] tablet:w-[30%] p-2 mx-auto mt-4 grasFondBleu flex flex-col">
+          <div className="w-[95%] tablet:w-[28%] p-2 mx-auto mt-4 grasFondBleu flex flex-col rounded-2xl">
             <p className="text-center tablet:inline-block">
               Choisissez l'image d'illustration n°2{" "}
             </p>
@@ -204,7 +203,7 @@ const GamePresentationSections = ({
           </div>
 
         {/**************** Image d'illustration n°3 [encadré] ***************************** */}
-          <div className="w-[95%] tablet:w-[30%] p-2 mx-auto mt-4 grasFondBleu flex flex-col">
+          <div className="w-[95%] tablet:w-[28%] p-2 mx-auto mt-4 grasFondBleu flex flex-col rounded-2xl">
             <p className="text-center tablet:inline-block">
               Choisissez l'image d'illustration n°3{" "}
             </p>
@@ -229,7 +228,7 @@ const GamePresentationSections = ({
       </section>
 
       {/**************** Arrière plan [encadré] ***************************** */}
-        <div className="w-[95%] p-2 mx-auto mt-4 grasFondBleu">
+        <div className="w-[90%] largeScreen:w-[100%] p-2 mx-auto mt-4 grasFondBleu">
           <p className="text-center ">
             Choisissez une image pour l'arrière plan{" "}
           </p>
@@ -241,62 +240,64 @@ const GamePresentationSections = ({
             nameOfGame={nameOfGame}
           />
         </div>
+      
+      <section className="flex flex-col items-center">
+        {/**************** Lien vidéo Youtube [encadré] ***************************** */}
+          <input
+            type="url"
+            name="videoLink"
+            placeholder="Lien YouTube de la vidéo"
+            className="neuphormismUndergroung inputLink"
+            value={videoLink}
+            onChange={(e) => setVideoLink(e.target.value)}
+          />
 
-      {/**************** Lien vidéo Youtube [encadré] ***************************** */}
-        <input
-          type="url"
-          name="videoLink"
-          placeholder="Lien YouTube de la vidéo"
-          className="block w-[90%] mx-4 p-1 my-2 text-black"
-          value={videoLink}
-          onChange={(e) => setVideoLink(e.target.value)}
-        />
+        {/**************** Lien Site officiel du jeu [encadré] ***************************** */}
+          <input
+            type="url"
+            name="webSiteOfThisGame"
+            placeholder="Lien vers le site officiel du jeu"
+            className="neuphormismUndergroung inputLink mx-2 tablet:mx-4"
+            value={webSiteOfThisGame}
+            onChange={(e) => setWebSiteOfThisGame(e.target.value)}
+          />
 
-      {/**************** Lien Site officiel du jeu [encadré]***************************** */}
-        <input
-          type="url"
-          name="webSiteOfThisGame"
-          placeholder="Lien vers le site officiel du jeu"
-          className="block w-[90%] mx-4 p-1 pl-2 my-2 text-black"
-          value={webSiteOfThisGame}
-          onChange={(e) => setWebSiteOfThisGame(e.target.value)}
-        />
+        {/**************** Lien Site officiel des créateurs [encadré] ***************************** */}
+          <input
+            type="url"
+            name="webSiteOfThisCreator"
+            placeholder="Lien vers le site officiel du/des créateur(s)"
+            className="neuphormismUndergroung inputLink"
+            value={webSiteOfThisCreator}
+            onChange={(e) => setWebSiteOfThisCreator(e.target.value)}
+          />
 
-      {/**************** Lien Site officiel des créateurs [encadré] ***************************** */}
-        <input
-          type="url"
-          name="webSiteOfThisCreator"
-          placeholder="Lien vers le site officiel du/des créateur(s)"
-          className="block w-[90%] mx-4 p-1 pl-2 my-2 text-black"
-          value={webSiteOfThisCreator}
-          onChange={(e) => setWebSiteOfThisCreator(e.target.value)}
-        />
+        {/**************** Lien Steam [encadré] ***************************** */}
+          <input
+            type="url"
+            name="steamLink"
+            placeholder="Lien vers le site Steam"
+            className="neuphormismUndergroung inputLink"
+            value={steamLink}
+            onChange={(e) => setSteamLink(e.target.value)}
+          />
 
-      {/**************** Lien Steam [encadré] ***************************** */}
-        <input
-          type="url"
-          name="steamLink"
-          placeholder="Lien vers le site Steam"
-          className="block w-[90%] mx-4 p-1 pl-2 my-2 text-black"
-          value={steamLink}
-          onChange={(e) => setSteamLink(e.target.value)}
-        />
+        {/**************** Lien Epic Games [encadré] ***************************** */}
+          <input
+            type="url"
+            name="epicGamesLink"
+            placeholder="Lien vers le site Epic Games"
+            className="neuphormismUndergroung inputLink"
+            value={epicGamesLink}
+            onChange={(e) => setEpicGamesLink(e.target.value)}
+          />
 
-      {/**************** Lien Epic Games [encadré] ***************************** */}
-        <input
-          type="url"
-          name="epicGamesLink"
-          placeholder="Lien vers le site Epic Games"
-          className="block w-[90%] mx-4 p-1 pl-2 my-2 text-black"
-          value={epicGamesLink}
-          onChange={(e) => setEpicGamesLink(e.target.value)}
-        />
-
-      {/**************** Catégories [encadré] ***************************** */}
-        <GenreOfGame
-          selectedGenres={genreOfGame}
-          setSelectedGenres={setGenreOfGame}
-        />
+        {/**************** Catégories [encadré] ***************************** */}
+          <GenreOfGame
+            selectedGenres={genreOfGame}
+            setSelectedGenres={setGenreOfGame}
+          />
+      </section>
     </div>
   );
 };

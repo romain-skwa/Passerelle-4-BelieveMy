@@ -284,7 +284,7 @@ export default function IntroductionGame({ params: { introduction } }) {
                     padding: "1px 4px",
                     letterSpacing: "0.1rem",
                   }}
-                  className={`buttonPlatform
+                  className={`PlatformIntro
                         ${
                           isDarkMode == true
                             ? " border border-white"
@@ -511,7 +511,7 @@ export default function IntroductionGame({ params: { introduction } }) {
           </section>
 
           {/************** Les images d'illustration **********************/}
-          <section className="flex gap-2 justify-center">
+          <section className="flex flex-col tablet:flex-row gap-2 justify-center">
             {game.urlImageOneCloudinary && (
               <Image
                 src={game.urlImageOneCloudinary}
@@ -577,7 +577,7 @@ export default function IntroductionGame({ params: { introduction } }) {
 
           {/*** When the visitor is *********************************************************************/}
           {/*********************** the CREATOR of this game, *******************************************/}
-          {/************************************************ he may change the introduction *************/}
+          {/************************************************* he may change the introduction ************/}
 
           {session && session.user.email === game.email ? (
             <UpdateIntro

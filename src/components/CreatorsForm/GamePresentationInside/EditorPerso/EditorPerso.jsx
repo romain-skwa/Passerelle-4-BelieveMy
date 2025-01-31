@@ -1101,7 +1101,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
           Dans cette présentation, vous choisissez la mise forme du texte
       </p>
 
-      <section className='py-2 laptop:flex'>
+      <section className='py-2 '>
         <div className='boutonGris bouton' onClick={handleUndo}><img className='w-[80%]' src="/icons/undo-icon.png" alt="icon undo" /></div>
         <div className='boutonGris bouton' onClick={handleRedo}><img className='w-[80%]' src="/icons/redo-icon.png" alt="icon redo" /></div>
         <div className='longBoutonGris bouton' onClick={handleH2Click} title='<h2>'>Titre</div>
@@ -1119,7 +1119,7 @@ const addBackgroundTag = (newColorBackgroundText) => {
           <option value="2rem">x 2</option>
           <option value="2.5rem">x 2.5</option>
           <option value="3rem">x 3</option>
-        </select>        
+        </select>      
 
         <div className='boutonGris bouton' onClick={handleBoldClick} title='<b>'><img className='w-[60%]' src="/icons/format-bold.png" alt="icon bold" /></div>
         <div className='boutonGris bouton' onClick={handleItalicClick} title='<i>'><img className='w-[60%]' src="/icons/italic-icon.png" alt="icon italic" /></div>

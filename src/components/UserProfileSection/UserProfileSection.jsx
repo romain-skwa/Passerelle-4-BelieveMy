@@ -4,8 +4,12 @@ import logoDiscord from "/public/logo/discord-logo.png";
 import logoTwitch from "/public/logo/twitch_logo.png";
 import logoItchi from "/public/logo/itch-io-icon.png";
 import logoTwitter from "/public/logo/x__twitter-logo.png";
+import MadeByThisCreator from "../MadeByThisCreator/MadeByThisCreator";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 const UserProfileSection = ({user}) => {
+    const { language, changeLanguage } = useLanguage();
+  
   if (!user) {
     return <div>Aucun utilisateur connecté</div>; 
   }
@@ -16,11 +20,11 @@ const UserProfileSection = ({user}) => {
     }>
       <div className="text-center mb-2">
           <div className="hidden tablet:block">
-              ------------- A propos de : <h1 className="inline">{decodeURIComponent(user.username)}</h1> -------------
+              ------------- {language == "fr" ? "A propos de : " : "About : " } <h1 className="inline">{decodeURIComponent(user.username)}</h1> -------------
               {/* Ajouter ici le logo */}
           </div>
           <div className="block tablet:hidden">
-              A propos de : <h1 className="inline">{decodeURIComponent(user.username)}</h1>
+              {language == "fr" ? "A propos de : " : "About : " } <h1 className="inline">{decodeURIComponent(user.username)}</h1>
               {/* Ajouter ici le logo */}
           </div>
       </div>
@@ -50,6 +54,8 @@ const UserProfileSection = ({user}) => {
       {user.nameOtherGames5 && user.linkOtherGame5 && (
         <p><a href={user.linkOtherGame5}><strong>{user.nameOtherGames5}</strong></a></p>
       )}
+
+      <MadeByThisCreator user={user} />
     </section>
   );
 };

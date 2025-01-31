@@ -74,51 +74,23 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
         toast.error("La date de sortie est invalide.");
       }
     }
-    if (game && game.selectedAgePegi) {
-      setSelectedAgePegiUpdate(game.selectedAgePegi);
-    }
-    if (game && game.selectedAdditionalPegi) {
-      setSelectedAdditionalPegiUpdate(game.selectedAdditionalPegi);
-    }
-    if (game && game.SoloMulti) {
-      setSoloMultiUpdate(game.SoloMulti);
-    }
-    if (game && game.urlPosterCloudinary) {
-      setUrlPosterCloudinaryUpdate(game.urlPosterCloudinary);
-    }
-    if (game && !game.urlPosterCloudinary) {
-      setUrlPosterCloudinaryUpdate(game.urlPoster);
-    }
-    if (game && game.urlImageOneCloudinary) {
-      setUrlImageOneCloudinaryUpdate(game.urlImageOneCloudinary);
-    }
-    if (game && game.urlImageTwoCloudinary) {
-      setUrlImageTwoCloudinaryUpdate(game.urlImageTwoCloudinary);
-    }
-    if (game && game.urlImageThreeCloudinary) {
-      setUrlImageThreeCloudinaryUpdate(game.urlImageThreeCloudinary);
-    }
-    if (game && game.urlBackgroundCloudinary) {
-      setUrlBackgroundCloudinaryUpdate(game.urlBackgroundCloudinary);
-    }
-    if (game && game.videoLink) {
-      setVideoLinkUpdate(game.videoLink);
-    }
-    if (game && game.webSiteOfThisGame) {
-      setWebSiteOfThisGameUpdate(game.webSiteOfThisGame);
-    }
-    if (game && game.webSiteOfThisCreator) {
-      setWebSiteOfThisCreatorUpdate(game.webSiteOfThisCreator);
-    }
-    if (game && game.steamLink) {
-      setSteamLinkUpdate(game.steamLink);
-    }
-    if (game && game.epicGamesLink) {
-      setEpicGamesLinkUpdate(game.epicGamesLink);
-    }
-    if (game && game.genreOfGame) {
-      setGenreOfGameUpdate(game.genreOfGame);
-    }
+    if (game && game.selectedAgePegi) { setSelectedAgePegiUpdate(game.selectedAgePegi); }
+    if (game && game.selectedAdditionalPegi) { setSelectedAdditionalPegiUpdate(game.selectedAdditionalPegi); }
+    if (game && game.SoloMulti) { setSoloMultiUpdate(game.SoloMulti); }
+    if (game && game.urlPosterCloudinary) { setUrlPosterCloudinaryUpdate(game.urlPosterCloudinary); }
+    if (game && !game.urlPosterCloudinary) { setUrlPosterCloudinaryUpdate(game.urlPoster); }
+    if (game && game.urlImageOneCloudinary) { setUrlImageOneCloudinaryUpdate(game.urlImageOneCloudinary); }
+    if (game && game.urlImageTwoCloudinary) { setUrlImageTwoCloudinaryUpdate(game.urlImageTwoCloudinary); }
+    if (game && game.urlImageThreeCloudinary) { setUrlImageThreeCloudinaryUpdate(game.urlImageThreeCloudinary); }
+    if (game && game.urlBackgroundCloudinary) { setUrlBackgroundCloudinaryUpdate(game.urlBackgroundCloudinary); }
+    if (game && game.videoLink) { setVideoLinkUpdate(game.videoLink); }
+    if (game && game.webSiteOfThisGame) { setWebSiteOfThisGameUpdate(game.webSiteOfThisGame); }
+    if (game && game.webSiteOfThisCreator) { setWebSiteOfThisCreatorUpdate(game.webSiteOfThisCreator); }
+    if (game && game.steamLink) { setSteamLinkUpdate(game.steamLink); }
+    if (game && game.epicGamesLink) { setEpicGamesLinkUpdate(game.epicGamesLink); }
+    if (game && game.genreOfGame) { setGenreOfGameUpdate(game.genreOfGame); }
+    if (game && game.isDarkMode) { setIsDarkModeUpdate(game.isDarkMode); }
+    if (game && game.isIntroOfYourself) { setIsIntroOfYourselfUpdate(game.isIntroOfYourself); }
   }, [game]);
 
   /****************** Envoyer les données à l'API createIntroduction **************************/
@@ -292,14 +264,33 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       </div>
 
       {/* Fond noir et Texte blanc */}
-      <div className="flex justify-center w-full laptop:my-3">
-        <div
-          onClick={() => setIsDarkModeUpdate(!isDarkModeUpdate || "")}
-          className="p-2 bg-black text-white inline-block ml-2 cursor-pointer"
-        >
-          Texte noir et fond blanc
+      <section className="flex justify-center">
+        <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
+          <span>Mode Sombre : Texte blanc sur fond noir</span>
+          <div className="ml-4">
+            <label>
+              <input
+                type="radio"
+                value="true"
+                className="mx-2"
+                checked={isDarkModeUpdate === "true"}
+                onChange={() => setIsDarkModeUpdate("true")}
+              />
+              Oui
+            </label>
+            <label className="ml-4">
+              <input
+                type="radio"
+                value="false"
+                className="mx-2"
+                checked={isDarkModeUpdate === "false"}
+                onChange={() => setIsDarkModeUpdate("false")}
+              />
+              Non
+            </label>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Nom */}
       <input
@@ -560,10 +551,28 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       <div className="flex justify-center">
         <div
           className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
-          onClick={() => setIsIntroOfYourselfUpdate(!isIntroOfYourselfUpdate)}
         >
-          Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe
-          ?
+          Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
+          <div className="flex justify-center mt-2 w-full">
+            <label className="flex items-center mr-4">
+              <input
+                type="checkbox"
+                checked={isIntroOfYourselfUpdate === "true"}
+                onChange={() => setIsIntroOfYourselfUpdate("true")}
+                className="mr-2"
+              />
+              Oui
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={isIntroOfYourselfUpdate === "false"}
+                onChange={() => setIsIntroOfYourselfUpdate("false")}
+                className="mr-2"
+              />
+              Non
+            </label>
+          </div>
         </div>
       </div>
 

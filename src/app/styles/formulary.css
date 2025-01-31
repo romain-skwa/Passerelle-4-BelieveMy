@@ -1,13 +1,26 @@
 .linksOtherGames input {
-  width: 60%;
+  width: 80%;
   margin-inline: auto;
   padding: 0.5rem;
+  background: transparent;
+  color: white;
 }
+.linksOtherGames input::placeholder {
+  color: white; 
+  opacity: 1; 
+}
+
+.linksOtherGames input:focus {
+  border: none;
+  outline: none;
+}
+
 @media (max-width: 1280px) {
   .linksOtherGames input {
     width: 95%;
   }
 }
+/************************************/
 .social input {
   width: 60%;
   padding: 0.5rem 1rem;
@@ -146,19 +159,20 @@ h3 {
   padding: 0.3rem;
   border: 1px black solid;
   border-radius: 10px;
-  background-color: rgba(148, 163, 184, 0.7);
+  background-color: rgba(31, 125, 207, 0.6);
 }
-/********** Platform *******************/
+/********** Solo Multi Online *******************/
 .buttonSoloMulti-container {
   display: flex;
   flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'espace est insuffisant */
   justify-content: center;
   color: white;
-  text-shadow: 2px 2px 4px rgb(30, 25, 25);
+  text-shadow: 3px 3px 4px rgba(7, 7, 7, 0.635);
   margin-top: 1rem;
   padding: 1rem;
 }
 
+/********** Platform *******************/
 .buttonPlatform {
   padding: 1px 4px;
   font-size: 13px;
@@ -168,7 +182,6 @@ h3 {
   cursor: pointer;
   margin-inline: 0.5rem; /* Espacement entre les boutons */
   transition: background-color 0.3s; /* Effet de transition pour le survol */
-  /*border: 1px rgb(5, 4, 4) solid;*/
   display: inline-block;
 }
 
@@ -176,6 +189,16 @@ h3 {
   background-color: rgb(20, 118, 46); /* Changement de couleur au survol */
 }
 
+.PlatformIntro {
+  padding: 1px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  border-radius: 5px;
+  margin-inline: 0.5rem; /* Espacement entre les boutons */
+  transition: background-color 0.3s; /* Effet de transition pour le survol */
+  display: inline-block;
+}
 /********************Solo ou Multi***********************************/
 .buttonSoloMulti-container {
   display: flex;
@@ -201,8 +224,7 @@ h3 {
 
 .bandeauTop div {
   width: 220px;
-  border: 1px solid grey;
-  
+  border: 2px solid rgb(27, 35, 141);  
   background-color: rgb(114, 2, 2);
   color: white;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);

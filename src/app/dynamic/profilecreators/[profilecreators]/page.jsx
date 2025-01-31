@@ -13,7 +13,7 @@ export default function Profile() {
   const pseudo = params.profilecreators.slice(3); // Important de mettre le nom du dossier [profilecreators]
 
   // State
-  const [user, setUser ] = useState({});
+  const [user, setUser ] = useState({}); console.log(user);
   const [loading, setLoading] = useState(true); // État pour le chargement
 
   useEffect(() => {

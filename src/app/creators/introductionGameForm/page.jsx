@@ -37,7 +37,7 @@ export default function introductionGameForm() {
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
   const [selectedAdditionalPegi, setSelectedAdditionalPegi] = useState([]);
-  const [releaseDate, setReleaseDate] = useState(null); console.log(`releaseDate : `, releaseDate);
+  const [releaseDate, setReleaseDate] = useState(null);
   const [platform, setPlatform] = useState([]);
   const [webSiteOfThisGame, setWebSiteOfThisGame] = useState("");
   const [webSiteOfThisCreator, setWebSiteOfThisCreator] = useState("");
@@ -215,7 +215,7 @@ export default function introductionGameForm() {
       <section>
         <form
           onSubmit={onPrepare}
-          className="w-[95vw] largeScreen:w-[65vw] mx-auto p-2 text-white font-bold border border-purple-600 rounded-3xl"
+          className=" w-[95vw] largeScreen:w-[68vw] mx-auto px-0 tablet:px-8 text-white font-bold border border-purple-600 rounded-3xl"
         >
           <p className="m-4">
             {session?.user.username.charAt(0).toUpperCase() + session?.user.username.slice(1)}, sur cette page, vous êtes invité à remplir

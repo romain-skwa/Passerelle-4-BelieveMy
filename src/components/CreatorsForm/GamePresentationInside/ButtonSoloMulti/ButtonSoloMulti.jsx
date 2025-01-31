@@ -26,8 +26,8 @@ const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
 
   return (
     <div className="buttonSoloMulti-container">
-      {SoloMultis.map(({ genre, icon }) => (
-        <div
+      {SoloMultis.map(({ genre, icon }) => (/* Text */
+        <div 
           key={genre}
           onClick={() => handleSoloMultiClick(genre)}
           className={`buttonSoloMulti ${
@@ -40,7 +40,7 @@ const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
             cursor: "pointer",
           }}
         >
-          <span style={{ marginRight: "10px" }}>{genre}</span>
+          <span style={{ marginRight: "10px" }}>{genre}</span> {/* Icon */}
           <img
             src={icon.src}
             alt={genre}

@@ -10,7 +10,6 @@ export default function GeneralLayout({ children, backgroundImage }) {
 
   const { data: session } = useSession();
   const username = session?.user.username;
-  console.log(`Le pseudo de l'utilisateur connecté est : `, username);
 
   return (
     <section className="flex flex-col h-screen content">
