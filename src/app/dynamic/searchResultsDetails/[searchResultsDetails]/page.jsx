@@ -7,7 +7,7 @@ import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { useLanguage } from "@/components/LanguageContext/LanguageContext";
-import "@/app/styles/introduction.css";
+import "@/app/styles/formIntroYourself.css";
 import Image from "next/image";
 
 export default function searchResultsDetails() {
@@ -15,7 +15,7 @@ export default function searchResultsDetails() {
   const [games, setGames] = useState([]); // All games found
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams(); // Get all params from URL
-    
+
   const genres = searchParams.get("genres"); // Get params 'genres' in the URL
   const platforms = searchParams.get("platforms"); // Get params 'platforms' in the l'URL
   const searchTerm = searchParams.get("searchTerm"); // Get params 'platforms' in the l'URL
@@ -28,32 +28,32 @@ export default function searchResultsDetails() {
 
   // Concerning the language and singular/plural ----------------------------------------------------------------
   useEffect(() => {
-    if(language == 'fr'){
-      if(isOnlyOneGenre.length > 1){
+    if (language == "fr") {
+      if (isOnlyOneGenre.length > 1) {
         setScreenGenre("Les catégories");
-      }else{
+      } else {
         setScreenGenre("La catégorie");
       }
-    }else{
-      if(isOnlyOneGenre.length > 1){
+    } else {
+      if (isOnlyOneGenre.length > 1) {
         setScreenGenre("The categories");
-      }else{
+      } else {
         setScreenGenre("The categorie");
       }
     }
   }, [genres, language]);
 
   useEffect(() => {
-    if(language == 'fr'){
-      if(isOnlyOnePlatform.length > 1){
+    if (language == "fr") {
+      if (isOnlyOnePlatform.length > 1) {
         setScreenPlatform("Les plate-formes");
-      }else{
+      } else {
         setScreenPlatform("La plate-forme");
       }
-    }else{
-      if(isOnlyOnePlatform.length > 1){
+    } else {
+      if (isOnlyOnePlatform.length > 1) {
         setScreenPlatform("The platforms");
-      }else{
+      } else {
         setScreenPlatform("The platform");
       }
     }
@@ -64,26 +64,42 @@ export default function searchResultsDetails() {
     if (genres || platforms || searchTerm) {
       const genreArray = genres ? genres.split(",") : [];
       const platformArray = platforms ? platforms.split(",") : [];
-      const searchTermString = searchTerm ? searchTerm : '';
+      const searchTermString = searchTerm ? searchTerm : "";
 
       setIsOnlyOneGenre(genreArray);
       setIsOnlyOnePlatform(platformArray);
 
-      fetchGamesByGenresAndPlatforms(genreArray, platformArray, searchTermString);
+      fetchGamesByGenresAndPlatforms(
+        genreArray,
+        platformArray,
+        searchTermString
+      );
     } else {
-      toast.error(language == "fr" ? "Aucun genre ou plateforme trouvé dans l'URL" : "No genre or platform found in the URL"); // Message d'erreur si genres ou plateformes manquants
+      toast.error(
+        language == "fr"
+          ? "Aucun genre ou plateforme trouvé dans l'URL"
+          : "No genre or platform found in the URL"
+      ); // Message d'erreur si genres ou plateformes manquants
     }
   }, [genres, platforms, searchTerm]);
 
   // Send the params to the API ---------------------------------------------------------------------------------
-  const fetchGamesByGenresAndPlatforms = async (selectedGenres, selectedPlatforms, selectedTitle) => {
+  const fetchGamesByGenresAndPlatforms = async (
+    selectedGenres,
+    selectedPlatforms,
+    selectedTitle
+  ) => {
     try {
       const response = await fetch("/api/searchByDetails", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ genres: selectedGenres, platforms: selectedPlatforms, searchTerm: selectedTitle }), // Envoi des genres et plateformes
+        body: JSON.stringify({
+          genres: selectedGenres,
+          platforms: selectedPlatforms,
+          searchTerm: selectedTitle,
+        }), // Envoi des genres et plateformes
       });
 
       if (!response.ok) {
@@ -115,18 +131,40 @@ export default function searchResultsDetails() {
         ) : (
           <div className="neuphormism bg-[rgba(255,255,255,0.90)] w-[95vw] tablet:w-[85vw] laptop:w-[900px] mx-auto rounded-md py-4 px-6 lg:w-2/3 neuphormism">
             <section className="text-center">
-                <h1 className="text-center">{ language == "fr" ? "Résultats de votre recherche" : "Results of your search"}{" "}</h1>
-                <p>{genres && `${screenGenre} : ${genres.split(",").join(" ")}`}</p>
-                <p>{platforms && ` ${screenPlatform} : ${platforms.split(",").join(", ")}`}</p>
-                {games.length === 0 && <p>{language === "fr" ? "Aucun jeu trouvé pour cette combinaison de genres et plateformes." : "No game found for this combination of genres and platforms."}</p>}
+              <h1 className="text-center">
+                {language == "fr"
+                  ? "Résultats de votre recherche"
+                  : "Results of your search"}{" "}
+              </h1>
+              <p>
+                {genres && `${screenGenre} : ${genres.split(",").join(" ")}`}
+              </p>
+              <p>
+                {platforms &&
+                  ` ${screenPlatform} : ${platforms.split(",").join(", ")}`}
+              </p>
+              {games.length === 0 && (
+                <p>
+                  {language === "fr"
+                    ? "Aucun jeu trouvé pour cette combinaison de genres et plateformes."
+                    : "No game found for this combination of genres and platforms."}
+                </p>
+              )}
             </section>
             {games.length > 0 && (
               <ul className="mt-4 flex flex-wrap tablet:gap-4 gap-2 justify-center mx-auto ">
                 {games.map((game) => (
-                  <li key={game._id} className="rounded-xl overflow-hidden" style={{ boxShadow: '5px 5px 8px rgba(0, 0, 0, 0.8)' }}>
+                  <li
+                    key={game._id}
+                    className="rounded-xl overflow-hidden"
+                    style={{ boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.8)" }}
+                  >
                     <Link href={`/dynamic/introduction/${game.nameofgame}`}>
                       <Image
-                        src={game.urlPosterCloudinary || `/presentation/${game.urlPoster}`}
+                        src={
+                          game.urlPosterCloudinary ||
+                          `/presentation/${game.urlPoster}`
+                        }
                         width={192}
                         height={311}
                         alt={decodeURIComponent(game.nameofgame)}

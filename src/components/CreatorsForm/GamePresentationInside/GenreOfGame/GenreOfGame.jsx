@@ -1,5 +1,6 @@
 // GenreOfGame.js
 import React from 'react';
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 const genres = [
   { id: 'Action', label: 'Action' },
@@ -30,9 +31,13 @@ const GenreOfGame = ({ selectedGenres, setSelectedGenres }) => {
     });
   };
 
+const { language } = useLanguage();
+
   return (
     <div className="my-4">
-      <p className="text-white font-bold mb-2 text-center">Sélectionnez une ou plusieurs catégories :</p>
+      <p className="text-white font-bold mb-2 text-center">
+        {language === "fr" ? "Sélectionnez une ou plusieurs catégories :" : "Select one or more categories:"}
+      </p>
       <div className='w-[200px] mx-auto'>
         {genres.map((genre) => (
           <label key={genre.id} className="block">

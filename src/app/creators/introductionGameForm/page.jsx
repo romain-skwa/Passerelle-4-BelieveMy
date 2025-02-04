@@ -14,6 +14,7 @@ import UserProfileSection from "@/components/UserProfileSection/UserProfileSecti
 import ObligatoryButtons from "@/components/CreatorsForm/ObligatoryButtons/ObligatoryButtons";
 import OptionalButtons from "@/components/CreatorsForm/OptionalButtons/OptionalButtons";
 import GamePresentationSections from "@/components/CreatorsForm/GamePresentationSections/GamePresentationSections";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 // FORMULARY used by a the creator to introduce one game
 
@@ -21,6 +22,7 @@ export default function introductionGameForm() {
   // Variable
   const { data: session } = useSession();
   const router = useRouter();
+  const { language, changeLanguage } = useLanguage();
 
   // State
   const [user, setUser] = useState({});
@@ -218,8 +220,10 @@ export default function introductionGameForm() {
           className=" w-[95vw] largeScreen:w-[68vw] mx-auto px-0 tablet:px-8 text-white font-bold border border-purple-600 rounded-3xl"
         >
           <p className="m-4">
-            {session?.user.username.charAt(0).toUpperCase() + session?.user.username.slice(1)}, sur cette page, vous êtes invité à remplir
-            de présentation de votre jeux.
+            {session?.user.username.charAt(0).toUpperCase() + session?.user.username.slice(1)},
+            {language == "fr" 
+            ? "sur cette page, vous êtes invité à remplir de présentation de votre jeux." 
+            : "on this page, you are invited to fill out the presentation of your game." } 
           </p>
 
           <section className="flex" /* colonne + choix */>
@@ -304,8 +308,9 @@ export default function introductionGameForm() {
               className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
               onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
             >
-              Souhaitez-vous ajouter la présentation de vous-même ou de votre
-              équipe ?
+             {language == "fr" 
+             ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?"
+             : "Would you like to add a presentation of yourself or your team?"} 
             </div>
           </div>
 
@@ -320,7 +325,9 @@ export default function introductionGameForm() {
                 urlPosterCloudinary === ""
               } /* Désactivé si les champs sont vides */
             >
-              Envoyer la présentation
+            {language == "fr" 
+             ? "Envoyer la présentation"
+             : "Submit the presentation"} 
             </button>
           </div>
         </form>

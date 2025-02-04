@@ -6,6 +6,7 @@ import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import Loading from "@/components/Loading/Loading";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import SocialFrame from "@/components/SocialFrame/SocialFrame";
+import TextOneByOne from "@/components/TextOneByOne/TextOneByOne";
 
 export default function TestPage() {
   const [currentUrl, setCurrentUrl] = useState("");
@@ -58,6 +59,7 @@ export default function TestPage() {
   return (
     <GeneralLayout>
       <p>L'URL actuelle est : {currentUrl}</p>
+      <TextOneByOne />
       <Loading />
       <ImageUpload />
       <SocialFrame />

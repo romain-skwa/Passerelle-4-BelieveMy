@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import Link from "next/link";
 import Loading from "@/components/Loading/Loading";
-import "@/app/styles/introduction.css";
+import "@/app/styles/formIntroYourself.css";
 
 export default function SearchIntroductionGame() {
   // Variable
@@ -117,7 +117,9 @@ export default function SearchIntroductionGame() {
                   )
                 )
               ) : (
-                <p className="text-white">Aucun jeu trouvé pour ces critères.</p>
+                <p className="text-white">
+                  Aucun jeu trouvé pour ces critères.
+                </p>
               )}
             </ul>
           </div>

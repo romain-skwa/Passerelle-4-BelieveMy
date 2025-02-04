@@ -1,0 +1,125 @@
+.neuphormism{
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 
+        5px 5px 10px black, 
+        -5px -5px 10px black, 
+        inset  -5px -5px 10px black, 
+        inset  5px 5px 10px rgb(135, 134, 134);
+}
+
+.neuphormismUndergroung{
+    box-shadow: 
+    inset  -5px -5px 10px rgb(1, 9, 250), 
+    inset  5px 5px 10px black;
+    background-color: rgba(0, 0, 0, 0.589);
+}
+
+.neuphormismFormularyIntroductionGame{
+    box-shadow: 
+    5px 5px 10px black, 
+    -5px -5px 10px black, 
+    inset  -5px -5px 10px black, 
+    inset  5px 5px 10px  rgb(31, 125, 207);
+}
+
+.inputLink{
+    display: block;
+    width: 90%;
+    box-sizing: border-box;
+    padding: 0.5rem; /* 8px */
+    padding-left: 0.5rem; /* 8px */
+    margin: 0.5rem; /* 8px */
+    color: white;
+    border: 1px solid rgb(1, 9, 250);
+    border-radius: 10px;
+}
+.sectionTextareaIntroYourself{
+  /*background: linear-gradient(321deg, rgba(0,0,0,1) 0%, rgba(18,18,228,1) 100%);*/
+  background: linear-gradient(322deg, rgba(0,0,0,1) 15%, rgba(18,18,228,1) 50%, rgba(228,18,61,1) 100%); 
+  margin-left: auto; /* Centre l'élément horizontalement */
+  margin-right: auto; /* Centre l'élément horizontalement */
+  margin-bottom: 1rem; /* Marge en bas de 1rem (16px) */
+  padding: 0.5rem; /* Padding de 0.5rem (8px) sur tous les côtés */
+  min-height: 12rem; /* Hauteur minimale de 12rem (192px) */
+  border-radius: 1.4rem; /* Rayon de bordure de 1rem (16px) */
+  color: white; /* Couleur du texte blanche */
+}
+.textareaIntroYourself {
+    padding: 20px;
+    font-size: small;
+    background: transparent;
+    border-radius: 1rem;
+}
+
+.linearUp{
+    background: linear-gradient(54deg, rgba(0,212,255,1) 0%, rgba(9,9,121,1) 78%, rgba(2,0,36,1) 100%);
+    margin-bottom: 0.5rem;
+    border-radius: 1rem;
+}
+
+@media (max-width: 600px) {
+    .linearUp {
+      width: 100%;
+    }
+  }
+
+  .linksOtherGames input {
+    width: 80%;
+    margin-inline: auto;
+    padding: 0.5rem;
+    background: transparent;
+    color: white;
+  }
+  .linksOtherGames input::placeholder {
+    color: white; 
+    opacity: 1; 
+  }
+  
+  .linksOtherGames input:focus {
+    border: none;
+    outline: none;
+  }
+  
+  @media (max-width: 1280px) {
+    .linksOtherGames input {
+      width: 95%;
+    }
+  }
+  /************************************/
+  .social input {
+    width: 60%;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+  }
+  
+  @media (max-width: 600px) {
+    .social input {
+      width: 80%;
+    }
+  }
+  .transparentWhite{
+    background: linear-gradient(90deg, rgba(233,63,63,0.8) 0%, rgba(18,18,228,1) 65%, rgba(233,63,63,0.8) 100%);
+  }
+  .transparentWhite:focus{
+    background: rgba(4, 39, 76, 0.7);
+    color: white;
+  }
+  /*************************************************************/
+  .custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.7); /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    border-radius: 5px; /* Coins arrondis */
+    border: 1px white solid;
+  }
+  
+  .custom-file-upload input[type="file"] {
+    display: none; /* Masquer l'input de fichier par défaut */
+  }
+  /*************************************************************/
+  .contentLogo {
+    @apply w-[15%] laptop:w-[20%] flex justify-end items-center;
+  }

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import he from "he";
-import "../../../styles/introduction.css";
+import "../../../styles/formIntroYourself.css";
 import Image from "next/image";
 import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
@@ -560,13 +560,19 @@ export default function IntroductionGame({ params: { introduction } }) {
           ) : (
             <section className="tablet:flex tablet:justify-between">
               <div className="p-1 tablet:p-4 tablet:inline-block text-center">
-                <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
+                <Link
+                  href={`../../../dynamic/profilecreators/@${encodedUsername}`}
+                >
                   {language === "fr" ? "Jeu créé par :" : "Game created by : "}{" "}
                   {decodeURIComponent(game.username)}
                 </Link>
               </div>
               {/******************* Date de sortie du jeu **********************/}
-              <div className={"p-1 tablet:p-4 pr-6 tablet:min-h-[50px] text-center tablet:text-right"}>
+              <div
+                className={
+                  "p-1 tablet:p-4 pr-6 tablet:min-h-[50px] text-center tablet:text-right"
+                }
+              >
                 {language === "fr" ? "Date de sortie :" : "Release date : "}{" "}
                 {formattedDate}.
               </div>

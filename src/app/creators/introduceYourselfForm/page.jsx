@@ -12,7 +12,9 @@ import logoTwitch from "../../../../public/logo/twitch_logo.png";
 import logoItchi from "../../../../public/logo/itch-io-icon.png";
 import logoTwitter from "../../../../public/logo/x__twitter-logo.png";
 import Loading from "@/components/Loading/Loading";
-import "../../styles/introduction.css";
+import "../../styles/formIntroYourself.css";
+import TextOneByOne from "@/components/TextOneByOne/TextOneByOne";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState("");
@@ -36,10 +38,12 @@ const introduceYourself = () => {
   const [error, setError] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setLoading(true);
         // Get data about user
         const response = await fetch("/api/getAllUserDataSession", {
           method: "POST",
@@ -67,12 +71,14 @@ const introduceYourself = () => {
         } else {
           setIsDarkMode(false); // Si isDarkMode n'existe pas, on le met à false
         }
-        
+
         // Si elles existent, les données concernant l'utilisateur sont affichées dans les champs de texte
-        if (data.user.bio) {  setBio(data.user.bio); }
-        if (data.user.nameOtherGames1) {setNameOtherGames1(data.user.nameOtherGames1); }
-        if (data.user.linkOtherGame1) {setLinkOtherGame1(data.user.linkOtherGame1); }
-        if (data.user.nameOtherGames2) {setNameOtherGames2(data.user.nameOtherGames2); }
+        if (data.user.bio) {
+          setBio(data.user.bio);
+        }
+        if (data.user.nameOtherGames1) {  setNameOtherGames1(data.user.nameOtherGames1);}
+        if (data.user.linkOtherGame1) { setLinkOtherGame1(data.user.linkOtherGame1); }
+        if (data.user.nameOtherGames2) { setNameOtherGames2(data.user.nameOtherGames2); }
         if (data.user.linkOtherGame2) { setLinkOtherGame2(data.user.linkOtherGame2); }
         if (data.user.nameOtherGames3) { setNameOtherGames3(data.user.nameOtherGames3); }
         if (data.user.linkOtherGame3) { setLinkOtherGame3(data.user.linkOtherGame3); }
@@ -85,9 +91,11 @@ const introduceYourself = () => {
         if (data.user.twitchUrl) { setTwitchUrl(data.user.twitchUrl); }
         if (data.user.itchIoUrl) { setItchIoUrl(data.user.itchIoUrl); }
         if (data.user.twitterUrl) { setTwitterUrl(data.user.twitterUrl); }
-        setLoading(false);
+        
       } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUserData();
@@ -95,10 +103,6 @@ const introduceYourself = () => {
 
   if (error) {
     return <div>Erreur: {error}</div>;
-  }
-
-  if (!user) {
-    return <div>Chargement...</div>;
   }
 
   const handleSubmit = async (event) => {
@@ -125,243 +129,246 @@ const introduceYourself = () => {
         linkOtherGame5,
         isDarkMode
       );
-      toast.success("Informations mises à jour avec succès !");
+      toast.success(language == "fr" ? "Informations mises à jour avec succès !" : "Data updated");
       setLoading(false);
     } catch (error) {
       console.error(`error dans la page introduceYourself`, error); // Affichez l'erreur dans la console
-      toast.error("Erreur lors de la mise à jour des informations");
-    }
+      toast.error(language == "fr" ? "Erreur lors de la mise à jour des informations" : "Error updating the information.");    }
   };
   /********************************************************************************************** */
   return (
     <GeneralLayout>
-      {loading ? (
+      {loading ? ( 
         <Loading /> // Affiche le composant Loading pendant le chargement
       ) : (
-      <div className="introduceYourself w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center ">
-        <h1 className="text-4xl text-white mb-2" style={{ textShadow: '4px 4px 6px rgba(0, 0, 0, 0.8)' }}>
-          Présentez-vous
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <textarea
-            value={bio}
-            onChange={(event) => setBio(event.target.value)}
-            className="w-[95%] lapto:w-[80%] mx-auto mb-4 p-2 h-32 "
-            placeholder="Présentez votre parcours. Evoquez vos jeux. C'est à vous..."
-          />
-          <br />
-          <div className="linksOtherGames">
-            <div className="linearUp w-[60%] mx-auto">
-              <input
-                type="text"
-                value={nameOtherGames1}
-                onChange={(event) => setNameOtherGames1(event.target.value)}
-                placeholder="Inscrivez ici le nom de votre jeu précédent n°1 :"
-              />
-              <input
-                type="url"
-                value={linkOtherGame1}
-                onChange={(event) => setLinkOtherGame1(event.target.value)}
-                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
-              />
-            </div>
-
-            <div className="linearUp w-[60%] mx-auto">
-              <input
-                type="text"
-                value={nameOtherGames2}
-                onChange={(event) => setNameOtherGames2(event.target.value)}
-                placeholder="Inscrivez ici le nom de votre jeu précédent n°2 :"
-              />
-              <input
-                type="url"
-                value={linkOtherGame2}
-                onChange={(event) => setLinkOtherGame2(event.target.value)}
-                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
-              />
-            </div>
-
-            <div className="linearUp w-[60%] mx-auto">
-              <input
-                type="text"
-                value={nameOtherGames3}
-                onChange={(event) => setNameOtherGames3(event.target.value)}
-                placeholder="Inscrivez ici le nom de votre jeu précédent n°3 :"
-              />
-              <input
-                type="url"
-                value={linkOtherGame3}
-                onChange={(event) => setLinkOtherGame3(event.target.value)}
-                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
-              />
-            </div>
-
-            <div className="linearUp w-[60%] mx-auto">
-              <input
-                type="text"
-                value={nameOtherGames4}
-                onChange={(event) => setNameOtherGames4(event.target.value)}
-                placeholder="Inscrivez ici le nom de votre jeu précédent n°4 :"
-              />
-              <input
-                type="url"
-                value={linkOtherGame4}
-                onChange={(event) => setLinkOtherGame4(event.target.value)}
-                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
-              />
-            </div>
-
-            <div className="linearUp w-[60%] mx-auto">
-              <input
-                type="text"
-                value={nameOtherGames5}
-                onChange={(event) => setNameOtherGames5(event.target.value)}
-                placeholder="Inscrivez ici le nom de votre jeu précédent n°5 :"
-              />
-              <input
-                type="url"
-                value={linkOtherGame5}
-                onChange={(event) => setLinkOtherGame5(event.target.value)}
-                placeholder="Si ce jeu est déjà référencé ailleurs , collez ici le lien"
-              />
-            </div>
-          </div>
-
-          <br />
-          {/* Bouton TELECHARGER votre Logo */}
-          <div className="file-upload">
-            <label className="custom-file-upload">
-              <input
-                type="file"
-                onChange={(event) => setLogoUser(event.target.files[0])}
-                accept="image/*"
-              />
-              Télécharger votre logo
-            </label>
-          </div>
-
-          <br />
-          {/* Lien votre propre site */}
-          <input
-            type="url"
-            value={websiteUrl}
-            onChange={(event) => setWebsiteUrl(event.target.value)}
-            className="w-[95%] laptop:w-[60%] p-2 rounded-xl"
-            placeholder="URL de votre site web :"
-          />
-          <br />
-          <br />
-
-          <div className="social">
-            {" "}
-            {/* Liens réseaux sociaux */}
-            <div className="flex">
-              <div className="contentLogo">
-                <Image
-                  src={logoDiscord}
-                  alt="Logo Discord"
-                  className="w-9 h-9 mr-3 bg-black bg-opacity-50 rounded-md p-1"
-                  unoptimized={true}
+        <div className="w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center">
+          
+          <form onSubmit={handleSubmit}>
+            <section className="sectionTextareaIntroYourself">
+              <TextOneByOne />
+              <textarea
+                value={bio}
+                onChange={(event) => setBio(event.target.value)}
+                className="textareaIntroYourself w-[100%]"
+                placeholder="Biographie..."
                 />
-              </div>
-              <input
-                type="url"
-                value={discordUrl}
-                onChange={(event) => setDiscordUrl(event.target.value)}
-                placeholder="Lien Discord :"
-              />
-            </div>
+            </section>
             <br />
-            <div className="flex">
-              <div className="contentLogo">
-                <Image
-                  src={logoTwitch}
-                  alt="Logo Twitch"
-                  className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
-                  unoptimized={true}
-                />
-              </div>
-              <input
-                type="url"
-                value={twitchUrl}
-                onChange={(event) => setTwitchUrl(event.target.value)}
-                placeholder="Lien Twitch :"
-              />
-            </div>
-            <br />
-            <div className="flex">
-              <div className="contentLogo">
-                <Image
-                  src={logoItchi}
-                  alt="Logo Itchi.io"
-                  className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
-                  unoptimized={true}
-                />
-              </div>
-              <input
-                type="url"
-                value={itchIoUrl}
-                onChange={(event) => setItchIoUrl(event.target.value)}
-                placeholder="Lien itch.io :"
-              />
-            </div>
-            <br />
-            <div className="flex">
-              <div className="contentLogo">
-                <Image
-                  src={logoTwitter}
-                  alt="Logo Twitter"
-                  className="w-8 h-8 mr-3 bg-white bg-opacity-50 rounded-md p-1"
-                  unoptimized={true}
-                />
-              </div>
-              <input
-                type="url"
-                value={twitterUrl}
-                onChange={(event) => setTwitterUrl(event.target.value)}
-                placeholder="Lien X Twitter :"
-              />
-            </div>
-          </div>
-
-          <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
-            <span>Mode Sombre : Texte blanc sur fond noir</span>
-            <div className="ml-4">
-              <label>
+            <div className="linksOtherGames">
+              <div className="linearUp w-[60%] mx-auto">
                 <input
-                  type="radio"
-                  value="true"
-                  className="mx-2"
-                  checked={isDarkMode === true}
-                  onChange={() => setIsDarkMode(true)}
+                  type="text"
+                  value={nameOtherGames1}
+                  onChange={(event) => setNameOtherGames1(event.target.value)}
+                  placeholder= {language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°1" : "Please enter the name of your previous game here n°1"}
                 />
-                Oui
-              </label>
-              <label className="ml-4">
                 <input
-                  type="radio"
-                  value="false"
-                  className="mx-2"
-                  checked={isDarkMode === false}
-                  onChange={() => setIsDarkMode(false)}
+                  type="url"
+                  value={linkOtherGame1}
+                  onChange={(event) => setLinkOtherGame1(event.target.value)}
+                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
                 />
-                Non
+              </div>
+
+              <div className="linearUp w-[60%] mx-auto">
+                <input
+                  type="text"
+                  value={nameOtherGames2}
+                  onChange={(event) => setNameOtherGames2(event.target.value)}
+                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°2" : "Please enter the name of your previous game here n°2"}
+                />
+                <input
+                  type="url"
+                  value={linkOtherGame2}
+                  onChange={(event) => setLinkOtherGame2(event.target.value)}
+                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                />
+              </div>
+
+              <div className="linearUp w-[60%] mx-auto">
+                <input
+                  type="text"
+                  value={nameOtherGames3}
+                  onChange={(event) => setNameOtherGames3(event.target.value)}
+                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°3" : "Please enter the name of your previous game here n°3"}
+                />
+                <input
+                  type="url"
+                  value={linkOtherGame3}
+                  onChange={(event) => setLinkOtherGame3(event.target.value)}
+                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                />
+              </div>
+
+              <div className="linearUp w-[60%] mx-auto">
+                <input
+                  type="text"
+                  value={nameOtherGames4}
+                  onChange={(event) => setNameOtherGames4(event.target.value)}
+                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°4 :" : "Please enter the name of your previous game here n°4"}
+                />
+                <input
+                  type="url"
+                  value={linkOtherGame4}
+                  onChange={(event) => setLinkOtherGame4(event.target.value)}
+                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                />
+              </div>
+
+              <div className="linearUp w-[60%] mx-auto">
+                <input
+                  type="text"
+                  value={nameOtherGames5}
+                  onChange={(event) => setNameOtherGames5(event.target.value)}
+                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°5 :" : "Please enter the name of your previous game here n°5"}
+                />
+                <input
+                  type="url"
+                  value={linkOtherGame5}
+                  onChange={(event) => setLinkOtherGame5(event.target.value)}
+                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                />
+              </div>
+            </div>
+
+            <br />
+            {/* Bouton TELECHARGER votre Logo */}
+            <div className="file-upload">
+              <label className="custom-file-upload">
+                <input
+                  type="file"
+                  onChange={(event) => setLogoUser(event.target.files[0])}
+                  accept="image/*"
+                />
+                {language == "fr" ? "Télécharger votre logo" : "Upload your logo"}                
               </label>
             </div>
-          </div>
 
-          <button
-            type="submit"
-            className="border block bg-green-500 text-white mx-auto p-2 rounded-xl"
-          >
-            Mettre à jour
-          </button>
-        </form>
-      </div>
-      )
-    }
+            <br />
+            {/* Lien votre propre site */}
+            <input
+              type="url"
+              value={websiteUrl}
+              onChange={(event) => setWebsiteUrl(event.target.value)}
+              className="w-[95%] laptop:w-[60%] p-2 rounded-xl transparentWhite"
+              placeholder={language == "fr" ? "URL de votre site web :" : "URL of your website"} 
+            />
+            <br />
+            <br />
+
+            <div className="social">
+              {" "}
+              {/* Liens réseaux sociaux */}
+              <div className="flex">
+                <div className="contentLogo">
+                  <Image
+                    src={logoDiscord}
+                    alt="Logo Discord"
+                    className="w-9 h-9 mr-3 bg-black bg-opacity-50 rounded-md p-1"
+                    unoptimized={true}
+                  />
+                </div>
+                <input
+                  type="url"
+                  value={discordUrl}
+                  onChange={(event) => setDiscordUrl(event.target.value)}
+                  className="transparentWhite"
+                  placeholder={language == "fr" ? "Lien Discord :" : "Link Discord"} 
+                />
+              </div>
+              <br />
+              <div className="flex">
+                <div className="contentLogo">
+                  <Image
+                    src={logoTwitch}
+                    alt="Logo Twitch"
+                    className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
+                    unoptimized={true}
+                  />
+                </div>
+                <input
+                  type="url"
+                  value={twitchUrl}
+                  onChange={(event) => setTwitchUrl(event.target.value)}
+                  className="transparentWhite"
+                  placeholder={language == "fr" ? "Lien Twitch :" : "Link Twitch"}
+                />
+              </div>
+              <br />
+              <div className="flex">
+                <div className="contentLogo">
+                  <Image
+                    src={logoItchi}
+                    alt="Logo Itchi.io"
+                    className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
+                    unoptimized={true}
+                  />
+                </div>
+                <input
+                  type="url"
+                  value={itchIoUrl}
+                  onChange={(event) => setItchIoUrl(event.target.value)}
+                  className="transparentWhite"
+                  placeholder={language == "fr" ? "Lien itch.io :" : "Link itch.io"}
+                />
+              </div>
+              <br />
+              <div className="flex">
+                <div className="contentLogo">
+                  <Image
+                    src={logoTwitter}
+                    alt="Logo Twitter"
+                    className="w-8 h-8 mr-3 bg-white bg-opacity-50 rounded-md p-1"
+                    unoptimized={true}
+                  />
+                </div>
+                <input
+                  type="url"
+                  value={twitterUrl}
+                  onChange={(event) => setTwitterUrl(event.target.value)}
+                  className="transparentWhite"
+                  placeholder={language == "fr" ? "Lien X Twitter :" : "Link X Twitter"}
+                />
+              </div>
+            </div>
+
+            <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
+              <span>{language == "fr" ? "Mode Sombre : Texte blanc sur fond noir" : "Dark mode : White text on black background"} </span>
+              <div className="ml-4">
+                <label>
+                  <input
+                    type="radio"
+                    value="true"
+                    className="mx-2"
+                    checked={isDarkMode === true}
+                    onChange={() => setIsDarkMode(true)}
+                  />
+                  {language == "fr" ? "Oui" : "yes"}
+                </label>
+                <label className="ml-4">
+                  <input
+                    type="radio"
+                    value="false"
+                    className="mx-2"
+                    checked={isDarkMode === false}
+                    onChange={() => setIsDarkMode(false)}
+                  />
+                  {language == "fr" ? "Non" : "No"}
+                </label>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="border block bg-green-500 text-white mx-auto p-2 rounded-xl"
+            >
+              {language == "fr" ? "Mettre à jour" : "Update"} 
+            </button>
+          </form>
+        </div>
+      )}
     </GeneralLayout>
   );
-};
+}; 
 
 export default introduceYourself;

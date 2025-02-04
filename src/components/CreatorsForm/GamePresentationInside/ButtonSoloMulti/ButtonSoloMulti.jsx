@@ -3,8 +3,26 @@ import "@/app/styles/formulary.css";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
+  // Liste des traductions
+  const translations = {
+    fr: {
+      "Solo": "Solo",
+      "Multijoueur local": "Multijoueur local",
+      "Multijoueur en ligne": "Multijoueur en ligne"
+    },
+    en: {
+      "Solo": "Solo",
+      "Multijoueur local": "Local Multiplayer",
+      "Multijoueur en ligne": "Online Multiplayer"
+    }
+  };
+
+  // Récupérer la langue actuelle
+  const { language } = useLanguage();
+
   // Liste des modes de jeu
   const SoloMultis = [
     { genre: "Solo", icon: PlayerSolo },
@@ -26,7 +44,7 @@ const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
 
   return (
     <div className="buttonSoloMulti-container">
-      {SoloMultis.map(({ genre, icon }) => (/* Text */
+      {SoloMultis.map(({ genre, icon }) => (
         <div 
           key={genre}
           onClick={() => handleSoloMultiClick(genre)}
@@ -40,7 +58,7 @@ const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
             cursor: "pointer",
           }}
         >
-          <span style={{ marginRight: "10px" }}>{genre}</span> {/* Icon */}
+          <span style={{ marginRight: "10px" }}>{translations[language][genre]}</span> {/* Texte traduit */}
           <img
             src={icon.src}
             alt={genre}

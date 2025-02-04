@@ -54,7 +54,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
      // console.log("Image info:", result.info);
     }
   };
-
+ 
   return (
     <CldUploadWidget
       uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
@@ -71,6 +71,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
     >
       {({ open }) => {
         return (
+          <>
           <div
             onClick={() => {
               handleImageUpload(); // Appeler la fonction de suppression avant l'upload
@@ -80,6 +81,8 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
           >
             {buttonText}
           </div>
+          
+          </>
         );
       }}
     </CldUploadWidget>

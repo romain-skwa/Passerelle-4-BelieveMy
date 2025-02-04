@@ -1,7 +1,7 @@
 // ApercuFormulaire.js
 import React, { useState } from "react";
 import "@/app/styles/components.css";
-import "@/app/styles/introduction.css";
+import "@/app/styles/formIntroYourself.css";
 import Image from "next/image";
 import logoPegi3 from "/public/logo/pegi_3.jpg";
 import logoPegi7 from "/public/logo/pegi_7.jpg";
@@ -22,6 +22,7 @@ import iconeEpicGames from "/public/icons/epicGamesIcon.png";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 const pegiImages = {
   3: { src: logoPegi3, title: "Pegi 3" },
@@ -63,9 +64,9 @@ const ApercuFormulaire = ({
   urlImageTwo,
   urlImageThree,
 }) => {
-  const [clickedDivision, setClickedDivision] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const { language } = useLanguage();
 
   const openModal = (image) => {
     setSelectedImage(image);
@@ -100,7 +101,7 @@ const ApercuFormulaire = ({
           isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
         } `}
       >
-        <h3>Aperçu de la présentation de votre jeu :</h3>
+        <h3>{language === "fr" ? "Aperçu de la présentation de votre jeu :" : "Preview of your game's presentation:"}</h3>
 
         <div className="flex justify-center">
           <div className={`p-4 min-h-[50px] text-3xl font-bold text-center`}>
@@ -162,9 +163,9 @@ const ApercuFormulaire = ({
                     key={index}
                     src={pegiData.src}
                     alt={pegiData.title}
-                    title={pegiData.title} 
-                    width={50} 
-                    height={50} 
+                    title={pegiData.title}
+                    width={50}
+                    height={50}
                     unoptimized={true}
                   />
                 ) : null; // Si aucune image n'est trouvée, ne rien afficher
@@ -322,7 +323,7 @@ const ApercuFormulaire = ({
 
         {/******************* Date de sortie du jeu **********************/}
         <div className={`p-4 pr-6 min-h-[50px] text-right`}>
-          Sortie le {formattedDate}.
+        {language === "fr" ? "Sortie le " : "Release "} {formattedDate}.
         </div>
         {/************** Les images d'illustration **********************/}
         <section className="flex gap-2 justify-center">
@@ -369,8 +370,9 @@ const ApercuFormulaire = ({
           } `}
         >
           <p className="text-center">
-            Affiche visible dans la page d'accueil et les résultats des recherches :
+            {language === "fr" ? "Affiche visible dans la page d'accueil et les résultats des recherches :" : "Visible display on the homepage and search results:"}
           </p>
+
           <Image
             src={urlPosterCloudinary}
             className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
@@ -403,7 +405,7 @@ const ApercuFormulaire = ({
                 src={selectedImage}
                 alt="Image agrandie"
                 width={800}
-                height={600} 
+                height={600}
                 unoptimized={true}
               />
             )}

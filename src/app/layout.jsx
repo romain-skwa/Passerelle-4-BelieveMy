@@ -1,6 +1,5 @@
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./Providers";
 import "/src/app/styles/background.css";
 import { LanguageProvider } from "@/components/LanguageContext/LanguageContext";

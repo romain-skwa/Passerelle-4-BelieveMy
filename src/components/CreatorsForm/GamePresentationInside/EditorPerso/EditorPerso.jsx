@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import "@/app/styles/formulary.css";
 import { useClickOutside } from '@mantine/hooks';
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 function MyTextArea({onTextChange, introductionOfTheGame, setIntroductionOfTheGame}) {
   const [text, setText] = useState(introductionOfTheGame); // valeur initiale == introductionOfTheGame. Utile quand on fait réapparaitre ce composant
@@ -14,7 +15,7 @@ function MyTextArea({onTextChange, introductionOfTheGame, setIntroductionOfTheGa
   const refUseClickOutside = useClickOutside(() => setIsColorPickerVisible(false)); // Fermer palette de couleurs des lettres
   const refUseClickOutside2 = useClickOutside(() => setIsBackgroundColorPicker(false));
   const textAreaRef = useRef(null);
-
+  const { language } = useLanguage();
   
   useEffect(() => {
     setIntroductionOfTheGame(text); // Synchronisation de l'état  
@@ -1098,22 +1099,22 @@ const addBackgroundTag = (newColorBackgroundText) => {
   return (
     <div className='mt-4 p-2'>
       <p className='text-white text-center font-bold mb-3' style={{textShadow: "2px 2px 7px rgba(0, 0, 0, 1)",}}>
-          Dans cette présentation, vous choisissez la mise forme du texte
+        {language === "fr" ? "Dans cette présentation, vous choisissez la mise en forme du texte" : "In this presentation, you choose the text formatting."}  
       </p>
 
       <section className='py-2 '>
         <div className='boutonGris bouton' onClick={handleUndo}><img className='w-[80%]' src="/icons/undo-icon.png" alt="icon undo" /></div>
         <div className='boutonGris bouton' onClick={handleRedo}><img className='w-[80%]' src="/icons/redo-icon.png" alt="icon redo" /></div>
-        <div className='longBoutonGris bouton' onClick={handleH2Click} title='<h2>'>Titre</div>
-        <div className='longBoutonGris bouton' onClick={handleH3Click} title='<h3>'>Sous-titre</div>
-        <div className='longBoutonGris bouton' onClick={handleParagraphClick} title='<p>'>Paragraphe</div>
-        <div className='longBoutonGris bouton' onClick={insertLineBreak} title='<br/>'>Retour ligne</div>
+        <div className='longBoutonGris bouton' onClick={handleH2Click} title='<h2>'>{language === "fr" ? "Titre" : "Title"}</div>
+        <div className='longBoutonGris bouton' onClick={handleH3Click} title='<h3>'>{language === "fr" ? "Sous-titre" : "Sub-title"}</div>
+        <div className='longBoutonGris bouton' onClick={handleParagraphClick} title='<p>'>{language === "fr" ? "Paragraphe" : "Paragraph"}</div>
+        <div className='longBoutonGris bouton' onClick={insertLineBreak} title='<br/>'>{language === "fr" ? "Retour ligne" : "Line break"}</div>
          {/* Choisir la taille du texte ------------------------------------------------------- */}
          <select value={fontSize} className='p-1 border border-solid rounded' onChange={handleFontSizeChange} style={{ marginLeft: '10px' }}>
-          <option >Taille du texte</option>
+          <option >{language === "fr" ? "Taille du texte" : "Font size"}</option>
           <option value="0.5rem">x 0.5</option>
           <option value="0.75rem">x 0.75</option>
-          <option value="1rem">Par défaut</option>
+          <option value="1rem">{language === "fr" ? "Par défaut" : "By default"}</option>
           <option value="1.5rem"> x 1.5</option>
           <option value="1.75rem">x 1.75</option>
           <option value="2rem">x 2</option>

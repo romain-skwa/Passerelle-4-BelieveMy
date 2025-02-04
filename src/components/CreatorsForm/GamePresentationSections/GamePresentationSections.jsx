@@ -1,6 +1,6 @@
 // components/GamePresentationSections/GamePresentationSections.js
 
-import React from "react";
+import React, { useEffect } from "react";
 import EditorPerso from "@/components/CreatorsForm/GamePresentationInside/EditorPerso/EditorPerso";
 import Platform from "../GamePresentationInside/Platform/Platform";
 import Pegi from "@/components/CreatorsForm/GamePresentationInside/Pegi/Pegi";
@@ -9,6 +9,8 @@ import GenreOfGame from "../GamePresentationInside/GenreOfGame/GenreOfGame";
 import DatePicker from "react-datepicker";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import Image from "next/image";
+import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import DeleteAllImage from "@/components/DeleteAllImages/DeleteAllImages";
 
 const GamePresentationSections = ({
   nameOfGame,
@@ -50,6 +52,13 @@ const GamePresentationSections = ({
   genreOfGame,
   setGenreOfGame,
 }) => {
+      const { language, changeLanguage } = useLanguage();
+ // Afficher les valeurs des URL dans la console
+ console.log("URL Poster Cloudinary:", urlPosterCloudinary);
+ console.log("URL Image One:", urlImageOne);
+ console.log("URL Image Two:", urlImageTwo);
+ console.log("URL Image Three:", urlImageThree);
+ console.log("URL Background Cloudinary:", urlBackgroundCloudinary);
   return (
     <div className="neuphormismFormularyIntroductionGame w-full mb-4 rounded-lg">
       
@@ -73,7 +82,7 @@ const GamePresentationSections = ({
           className="text-white text-center font-bold mb-3"
           style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
         >
-          Cette introduction courte sera affichée en gras
+          {language == "fr" ? "Cette introduction courte sera affichée en gras" : "This short introduction will be displayed in bold."}
         </p>
         <textarea
           name="shortIntroduction"
@@ -103,7 +112,7 @@ const GamePresentationSections = ({
             className="text-white font-bold mr-2"
             style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
           >
-            Date de sortie :
+            {language === "fr" ? "Date de sortie :" : "Release date:"}            
           </p>
           <DatePicker
             className="pl-2 text-black"
@@ -130,7 +139,7 @@ const GamePresentationSections = ({
       {/**************** Image Affiche [encadré] ***************************** */}
 
         <div className="w-[95%] tablet:w-[260px] p-4 mt-4 grasFondBleu mx-auto rounded-2xl">
-          <p className="text-center">Choisissez l'affiche du jeu </p>
+          <p className="text-center">{language === "fr" ? "Choisissez l'affiche du jeu" : "Choose the game's poster."} </p>
           <ImageUpload
             urlCloudinary={urlPosterCloudinary}
             setter={setUrlPosterCloudinary}
@@ -157,13 +166,13 @@ const GamePresentationSections = ({
 
           <div className="w-[95%] tablet:w-[28%] p-2 mx-auto mt-4 grasFondBleu flex flex-col rounded-2xl">
             <p className="text-center ">
-              Choisissez l'image d'illustration n°1{" "}
+              {language === "fr" ? "Choisissez l'image d'illustration n°1" : "Choose illustration image #1."}{" "}
             </p>
             <ImageUpload
               urlCloudinary={urlImageOne}
               setter={setUrlImageOne}
-              buttonText="Télécharger l'image n°1"
-              tag={`Image d'illustration n°1 - ${nameOfGame}`}
+              buttonText={language === "fr" ? "Télécharger l'image n°1" : "Download image #1."}
+              tag={language === "fr" ? `Image d'illustration n°1 - ${nameOfGame}` : `Illustration image #1 - ${nameOfGame}`}
               nameOfGame={nameOfGame}
             />
             {urlImageOne && (
@@ -181,13 +190,13 @@ const GamePresentationSections = ({
         {/**************** Image d'illustration n°2 [encadré] ***************************** */}
           <div className="w-[95%] tablet:w-[28%] p-2 mx-auto mt-4 grasFondBleu flex flex-col rounded-2xl">
             <p className="text-center tablet:inline-block">
-              Choisissez l'image d'illustration n°2{" "}
+            {language === "fr" ? "Choisissez l'image d'illustration n°2" : "Choose illustration image #2."}{" "}
             </p>
             <ImageUpload
               urlCloudinary={urlImageTwo}
               setter={setUrlImageTwo}
-              buttonText="Télécharger l'image n°2"
-              tag={`Image d'illustration n°2 - ${nameOfGame}`}
+              buttonText={language === "fr" ? "Télécharger l'image n°2" : "Download image #2."}
+              tag={language === "fr" ? `Image d'illustration n°2 - ${nameOfGame}` : `Illustration image #2 - ${nameOfGame}`}
               nameOfGame={nameOfGame}
             />
             {urlImageTwo && (
@@ -205,13 +214,13 @@ const GamePresentationSections = ({
         {/**************** Image d'illustration n°3 [encadré] ***************************** */}
           <div className="w-[95%] tablet:w-[28%] p-2 mx-auto mt-4 grasFondBleu flex flex-col rounded-2xl">
             <p className="text-center tablet:inline-block">
-              Choisissez l'image d'illustration n°3{" "}
+            {language === "fr" ? "Choisissez l'image d'illustration n°3" : "Choose illustration image #3."}{" "}
             </p>
             <ImageUpload
               urlCloudinary={urlImageThree}
               setter={setUrlImageThree}
-              buttonText="Télécharger l'image n°3"
-              tag={`Image d'illustration n°3 - ${nameOfGame}`}
+              buttonText={language === "fr" ? "Télécharger l'image n°3" : "Download image #3."}
+              tag={language === "fr" ? `Image d'illustration n°3 - ${nameOfGame}` : `Illustration image #3 - ${nameOfGame}`}
               nameOfGame={nameOfGame}
             />
             {urlImageThree && (
@@ -230,23 +239,35 @@ const GamePresentationSections = ({
       {/**************** Arrière plan [encadré] ***************************** */}
         <div className="w-[90%] largeScreen:w-[100%] p-2 mx-auto mt-4 grasFondBleu">
           <p className="text-center ">
-            Choisissez une image pour l'arrière plan{" "}
+            {language === "fr" ? "Choisissez une image pour l'arrière-plan" : "Choose an image for the background."}{" "}
           </p>
           <ImageUpload
             urlCloudinary={urlBackgroundCloudinary}
             setter={setUrlBackgroundCloudinary}
-            buttonText="Télécharger Background"
+            buttonText={language === "fr" ? "Télécharger Background" : "Download Background."}
             tag="Background"
             nameOfGame={nameOfGame}
           />
-        </div>
+        </div> 
       
+        <DeleteAllImage 
+          urlPosterCloudinary={urlPosterCloudinary}
+          urlImageOne={urlImageOne}
+          urlImageTwo={urlImageTwo}
+          urlImageThree={urlImageThree}
+          urlBackgroundCloudinary={urlBackgroundCloudinary}
+          setUrlPosterCloudinary={setUrlPosterCloudinary}
+          setUrlImageOne={setUrlImageOne}
+          setUrlImageTwo={setUrlImageTwo}
+          setUrlImageThree={setUrlImageThree}
+          setUrlBackgroundCloudinary={setUrlBackgroundCloudinary}
+        />
       <section className="flex flex-col items-center">
         {/**************** Lien vidéo Youtube [encadré] ***************************** */}
           <input
             type="url"
             name="videoLink"
-            placeholder="Lien YouTube de la vidéo"
+            placeholder={language === "fr" ? "Lien YouTube de la vidéo" : "YouTube link of the video."}
             className="neuphormismUndergroung inputLink"
             value={videoLink}
             onChange={(e) => setVideoLink(e.target.value)}
@@ -256,7 +277,7 @@ const GamePresentationSections = ({
           <input
             type="url"
             name="webSiteOfThisGame"
-            placeholder="Lien vers le site officiel du jeu"
+            placeholder={language === "fr" ? "Lien vers le site officiel du jeu" : "Link to the official game website."}
             className="neuphormismUndergroung inputLink mx-2 tablet:mx-4"
             value={webSiteOfThisGame}
             onChange={(e) => setWebSiteOfThisGame(e.target.value)}
@@ -266,7 +287,7 @@ const GamePresentationSections = ({
           <input
             type="url"
             name="webSiteOfThisCreator"
-            placeholder="Lien vers le site officiel du/des créateur(s)"
+            placeholder={language === "fr" ? "Lien vers le site officiel du/des créateur(s)" : "Link to the official website of the creator(s)."}
             className="neuphormismUndergroung inputLink"
             value={webSiteOfThisCreator}
             onChange={(e) => setWebSiteOfThisCreator(e.target.value)}
@@ -276,7 +297,7 @@ const GamePresentationSections = ({
           <input
             type="url"
             name="steamLink"
-            placeholder="Lien vers le site Steam"
+            placeholder={language === "fr" ? "Lien vers le site Steam" : "Link to the Steam page."}
             className="neuphormismUndergroung inputLink"
             value={steamLink}
             onChange={(e) => setSteamLink(e.target.value)}
@@ -286,7 +307,7 @@ const GamePresentationSections = ({
           <input
             type="url"
             name="epicGamesLink"
-            placeholder="Lien vers le site Epic Games"
+            placeholder={language === "fr" ? "Lien vers le site Epic Games" : "Link to the Epic Games site."}
             className="neuphormismUndergroung inputLink"
             value={epicGamesLink}
             onChange={(e) => setEpicGamesLink(e.target.value)}
@@ -301,5 +322,5 @@ const GamePresentationSections = ({
     </div>
   );
 };
-
+ 
 export default GamePresentationSections;
