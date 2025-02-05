@@ -6,7 +6,8 @@ import { MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { toast } from "react-toastify";
-import { sendEmail } from "@/nodemailer";
+import mailerService from "@/utils/mailer";
+import { Resend } from "resend";
 
 export const newCreatorData = async (
   username,
@@ -88,7 +89,16 @@ export const newCreatorData = async (
 
     // 5 -- Envoi de l'email de confirmation
     try {
-      await sendEmail(email, 'Bienvenue sur notre site !', `Bonjour ${username}, merci de vous être inscrit !`);
+      //await sendEmail(email, 'Bienvenue sur notre site !', `Bonjour ${username}, merci de vous être inscrit !`);
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
+        const { data, error } = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: [email],
+          subject: 'Hello world',
+          text: "bienvenue",
+        });
+    
       console.log('Le courriel a bien été envoyé');
     } catch (error) {
       console.error('Erreur lors de l\'envoi de l\'email:', error);

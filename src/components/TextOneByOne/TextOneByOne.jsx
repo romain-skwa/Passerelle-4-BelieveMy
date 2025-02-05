@@ -14,12 +14,12 @@ export default function TextOneByOne() {
   const { language } = useLanguage();
   const [index, setIndex] = useState(0);
   const [phraseAAficher, setPhraseAAficher] = useState("");
-/*
+
   const phrase = language === "fr" 
     ? "Présentez votre parcours. Évoquez vos jeux. C'est à vous..." 
     : "Present your background. Mention your games. It's your turn...";
-*/
-const phrase = "Présentez votre parcours. Évoquez vos jeux. C'est à vous...";
+
+//const phrase = "Présentez votre parcours. Évoquez vos jeux. C'est à vous...";
   useEffect(() => {
     if((index > (phrase.length - 1)) || (!phrase)) {
         return;

@@ -145,6 +145,7 @@ const ApercuFormulaire = ({
                   title={pegiImages[selectedAgePegi].title}
                   width={50}
                   height={50}
+                  className="w-[50px] h-[50px]"
                   unoptimized={true}
                 />
               </div>
@@ -166,6 +167,7 @@ const ApercuFormulaire = ({
                     title={pegiData.title}
                     width={50}
                     height={50}
+                    className="w-[50px] h-[50px]"
                     unoptimized={true}
                   />
                 ) : null; // Si aucune image n'est trouvée, ne rien afficher
@@ -312,7 +314,7 @@ const ApercuFormulaire = ({
                   src={iconeEpicGames}
                   width={50}
                   height={50}
-                  className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300"
+                  className="w-[50px] mt-[2px] h-[50px] hover:scale-105 transition duration-300"
                   alt="Steam"
                   unoptimized={true}
                 />

@@ -264,6 +264,7 @@ const introduceYourself = () => {
                   <Image
                     src={logoDiscord}
                     alt="Logo Discord"
+                    width={36} height={36}
                     className="w-9 h-9 mr-3 bg-black bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />
@@ -282,6 +283,7 @@ const introduceYourself = () => {
                   <Image
                     src={logoTwitch}
                     alt="Logo Twitch"
+                    width={32} height={32}
                     className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />
@@ -300,6 +302,7 @@ const introduceYourself = () => {
                   <Image
                     src={logoItchi}
                     alt="Logo Itchi.io"
+                    width={32} height={32}
                     className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />
@@ -318,6 +321,7 @@ const introduceYourself = () => {
                   <Image
                     src={logoTwitter}
                     alt="Logo Twitter"
+                    width={32} height={32}
                     className="w-8 h-8 mr-3 bg-white bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />

@@ -37,10 +37,10 @@ import { useLanguage } from "@/components/LanguageContext/LanguageContext";
 
 export default function IntroductionGame({ params: { introduction } }) {
   // Variable
-  const pathname = usePathname(); // Récupérer le chemin actuel
-  const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire
   const nameofgame = introduction;
   const { language } = useLanguage();
+  const pathname = usePathname(); // Récupérer le chemin actuel pour le partage
+  const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire pour le partage
 
   // State
   const { data: session } = useSession();
@@ -315,6 +315,7 @@ export default function IntroductionGame({ params: { introduction } }) {
                   title={pegiImage.title}
                   width={50}
                   height={50}
+                  className="w-[50px] h-[50px]"
                   unoptimized={true}
                 />
               )}
@@ -501,7 +502,7 @@ export default function IntroductionGame({ params: { introduction } }) {
                     src={iconeEpicGames}
                     width={40}
                     height={40}
-                    className="w-[40px] mt-[2px] h-[45px] hover:scale-105 transition duration-300"
+                    className="w-[40px] mt-[2px] h-[40px] hover:scale-105 transition duration-300"
                     alt="Steam"
                     unoptimized={true}
                   />

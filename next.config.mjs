@@ -11,8 +11,13 @@ export default () => {
         NEXT_PUBLIC_UPLOAD_PRESET: "ml_default",
         NEXT_PUBLIC_CLOUDINARY_API_KEY: "865282161267678",
         NEXT_PUBLIC_CLOUDINARY_API_SECRET: "_eVZpxeOYr_uTs-MZQufmaok8Y4",
-        MAIL_USERNAME: "believeromain@gmail.com",
+        MAIL_USERNAME: "believeromain@demomailtrap.com",
         MAIL_PASSWORD: "25gjwE34G4rZmB",
+        NODEMAILER_SMTP_HOST: "live.smtp.mailtrap.io",
+        NODEMAILER_SMTP_PORT: "587",
+        NODEMAILER_SMTP_USER: "api",
+        NODEMAILER_SMTP_PASSWORD: "1d2c0aff47fa79e003707097459b36a1",
+        RESEND_API_KEY: "re_KtKBeLdf_6AJwBAm5d7NdFqGnjdv99Hay",
       },
       images: {
         remotePatterns: [

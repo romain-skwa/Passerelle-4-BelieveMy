@@ -29,7 +29,6 @@ export default async function Index({ searchParams }) {
 
   return (
     <GeneralLayout>
-      <ToastNotification error={error} />
       {error && <div className="error-message">{error}</div>}
 
       {introductionsImages.length === 0 ? (
