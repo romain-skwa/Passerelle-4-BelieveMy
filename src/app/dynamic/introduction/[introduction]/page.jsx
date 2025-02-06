@@ -9,7 +9,7 @@ import Link from "next/link";
 import he from "he";
 import "../../../styles/formIntroYourself.css";
 import Image from "next/image";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import Share from "@/components/CreatorsForm/IntroGame/Share/Share";
 import logoPegi3 from "/public/logo/pegi_3.jpg";
@@ -26,14 +26,14 @@ import logoPegiLangageGrossier from "/public/logo/pegi_langageGrossier.jpg";
 import logoPegiPeur from "/public/logo/pegi_peur.jpg";
 import logoPegiDrogue from "/public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "/public/logo/pegi_discrimination.jpg";
-import Loading from "@/components/Loading/Loading";
+import Loading from "@/components/ForLayout/Loading/Loading";
 import iconeSteam from "/public/icons/steam-icon.png";
 import iconeEpicGames from "/public/icons/epicGamesIcon.png";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/multiOnline2.jpg";
 import UpdateIntro from "@/components/CreatorsForm/IntroGame/UpdateIntro/UpdateIntro";
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 export default function IntroductionGame({ params: { introduction } }) {
   // Variable

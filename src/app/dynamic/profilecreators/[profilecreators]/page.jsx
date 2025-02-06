@@ -1,11 +1,11 @@
 "use client";
 // to show the introduction of a creator
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import UserProfileSection from "@/components/UserProfileSection/UserProfileSection"; 
-import Loading from "@/components/Loading/Loading";
+import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
+import Loading from "@/components/ForLayout/Loading/Loading";
 
 export default function Profile() {
   // Variable
@@ -13,7 +13,8 @@ export default function Profile() {
   const pseudo = params.profilecreators.slice(3); // Important de mettre le nom du dossier [profilecreators]
 
   // State
-  const [user, setUser ] = useState({}); console.log(user);
+  const [user, setUser] = useState({});
+  console.log(user);
   const [loading, setLoading] = useState(true); // État pour le chargement
 
   useEffect(() => {
@@ -45,10 +46,12 @@ export default function Profile() {
       if (!response.ok) {
         toast.error("Une erreur est intervenue");
       } else {
-        setUser (data.user);
+        setUser(data.user);
       }
     } catch (error) {
-      toast.error("Une erreur est survenue lors de la récupération des données.");
+      toast.error(
+        "Une erreur est survenue lors de la récupération des données."
+      );
     } finally {
       setLoading(false); // Fin du chargement
     }
@@ -60,7 +63,7 @@ export default function Profile() {
         {loading ? (
           <Loading /> // Affiche le composant Loading pendant le chargement
         ) : (
-           <UserProfileSection user={user} />
+          <UserProfileSection user={user} />
         )}
       </section>
     </GeneralLayout>

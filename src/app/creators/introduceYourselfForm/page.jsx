@@ -4,17 +4,17 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import updateBioCreator from "@/actions/updateBioCreator";
 import formulary from "../../styles/formulary.css";
 import logoDiscord from "../../../../public/logo/discord-logo.png";
 import logoTwitch from "../../../../public/logo/twitch_logo.png";
 import logoItchi from "../../../../public/logo/itch-io-icon.png";
 import logoTwitter from "../../../../public/logo/x__twitter-logo.png";
-import Loading from "@/components/Loading/Loading";
+import Loading from "@/components/ForLayout/Loading/Loading";
 import "../../styles/formIntroYourself.css";
 import TextOneByOne from "@/components/TextOneByOne/TextOneByOne";
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState("");
@@ -46,19 +46,16 @@ const introduceYourself = () => {
         setLoading(true);
         // Get data about user
         const response = await fetch("/api/getAllUserDataSession", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          // Si nécessaire, ajoutez le corps de la requête ici
-          body: JSON.stringify({
-            /* données si besoin */
-          }),
+          // There is no body with method GET
         });
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || "Une erreur est survenue");
+          throw new Error(errorData.error || "Utilisateur non authentifié");
         }
 
         const data = await response.json();
@@ -76,22 +73,51 @@ const introduceYourself = () => {
         if (data.user.bio) {
           setBio(data.user.bio);
         }
-        if (data.user.nameOtherGames1) {  setNameOtherGames1(data.user.nameOtherGames1);}
-        if (data.user.linkOtherGame1) { setLinkOtherGame1(data.user.linkOtherGame1); }
-        if (data.user.nameOtherGames2) { setNameOtherGames2(data.user.nameOtherGames2); }
-        if (data.user.linkOtherGame2) { setLinkOtherGame2(data.user.linkOtherGame2); }
-        if (data.user.nameOtherGames3) { setNameOtherGames3(data.user.nameOtherGames3); }
-        if (data.user.linkOtherGame3) { setLinkOtherGame3(data.user.linkOtherGame3); }
-        if (data.user.nameOtherGames4) { setNameOtherGames4(data.user.nameOtherGames4); }
-        if (data.user.linkOtherGame4) { setLinkOtherGame4(data.user.linkOtherGame4); }
-        if (data.user.nameOtherGames5) { setNameOtherGames5(data.user.nameOtherGames5); }
-        if (data.user.linkOtherGame5) { setLinkOtherGame5(data.user.linkOtherGame5); }
-        if (data.user.websiteUrl) { setWebsiteUrl(data.user.websiteUrl); }
-        if (data.user.discordUrl) { setDiscordUrl(data.user.discordUrl); }
-        if (data.user.twitchUrl) { setTwitchUrl(data.user.twitchUrl); }
-        if (data.user.itchIoUrl) { setItchIoUrl(data.user.itchIoUrl); }
-        if (data.user.twitterUrl) { setTwitterUrl(data.user.twitterUrl); }
-        
+        if (data.user.nameOtherGames1) {
+          setNameOtherGames1(data.user.nameOtherGames1);
+        }
+        if (data.user.linkOtherGame1) {
+          setLinkOtherGame1(data.user.linkOtherGame1);
+        }
+        if (data.user.nameOtherGames2) {
+          setNameOtherGames2(data.user.nameOtherGames2);
+        }
+        if (data.user.linkOtherGame2) {
+          setLinkOtherGame2(data.user.linkOtherGame2);
+        }
+        if (data.user.nameOtherGames3) {
+          setNameOtherGames3(data.user.nameOtherGames3);
+        }
+        if (data.user.linkOtherGame3) {
+          setLinkOtherGame3(data.user.linkOtherGame3);
+        }
+        if (data.user.nameOtherGames4) {
+          setNameOtherGames4(data.user.nameOtherGames4);
+        }
+        if (data.user.linkOtherGame4) {
+          setLinkOtherGame4(data.user.linkOtherGame4);
+        }
+        if (data.user.nameOtherGames5) {
+          setNameOtherGames5(data.user.nameOtherGames5);
+        }
+        if (data.user.linkOtherGame5) {
+          setLinkOtherGame5(data.user.linkOtherGame5);
+        }
+        if (data.user.websiteUrl) {
+          setWebsiteUrl(data.user.websiteUrl);
+        }
+        if (data.user.discordUrl) {
+          setDiscordUrl(data.user.discordUrl);
+        }
+        if (data.user.twitchUrl) {
+          setTwitchUrl(data.user.twitchUrl);
+        }
+        if (data.user.itchIoUrl) {
+          setItchIoUrl(data.user.itchIoUrl);
+        }
+        if (data.user.twitterUrl) {
+          setTwitterUrl(data.user.twitterUrl);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -129,29 +155,40 @@ const introduceYourself = () => {
         linkOtherGame5,
         isDarkMode
       );
-      toast.success(language == "fr" ? "Informations mises à jour avec succès !" : "Data updated");
+      toast.success(
+        language == "fr"
+          ? "Informations mises à jour avec succès !"
+          : "Data updated"
+      );
       setLoading(false);
     } catch (error) {
       console.error(`error dans la page introduceYourself`, error); // Affichez l'erreur dans la console
-      toast.error(language == "fr" ? "Erreur lors de la mise à jour des informations" : "Error updating the information.");    }
+      toast.error(
+        language == "fr"
+          ? "Erreur lors de la mise à jour des informations"
+          : "Error updating the information."
+      );
+    }
   };
   /********************************************************************************************** */
   return (
     <GeneralLayout>
-      {loading ? ( 
+      {loading ? (
         <Loading /> // Affiche le composant Loading pendant le chargement
       ) : (
         <div className="w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center">
-          
           <form onSubmit={handleSubmit}>
-            <section className="sectionTextareaIntroYourself">
-              <TextOneByOne />
+            <section className="sectionTextareaIntroYourself textareaIntroYourself shadowPurple h-20">
+              <TextOneByOne 
+                frenchPhrase={"Présentez votre parcours. Évoquez vos jeux. C'est à vous..."} 
+                englishPhrase={"Present your background. Mention your games. It's your turn..."}
+                />
               <textarea
                 value={bio}
                 onChange={(event) => setBio(event.target.value)}
                 className="textareaIntroYourself w-[100%]"
                 placeholder="Biographie..."
-                />
+              />
             </section>
             <br />
             <div className="linksOtherGames">
@@ -160,13 +197,21 @@ const introduceYourself = () => {
                   type="text"
                   value={nameOtherGames1}
                   onChange={(event) => setNameOtherGames1(event.target.value)}
-                  placeholder= {language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°1" : "Please enter the name of your previous game here n°1"}
+                  placeholder={
+                    language == "fr"
+                      ? "Inscrivez ici le nom de votre jeu précédent n°1"
+                      : "Please enter the name of your previous game here n°1"
+                  }
                 />
                 <input
                   type="url"
                   value={linkOtherGame1}
                   onChange={(event) => setLinkOtherGame1(event.target.value)}
-                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                  placeholder={
+                    language == "fr"
+                      ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+                      : "If this game is already listed elsewhere, please paste the link here."
+                  }
                 />
               </div>
 
@@ -175,13 +220,21 @@ const introduceYourself = () => {
                   type="text"
                   value={nameOtherGames2}
                   onChange={(event) => setNameOtherGames2(event.target.value)}
-                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°2" : "Please enter the name of your previous game here n°2"}
+                  placeholder={
+                    language == "fr"
+                      ? "Inscrivez ici le nom de votre jeu précédent n°2"
+                      : "Please enter the name of your previous game here n°2"
+                  }
                 />
                 <input
                   type="url"
                   value={linkOtherGame2}
                   onChange={(event) => setLinkOtherGame2(event.target.value)}
-                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                  placeholder={
+                    language == "fr"
+                      ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+                      : "If this game is already listed elsewhere, please paste the link here."
+                  }
                 />
               </div>
 
@@ -190,13 +243,21 @@ const introduceYourself = () => {
                   type="text"
                   value={nameOtherGames3}
                   onChange={(event) => setNameOtherGames3(event.target.value)}
-                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°3" : "Please enter the name of your previous game here n°3"}
+                  placeholder={
+                    language == "fr"
+                      ? "Inscrivez ici le nom de votre jeu précédent n°3"
+                      : "Please enter the name of your previous game here n°3"
+                  }
                 />
                 <input
                   type="url"
                   value={linkOtherGame3}
                   onChange={(event) => setLinkOtherGame3(event.target.value)}
-                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                  placeholder={
+                    language == "fr"
+                      ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+                      : "If this game is already listed elsewhere, please paste the link here."
+                  }
                 />
               </div>
 
@@ -205,13 +266,21 @@ const introduceYourself = () => {
                   type="text"
                   value={nameOtherGames4}
                   onChange={(event) => setNameOtherGames4(event.target.value)}
-                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°4 :" : "Please enter the name of your previous game here n°4"}
+                  placeholder={
+                    language == "fr"
+                      ? "Inscrivez ici le nom de votre jeu précédent n°4 :"
+                      : "Please enter the name of your previous game here n°4"
+                  }
                 />
                 <input
                   type="url"
                   value={linkOtherGame4}
                   onChange={(event) => setLinkOtherGame4(event.target.value)}
-                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                  placeholder={
+                    language == "fr"
+                      ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+                      : "If this game is already listed elsewhere, please paste the link here."
+                  }
                 />
               </div>
 
@@ -220,13 +289,21 @@ const introduceYourself = () => {
                   type="text"
                   value={nameOtherGames5}
                   onChange={(event) => setNameOtherGames5(event.target.value)}
-                  placeholder={language == "fr" ? "Inscrivez ici le nom de votre jeu précédent n°5 :" : "Please enter the name of your previous game here n°5"}
+                  placeholder={
+                    language == "fr"
+                      ? "Inscrivez ici le nom de votre jeu précédent n°5 :"
+                      : "Please enter the name of your previous game here n°5"
+                  }
                 />
                 <input
                   type="url"
                   value={linkOtherGame5}
                   onChange={(event) => setLinkOtherGame5(event.target.value)}
-                  placeholder={language == "fr" ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien" : "If this game is already listed elsewhere, please paste the link here."}
+                  placeholder={
+                    language == "fr"
+                      ? "Si ce jeu est déjà référencé ailleurs , collez ici le lien"
+                      : "If this game is already listed elsewhere, please paste the link here."
+                  }
                 />
               </div>
             </div>
@@ -240,7 +317,9 @@ const introduceYourself = () => {
                   onChange={(event) => setLogoUser(event.target.files[0])}
                   accept="image/*"
                 />
-                {language == "fr" ? "Télécharger votre logo" : "Upload your logo"}                
+                {language == "fr"
+                  ? "Télécharger votre logo"
+                  : "Upload your logo"}
               </label>
             </div>
 
@@ -251,7 +330,11 @@ const introduceYourself = () => {
               value={websiteUrl}
               onChange={(event) => setWebsiteUrl(event.target.value)}
               className="w-[95%] laptop:w-[60%] p-2 rounded-xl transparentWhite"
-              placeholder={language == "fr" ? "URL de votre site web :" : "URL of your website"} 
+              placeholder={
+                language == "fr"
+                  ? "URL de votre site web :"
+                  : "URL of your website"
+              }
             />
             <br />
             <br />
@@ -264,7 +347,8 @@ const introduceYourself = () => {
                   <Image
                     src={logoDiscord}
                     alt="Logo Discord"
-                    width={36} height={36}
+                    width={36}
+                    height={36}
                     className="w-9 h-9 mr-3 bg-black bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />
@@ -274,7 +358,9 @@ const introduceYourself = () => {
                   value={discordUrl}
                   onChange={(event) => setDiscordUrl(event.target.value)}
                   className="transparentWhite"
-                  placeholder={language == "fr" ? "Lien Discord :" : "Link Discord"} 
+                  placeholder={
+                    language == "fr" ? "Lien Discord :" : "Link Discord"
+                  }
                 />
               </div>
               <br />
@@ -283,7 +369,8 @@ const introduceYourself = () => {
                   <Image
                     src={logoTwitch}
                     alt="Logo Twitch"
-                    width={32} height={32}
+                    width={32}
+                    height={32}
                     className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />
@@ -293,7 +380,9 @@ const introduceYourself = () => {
                   value={twitchUrl}
                   onChange={(event) => setTwitchUrl(event.target.value)}
                   className="transparentWhite"
-                  placeholder={language == "fr" ? "Lien Twitch :" : "Link Twitch"}
+                  placeholder={
+                    language == "fr" ? "Lien Twitch :" : "Link Twitch"
+                  }
                 />
               </div>
               <br />
@@ -302,7 +391,8 @@ const introduceYourself = () => {
                   <Image
                     src={logoItchi}
                     alt="Logo Itchi.io"
-                    width={32} height={32}
+                    width={32}
+                    height={32}
                     className="w-8 h-8 mr-3 bg-black bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />
@@ -312,7 +402,9 @@ const introduceYourself = () => {
                   value={itchIoUrl}
                   onChange={(event) => setItchIoUrl(event.target.value)}
                   className="transparentWhite"
-                  placeholder={language == "fr" ? "Lien itch.io :" : "Link itch.io"}
+                  placeholder={
+                    language == "fr" ? "Lien itch.io :" : "Link itch.io"
+                  }
                 />
               </div>
               <br />
@@ -321,7 +413,8 @@ const introduceYourself = () => {
                   <Image
                     src={logoTwitter}
                     alt="Logo Twitter"
-                    width={32} height={32}
+                    width={32}
+                    height={32}
                     className="w-8 h-8 mr-3 bg-white bg-opacity-50 rounded-md p-1"
                     unoptimized={true}
                   />
@@ -331,13 +424,19 @@ const introduceYourself = () => {
                   value={twitterUrl}
                   onChange={(event) => setTwitterUrl(event.target.value)}
                   className="transparentWhite"
-                  placeholder={language == "fr" ? "Lien X Twitter :" : "Link X Twitter"}
+                  placeholder={
+                    language == "fr" ? "Lien X Twitter :" : "Link X Twitter"
+                  }
                 />
               </div>
             </div>
 
             <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
-              <span>{language == "fr" ? "Mode Sombre : Texte blanc sur fond noir" : "Dark mode : White text on black background"} </span>
+              <span>
+                {language == "fr"
+                  ? "Mode Sombre : Texte blanc sur fond noir"
+                  : "Dark mode : White text on black background"}{" "}
+              </span>
               <div className="ml-4">
                 <label>
                   <input
@@ -366,13 +465,13 @@ const introduceYourself = () => {
               type="submit"
               className="border block bg-green-500 text-white mx-auto p-2 rounded-xl"
             >
-              {language == "fr" ? "Mettre à jour" : "Update"} 
+              {language == "fr" ? "Mettre à jour" : "Update"}
             </button>
           </form>
         </div>
       )}
     </GeneralLayout>
   );
-}; 
+};
 
 export default introduceYourself;

@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import ButtonForm from "@/components/Button/ButtonForm";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -29,7 +29,9 @@ export default function ResetPassword() {
         body: JSON.stringify({ email }),
       });
 
-      toast.success("Un e-mail de réinitialisation a été envoyé à votre adresse");
+      toast.success(
+        "Un e-mail de réinitialisation a été envoyé à votre adresse"
+      );
     } catch (error) {
       toast.error("Erreur lors de l'envoi de l'e-mail");
     }
@@ -53,7 +55,9 @@ export default function ResetPassword() {
         </div>
 
         <div className="flex justify-center">
-          <ButtonForm type="submit">Envoyer le lien de réinitialisation</ButtonForm>
+          <ButtonForm type="submit">
+            Envoyer le lien de réinitialisation
+          </ButtonForm>
         </div>
       </form>
     </GeneralLayout>

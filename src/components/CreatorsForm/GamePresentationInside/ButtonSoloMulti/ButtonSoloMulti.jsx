@@ -3,21 +3,21 @@ import "@/app/styles/formulary.css";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
   // Liste des traductions
   const translations = {
     fr: {
-      "Solo": "Solo",
+      Solo: "Solo",
       "Multijoueur local": "Multijoueur local",
-      "Multijoueur en ligne": "Multijoueur en ligne"
+      "Multijoueur en ligne": "Multijoueur en ligne",
     },
     en: {
-      "Solo": "Solo",
+      Solo: "Solo",
       "Multijoueur local": "Local Multiplayer",
-      "Multijoueur en ligne": "Online Multiplayer"
-    }
+      "Multijoueur en ligne": "Online Multiplayer",
+    },
   };
 
   // Récupérer la langue actuelle
@@ -45,11 +45,13 @@ const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
   return (
     <div className="buttonSoloMulti-container">
       {SoloMultis.map(({ genre, icon }) => (
-        <div 
+        <div
           key={genre}
           onClick={() => handleSoloMultiClick(genre)}
           className={`buttonSoloMulti ${
-            SoloMulti.includes(genre) ? "text-white bg-green-800" : "text-black bg-white"
+            SoloMulti.includes(genre)
+              ? "text-white bg-green-800"
+              : "text-black bg-white"
           }`}
           style={{
             display: "flex",
@@ -58,7 +60,10 @@ const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {
             cursor: "pointer",
           }}
         >
-          <span style={{ marginRight: "10px" }}>{translations[language][genre]}</span> {/* Texte traduit */}
+          <span style={{ marginRight: "10px" }}>
+            {translations[language][genre]}
+          </span>{" "}
+          {/* Texte traduit */}
           <img
             src={icon.src}
             alt={genre}

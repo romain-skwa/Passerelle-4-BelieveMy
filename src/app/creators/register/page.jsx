@@ -5,13 +5,16 @@ import "../../styles/components.css";
 import Link from "next/link";
 import { newCreatorData } from "@/actions/newCreatorData";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation"; // Toujours utiliser ce router quand on choisit le router App
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 export default function Register() {
   // Variable
   const router = useRouter();
+  const { language } = useLanguage();
 
   // Function
   const registerNewCreator = async (formData) => {
@@ -54,19 +57,27 @@ export default function Register() {
     }
 
     try {
-      newCreatorData(username, email, password, passwordconfirm);
+      // Creation of new user
+      const result = await newCreatorData(username, email, password, passwordconfirm); // Assurez-vous d'attendre le résultat
+
+      // Success
+      if (result.success) {
+        toast.success(
+          language == "fr"
+            ? "Un courriel vous a été envoyé"
+            : "An email has been sent to you."
+        );
+        router.push("/creators/login");
+      } else {
+        toast.error(result.message); // Affiche le message d'erreur
+      }
+      // Redirect
     } catch (error) {
       return toast.error(error.message);
     }
-
-    // Success
-    toast.success("Votre compte a bien été créé");
-
-    // Redirect
-    router.push("/creators/login");
   };
-  return (    
-    <GeneralLayout>    
+  return (
+    <GeneralLayout>
       <section className="w-[30vw] mx-auto my-4 py-4 flex-col bg-white/10 border-2 rounded-2xl">
         <div className="text-center mx-auto w-[180px] p-3 bg-black/70 text-white text-2xl rounded-2xl border-2 border-black">
           INSCRIPTION

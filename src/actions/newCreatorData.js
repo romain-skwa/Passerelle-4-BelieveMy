@@ -5,10 +5,8 @@
 import { MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import { checkEmail } from "@/utils/check-email-syntax";
-import { toast } from "react-toastify";
-import mailerService from "@/utils/mailer";
 import { Resend } from "resend";
-
+ 
 export const newCreatorData = async (
   username,
   email,
@@ -57,7 +55,8 @@ export const newCreatorData = async (
     // If the email is already used
     if (user.length !== 0) {
       await client.close();
-      throw new Error("Cet email est déjà utilisé");
+      console.log("Cet email est déjà utilisé");
+      return { success: false, message: "Cet email est déjà utilisé" };
     }
 
     // 2 -- Verify if this pseudo is already used
@@ -70,7 +69,8 @@ export const newCreatorData = async (
     // If the pseudo is already used
     if (pseudo.length !== 0) {
       await client.close();
-      throw new Error("Ce pseudo est déjà utilisé");
+      console.log("Ce pseudo est déjà utilisé");
+      return { success: false, message: "Ce pseudo est déjà utilisé" };
     }
 
     // 3 -- Encrypt the password
@@ -91,15 +91,22 @@ export const newCreatorData = async (
     try {
       //await sendEmail(email, 'Bienvenue sur notre site !', `Bonjour ${username}, merci de vous être inscrit !`);
       const resend = new Resend(process.env.RESEND_API_KEY);
+      const decodedUsername = decodeURIComponent(username);
 
         const { data, error } = await resend.emails.send({
           from: 'Acme <onboarding@resend.dev>',
           to: [email],
           subject: 'Hello world',
-          text: "bienvenue",
+          html: `<p style="text-align: center;">This is my game.com</p> <p>Bienvenue <u>${decodedUsername}</u>.</p> <p> Nous sommes heureux de vous accueillir parmi nous. </p> `,
         });
+
+        if (error) {
+          console.error({ error });    
+          return { success: false, message: 'Erreur lors de l\'envoi de l\'email.' };    
+        }    
     
-      console.log('Le courriel a bien été envoyé');
+        return { success: true, message: 'Un courriel vous a été envoyé.' }; // Retourne un message de succès    
+
     } catch (error) {
       console.error('Erreur lors de l\'envoi de l\'email:', error);
       console.log('Erreur lors de l\'envoi de l\'email:', error);

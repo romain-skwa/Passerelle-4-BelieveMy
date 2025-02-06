@@ -2,11 +2,11 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Loading from "@/components/Loading/Loading";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import Loading from "@/components/ForLayout/Loading/Loading";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { toast } from "react-toastify";
 import Link from "next/link";
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import "@/app/styles/formIntroYourself.css";
 import Image from "next/image";
 

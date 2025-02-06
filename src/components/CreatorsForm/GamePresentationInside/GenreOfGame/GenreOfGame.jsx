@@ -1,20 +1,20 @@
 // GenreOfGame.js
-import React from 'react';
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import React from "react";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const genres = [
-  { id: 'Action', label: 'Action' },
-  { id: 'Aventure', label: 'Aventure' },
-  { id: 'Combat', label: 'Combat' },
-  { id: 'Plate-forme', label: 'Plate-forme' },
-  { id: 'RPG', label: 'RPG' },
-  { id: 'Simulation', label: 'Simulation' },
-  { id: 'Strategie', label: 'Stratégie' },
-  { id: 'Sport', label: 'Sport' },
-  { id: 'Course', label: 'Course' },
-  { id: 'Horreur', label: 'Horreur' },
-  { id: 'Multijoueur', label: 'Multijoueur' },
-  { id: 'Independant', label: 'Indépendant' },
+  { id: "Action", label: "Action" },
+  { id: "Aventure", label: "Aventure" },
+  { id: "Combat", label: "Combat" },
+  { id: "Plate-forme", label: "Plate-forme" },
+  { id: "RPG", label: "RPG" },
+  { id: "Simulation", label: "Simulation" },
+  { id: "Strategie", label: "Stratégie" },
+  { id: "Sport", label: "Sport" },
+  { id: "Course", label: "Course" },
+  { id: "Horreur", label: "Horreur" },
+  { id: "Multijoueur", label: "Multijoueur" },
+  { id: "Independant", label: "Indépendant" },
 ];
 
 const GenreOfGame = ({ selectedGenres, setSelectedGenres }) => {
@@ -25,20 +25,22 @@ const GenreOfGame = ({ selectedGenres, setSelectedGenres }) => {
         // Si le genre est déjà sélectionné, le retirer
         return prevSelected.filter((g) => g !== genre);
       } else {
-        // Sinon, l'ajouter 
+        // Sinon, l'ajouter
         return [...prevSelected, genre];
       }
     });
   };
 
-const { language } = useLanguage();
+  const { language } = useLanguage();
 
   return (
     <div className="my-4">
       <p className="text-white font-bold mb-2 text-center">
-        {language === "fr" ? "Sélectionnez une ou plusieurs catégories :" : "Select one or more categories:"}
+        {language === "fr"
+          ? "Sélectionnez une ou plusieurs catégories :"
+          : "Select one or more categories:"}
       </p>
-      <div className='w-[200px] mx-auto'>
+      <div className="w-[200px] mx-auto">
         {genres.map((genre) => (
           <label key={genre.id} className="block">
             <input

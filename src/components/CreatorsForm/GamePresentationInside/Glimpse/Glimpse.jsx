@@ -22,7 +22,7 @@ import iconeEpicGames from "/public/icons/epicGamesIcon.png";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const pegiImages = {
   3: { src: logoPegi3, title: "Pegi 3" },
@@ -101,7 +101,11 @@ const ApercuFormulaire = ({
           isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
         } `}
       >
-        <h3>{language === "fr" ? "Aperçu de la présentation de votre jeu :" : "Preview of your game's presentation:"}</h3>
+        <h3>
+          {language === "fr"
+            ? "Aperçu de la présentation de votre jeu :"
+            : "Preview of your game's presentation:"}
+        </h3>
 
         <div className="flex justify-center">
           <div className={`p-4 min-h-[50px] text-3xl font-bold text-center`}>
@@ -325,7 +329,7 @@ const ApercuFormulaire = ({
 
         {/******************* Date de sortie du jeu **********************/}
         <div className={`p-4 pr-6 min-h-[50px] text-right`}>
-        {language === "fr" ? "Sortie le " : "Release "} {formattedDate}.
+          {language === "fr" ? "Sortie le " : "Release "} {formattedDate}.
         </div>
         {/************** Les images d'illustration **********************/}
         <section className="flex gap-2 justify-center">
@@ -372,7 +376,9 @@ const ApercuFormulaire = ({
           } `}
         >
           <p className="text-center">
-            {language === "fr" ? "Affiche visible dans la page d'accueil et les résultats des recherches :" : "Visible display on the homepage and search results:"}
+            {language === "fr"
+              ? "Affiche visible dans la page d'accueil et les résultats des recherches :"
+              : "Visible display on the homepage and search results:"}
           </p>
 
           <Image

@@ -1,5 +1,4 @@
-import "../../app/styles/loading.css";
-import Image from "next/image";
+import "@/app/styles/loading.css";
 import Pacman from "/public/gif/pacman.gif";
 
 const  Loading =  () => {

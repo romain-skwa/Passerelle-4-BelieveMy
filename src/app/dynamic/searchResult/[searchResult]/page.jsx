@@ -1,13 +1,13 @@
 "use client";
 // INTRODUCTION OF ONE GAME
 // Dynamic page
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import Link from "next/link";
-import Loading from "@/components/Loading/Loading";
+import Loading from "@/components/ForLayout/Loading/Loading";
 import "@/app/styles/formIntroYourself.css";
 
 export default function SearchIntroductionGame() {

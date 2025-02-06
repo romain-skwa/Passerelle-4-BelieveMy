@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
     // Get all data about user
-export async function POST(request) {
+export async function GET(request) {
     // Variable
     const session = await getServerSession(authOptions);
     

@@ -1,5 +1,5 @@
 "use client";
-
+// Formulary  introduction Games
 import { createIntroduction } from "@/actions/create-introduction";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -8,15 +8,23 @@ import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import he from "he";
 import "../../styles/formulary.css";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import Glimpse from "@/components/CreatorsForm/GamePresentationInside/Glimpse/Glimpse"; // Aperçu
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import ObligatoryButtons from "@/components/CreatorsForm/ObligatoryButtons/ObligatoryButtons";
 import OptionalButtons from "@/components/CreatorsForm/OptionalButtons/OptionalButtons";
 import GamePresentationSections from "@/components/CreatorsForm/GamePresentationSections/GamePresentationSections";
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import TextOneByOne from "@/components/TextOneByOne/TextOneByOne";
+import { Press_Start_2P } from "next/font/google";
 
 // FORMULARY used by a the creator to introduce one game
+const pressStart2P = Press_Start_2P({
+  // Police d'écriture
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
 
 export default function introductionGameForm() {
   // Variable
@@ -65,11 +73,11 @@ export default function introductionGameForm() {
   // Function to get all data about the connected user
   const fetchUserData = async () => {
     const response = await fetch("/api/getAllUserDataSession", {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(session?.user?.username),
+      //There is no body with method GET
     });
 
     const data = await response.json();
@@ -79,7 +87,8 @@ export default function introductionGameForm() {
     }
 
     if (!response.ok) {
-      toast.error("Une erreur est intervenue");
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Utilisateur non authentifié");
     }
 
     setUser(data.user);
@@ -219,13 +228,17 @@ export default function introductionGameForm() {
           onSubmit={onPrepare}
           className=" w-[95vw] largeScreen:w-[68vw] mx-auto px-0 tablet:px-8 text-white font-bold border border-purple-600 rounded-3xl"
         >
-          <p className="m-4">
-            {session?.user.username.charAt(0).toUpperCase() + session?.user.username.slice(1)},
-            {language == "fr" 
-            ? "sur cette page, vous êtes invité à remplir de présentation de votre jeux." 
-            : "on this page, you are invited to fill out the presentation of your game." } 
-          </p>
-
+          <div className="h-[100px] largeScreen:h-[66px] flex justify-center align-middle shadowPurple">
+            {session?.user?.username &&
+              <div className="m-4 text-xs laptop:text-sm">
+                <span className={`capitalize ${pressStart2P.className}`}>{session?.user.username}</span>                 
+              <TextOneByOne 
+                frenchPhrase={", sur cette page, vous êtes invité à remplir la présentation de votre jeu."} 
+                englishPhrase={", on this page, you are invited to fill out the presentation of your game."}
+              />         
+              </div>
+            }
+          </div>
           <section className="flex" /* colonne + choix */>
             <div className="mr-4 hidden laptop:block">
               {/************ Boutons Obligatoires **********************************************************/}
@@ -255,7 +268,7 @@ export default function introductionGameForm() {
                 epicGamesLink={epicGamesLink}
                 urlImageOne={urlImageOne}
                 urlImageTwo={urlImageTwo}
-                urlImageThree={urlImageThree}            
+                urlImageThree={urlImageThree}
               />
             </div>
 
@@ -308,9 +321,9 @@ export default function introductionGameForm() {
               className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
               onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
             >
-             {language == "fr" 
-             ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?"
-             : "Would you like to add a presentation of yourself or your team?"} 
+              {language == "fr"
+                ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?"
+                : "Would you like to add a presentation of yourself or your team?"}
             </div>
           </div>
 
@@ -325,9 +338,9 @@ export default function introductionGameForm() {
                 urlPosterCloudinary === ""
               } /* Désactivé si les champs sont vides */
             >
-            {language == "fr" 
-             ? "Envoyer la présentation"
-             : "Submit the presentation"} 
+              {language == "fr"
+                ? "Envoyer la présentation"
+                : "Submit the presentation"}
             </button>
           </div>
         </form>

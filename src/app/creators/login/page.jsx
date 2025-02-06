@@ -4,13 +4,14 @@ import ButtonForm from "@/components/Button/ButtonForm";
 import "../../styles/components.css";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import GeneralLayout from "@/components/GeneralLayout/GeneralLayout";
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { useState } from "react";
 import { useRef } from "react";
-import { useLanguage } from "@/components/LanguageContext/LanguageContext";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 export default function Login() {
   // Variable
@@ -70,9 +71,8 @@ export default function Login() {
 
     // Redirect
     router.replace("/");
-
   };
- 
+
   return (
     <GeneralLayout>
       <form action={prepareLogin} className="mt-36">
@@ -94,7 +94,7 @@ export default function Login() {
             className="label"
             onClick={() => handleLabelClick(emailInputRef)}
           >
-            { language == "fr" ? "Courriel" : "Email" }
+            {language == "fr" ? "Courriel" : "Email"}
           </label>
         </div>
 
@@ -117,19 +117,21 @@ export default function Login() {
             className="label"
             onClick={() => handleLabelClick(passwordInputRef)}
           >
-            { language == "fr" ? "Mot de passe" : "Password" }
+            {language == "fr" ? "Mot de passe" : "Password"}
           </label>
         </div>
 
         {/*----------------------*/}
 
         <div className="flex justify-center">
-          <ButtonForm>{ language == "fr" ? "Se connecter" : "Login" }</ButtonForm>
+          <ButtonForm>{language == "fr" ? "Se connecter" : "Login"}</ButtonForm>
         </div>
 
         <div className="flex justify-center">
           <Link href="../../creators/register">
-            <ButtonForm formButton>{ language == "fr" ? "S'inscrire" : "Sign up" }</ButtonForm>
+            <ButtonForm formButton>
+              {language == "fr" ? "S'inscrire" : "Sign up"}
+            </ButtonForm>
           </Link>
         </div>
         <div className="flex justify-center">

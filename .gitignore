@@ -41,3 +41,6 @@ next-env.d.ts
 /public/presentation
 /public/background
 /public/poubelle
+
+utils/mailer
+.nodemailer
