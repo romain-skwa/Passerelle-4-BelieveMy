@@ -1,4 +1,5 @@
 import { createTransport, Transporter } from 'nodemailer';
+// Code pour nodemailer fourni par Jérome.
 /*
 type EmailPayload = {
   to: string;

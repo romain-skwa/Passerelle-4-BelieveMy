@@ -116,6 +116,4 @@ export const newCreatorData = async (
       await client.close(); // On ferme la connexion au cluster
       throw new Error(error);
     }
-
-  await client.close(); // Quand tout est fini, on ferme la connexion.
 };

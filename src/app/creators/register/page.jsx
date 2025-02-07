@@ -1,5 +1,5 @@
-"use client"; // pour détecter l'envoi du formulaire, il faut détecter la saisie des informations, et pour ça il faut utiliser un évènement, et pour utiliser un évènemetn , il faut use client
-
+"use client";
+// REGISTER
 import ButtonForm from "@/components/Button/ButtonForm";
 import "../../styles/components.css";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { newCreatorData } from "@/actions/newCreatorData";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { checkEmail } from "@/utils/check-email-syntax";
-import { useRouter } from "next/navigation"; // Toujours utiliser ce router quand on choisit le router App
+import { useRouter } from "next/navigation";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
@@ -27,33 +27,42 @@ export default function Register() {
     // If a field is empty
     if (!username || !email || !password || !passwordconfirm) {
       // Notification
-      return toast.error("Aucun champ ne doit être vide.");
-      // Ne s'affiche pas puisque "required" est déjà utilisé. Je laisse comme ça pour l'instant.
+      return toast.error(language === "fr" ? "Aucun champ ne doit être vide." : "No field should be empty.");
     }
 
     // Check if passwords are identical
     if (password !== passwordconfirm) {
-      return toast.error("Les mots de passe ne sont pas identiques");
+      return toast.error(language === "fr" ? "Les mots de passe ne sont pas identiques." : "The passwords do not match.");
     }
 
     // Check if the email is valid
     if (!checkEmail(email)) {
-      return toast.error("Veuillez entrer un email valide");
+      return toast.error(language === "fr" ? "Veuillez entrer un email valide." : "Please enter a valid email.");
     }
 
     // Check if the password is at least 8 characters long
     if (password.length < 8) {
       return toast.error(
-        "Le mot de passe est trop court. Il doit contenir au moins 8 caractères"
+        language === "fr" 
+          ? "Le mot de passe est trop court. Il doit contenir au moins 8 caractères." 
+          : "The password is too short. It must contain at least 8 characters."
       );
     }
 
     // Check if the password contains at least one digit
     if (!password.match(/.*[0-9].*/)) {
-      return toast.error("Le mot de passe doit contenir au moins un chiffre");
+      return toast.error(
+        language === "fr" 
+          ? "Le mot de passe doit contenir au moins un chiffre." 
+          : "The password must contain at least one digit."
+      );
     }
     if (!password.match(/.*[a-zA-Z].*/)) {
-      return toast.error("Le mot de passe doit contenir au moins une lettre");
+      return toast.error(
+        language === "fr" 
+          ? "Le mot de passe doit contenir au moins une lettre." 
+          : "The password must contain at least one letter."
+      );
     }
 
     try {
@@ -69,7 +78,7 @@ export default function Register() {
         );
         router.push("/creators/login");
       } else {
-        toast.error(result.message); // Affiche le message d'erreur
+        toast.error(result.message); 
       }
       // Redirect
     } catch (error) {
@@ -80,7 +89,7 @@ export default function Register() {
     <GeneralLayout>
       <section className="w-[30vw] mx-auto my-4 py-4 flex-col bg-white/10 border-2 rounded-2xl">
         <div className="text-center mx-auto w-[180px] p-3 bg-black/70 text-white text-2xl rounded-2xl border-2 border-black">
-          INSCRIPTION
+          {language === "fr" ? "INSCRIPTION" : "REGISTRATION"}
         </div>
 
         {/* Form */}
@@ -89,7 +98,7 @@ export default function Register() {
             <input
               type="text"
               name="username"
-              placeholder="Nom d'utilisateur"
+              placeholder= {language === "fr" ? "Nom d'utilisateur" : "Username"}
               className="input-register-section"
               required
             />
@@ -99,7 +108,7 @@ export default function Register() {
             <input
               type="email"
               name="email"
-              placeholder="Courriel"
+              placeholder= {language === "fr" ? "Courriel" : "Email"}
               className="input-register-section"
               required
             />
@@ -107,12 +116,21 @@ export default function Register() {
 
           <div className="w-11/12 md:w-[400px] my-2 mx-auto rounded-md border">
             <div className="text-center bg-slate-200 font-semibold">
-              Mot de passe
+              {language === "fr" ? "Mot de passe" : "Password"}
             </div>
             <div className="text-sm md:text-base text-center bg-white pb-2">
               {" "}
-              8 caractères minimum incluant<br></br> au moins 1 chiffre et 1
-              lettre
+              {language === "fr" ? (
+                <>
+                  8 caractères minimum incluant<br />
+                  au moins 1 chiffre et 1 lettre.
+                </>
+                ) : (
+                <>
+                  Minimum 8 characters including<br />
+                  at least 1 digit and 1 letter.
+                </>
+                )}
             </div>
           </div>
 
@@ -120,7 +138,7 @@ export default function Register() {
             <input
               type="password"
               name="password"
-              placeholder="Mot de passe"
+              placeholder= {language === "fr" ? "Mot de passe" : "Password"}
               className="input-register-section"
               required
             />
@@ -130,7 +148,7 @@ export default function Register() {
             <input
               type="password"
               name="passwordconfirm"
-              placeholder="Confirmation du mot de passe"
+              placeholder= {language === "fr" ? "Confirmation du mot de passe" : "Password confirmation"}
               className="input-register-section"
               required
             />
@@ -138,14 +156,14 @@ export default function Register() {
           {/*----------------------*/}
 
           <div className="flex justify-center">
-            <ButtonForm formButton>S'inscrire</ButtonForm>
+            <ButtonForm formButton>{language === "fr" ? "S'inscrire" : "Register"}</ButtonForm>
           </div>
 
           {/*----------------------------------------------------------------*/}
 
           <div className="flex justify-center">
             <Link href="../../creators/login">
-              <ButtonForm>Se connecter</ButtonForm>
+              <ButtonForm>{language === "fr" ? "Se connecter" : "Login"}</ButtonForm>
             </Link>
           </div>
         </form>

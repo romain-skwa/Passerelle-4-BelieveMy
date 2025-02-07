@@ -135,8 +135,8 @@ export default function Login() {
           </Link>
         </div>
         <div className="flex justify-center">
-          <Link href="../../creators/resetPassword">
-            <ButtonForm formButton>Mot de passe oublié ?</ButtonForm>
+          <Link href="../../creators/sendResetLink">
+            <ButtonForm formButton>{language == "fr" ? "Mot de passe oublié ?" : "Forgot password ?"}</ButtonForm>
           </Link>
         </div>
       </form>

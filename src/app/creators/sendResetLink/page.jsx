@@ -6,9 +6,11 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import ButtonForm from "@/components/Button/ButtonForm";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
+  const { language } = useLanguage();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,9 +21,8 @@ export default function ResetPassword() {
 
     // Logique pour envoyer un e-mail de réinitialisation de mot de passe
     try {
-      // Remplacez ceci par votre logique d'envoi d'e-mail
-      // Par exemple, vous pouvez appeler une API pour gérer la réinitialisation
-      await fetch("/api/resetPassword", {
+
+      await fetch("/api/sendResetLink", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +31,9 @@ export default function ResetPassword() {
       });
 
       toast.success(
-        "Un e-mail de réinitialisation a été envoyé à votre adresse"
+        language === "fr" 
+          ? "Un e-mail de réinitialisation a été envoyé à votre adresse." 
+          : "A reset email has been sent to your address."
       );
     } catch (error) {
       toast.error("Erreur lors de l'envoi de l'e-mail");
@@ -48,18 +51,19 @@ export default function ResetPassword() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="input-register-section"
+            placeholder={language === "fr" ? "Courriel" : "Email"}
           />
           <label htmlFor="email" className="label">
-            Courriel
+            
           </label>
-        </div>
+        </div> 
 
         <div className="flex justify-center">
           <ButtonForm type="submit">
-            Envoyer le lien de réinitialisation
+            {language === "fr" ? "Envoyer le lien de réinitialisation" : "Send reset link"}
           </ButtonForm>
         </div>
-      </form>
+      </form> 
     </GeneralLayout>
   );
 }
