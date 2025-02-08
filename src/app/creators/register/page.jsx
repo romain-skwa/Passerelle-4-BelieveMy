@@ -87,7 +87,7 @@ export default function Register() {
   };
   return (
     <GeneralLayout>
-      <section className="w-[30vw] mx-auto my-4 py-4 flex-col bg-white/10 border-2 rounded-2xl">
+      <section className="w-[90vw] tablet:w-[70vw] largeScreen:w-[30vw] mx-auto my-4 py-4 flex-col bg-white/10 border-2 rounded-2xl">
         <div className="text-center mx-auto w-[180px] p-3 bg-black/70 text-white text-2xl rounded-2xl border-2 border-black">
           {language === "fr" ? "INSCRIPTION" : "REGISTRATION"}
         </div>

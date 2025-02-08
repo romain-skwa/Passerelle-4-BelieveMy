@@ -148,7 +148,7 @@ h3 {
   transition: background-color 0.3s; /* Effet de transition pour le survol */
   display: inline-block;
 }
-/********************Solo ou Multi***********************************/
+/******************** Solo ou Multi ***********************************/
 .buttonSoloMulti-container {
   display: flex;
   justify-content: center;

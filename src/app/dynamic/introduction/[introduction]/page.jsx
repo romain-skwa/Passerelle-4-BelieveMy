@@ -275,23 +275,18 @@ export default function IntroductionGame({ params: { introduction } }) {
           </h1>
           {/**************** Affichage des plate-formes PC et Consoles ********************/}
           {game.platform && (
-            <div className={`flex justify-center gap-2 items-center mt-4`}>
+            <div className={`flex justify-center gap-2 items-center mt-4 flex-wrap`}>
               {game.platform.map((plat, index) => (
                 <div
                   key={index}
-                  style={{
-                    fontSize: "13px",
-                    padding: "1px 4px",
-                    letterSpacing: "0.1rem",
-                  }}
                   className={`PlatformIntro
-                        ${
-                          isDarkMode == true
-                            ? " border border-white"
-                            : " border-2 border-gray-700 "
-                        } 
-                        `}
-                >
+                              ${
+                                isDarkMode == true
+                                  ? " border border-white"
+                                  : " border-2 border-gray-700 "
+                              } 
+                              `}
+                  >
                   {plat}
                 </div>
               ))}
@@ -345,7 +340,7 @@ export default function IntroductionGame({ params: { introduction } }) {
 
           {/******************* Affichage des catégories **********************/}
           {game.genreOfGame && (
-            <div className={` flex justify-center gap-2 items-center `}>
+            <div className={` flex justify-center gap-2 items-center flex-wrap`}>
               {game.genreOfGame.map((genre, index) => (
                 <div
                   key={index}
@@ -369,7 +364,7 @@ export default function IntroductionGame({ params: { introduction } }) {
           )}
           {/******************* Solo / Multi ******************************/}
           {game.SoloMulti && game.SoloMulti.length > 0 && (
-            <div className="flex justify-center mt-4 pb-2 gap-5 ">
+            <div className="flex justify-center mt-4 pb-2 gap-5 flex-wrap">
               {game.SoloMulti.map((genre) => {
                 const icon = SoloMultis.find(
                   (item) => item.genre === genre
@@ -512,7 +507,7 @@ export default function IntroductionGame({ params: { introduction } }) {
           </section>
 
           {/************** Les images d'illustration **********************/}
-          <section className="flex flex-col tablet:flex-row gap-2 justify-center">
+          <section className="flex flex-col tablet:flex-row gap-2 justify-center items-center">
             {game.urlImageOneCloudinary && (
               <Image
                 src={game.urlImageOneCloudinary}

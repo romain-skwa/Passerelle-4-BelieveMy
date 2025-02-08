@@ -8,6 +8,7 @@ import flagBG from "/public/flag/drapeau_uk.jpg";
 import flagFrance from "/public/flag/Flag_France.png";
 import homeIconWhite from "/public/logo/white-home-icon.png";
 import searchIconWhite from "/public/logo/Search-icon.png";
+import logoManette from "/public/logo/icon-manette.png";
 import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
@@ -15,7 +16,14 @@ import SocialFrame from "@/components/SocialFrame/SocialFrame";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import SearchModal from "@/components/SearchModal/SearchModal";
 import { useRouter } from "next/navigation";
-import Loading from "@/components/ForLayout/Loading/Loading";
+import { Press_Start_2P } from "next/font/google";
+
+const pressStart2P = Press_Start_2P({
+  // Police d'écriture
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
 
 export default function Header({ background }) {
   const { data: session } = useSession();
@@ -77,8 +85,15 @@ export default function Header({ background }) {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="uppercase text-2xl h-20 max-w-[110px] border">
-          This is my game
+        <div className="h-16 w-[200px] laptop:w-[370px] borderTitle flex justify-center px-4 rounded-[40px] relative mb-3">
+          <Image 
+            src={logoManette}
+            width={60}
+            alt="Logo manette"
+             />
+          <div className={`tablet:ml-3 title ${pressStart2P.className}`}>
+              This is my game
+          </div>
         </div>
 
         {/* ----------------ICONES-------Réseaux sociaux------------------------------------------------------ */}
@@ -128,13 +143,13 @@ export default function Header({ background }) {
         {/* Part left */}
         <div
           style={{ display: "flex", alignItems: "center" }}
-          className={`w-[65%] laptop:w-[25%] flex justify-center laptop:justify-start`}
+          className={`w-[65%] laptop:w-[25%] flex justify-center laptop:justify-start `}
         >
           {/* ----------------Accueil------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4">
             <Link
               href="../../"
-              className="border px-4 pb-1 pt-[3px] rounded-2xl"
+              className="border px-4 pb-1 pt-[3px] rounded-2xl bg-black/70"
             >
               {language == "fr" ? "Accueil" : "Home"}
             </Link>
@@ -150,7 +165,7 @@ export default function Header({ background }) {
                     handleSearchClick();
                   }}
                   href="../../"
-                  className="border px-4 pb-1 pt-[3px] rounded-2xl"
+                  className="border px-4 pb-1 pt-[3px] rounded-2xl bg-black/70"
                 >
                   {language == "fr" ? "Rechercher" : "Search"}
                 </div>
@@ -161,7 +176,7 @@ export default function Header({ background }) {
                 <div
                   onClick={() => setModalSearchOpen(true)}
                   href="../../"
-                  className="border px-4 pb-1 pt-[3px] rounded-2xl"
+                  className="border px-4 pb-1 pt-[3px] rounded-2xl bg-black/70"
                 >
                   {language == "fr" ? "Rechercher" : "Search"}
                 </div>
@@ -263,19 +278,19 @@ export default function Header({ background }) {
           <div className="mr-0 laptop:mr-4 flex justify-end" /* Part right */>
             {session?.user?.email ? (
               <div
-                className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent"
+                className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-3"
                  onClick={() => handleLogout()}
               >
                 {language == "fr" ? "Se déconnecter" : "Log out"}
               </div>
             ) : (
               <>
-                <div className="border bg-black/70 rounded-2xl py-1 px-3 laptop:bg-transparent">
+                <div className="border bg-black/70 rounded-2xl py-1 px-3">
                   <Link href="../../creators/login">
                     {language == "fr" ? "Se connecter" : "Login"}
                   </Link>
                 </div>
-                <div className="ml-3 mr-0 laptop:mr-2 flex justify-end border bg-black/70 laptop:bg-transparent rounded-2xl py-1 px-3">
+                <div className="ml-3 mr-0 laptop:mr-2 flex justify-end border bg-black/70  rounded-2xl py-1 px-3">
                   <Link href="../../creators/register">
                     {language == "fr" ? "S'inscrire" : "Sign up"}
                   </Link>
