@@ -41,7 +41,7 @@ export default function DeleteAllImage({
       extractPublicIdFromUrl(urlImageThree),
       extractPublicIdFromUrl(urlBackgroundCloudinary),
     ];
-
+console.log(publicIds);
     let deleteSuccess = true;
 
     for (const publicId of publicIds) {
@@ -100,6 +100,7 @@ export default function DeleteAllImage({
       return false; // Indiquer que la suppression a échoué
     }
   };
+
 
   
   return (

@@ -30,7 +30,11 @@ export default function introductionGameForm() {
   // Variable
   const { data: session } = useSession();
   const router = useRouter();
-  const { language, changeLanguage } = useLanguage();
+  const { language,
+       setPublicIdArray,
+          setShouldDeleteAllImages,
+           setIsUrlContent,
+           } = useLanguage();
 
   // State
   const [user, setUser] = useState({});
@@ -55,16 +59,7 @@ export default function introductionGameForm() {
   const [steamLink, setSteamLink] = useState("");
   const [epicGamesLink, setEpicGamesLink] = useState("");
   const [SoloMulti, setSoloMulti] = useState([]);
-
-  const resetUrlPosterCloudinary = () => {
-    setUrlPosterCloudinary(""); // Réinitialiser la valeur de urlPosterCloudinary
-  };
-
-  const resetUrlBackgroundCloudinary = () => {
-    setUrlBackgroundCloudinary(""); // Réinitialiser la valeur de urlBackgroundCloudinary
-  };
-
-  /************* Récupérer les données concernant l'utilisateur ***************************/
+  /************* Get data about user filling out the form ***************************/
   useEffect(() => {
     // to use the function fetchUserData only when the session is defined
     fetchUserData();
@@ -94,10 +89,10 @@ export default function introductionGameForm() {
     setUser(data.user);
   };
 
-  /****************** Envoyer les données à l'API createIntroduction **************************/
+  /*********************************************************************************/
+  /****************** Send data to API createIntroduction **************************/
   const onPrepare = async (e) => {
     e.preventDefault();
-
     try {
       if (!urlPosterCloudinary) {
         return toast.error("Vous devez sélectionner un fichier image");
@@ -178,10 +173,7 @@ export default function introductionGameForm() {
       const formData = new FormData();
       formData.append("nameOfGame", encodeURIComponent(nameOfGame));
       formData.append("shortIntroduction", he.encode(shortIntroduction));
-      formData.append(
-        "introductionOfTheGame",
-        he.encode(introductionOfTheGame)
-      );
+      formData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
       formData.append("platform", JSON.stringify(platform));
       formData.append("releaseDate", releaseDate);
       formData.append("urlPosterCloudinary", urlPosterCloudinary);
@@ -197,29 +189,54 @@ export default function introductionGameForm() {
       formData.append("isDarkMode", isDarkMode.toString());
       formData.append("isIntroOfYourself", isIntroOfYourself.toString());
       // Ajout conditionnel pour les images d'illustration
-      if (urlImageOne) {
-        formData.append("urlImageOneCloudinary", urlImageOne);
-      }
-      if (urlImageTwo) {
-        formData.append("urlImageTwoCloudinary", urlImageTwo);
-      }
-      if (urlImageThree) {
-        formData.append("urlImageThreeCloudinary", urlImageThree);
-      }
-
+      if (urlImageOne) {formData.append("urlImageOneCloudinary", urlImageOne);}
+      if (urlImageTwo) {formData.append("urlImageTwoCloudinary", urlImageTwo);}
+      if (urlImageThree) {formData.append("urlImageThreeCloudinary", urlImageThree);}
       // Ajout conditionnel pour urlImageBackground
-      if (urlBackgroundCloudinary) {
-        formData.append("urlBackgroundCloudinary", urlBackgroundCloudinary);
-      }
+      if (urlBackgroundCloudinary) {formData.append("urlBackgroundCloudinary", urlBackgroundCloudinary);}
 
       await createIntroduction(formData);
       toast.success("Présentation du jeu envoyée avec succès !");
+      setShouldDeleteAllImages(false);
+      console.log("Normalement, ShouldDeleteAllImages est passé à False");
       // Redirect
       router.replace("/");
     } catch (error) {
       return toast.error(error.message);
     }
   };
+
+  /************* Delete all images when user leave this page without submit the formulary - Part 1 ***************/
+  /************************************************************************** Part 2 in Language Context ********/
+  // Fonction pour extraire l'ID public de l'URL Cloudinary
+    const extractPublicIdFromUrl = (url) => {    
+      const uploadIndex = url.indexOf('upload') + 7;
+      const startIndex = url.indexOf('/', uploadIndex) + 1;
+      const endIndex = url.lastIndexOf('.');
+      return url.slice(startIndex, endIndex !== -1 ? endIndex : undefined);
+    };
+  
+  // useEffect pour mettre à jour le tableau publicIdArray lorsque les URLs changent
+    useEffect(() => {
+      const newPublicIdArray = [
+        extractPublicIdFromUrl(urlPosterCloudinary),
+        extractPublicIdFromUrl(urlImageOne),
+        extractPublicIdFromUrl(urlImageTwo),
+        extractPublicIdFromUrl(urlImageThree),
+        extractPublicIdFromUrl(urlBackgroundCloudinary),
+      ];
+      setPublicIdArray(newPublicIdArray);
+      console.log("Public ID Array:", newPublicIdArray);
+    }, [urlPosterCloudinary, urlImageOne, urlImageTwo, urlImageThree, urlBackgroundCloudinary]);
+
+    /***** Is there content in URL data ? *******/
+    useEffect(() => {
+      if(urlPosterCloudinary || urlImageOne || urlImageTwo || urlImageThree || urlBackgroundCloudinary){
+        setIsUrlContent(true);
+      }else{
+        setIsUrlContent(false);
+      }
+    }, [urlPosterCloudinary, urlImageOne, urlImageTwo, urlImageThree, urlBackgroundCloudinary]);
 
   return (
     <GeneralLayout>

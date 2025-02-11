@@ -85,7 +85,7 @@ export default function Header({ background }) {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="h-16 w-[200px] laptop:w-[370px] borderTitle flex justify-center px-4 rounded-[40px] relative mb-3">
+        <div className="h-16 w-[200px] laptop:w-[370px] borderTitle flex justify-center px-4 rounded-[40px] relative mb-2 mt-2">
           <Image 
             src={logoManette}
             width={60}

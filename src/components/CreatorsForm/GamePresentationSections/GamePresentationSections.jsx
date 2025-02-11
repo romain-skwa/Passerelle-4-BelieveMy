@@ -54,11 +54,11 @@ const GamePresentationSections = ({
 }) => {
   const { language, changeLanguage } = useLanguage();
   // Afficher les valeurs des URL dans la console
-  console.log("URL Poster Cloudinary:", urlPosterCloudinary);
+ /* console.log("URL Poster Cloudinary:", urlPosterCloudinary);
   console.log("URL Image One:", urlImageOne);
   console.log("URL Image Two:", urlImageTwo);
   console.log("URL Image Three:", urlImageThree);
-  console.log("URL Background Cloudinary:", urlBackgroundCloudinary);
+  console.log("URL Background Cloudinary:", urlBackgroundCloudinary);*/
   return (
     <div className="neuphormismFormularyIntroductionGame w-full mb-4 rounded-lg">
       <div className="laptop:flex items-center mb-3 w-[100%]">

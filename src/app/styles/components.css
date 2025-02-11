@@ -51,7 +51,7 @@
 /***** Header ********************************************************************************************/
 
 .title{
-  color: blueviolet;
+  color: white/*blueviolet*/;
   font-weight: 700;
   font-size: 15px;
   text-transform: uppercase;
@@ -70,7 +70,7 @@
     top: 55%;
     border-radius: 10px;
   }
-}
+} 
 
 .borderTitle{
   border: 2px solid blueviolet;
