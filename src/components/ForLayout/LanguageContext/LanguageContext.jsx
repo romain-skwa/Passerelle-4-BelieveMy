@@ -3,12 +3,14 @@ import { usePathname } from 'next/navigation';
 // LanguageContext.js
 import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState('fr'); // Valeur par défaut
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const userLanguages = navigator.languages || [navigator.language]; // Récupère les langues préférées
@@ -35,15 +37,14 @@ export const LanguageProvider = ({ children }) => {
   const [shouldDeleteAllImages, setShouldDeleteAllImages] = useState(false);
   const [isUrlContent, setIsUrlContent] = useState(false);
 
-  console.log(`Où en est Suppression : `, shouldDeleteAllImages);
-  console.log(`Est-ce que les données URL contiennent quelque chose ? `, isUrlContent);
+  console.log(`[Contexte] Où en est Suppression : `, shouldDeleteAllImages);
+  console.log(`[Contexte] Est-ce que les données URL contiennent quelque chose ? `, isUrlContent);
 
   // useEffect pour mettre à jour shouldDeleteAllImages
   useEffect(() => {
     if (pathname === '/creators/introductionGameForm') {
       setShouldDeleteAllImages(true);
-    } else {
-    }
+    } // It will be "false" only in the function onPrepare, in the component introductionGameForm.
   }, [pathname]);  
 
   useEffect(() => {
@@ -51,11 +52,11 @@ export const LanguageProvider = ({ children }) => {
   }, [publicIdArray]);
 
   useEffect(() => {
-    console.log(`Dans le contexte, on peut voir publicIdArray : `, publicIdArray);
+    console.log(`[Contexte] Dans le contexte, on peut voir publicIdArray : `, publicIdArray);
   }, [publicIdArray]);
 
-  console.log(`Pathname dans le contexte : `, pathname);
-              /*********** Suppression automatique des images de introductionGameForm ************************ */
+  console.log(`[Contexte] Pathname dans le contexte : `, pathname);
+    /*********** Suppression automatique des images de introductionGameForm ************************ */
     const handleDeleteAllImages = async () => {
       console.log(`Au moment où handleDeleteAllImages vient d'être lancé, publicIdArray : `, publicIdArray);
 
@@ -83,7 +84,7 @@ export const LanguageProvider = ({ children }) => {
     const handleDeleteImage = async (publicId) => {
       if (publicId) {
         console.log(
-          `On est censé effacer l'image précédente dans Cloudinary. Son identifiant public est : ${publicId}`
+          `La suppression est lancée. On est censé effacer l'image précédente dans Cloudinary. Son identifiant public est : ${publicId}`
         );
         try {
           const response = await fetch("/api/cloudinary/destroy", {
@@ -112,17 +113,34 @@ export const LanguageProvider = ({ children }) => {
         return false; // Indiquer que la suppression a échoué
       }
     };      
-
-    useEffect(() => {
-      if(shouldDeleteAllImages === true && pathname !== '/creators/introductionGameForm' && isUrlContent){
-          console.log("On va tenter de supprimer les images de la base de données de Cloudinary");
-          handleDeleteAllImages();
-      } else if (shouldDeleteAllImages === true && pathname !== '/creators/introductionGameForm' === false && !isUrlContent){
-        console.log("On quitte la page mais les données URL ne contenaient rien");
-      } else if (shouldDeleteAllImages === false && pathname !== '/creators/introductionGameForm' === false && isUrlContent){
-        console.log("Le formulaire a été envoyé.")
+    
+    // Quand on clique sur un bouton pour aller sur une autre page
+    const handleLinkClick = (event) => {
+      if (!confirm("Êtes-vous sûr de vouloir quitter cette page ?")) {
+        event.preventDefault(); // Empêche la navigation si l'utilisateur annule
+        console.log("On reste sur la page");
+      } else {
+        console.log("On supprime les images de la base de données de Cloudinary parce que le formulaire n'a pas été soumis.");
       }
-    }, [pathname]);
+    };
+    /******************* Quand on clique sur un lien pour quitter la page ***********************/
+    // Vérification ! Supprime-t-on les images ou non ?
+    useEffect(() => {
+      console.log(`Dans le useEffect des vérifications, shouldDeleteAllImages : `, shouldDeleteAllImages);
+      console.log(`Dans le useEffect des vérifications, pathname : `, pathname);
+      console.log(`Dans le useEffect des vérifications, isUrlContent : `, isUrlContent);
+      console.log("[0] On vérifie les conditions...");
+      if(shouldDeleteAllImages === true && pathname !== '/creators/introductionGameForm' && isUrlContent){
+        console.log("[1] Les trois conditions sont remplies. On va tenter de supprimer les images de la base de données de Cloudinary");
+        handleDeleteAllImages();
+        } else if (shouldDeleteAllImages === true && pathname !== '/creators/introductionGameForm' && !isUrlContent){
+          console.log("[2] On quitte la page mais les données URL ne contenaient rien");
+        } else if (shouldDeleteAllImages === false && pathname !== '/creators/introductionGameForm' && isUrlContent){
+          console.log("[3] Le formulaire a été envoyé.")
+        }
+    }, [pathname])
+    
+/************************************************************************* */
 
   return (
     <LanguageContext.Provider value={{ 
@@ -132,6 +150,9 @@ export const LanguageProvider = ({ children }) => {
       setPublicIdArray, 
       setShouldDeleteAllImages,
       setIsUrlContent,
+      isUrlContent,
+      shouldDeleteAllImages,
+      handleLinkClick,
       }}>
       {children}
     </LanguageContext.Provider>

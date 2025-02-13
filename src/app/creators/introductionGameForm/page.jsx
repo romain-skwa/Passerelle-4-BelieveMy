@@ -34,6 +34,7 @@ export default function introductionGameForm() {
        setPublicIdArray,
           setShouldDeleteAllImages,
            setIsUrlContent,
+           handleLinkClick,
            } = useLanguage();
 
   // State
@@ -237,6 +238,21 @@ export default function introductionGameForm() {
         setIsUrlContent(false);
       }
     }, [urlPosterCloudinary, urlImageOne, urlImageTwo, urlImageThree, urlBackgroundCloudinary]);
+/***************************************************************** */
+ useEffect(() => {
+    
+      // Intercepter les clics sur les liens
+      const links = document.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', handleLinkClick);
+      });      
+
+      return () => {
+        links.forEach(link => {
+          link.removeEventListener('click', handleLinkClick);
+        });
+      };
+    }, []);
 
   return (
     <GeneralLayout>
