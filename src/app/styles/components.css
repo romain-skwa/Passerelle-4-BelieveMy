@@ -22,13 +22,20 @@
 /* focus input */
 .input-component input:focus { outline: solid 2px rgb(42, 42, 197); }
 
-/*********************************************************************************************************/
+/****** Image d'illustration ******************************************************************************/
 .grasFondBleu {
   font-weight: bold;
   color: white;
   text-shadow: 2px 2px 7px rgba(0, 0, 0, 1);
   background-color: rgba(186, 28, 160, 0.623);
 }
+.encadreViolet{
+  @apply  w-[90%] tablet:w-[31%] p-2 mx-auto mt-4 flex flex-col rounded-2xl grasFondBleu;
+}
+.choisissezLimage{
+  @apply text-center tablet:inline-block mb-2;
+}
+
 /**** SocialFrame *****************************************************************************************/
 .allIconSocial {
   transform: translateX(0.0rem); /* 6.25rem * 1.5 */

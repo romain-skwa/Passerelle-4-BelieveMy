@@ -28,7 +28,7 @@ const pressStart2P = Press_Start_2P({
 export default function Header({ background }) {
   const { data: session } = useSession();
   const username = session?.user.username;
-  const { language, changeLanguage } = useLanguage();
+  const { language, changeLanguage, handleLinkClick, } = useLanguage();
   const [isModalSearchOpen, setModalSearchOpen] = useState(false);
   const router = useRouter();
 
@@ -150,6 +150,7 @@ export default function Header({ background }) {
             <Link
               href="../../"
               className="border px-4 pb-1 pt-[3px] rounded-2xl bg-black/70"
+              
             >
               {language == "fr" ? "Accueil" : "Home"}
             </Link>
@@ -213,6 +214,7 @@ export default function Header({ background }) {
                     alt="Search Icon"
                     className="mt-[2px] ml-[10px] w-5 h-5 cursor-pointer"
                     unoptimized={true}
+                    
                   />
                 </Link>
               </div>
@@ -238,7 +240,7 @@ export default function Header({ background }) {
               <>
                 {/* The creator introduce himself */}
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
-                  <Link href="../../creators/introduceYourselfForm">
+                  <Link href="../../creators/introduceYourselfForm" >
                   {language === "fr" 
                       ? (
                       <>
@@ -254,7 +256,7 @@ export default function Header({ background }) {
 
                 {/* The creator introduce his GAME */}
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
-                  <Link href="../../creators/introductionGameForm">
+                  <Link href="../../creators/introductionGameForm" >
                     {language == "fr"
                       ? "Présentez votre jeu"
                       : "Introduce your game"}{" "}
@@ -279,7 +281,9 @@ export default function Header({ background }) {
             {session?.user?.email ? (
               <div
                 className="cursor-pointer border bg-black/70 rounded-2xl py-1 px-3"
-                 onClick={() => handleLogout()}
+                onClick={(e) => {
+                  handleLogout();
+                }}
               >
                 {language == "fr" ? "Se déconnecter" : "Log out"}
               </div>
@@ -303,6 +307,7 @@ export default function Header({ background }) {
           <Link
             href="../../"
             className="border bg-black/70 rounded-2xl p-[10px] opacity-100 absolute left-0 ml-4 top-[6px] laptop:hidden"
+            
           >
             <Image
               src={homeIconWhite}
@@ -315,10 +320,12 @@ export default function Header({ background }) {
           <div className="absolute right-0 mr-4 top-[7px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
             <Image
               src={searchIconWhite}
-              onClick={() => setModalSearchOpen(true)}
+              onClick={(e) => {
+                setModalSearchOpen(true);
+              }}
               alt="Search Icon"
               className="w-4 h-4"
-              unoptimized={true}
+              unoptimized={true}              
             />
           </div>
         </div>

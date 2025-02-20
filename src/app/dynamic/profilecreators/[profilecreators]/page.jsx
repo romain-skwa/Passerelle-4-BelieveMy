@@ -1,5 +1,5 @@
 "use client";
-// to show the introduction of a creator
+// the Biography of a creator
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ export default function Profile() {
   // State
   const [user, setUser] = useState({});
   console.log(user);
-  const [loading, setLoading] = useState(true); // État pour le chargement
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     if (!pseudo) {
@@ -23,11 +23,11 @@ export default function Profile() {
     } else {
       fetchUserData();
     }
-  }, [pseudo]); // Ajout de pseudo comme dépendance
+  }, [pseudo]);
 
   // Function
   const fetchUserData = async () => {
-    setLoading(true); // Commencer le chargement
+    setLoading(true);
     try {
       const response = await fetch("/api/userConnection", {
         method: "POST",
@@ -53,7 +53,7 @@ export default function Profile() {
         "Une erreur est survenue lors de la récupération des données."
       );
     } finally {
-      setLoading(false); // Fin du chargement
+      setLoading(false);
     }
   };
 
@@ -61,7 +61,7 @@ export default function Profile() {
     <GeneralLayout>
       <section className="text-white">
         {loading ? (
-          <Loading /> // Affiche le composant Loading pendant le chargement
+          <Loading />
         ) : (
           <UserProfileSection user={user} />
         )}

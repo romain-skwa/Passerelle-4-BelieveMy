@@ -28,7 +28,7 @@ export default function TextOneByOne({frenchPhrase, englishPhrase}) {
       if (index > phrase.length - 1) {
         clearTimeout(interval);
       }
-    }, 100);
+    }, 70);
 
     return () => clearTimeout(interval);
   }, [index]);
@@ -39,7 +39,7 @@ export default function TextOneByOne({frenchPhrase, englishPhrase}) {
   }, [language]);
 
   return (
-    <span className={`${pressStart2P.className} `}>
+    <span className={`${pressStart2P.className} text-[10px] tablet:text-sm`}>
       {phraseAAficher}
     </span>
   );

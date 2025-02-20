@@ -13,7 +13,7 @@ export const updateIntroduction = async (formData) => {
     throw new Error("Vous devez être connecté");
   }
 
-  // Récupérer l'identifiant du jeu et les nouvelles données
+  // Récupérer l'identifiant du jeu et les nouvelles données 
   const gameId = formData.get("gameId");
   const email = formData.get("email");
 

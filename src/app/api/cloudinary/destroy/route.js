@@ -10,6 +10,7 @@ cloudinary.config({
 // Fonction pour gérer les requêtes POST
 export async function POST(request) {
   const { public_id, invalidate } = await request.json();
+  console.log(`public_id dans l'API Destroy : `, public_id);
 
   if (!public_id) {
     return new Response(JSON.stringify({ error: 'Le paramètre public_id est requis.' }), { status: 400 });
@@ -18,9 +19,10 @@ export async function POST(request) {
   try {
     // Supprimer l'image à partir du public_id
     const result = await cloudinary.uploader.destroy(public_id, {
-      invalidate: invalidate || false, // Optionnel : invalider le cache de Cloudinary
+      invalidate: invalidate || true, // Optionnel : invalider le cache de Cloudinary
     });
 
+    console.log(`result dans l'API Destroy : `, result);
     // Vérifier si l'image a été supprimée
     if (result.result === "ok") {
       return new Response(JSON.stringify({ message: "Image supprimée avec succès.", result }), { status: 200 });

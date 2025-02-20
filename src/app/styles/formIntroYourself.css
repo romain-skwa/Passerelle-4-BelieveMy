@@ -36,20 +36,21 @@
 }
 .sectionTextareaIntroYourself{
   /*background: linear-gradient(321deg, rgba(0,0,0,1) 0%, rgba(18,18,228,1) 100%);*/
-  background: linear-gradient(322deg, rgba(0,0,0,1) 15%, rgba(18,18,228,1) 50%, rgba(228,18,61,1) 100%); 
+  font-size: small;
   margin-left: auto; /* Centre l'élément horizontalement */
   margin-right: auto; /* Centre l'élément horizontalement */
   margin-bottom: 1rem; /* Marge en bas de 1rem (16px) */
-  padding: 0.5rem; /* Padding de 0.5rem (8px) sur tous les côtés */
+  padding: 1.5rem 0.5rem; /* Padding de 0.5rem (8px) sur tous les côtés */
   min-height: 12rem; /* Hauteur minimale de 12rem (192px) */
   border-radius: 1.4rem; /* Rayon de bordure de 1rem (16px) */
   color: white; /* Couleur du texte blanche */
+  background: linear-gradient(322deg, rgba(0,0,0,1) 15%, rgba(18,18,228,1) 50%, rgba(228,18,61,1) 100%); 
 }
 .textareaIntroYourself {
-    padding: 20px;
-    font-size: small;
+    padding: 10px 20px;
     background: transparent;
     border-radius: 1rem;
+    margin-top: 1rem;
 }
 
 .linearUp{
@@ -91,6 +92,7 @@
     width: 60%;
     padding: 0.5rem 1rem;
     border-radius: 1rem;
+    color:white;
   }
   
   @media (max-width: 600px) {

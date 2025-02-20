@@ -1,4 +1,3 @@
-// components/GamePresentationSections/GamePresentationSections.js
 import { useEffect, useState } from "react";
 import { updateIntroduction } from "@/actions/update-introduction";
 import { useRouter } from "next/navigation";
@@ -14,6 +13,8 @@ import Image from "next/image";
 import "react-datepicker/dist/react-datepicker.css";
 import he from "he";
 import { toast } from "react-toastify";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import deleteIntroduction from "@/actions/eraseOneIntroduction";
 
 const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
   const router = useRouter();
@@ -40,14 +41,11 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
   const [genreOfGameUpdate, setGenreOfGameUpdate] = useState([]);
   const [isDarkModeUpdate, setIsDarkModeUpdate] = useState(false);
   const [isIntroOfYourselfUpdate, setIsIntroOfYourselfUpdate] = useState(false);
+  const { language } = useLanguage();
   //console.log(`Dans la page UpdateIntro, game.releaseDate : `, game.releaseDate);
   useEffect(() => {
-    if (game && game._id) {
-      setGameId(game._id);
-    }
-    if (game && game.email) {
-      setEmail(game.email);
-    }
+    if (game && game._id) {setGameId(game._id);}
+    if (game && game.email) {setEmail(game.email);}
     if (game && game.nameofgame) {
       const decodedNameOfGame = decodeURIComponent(game.nameofgame);
       setNameOfGameUpdate(decodedNameOfGame);
@@ -94,7 +92,7 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
   }, [game]);
 
   /****************** Envoyer les données à l'API createIntroduction **************************/
-  const onPrepare = async (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -193,10 +191,7 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       formData.append("email", email);
       formData.append("nameOfGame", encodeURIComponent(nameOfGameUpdate));
       formData.append("shortIntroduction", he.encode(shortIntroductionUpdate));
-      formData.append(
-        "introductionOfTheGame",
-        he.encode(introductionOfTheGameUpdate)
-      );
+      formData.append("introductionOfTheGame",he.encode(introductionOfTheGameUpdate));
       formData.append("platform", JSON.stringify(platformUpdate));
       formData.append("releaseDate", releaseDateUpdate);
       formData.append("urlPosterCloudinary", urlPosterCloudinaryUpdate);
@@ -207,39 +202,15 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       formData.append("isDarkMode", isDarkModeUpdate.toString());
       formData.append("isIntroOfYourself", isIntroOfYourselfUpdate.toString());
       // Ajouts conditionnels
-      if (videoLinkUpdate) {
-        formData.append("videoLink", videoLinkUpdate);
-      }
-      if (steamLinkUpdate) {
-        formData.append("steamLink", steamLinkUpdate);
-      }
-      if (epicGamesLinkUpdate) {
-        formData.append("epicGamesLink", epicGamesLinkUpdate);
-      }
-      if (webSiteOfThisGameUpdate) {
-        formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);
-      }
-      if (webSiteOfThisCreatorUpdate) {
-        formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);
-      }
-      if (urlImageOneCloudinaryUpdate) {
-        formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);
-      }
-      if (urlImageTwoCloudinaryUpdate) {
-        formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);
-      }
-      if (urlImageThreeCloudinaryUpdate) {
-        formData.append(
-          "urlImageThreeCloudinary",
-          urlImageThreeCloudinaryUpdate
-        );
-      }
-      if (urlBackgroundCloudinaryUpdate) {
-        formData.append(
-          "urlBackgroundCloudinary",
-          urlBackgroundCloudinaryUpdate
-        );
-      }
+      if (videoLinkUpdate) {formData.append("videoLink", videoLinkUpdate);}
+      if (steamLinkUpdate) {formData.append("steamLink", steamLinkUpdate);}
+      if (epicGamesLinkUpdate) {formData.append("epicGamesLink", epicGamesLinkUpdate);}
+      if (webSiteOfThisGameUpdate) {formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);}
+      if (webSiteOfThisCreatorUpdate) {formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);}
+      if (urlImageOneCloudinaryUpdate) {formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);}
+      if (urlImageTwoCloudinaryUpdate) {formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);}
+      if (urlImageThreeCloudinaryUpdate) {formData.append("urlImageThreeCloudinary",urlImageThreeCloudinaryUpdate);}
+      if (urlBackgroundCloudinaryUpdate) {formData.append("urlBackgroundCloudinary", urlBackgroundCloudinaryUpdate);}
       console.log("Form data:", formData);
       await updateIntroduction(formData);
       toast.success("Présentation du jeu a été mise à jour !");
@@ -253,10 +224,27 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       return toast.error(error.message);
     }
   };
+  console.log(`gameId de la présentation à supprimer : `, gameId);
+  /* Suppression du jeu par le créateur *******************************************************************/
+
+  const handleDelete = async () => {
+    if(!confirm("Voulez vraiment supprimer la présentation de votre jeu ?")) return;
+
+    try {
+      await deleteIntroduction(gameId, nameOfGameUpdate);
+      }
+    catch (error) {
+      return toast.error(error.message);
+    }
+    toast.success("La présentation vient d'être supprimée.");
+    router.push("/");
+  };
+
   return (
+    <>
     <form
-      onSubmit={onPrepare}
-      className="w-[95vw] tablet:w-[84vw] laptop:w-[95%] mx-auto border p-2 mt-4"
+      onSubmit={handleFormSubmit}
+      className="w-[87vw] tablet:w-[84vw] laptop:w-[95%] tablet:mx-auto border p-2 mt-4"
       style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
     >
       <div className="text-3xl">
@@ -333,10 +321,7 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
 
       {/* Date de sortie */}
       <div className="my-2 flex">
-        <p
-          className="text-white font-bold mr-2"
-          style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
-        >
+        <p className="text-white font-bold mr-2" style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}>
           Date de sortie :
         </p>
         <DatePicker
@@ -595,6 +580,11 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
         </button>
       </div>
     </form>
+
+    <div onClick={handleDelete} className="w-[250px] p-2 flex justify-center mx-auto mt-4 hover:bg-red hover:text-white transition-colors duration-300 cursor-pointer">
+      {language === 'fr' ? "Supprimer cette présentation" : "Delete this introduction"}  
+    </div>
+    </>
   );
 };
 

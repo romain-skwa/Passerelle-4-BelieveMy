@@ -11,7 +11,7 @@ const extractPublicIdFromUrl = (url) => {
 };
 
 export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame }) {
-  //console.log("Dans le composant ImageUpload, urlCloudinary : ", urlCloudinary);
+  //console.log("Dans le composant ImageUpload, urlCloudinary : ", urlCloudinary);.
   // Fonction pour supprimer l'image de Cloudinary
   const handleDeleteImage = async (publicId) => {
     if (publicId) {
@@ -51,7 +51,13 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
     if (typeof result.info === "object" && "secure_url" in result.info) {
       // Mettre à jour l'URL de l'image avec la nouvelle image
       setter(result.info.secure_url);
-     // console.log("Image info:", result.info);
+      console.log("Image info:", result.info);
+      const newPublicId = result.info.public_id;
+      console.log(`newPublicId : `, newPublicId);
+      const publicIds = JSON.parse(sessionStorage.getItem('imagePublicIds')) || [];
+      publicIds.push(newPublicId);
+      console.log(`publicIds : `, publicIds);
+      sessionStorage.setItem('imagePublicIds', JSON.stringify(publicIds));
     }
   };
  

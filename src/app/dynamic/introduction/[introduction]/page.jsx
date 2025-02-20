@@ -39,7 +39,7 @@ export default function IntroductionGame({ params: { introduction } }) {
   // Variable
   const nameofgame = introduction;
   const { language } = useLanguage();
-  const pathname = usePathname(); // Récupérer le chemin actuel pour le partage
+  const pathname = usePathname(); // Récupérer le chemin actuel pour le partage 
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire pour le partage
 
   // State
@@ -543,10 +543,9 @@ export default function IntroductionGame({ params: { introduction } }) {
             )}
           </section>
 
-          {/************ Affichage Nom du créateur ou de sa Bio**********************/}
+          {/************ Affichage Nom du créateur ou de sa Bio **********************/}
           {userBio ? (
             <>
-              {/******************* Date de sortie du jeu **********************/}
               <div className={"p-4 pr-6 min-h-[50px] text-right"}>
                 {language === "fr" ? "Date de sortie :" : "Release date : "}{" "}
                 {formattedDate}.
@@ -556,20 +555,14 @@ export default function IntroductionGame({ params: { introduction } }) {
           ) : (
             <section className="tablet:flex tablet:justify-between">
               <div className="p-1 tablet:p-4 tablet:inline-block text-center">
-                <Link
-                  href={`../../../dynamic/profilecreators/@${encodedUsername}`}
-                >
+                <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
                   {language === "fr" ? "Jeu créé par :" : "Game created by : "}{" "}
                   {decodeURIComponent(game.username)}
                 </Link>
               </div>
               {/******************* Date de sortie du jeu **********************/}
-              <div
-                className={
-                  "p-1 tablet:p-4 pr-6 tablet:min-h-[50px] text-center tablet:text-right"
-                }
-              >
-                {language === "fr" ? "Date de sortie :" : "Release date : "}{" "}
+              <div className={"p-1 tablet:p-4 pr-6 tablet:min-h-[50px] text-center tablet:text-right"}>
+                {language === "fr" ? "Date de sortie : " : "Release date : "}{" "}
                 {formattedDate}.
               </div>
             </section>

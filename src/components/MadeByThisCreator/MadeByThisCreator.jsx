@@ -10,8 +10,7 @@ export default function MadeByThisCreator({ user }) {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const username = decodeURIComponent(user.username);
-  const capitalizedUsername =
-    username.charAt(0).toUpperCase() + username.slice(1);
+  const capitalizedUsername = username.charAt(0).toUpperCase() + username.slice(1);
   const [oneGameOr, setOneGameOr] = useState();
 
   const fetchgameData = async () => {

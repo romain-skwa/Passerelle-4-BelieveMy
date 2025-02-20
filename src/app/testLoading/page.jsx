@@ -10,16 +10,23 @@ import SocialFrame from "@/components/SocialFrame/SocialFrame";
 export default function TestPage() {
   const router = useRouter();
 const [onchangeCouleur, setOnchangeCouleur] = useState("bg-blue-600");
-  const encore = () => {
-    console.log("handleBeforeUnload s'ouvre.");
-    setOnchangeCouleur("bg-lime-600");
-  };
+const [VraiOuFaux, setVraiOuFaux] = useState(false);
+
+  useEffect(() => {
+    if(VraiOuFaux){
+      console.log("Dans TestLoading. C'est vrai");
+      setOnchangeCouleur("bg-lime-600");
+    }else {
+      console.log("Dans TestLoading. C'est faux.");
+    }
+  },[VraiOuFaux]);
+
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       event.preventDefault();
       event.returnValue = ''; // Affiche la fenêtre de confirmation
-      encore(); // Exécute la fonction avant le rechargement
+      setVraiOuFaux(true);
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);

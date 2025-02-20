@@ -15,6 +15,7 @@ import Loading from "@/components/ForLayout/Loading/Loading";
 import "../../styles/formIntroYourself.css";
 import TextOneByOne from "@/components/TextOneByOne/TextOneByOne";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import MadeByThisCreator from "@/components/MadeByThisCreator/MadeByThisCreator";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState("");
@@ -131,7 +132,7 @@ const introduceYourself = () => {
     return <div>Erreur: {error}</div>;
   }
 
-  const handleSubmit = async (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
       // Envoyez les données à la fonction pour mettre à jour les informations de l'utilisateur
@@ -176,9 +177,9 @@ const introduceYourself = () => {
       {loading ? (
         <Loading /> // Affiche le composant Loading pendant le chargement
       ) : (
-        <div className="w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center">
-          <form onSubmit={handleSubmit}>
-            <section className="sectionTextareaIntroYourself textareaIntroYourself shadowPurple h-20">
+        <>
+          <form onSubmit={handleFormSubmit} className="w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center">
+            <section className="sectionTextareaIntroYourself  shadowPurple ">
               <TextOneByOne 
                 frenchPhrase={"Présentez votre parcours. Évoquez vos jeux. C'est à vous..."} 
                 englishPhrase={"Present your background. Mention your games. It's your turn..."}
@@ -186,7 +187,7 @@ const introduceYourself = () => {
               <textarea
                 value={bio}
                 onChange={(event) => setBio(event.target.value)}
-                className="textareaIntroYourself w-[100%]"
+                className="textareaIntroYourself w-[100%] h-36"
                 placeholder="Biographie..."
               />
             </section>
@@ -308,7 +309,7 @@ const introduceYourself = () => {
               </div>
             </div>
 
-            <br />
+            {/******************************************************************************************** */}
             {/* Bouton TELECHARGER votre Logo */}
             <div className="file-upload">
               <label className="custom-file-upload">
@@ -323,21 +324,15 @@ const introduceYourself = () => {
               </label>
             </div>
 
-            <br />
+            {/******************************************************************************************** */}
             {/* Lien votre propre site */}
             <input
               type="url"
               value={websiteUrl}
               onChange={(event) => setWebsiteUrl(event.target.value)}
-              className="w-[95%] laptop:w-[60%] p-2 rounded-xl transparentWhite"
-              placeholder={
-                language == "fr"
-                  ? "URL de votre site web :"
-                  : "URL of your website"
-              }
+              className="w-[95%] laptop:w-[60%] my-4 p-2 rounded-xl transparentWhite text-white"
+              placeholder={ language == "fr" ? "URL de votre site web :" : "URL of your website" }
             />
-            <br />
-            <br />
 
             <div className="social">
               {" "}
@@ -468,7 +463,8 @@ const introduceYourself = () => {
               {language == "fr" ? "Mettre à jour" : "Update"}
             </button>
           </form>
-        </div>
+          <div className="w-[95%] laptop:w-[50vw] mx-auto"><MadeByThisCreator user={user} /></div>          
+        </>
       )}
     </GeneralLayout>
   );

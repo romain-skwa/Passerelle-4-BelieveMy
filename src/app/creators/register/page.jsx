@@ -81,6 +81,7 @@ export default function Register() {
         toast.error(result.message); 
       }
       // Redirect
+      router.replace("/");
     } catch (error) {
       return toast.error(error.message);
     }
