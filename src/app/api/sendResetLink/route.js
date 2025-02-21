@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { MongoClient } from "mongodb"; // Assurez-vous d'importer MongoClient
+import { MongoClient } from "mongodb";
 import { Resend } from "resend";
 
 export async function POST(req) {
   const { email } = await req.json();
-  console.log(`email : `, email);
 
   if (!email) {
     return NextResponse.json({ success: false, message: "Email manquant." }, { status: 400 });
@@ -21,17 +20,16 @@ export async function POST(req) {
     // Connect to the MongoDB database
     const db = client.db(process.env.MONGODB_DATABASE);
 
-    // Récupérer l'utilisateur
+    // Get data about user
     user = await db.collection("créateurs").find({ email: email }).limit(1).toArray();
 
-    // Vérifiez si l'utilisateur existe
+    // Chef if user exist
     if (user.length === 0) {
       throw new Error("Cet utilisateur n'existe pas");
     }
 
-    // Récupérer le nom d'utilisateur à partir de l'utilisateur trouvé
+    // Get the username from the data
     const username = decodeURIComponent(user[0].username);
-    console.log(`username : `, username);
 
     // Générer un token de réinitialisation
     const resetToken = Math.random().toString(36).slice(2); // Ce n'est qu'un exemple, génère un token sécurisé en vrai

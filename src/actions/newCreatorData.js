@@ -96,7 +96,7 @@ export const newCreatorData = async (
         const { data, error } = await resend.emails.send({
           from: 'Acme <onboarding@resend.dev>',
           to: [email],
-          subject: 'Hello world',
+          subject: 'Bienvenue sur This is MY game',
           html: `<p style="text-align: center;">This is my game.com</p> <p>Bienvenue <u>${decodedUsername}</u>.</p> <p> Nous sommes heureux de vous accueillir parmi nous. </p> `,
         });
 

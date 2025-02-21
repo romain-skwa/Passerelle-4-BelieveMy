@@ -81,7 +81,7 @@ export default function Register() {
         toast.error(result.message); 
       }
       // Redirect
-      router.replace("/");
+      router.replace("/creators/login");
     } catch (error) {
       return toast.error(error.message);
     }

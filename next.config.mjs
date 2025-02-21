@@ -11,8 +11,8 @@ export default () => {
         NEXT_PUBLIC_UPLOAD_PRESET: "ml_default",
         NEXT_PUBLIC_CLOUDINARY_API_KEY: "865282161267678",
         NEXT_PUBLIC_CLOUDINARY_API_SECRET: "_eVZpxeOYr_uTs-MZQufmaok8Y4",
-        MAIL_USERNAME: "believeromain@demomailtrap.com",
-        MAIL_PASSWORD: "25gjwE34G4rZmB",
+        //MAIL_USERNAME: "believeromain@demomailtrap.com",
+        //MAIL_PASSWORD: "25gjwE34G4rZmB",
         RESEND_API_KEY: "re_KtKBeLdf_6AJwBAm5d7NdFqGnjdv99Hay",
       },
       images: {

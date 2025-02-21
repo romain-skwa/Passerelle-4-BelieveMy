@@ -34,6 +34,7 @@ import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/multiOnline2.jpg";
 import UpdateIntro from "@/components/CreatorsForm/IntroGame/UpdateIntro/UpdateIntro";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import Flag from "@/components/Flag/Flag";
 
 export default function IntroductionGame({ params: { introduction } }) {
   // Variable
@@ -44,15 +45,15 @@ export default function IntroductionGame({ params: { introduction } }) {
 
   // State
   const { data: session } = useSession();
-  const [game, setgame] = useState({});
-  const [creatorOfThisGame, setCreatorOfThisGame] = useState();
+  const [game, setgame] = useState({}); console.log(`game : `, game);
+  const [creatorOfThisGame, setCreatorOfThisGame] = useState("");
   const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
   const encodedUsername = encodeURIComponent(username);
   const [loading, setLoading] = useState(true);
-  const [backgroundImage, setBackgroundImage] = useState();
-  /************************************************ */
-  const [currentUrl, setCurrentUrl] = useState();
+  const [backgroundImage, setBackgroundImage] = useState("");
+  /*************************************************/
+  const [currentUrl, setCurrentUrl] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -110,6 +111,7 @@ export default function IntroductionGame({ params: { introduction } }) {
     setLoading(false);
   };
 
+  // When the creator choose to show his biography, we get... his biography
   useEffect(() => {
     if (game.isIntroOfYourself === "true" && creatorOfThisGame) {
       const fetchDataCreatorOfThisGame = async () => {
@@ -131,7 +133,7 @@ export default function IntroductionGame({ params: { introduction } }) {
           toast.error("Une erreur est intervenue");
         }
 
-        setUserBio(data.user); // Mettez à jour l'état `user` avec les données récupérées
+        setUserBio(data.user); 
       };
 
       fetchDataCreatorOfThisGame();
@@ -547,7 +549,7 @@ export default function IntroductionGame({ params: { introduction } }) {
           {userBio ? (
             <>
               <div className={"p-4 pr-6 min-h-[50px] text-right"}>
-                {language === "fr" ? "Date de sortie :" : "Release date : "}{" "}
+                {language === "fr" ? "Date de sortie : " : "Release date : "}{" "}
                 {formattedDate}.
               </div>
               <UserProfileSection user={userBio} />
@@ -556,7 +558,7 @@ export default function IntroductionGame({ params: { introduction } }) {
             <section className="tablet:flex tablet:justify-between">
               <div className="p-1 tablet:p-4 tablet:inline-block text-center">
                 <Link href={`../../../dynamic/profilecreators/@${encodedUsername}`}>
-                  {language === "fr" ? "Jeu créé par :" : "Game created by : "}{" "}
+                  {language === "fr" ? "Jeu créé par : " : "Game created by : "}{" "}
                   {decodeURIComponent(game.username)}
                 </Link>
               </div>
@@ -568,7 +570,13 @@ export default function IntroductionGame({ params: { introduction } }) {
             </section>
           )}
 
+          {/********* Share *************************************************/}
           <Share currentUrl={currentUrl} />
+
+          {/********* Flag *************************************************/}
+          {game && session &&
+            <Flag gameId={game._id} nameOfGame={game.nameofgame} session={session} pathname={pathname} />          
+          }
 
           {/*** When the visitor is *********************************************************************/}
           {/*********************** the CREATOR of this game, *******************************************/}
