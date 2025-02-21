@@ -3,7 +3,9 @@
 
 import { Resend } from "resend";
 
-export const sendReportEmail = async ({ gameId, nameOfGame, decodedUsername, pathname }) => {
+export const sendReportEmail = async ({ gameId, nameOfGame, username, pathname }) => {
+  const decodedNameOfGame = decodeURIComponent(nameOfGame);
+  console.log(`decodedNameOfGame = decodeURIComponent(nameOfGame); : dans actions/sendReportEmail.js : `, decodedNameOfGame);
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
@@ -14,7 +16,7 @@ export const sendReportEmail = async ({ gameId, nameOfGame, decodedUsername, pat
         <p style="text-align: center;">This is my game.com</p>
         <br>
         <p>
-            <i>${decodedUsername}</i> a signalé le contenu interdit sur la page <a href="http://localhost:3000/${pathname}"><u>localhost:3000/${pathname}</u></a> concernant le jeu : <b>${nameOfGame}</b>.
+            <i>${username}</i> a signalé le contenu interdit sur la page <a href="http://localhost:3000/${pathname}"><u>localhost:3000/${pathname}</u></a> concernant le jeu : <b>${decodedNameOfGame}</b>.
         </p>
         <p>Identifiant du jeu : ${gameId}</p>
       `,
@@ -22,7 +24,6 @@ export const sendReportEmail = async ({ gameId, nameOfGame, decodedUsername, pat
 
     if (error) {
       console.error({ error });
-      // Note : `toast` ne fonctionnera pas ici car il s'agit d'un environnement serveur
       return { success: false, message: "Erreur lors de l'envoi de l'email." };
     }
 

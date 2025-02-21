@@ -42,10 +42,9 @@ export default function IntroductionGame({ params: { introduction } }) {
   const { language } = useLanguage();
   const pathname = usePathname(); // Récupérer le chemin actuel pour le partage 
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire pour le partage
-
   // State
-  const { data: session } = useSession();
-  const [game, setgame] = useState({}); console.log(`game : `, game);
+  const { data: session } = useSession(); //console.log(`session `, session);
+  const [game, setgame] = useState({}); //console.log(`game : `, game);
   const [creatorOfThisGame, setCreatorOfThisGame] = useState("");
   const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
