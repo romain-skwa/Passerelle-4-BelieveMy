@@ -32,11 +32,11 @@ export default function introductionGameForm() {
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
-  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState("");
-  const [urlImageOne, setUrlImageOne] = useState("");
-  const [urlImageTwo, setUrlImageTwo] = useState("");
-  const [urlImageThree, setUrlImageThree] = useState("");
-  const [urlBackgroundCloudinary, setUrlBackgroundCloudinary] = useState("");
+  const [urlPosterCloudinary, setUrlPosterCloudinary] = useState(""); console.log(`urlPosterCloudinary à la déclaration `, urlPosterCloudinary);
+  const [urlImageOne, setUrlImageOne] = useState(""); console.log(`urlImageOne à la déclaration `, urlImageOne);
+  const [urlImageTwo, setUrlImageTwo] = useState(""); console.log(`urlImageTwo à la déclaration `, urlImageTwo);
+  const [urlImageThree, setUrlImageThree] = useState(""); console.log(`urlImageThree à la déclaration `, urlImageThree);
+  const [urlBackgroundCloudinary, setUrlBackgroundCloudinary] = useState(""); console.log(`urlBackgroundCloudinary à la déclaration `, urlBackgroundCloudinary);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [selectedAgePegi, setSelectedAgePegi] = useState("");
@@ -49,7 +49,10 @@ export default function introductionGameForm() {
   const [steamLink, setSteamLink] = useState("");
   const [epicGamesLink, setEpicGamesLink] = useState("");
   const [SoloMulti, setSoloMulti] = useState([]);
+  const [backgroundPreview, setBackgroundPreview] = useState("");
+  const [filesToSend, setFilesToSend] = useState({});
 
+  console.log(`backgroundPreview à la déclaration : `, backgroundPreview);
   /************* Get data about user filling out the form ***************************/
   useEffect(() => {
     // to use the function fetchUserData only when the session is defined
@@ -107,7 +110,7 @@ export default function introductionGameForm() {
                 platform={platform}
                 releaseDate={releaseDate}
                 selectedAgePegi={selectedAgePegi}
-                urlPosterCloudinary={urlPosterCloudinary}
+                isUrlPoster={filesToSend.posterGlimpseFile || ""}
                 SoloMulti={SoloMulti}
               />
 
@@ -142,7 +145,8 @@ export default function introductionGameForm() {
               urlImageOne={urlImageOne} setUrlImageOne={setUrlImageOne}
               urlImageTwo={urlImageTwo} setUrlImageTwo={setUrlImageTwo}
               urlImageThree={urlImageThree} setUrlImageThree={setUrlImageThree}
-              urlBackgroundCloudinary={urlBackgroundCloudinary} setUrlBackgroundCloudinary={setUrlBackgroundCloudinary}
+              setUrlBackgroundCloudinary={setUrlBackgroundCloudinary}
+              setBackgroundPreview={setBackgroundPreview}
               videoLink={videoLink} setVideoLink={setVideoLink}
               webSiteOfThisGame={webSiteOfThisGame} setWebSiteOfThisGame={setWebSiteOfThisGame}
               webSiteOfThisCreator={webSiteOfThisCreator} setWebSiteOfThisCreator={setWebSiteOfThisCreator}
@@ -151,14 +155,17 @@ export default function introductionGameForm() {
               genreOfGame={genreOfGame} setGenreOfGame={setGenreOfGame}
               isDarkMode={isDarkMode}
               isIntroOfYourself={isIntroOfYourself}
+              setIsIntroOfYourself={setIsIntroOfYourself}
+              filesToSend={filesToSend}
+              setFilesToSend={setFilesToSend}
             />
           </section>
       </section>
 
       <section
         style={{
-          backgroundImage: urlBackgroundCloudinary
-            ? `url(${urlBackgroundCloudinary})`
+          backgroundImage: backgroundPreview
+            ? `url(${backgroundPreview})`
             : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -173,6 +180,9 @@ export default function introductionGameForm() {
           selectedAgePegi={selectedAgePegi}
           selectedAdditionalPegi={selectedAdditionalPegi}
           urlPosterCloudinary={urlPosterCloudinary}
+          urlImageOne={urlImageOne}
+          urlImageTwo={urlImageTwo}
+          urlImageThree={urlImageThree}
           SoloMulti={SoloMulti}
           genreOfGame={genreOfGame}
           videoLink={videoLink}
@@ -181,9 +191,8 @@ export default function introductionGameForm() {
           isDarkMode={isDarkMode}
           steamLink={steamLink}
           epicGamesLink={epicGamesLink}
-          urlImageOne={urlImageOne}
-          urlImageTwo={urlImageTwo}
-          urlImageThree={urlImageThree}
+          filesToSend={filesToSend}
+          isIntroOfYourself={isIntroOfYourself}          
         />
 
         {isIntroOfYourself && <UserProfileSection user={user} />}

@@ -14,13 +14,14 @@ const ObligatoryButtons = ({
   platform,
   releaseDate,
   selectedAgePegi,
-  urlPosterCloudinary,
+  isUrlPoster,
   SoloMulti,
 }) => {
   const { language } = useLanguage();
   return (
     <section className="w-[241px] p-2 mb-3 rounded-xl font-bold neuphormismUndergroung">
       <div className="flex justify-center mt-3 laptop:mt-0 mx-auto">
+        {/* is Dark Mode */}
         <div
           onClick={() => setIsDarkMode(!isDarkMode)}
           className="p-2 bg-black text-white w-[200px] cursor-pointer rounded-xl border"
@@ -30,14 +31,25 @@ const ObligatoryButtons = ({
             : "Black text and white background"}
         </div>
       </div>
-
-      <div
-        className="flex justify-center text-white text-xl mb-2"
-        style={{ textShadow: "3px 3px 4px blue" }}
-      >
+      
+      {/* List ------------------ */}
+      <div className="flex justify-center text-white text-xl mb-2" style={{ textShadow: "3px 3px 4px blue" }}>
         Obligatoire
       </div>
+      
       <div className="bandeauTop">
+        {/* Short introduction */}
+        <div
+          style={{
+            backgroundImage:
+              nameOfGame.length > 1 ? greenColor : colorDark,
+            padding: "0.3rem 0.5rem",
+          }}
+        >
+          {language === "fr" ? "Nom du jeu" : "Name of game"}
+        </div>
+
+        {/* Short introduction */}
         <div
           style={{
             backgroundImage:
@@ -48,6 +60,7 @@ const ObligatoryButtons = ({
           {language === "fr" ? "Introduction courte" : "Short introduction"}
         </div>
 
+        {/* Detailed presentation */}
         <div
           style={{
             backgroundImage:
@@ -60,6 +73,7 @@ const ObligatoryButtons = ({
             : "Detailed presentation"}
         </div>
 
+        {/* Platform */}
         <div
           style={{
             backgroundImage: platform.length !== 0 ? greenColor : colorDark,
@@ -69,6 +83,7 @@ const ObligatoryButtons = ({
           {language === "fr" ? "Plate-forme" : "Platform"}
         </div>
 
+        {/* Release date */}
         <div
           style={{
             backgroundImage: releaseDate !== null ? greenColor : colorDark,
@@ -78,6 +93,7 @@ const ObligatoryButtons = ({
           {language === "fr" ? "Date de sortie" : "Release date"}
         </div>
 
+        {/* PEGI age & category */}
         <div
           style={{
             backgroundImage:
@@ -88,16 +104,18 @@ const ObligatoryButtons = ({
           {language === "fr" ? "Pegi âge & catégorie" : "PEGI age & category"}
         </div>
 
+        {/* Poster */}
         <div
           style={{
             backgroundImage:
-              urlPosterCloudinary.length != "" ? greenColor : colorDark,
+              isUrlPoster.length != "" ? greenColor : colorDark,
             padding: "0.3rem 0.5rem",
           }}
         >
           {language === "fr" ? "Affiche" : "Poster"}
         </div>
 
+        {/* Solo / Multi */}
         <div
           style={{
             backgroundImage: SoloMulti.length != "" ? greenColor : colorDark,

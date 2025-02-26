@@ -1,6 +1,6 @@
 // components/GamePresentationSections/GamePresentationSections.js
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import EditorPerso from "@/components/CreatorsForm/GamePresentationInside/EditorPerso/EditorPerso";
 import Platform from "../GamePresentationInside/Platform/Platform";
 import Pegi from "@/components/CreatorsForm/GamePresentationInside/Pegi/Pegi";
@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { createIntroduction } from "@/actions/create-introduction";
 import he from "he";
 import { useRouter } from "next/navigation";
+import { Cloudinary } from "@cloudinary/url-gen";
 
 const GamePresentationSections = ({
   nameOfGame, setNameOfGame,
@@ -29,6 +30,7 @@ const GamePresentationSections = ({
   urlImageTwo, setUrlImageTwo,
   urlImageThree, setUrlImageThree,
   urlBackgroundCloudinary, setUrlBackgroundCloudinary,
+  setBackgroundPreview,
   videoLink, setVideoLink,
   webSiteOfThisGame, setWebSiteOfThisGame,
   webSiteOfThisCreator, setWebSiteOfThisCreator,
@@ -36,42 +38,39 @@ const GamePresentationSections = ({
   epicGamesLink, setEpicGamesLink,
   genreOfGame, setGenreOfGame,
   isDarkMode,
-  isIntroOfYourself,
+  isIntroOfYourself,setIsIntroOfYourself,
+  filesToSend, setFilesToSend,
 }) => {
-  if(urlPosterCloudinary){console.log(`urlPosterCloudinary dans le composant GamePresentationSections : `, urlPosterCloudinary);}
-  if(urlImageOne){console.log(`urlImageOne dans le composant GamePresentationSections : `, urlImageOne);}
   const { language, changeLanguage } = useLanguage();
   const router = useRouter();
+  /********* Variable ************************************************************/  
+  console.log(`filesToSend :`, filesToSend);
+  const combienfilesToSend = Object.keys(filesToSend).length
+  console.log(`le lenght indiqué dans filesToSend :`, combienfilesToSend);
   
-  /*********** Upload Image To Cloudinary ****************************************/
-  const uploadImageToCloudinary = async (uploadFormData) => {
-    try {
-      const response = await fetch('/api/cloudinary/upload', {
-        method: 'POST',
-        body: uploadFormData,
-        headers: {
-          // Le navigateur définit automatiquement Content-Type pour FormData
-          // 'Content-Type': 'multipart/form-data', // Pas nécessaire
-          'Accept': 'application/json', // Indique que vous attendez une réponse JSON
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Image uploaded successfully:', data);
-        return data.secure_url
-      } else {
-        console.error('Error uploading image in uploadImageToCloudinary function', response.statusText);
-        return "";
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
+  const [urlMongoDB, setUrlMongoDB] = useState("");
+  console.log(`urlMongoDB :`, urlMongoDB);
+  const combienurlMongoDB = Object.keys(urlMongoDB).length
+  console.log(`le lenght indiqué dans urlMongoDB :`, combienurlMongoDB);
+  
+    // Vérifiez les valeurs avant l'envoi
+    console.log("URL Poster dessous la déclaration de mongoDB : ", urlMongoDB.posterGlimpseFile);
+    console.log("URL Image One dessous la déclaration de mongoDB : ", urlMongoDB.imageOneGlimpseFile);
+    console.log("URL Image Two dessous la déclaration de mongoDB : ", urlMongoDB.imageTwoGlimpseFile);
+    console.log("URL Image Three dessous la déclaration de mongoDB : ", urlMongoDB.imageThreeGlimpseFile);
+    console.log("URL Background dessous la déclaration de mongoDB : ", urlMongoDB.backgroundGlimpseFile);
+  // When backgroundGlimpseFile exist, we extract the Url from the file. And we send it to introductionGameForm
+  useEffect(() => {
+    if(filesToSend.backgroundGlimpseFile){
+      const url = URL.createObjectURL(filesToSend.backgroundGlimpseFile);      
+      setBackgroundPreview(url);
+    } else {
+      setBackgroundPreview("");
     }
-  }
-   
-    /*********************************************************************************/
+  }, [filesToSend.backgroundGlimpseFile])
+
   /****************** Send data to API createIntroduction **************************/
-  const handleFormSubmit = async (event) => {
+  const handleSendSubmit = async (event) => {
     event.preventDefault();
     try {
       if (!selectedAgePegi) {
@@ -130,80 +129,91 @@ const GamePresentationSections = ({
           "Le lien vers Steam doit commencer par 'https://' et inclure steam"
         );
       }
-   
-          const formData = new FormData(event.target);
-          console.dir(formData)
-          for (let [name, value] of formData.entries()) {
-            console.log(name, value);
+
+      /*********** Upload Image To Cloudinary **************************************************************************************/
+      const cld = new Cloudinary({
+        cloud: {
+          cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+        },
+        url: {
+          secure: true
+        }
+      });
+
+      const uploadPromises = Object.entries(filesToSend).map(async ([key, file]) => {      
+        if (file) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', process.env.NEXT_UPLOAD_PRESET_UNSIGNED);
+  
+          try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`, {
+              method: 'POST',
+              body: formData,
+            });
+            const data = await response.json();
+            console.log(`Upload successful for ${key}:`, data.secure_url);
+            
+            
+            // Stocker l'URL dans l'état approprié
+            setUrlMongoDB(prev => ({
+              ...prev,
+              [key]: data.secure_url // Mettez à jour l'URL directement dans sendImages
+            }));
+
+          } catch (error) {
+            console.error(`Upload error for ${key}:`, error);
           }
-          const imagePoster = formData.get('urlPosterCloudinary');
-          const imageOne = formData.get('urlImageOne');
-          console.log(imagePoster, imageOne);
+        }
+      });
 
-      // Les images à envoyer
-      /*const formData = new FormData(event.target)
-      console.log(`formData : `, formData);
-      const imagePoster = formData.get(urlPosterCloudinary);
-      const imageOne = formData.get(urlImageOne);*/
-      const imageTwo = formData.get(urlImageTwo);
-      const imageThree = formData.get(urlImageThree);
-      const imageurlImageBackground = formData.get(urlBackgroundCloudinary);
-      let imagePosterUrl = "";
-      let imageOneUrl = "";
-      let imageTwoUrl = "";
-      let imageThreeUrl = "";
-      let backgroundUrl = "";
-      console.log(`D'abord, imagePoster : `, imagePoster, ` et ensuite, urlPosterCloudinary : `, urlPosterCloudinary);
-      console.log(`D'abord, imageOne : `, imageOne, ` et ensuite, urlPosterCloudinary : `, urlImageOne);
-  // Vérifiez si les fichiers sont bien récupérés
+      // Attendez que tous les téléchargements soient terminés  
+      await Promise.all(uploadPromises);
 
-      if (!imagePoster) {
-        console.error('Aucun fichier pour imagePoster');
+    } catch (error) {
+      console.log(error);
+      return toast.error(error.message);
+    }
+  };
+  
+  // Are all url ready to be send ?
+  useEffect(() => {
+    const checkUrls = async () => {
+      // Check urlMongoDB contain all values before to call handleFormSubmit
+      if (Object.keys(urlMongoDB).length < Object.keys(filesToSend).length) {
+        console.log("Il reste des URL à stocker dans urlMongoDB.");
+      } else if (Object.keys(urlMongoDB).length === Object.keys(filesToSend).length && Object.keys(filesToSend).length > 0){
+        console.log("Maintenant que les images ont été envoyées, on lance la fonction handleFormSubmit pour envoyer les données à mongoDB");
+        await handleFormSubmit();
       }
-      if (!imageOne) {
-        console.error('Aucun fichier pour imageOne');
-      }
+    };
+    checkUrls(); 
+  }, [urlMongoDB])
 
-      if(imagePoster){
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", imagePoster);
-        console.log(`uploadFormData : `, uploadFormData);
-        imagePosterUrl = await uploadImageToCloudinary(uploadFormData);
-      }
-      if(imageOne){
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", imageOne);
-        imageOneUrl = await uploadImageToCloudinary(uploadFormData);
-      }
-      if(imageTwo){
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", imageTwo);
-        imageTwoUrl = await uploadImageToCloudinary(uploadFormData);
-      }
-      if(imageThree){
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", imageThree);
-        imageThreeUrl = await uploadImageToCloudinary(uploadFormData);
-      }
-      if(imageurlImageBackground){
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", imageurlImageBackground);
-        backgroundUrl = await uploadImageToCloudinary(uploadFormData);
-      }
-
-      // Function to send the data to createIntroduction function
-      
+  /******************** Send data to MongoDB ********************************************************** */
+  const handleFormSubmit = async () => {
+    
+    try {
+      // Vérifiez les valeurs avant l'envoi
+      /*
+      console.log("URL Poster juste avant l'envoi des données vers mongoDB : ", urlMongoDB.posterGlimpseFile);
+      console.log("URL Image One juste avant l'envoi des données vers mongoDB : ", urlMongoDB.imageOneGlimpseFile);
+      console.log("URL Image Two juste avant l'envoi des données vers mongoDB : ", urlMongoDB.imageTwoGlimpseFile);
+      console.log("URL Image Three juste avant l'envoi des données vers mongoDB : ", urlMongoDB.imageThreeGlimpseFile);
+      console.log("URL Background juste avant l'envoi des données vers mongoDB : ", urlMongoDB.backgroundGlimpseFile);
+      */
+      // Function to send the data to createIntroduction function      
       const introductionFormaData = new FormData()
       introductionFormaData.append("nameOfGame", encodeURIComponent(nameOfGame));
       introductionFormaData.append("shortIntroduction", he.encode(shortIntroduction));
       introductionFormaData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
       introductionFormaData.append("platform", JSON.stringify(platform));
       introductionFormaData.append("releaseDate", releaseDate);
-      introductionFormaData.append("urlPosterCloudinary", imagePosterUrl);
-      introductionFormaData.append("urlImageOneCloudinary", imageOneUrl);
-      introductionFormaData.append("urlImageTwoCloudinary", imageTwoUrl);
-      introductionFormaData.append("urlImageThreeCloudinary", imageThreeUrl);
-      introductionFormaData.append("urlBackgroundCloudinary", backgroundUrl);
+      introductionFormaData.append("urlPosterCloudinary", urlMongoDB.posterGlimpseFile || "");
+      introductionFormaData.append("urlImageOneCloudinary", urlMongoDB.imageOneGlimpseFile || "");
+      introductionFormaData.append("urlImageTwoCloudinary", urlMongoDB.imageTwoGlimpseFile || "");
+      introductionFormaData.append("urlImageThreeCloudinary", urlMongoDB.imageThreeGlimpseFile || "");
+      introductionFormaData.append("urlBackgroundCloudinary", urlMongoDB.backgroundGlimpseFile || "");
       introductionFormaData.append("SoloMulti", JSON.stringify(SoloMulti));
       introductionFormaData.append("selectedAgePegi", selectedAgePegi);
       introductionFormaData.append("selectedAdditionalPegi", selectedAdditionalPegi);
@@ -218,6 +228,8 @@ const GamePresentationSections = ({
 
       await createIntroduction(introductionFormaData);
       toast.success("Présentation du jeu envoyée avec succès !");     
+      console.log("Présentation du jeu envoyée avec succès !");
+
       // Redirect
       router.replace("/");
     } catch (error) {
@@ -229,7 +241,7 @@ const GamePresentationSections = ({
   return (
     
     <form
-      onSubmit={handleFormSubmit}
+      onSubmit={handleSendSubmit}
       className="neuphormismFormularyIntroductionGame w-full mb-4 rounded-lg"
     >
       <div className="laptop:flex items-center mb-3 w-[100%]">
@@ -316,10 +328,10 @@ const GamePresentationSections = ({
             : "Choose the game's poster."}{" "}
         </p>
         
-        <ImageCloudinary name="urlPosterCloudinary" imageSrc={urlPosterCloudinary}  setImageSrc={setUrlPosterCloudinary} />
+        <ImageCloudinary name="posterGlimpseFile" setFilesToSend={setFilesToSend} />
       </div>
 
-      <section className="flex flex-col tablet:flex-row w-[100%] justify-center  ">
+      <section className="flex flex-col tablet:flex-row w-[100%] justify-center">
         {/**************** Image d'illustration n°1 [encadré] ***************************** */}
 
         <div className="encadreViolet">
@@ -328,7 +340,7 @@ const GamePresentationSections = ({
               ? "Choisissez l'image d'illustration n°1"
               : "Choose illustration image #1."}{" "}
           </p>
-          <ImageCloudinary name="urlImageOne" imageSrc={urlImageOne} setImageSrc={setUrlImageOne} />
+          <ImageCloudinary name="imageOneGlimpseFile" setFilesToSend={setFilesToSend} />
         </div>
 
         {/**************** Image d'illustration n°2 [encadré] ***************************** */}
@@ -338,7 +350,7 @@ const GamePresentationSections = ({
               ? "Choisissez l'image d'illustration n°2"
               : "Choose illustration image #2."}{" "}
           </p>
-          <ImageCloudinary name="urlImageTwo" imageSrc={urlImageTwo} setImageSrc={setUrlImageTwo} />
+          <ImageCloudinary name="imageTwoGlimpseFile" setFilesToSend={setFilesToSend} />
         </div>
 
         {/**************** Image d'illustration n°3 [encadré] ***************************** */}
@@ -348,7 +360,7 @@ const GamePresentationSections = ({
               ? "Choisissez l'image d'illustration n°3"
               : "Choose illustration image #3."}{" "}
           </p>
-          <ImageCloudinary name="urlImageThree" imageSrc={urlImageThree} setImageSrc={setUrlImageThree}  />
+          <ImageCloudinary name="imageThreeGlimpseFile" setFilesToSend={setFilesToSend} />
         </div>
       </section>
 
@@ -361,7 +373,7 @@ const GamePresentationSections = ({
         </p>
         
         <div className="flex justify-center ">
-          <ImageCloudinary name="urlBackgroundCloudinary" imageSrc={urlBackgroundCloudinary}  setImageSrc={setUrlBackgroundCloudinary} />
+          <ImageCloudinary name="backgroundGlimpseFile" setFilesToSend={setFilesToSend}  />
         </div>
       </div>
 
@@ -463,7 +475,7 @@ const GamePresentationSections = ({
             introductionOfTheGame.length < 1 ||
             platform < 1 ||
             shortIntroduction < 1 ||
-            urlPosterCloudinary === ""
+            urlMongoDB.posterGlimpseFile === ""
           } /* Désactivé si les champs sont vides */
         >
           {language == "fr"

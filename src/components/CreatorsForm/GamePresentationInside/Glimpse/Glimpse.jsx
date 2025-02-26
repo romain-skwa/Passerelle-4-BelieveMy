@@ -63,6 +63,7 @@ const ApercuFormulaire = ({
   urlImageOne,
   urlImageTwo,
   urlImageThree,
+  filesToSend,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -333,43 +334,58 @@ const ApercuFormulaire = ({
         </div>
         {/************** Les images d'illustration **********************/}
         <section className="flex gap-2 justify-center">
-          {urlImageOne && (
-            <Image
-              src={urlImageOne}
-              className="w-[275px] h-[154px] py-3 inline-block"
-              width={275}
-              height={154}
-              unoptimized={true}
-              alt={`urlImageOne - ${nameOfGame}`}
-              onClick={() => openModal(urlImageOne)}
-            />
+          {filesToSend.imageOneGlimpseFile && (
+            (() => {
+            const url = URL.createObjectURL(filesToSend.imageOneGlimpseFile)
+              return (
+                <Image
+                  src={url}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  unoptimized={true}
+                  alt={`imageOneGlimpseFile`}
+                  onClick={() => openModal(url)}
+                />
+              );
+            })() 
           )}
-          {urlImageTwo && (
-            <Image
-              src={urlImageTwo}
-              className="w-[275px] h-[154px] py-3 inline-block"
-              width={275}
-              height={154}
-              unoptimized={true}
-              alt={`${nameOfGame}`}
-              onClick={() => openModal(urlImageTwo)}
-            />
+          {filesToSend.imageTwoGlimpseFile && (
+            (() => {
+            const url = URL.createObjectURL(filesToSend.imageTwoGlimpseFile)
+              return (
+                <Image
+                  src={url}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  unoptimized={true}
+                  alt={`imageTwoGlimpseFile`}
+                  onClick={() => openModal(url)}
+                />
+              );
+            })() 
           )}
-          {urlImageThree && (
-            <Image
-              src={urlImageThree}
-              className="w-[275px] h-[154px] py-3 inline-block"
-              width={275}
-              height={154}
-              unoptimized={true}
-              alt={`${nameOfGame}`}
-              onClick={() => openModal(urlImageThree)}
-            />
+          {filesToSend.imageThreeGlimpseFile && (
+            (() => {
+            const url = URL.createObjectURL(filesToSend.imageThreeGlimpseFile)
+              return (
+                <Image
+                  src={url}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  unoptimized={true}
+                  alt={`imageThreeGlimpseFile`}
+                  onClick={() => openModal(url)}
+                />
+              );
+            })() 
           )}
         </section>
       </section>
 
-      {urlPosterCloudinary && (
+      {filesToSend.posterGlimpseFile && (
         <section
           className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${
             isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
@@ -381,14 +397,22 @@ const ApercuFormulaire = ({
               : "Visible display on the homepage and search results:"}
           </p>
 
-          <Image
-            src={urlPosterCloudinary}
-            className="lg:w-[192px] lg:h-[311px] py-3 mx-auto"
-            width={192}
-            height={311}
-            unoptimized={true}
-            alt={`${nameOfGame}`}
-          />
+          {filesToSend.posterGlimpseFile && (
+            (() => {
+            const url = URL.createObjectURL(filesToSend.posterGlimpseFile)
+              return (
+                <Image
+                  src={url}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  unoptimized={true}
+                  alt={`posterGlimpseFile`}
+                  onClick={() => openModal(url)}
+                />
+              );
+            })() 
+          )}
         </section>
       )}
 

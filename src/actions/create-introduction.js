@@ -28,7 +28,6 @@ export const createIntroduction = async (formData) => {
   // Récupérer le nom du jeu
   const nameOfGame = formData.get("nameOfGame");
 
-
   // Vérifier si le nom du jeu existe déjà
   const gameExists = await checkIfGameExists(nameOfGame);
   if (gameExists) {

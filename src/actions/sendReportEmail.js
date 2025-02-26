@@ -10,7 +10,7 @@ export const sendReportEmail = async ({ gameId, nameOfGame, username, pathname }
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
-      to: ["nostromo_site@yahoo.fr"],
+      to: [process.env.MY_ADRESS_MAIL],
       subject: `Contenu signalé : ${nameOfGame}`,
       html: `
         <p style="text-align: center;">This is my game.com</p>
