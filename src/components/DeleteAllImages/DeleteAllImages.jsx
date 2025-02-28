@@ -17,11 +17,8 @@ export default function DeleteAllImage({
 }) {
     const pathname = usePathname();
     useEffect(() => {
-
-        // Logique pour supprimer les images
-    
-        // Par exemple, réinitialiser l'état des images
-    
+        // Logique pour supprimer les images    
+        // Par exemple, réinitialiser l'état des images    
       }, [pathname]); // Dépendance sur le chemin
 
       

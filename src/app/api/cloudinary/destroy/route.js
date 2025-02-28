@@ -1,3 +1,5 @@
+// DESTROY one image already used when user call the widget to replace it.
+// UpdateIntro.jsx
 import { v2 as cloudinary } from "cloudinary";
 
 // Configurer Cloudinary avec les variables d'environnement

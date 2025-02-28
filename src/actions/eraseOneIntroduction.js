@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
 const deleteIntroduction = async (gameId, nameOfGameUpdate) => {
-    // Obtenir la session de l'utilisateur
+    // Obtenir la session de l'utilisateur ff
     const session = await getServerSession(authOptions);
     const objectId = ObjectId.createFromHexString(gameId);
 

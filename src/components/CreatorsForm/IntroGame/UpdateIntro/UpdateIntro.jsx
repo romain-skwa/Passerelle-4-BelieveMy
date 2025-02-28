@@ -15,6 +15,7 @@ import he from "he";
 import { toast } from "react-toastify";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import deleteIntroduction from "@/actions/eraseOneIntroduction";
+import handleEraseAllImages from "@/actions/handleEraseAllImages";
 
 const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
   const router = useRouter();
@@ -42,7 +43,8 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
   const [isDarkModeUpdate, setIsDarkModeUpdate] = useState(false);
   const [isIntroOfYourselfUpdate, setIsIntroOfYourselfUpdate] = useState(false);
   const { language } = useLanguage();
-  //console.log(`Dans la page UpdateIntro, game.releaseDate : `, game.releaseDate);
+  
+  // Get data about this game
   useEffect(() => {
     if (game && game._id) {setGameId(game._id);}
     if (game && game.email) {setEmail(game.email);}
@@ -101,29 +103,21 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       }
 
       if (!urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)) {
-        return toast.error(
-          "Le lien de l'image doit être au format jpg, jpeg ou png"
-        );
+        return toast.error("Le lien de l'image doit être au format jpg, jpeg ou png");
       }
 
       if (!selectedAgePegiUpdate) {
-        return toast.error(
-          "Vous devez sélectionner un âge parmi les options disponibles."
-        );
+        return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
       }
 
       // Vérifiez le nombre de caractères de la courte introduction
       if (shortIntroductionUpdate.length > 400) {
-        return toast.error(
-          "L'introduction doit comporter 400 caractères maximum."
-        );
+        return toast.error("L'introduction doit comporter 400 caractères maximum.");
       }
 
       //Vérifiez le nombre de caractères de la présentation détaillée
       if (introductionOfTheGameUpdate.length > 10000) {
-        return toast.error(
-          "La présentation doit comporter 10 000 caractères maximum."
-        );
+        return toast.error("La présentation doit comporter 10 000 caractères maximum.");
       }
 
       // Vérifiez si au moins une plateforme est sélectionnée
@@ -132,30 +126,17 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       }
 
       // Vérifiez si le site du jeu commence par "https://"
-      if (
-        webSiteOfThisGameUpdate &&
-        !webSiteOfThisGameUpdate.startsWith("https://")
-      ) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+      if (webSiteOfThisGameUpdate && !webSiteOfThisGameUpdate.startsWith("https://")) {
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
 
       // Vérifiez si le site des créateurs commence par "https://"
-      if (
-        webSiteOfThisCreatorUpdate &&
-        !webSiteOfThisCreatorUpdate.startsWith("https://")
-      ) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+      if (webSiteOfThisCreatorUpdate && !webSiteOfThisCreatorUpdate.startsWith("https://")) {
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
 
       // Vérifiez que releaseDateUpdate est un objet Date valide
-      if (
-        !(releaseDateUpdate instanceof Date) ||
-        isNaN(releaseDateUpdate.getTime())
-      ) {
+      if (!(releaseDateUpdate instanceof Date) || isNaN(releaseDateUpdate.getTime())) {
         return toast.error("Vous devez sélectionner une date de sortie.");
       }
 
@@ -224,13 +205,15 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       return toast.error(error.message);
     }
   };
-  console.log(`gameId de la présentation à supprimer : `, gameId);
+  
   /* Suppression du jeu par le créateur *******************************************************************/
+  console.log(`gameId de la présentation à supprimer : `, gameId);
 
   const handleDelete = async () => {
     if(!confirm("Voulez vraiment supprimer la présentation de votre jeu ?")) return;
 
     try {
+      await handleEraseAllImages(game);
       await deleteIntroduction(gameId, nameOfGameUpdate);
       }
     catch (error) {
@@ -581,6 +564,7 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
       </div>
     </form>
 
+    {/* DELETE this introduction */}
     <div onClick={handleDelete} className="w-[250px] p-2 flex justify-center mx-auto mt-4 hover:bg-red hover:text-white transition-colors duration-300 cursor-pointer">
       {language === 'fr' ? "Supprimer cette présentation" : "Delete this introduction"}  
     </div>
