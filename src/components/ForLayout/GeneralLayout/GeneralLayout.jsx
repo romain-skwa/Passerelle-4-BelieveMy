@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import "@/app/styles/background.css";
 import { useSession } from "next-auth/react";
-import { useLanguage } from "../LanguageContext/LanguageContext";
 
 export default function GeneralLayout({ children, backgroundImage }) {
   const hasBackgroundImage = !!backgroundImage;
-  const { handleDeleteAllImages } = useLanguage();
   const { data: session } = useSession();
   const username = session?.user.username;
   const mainStyle = hasBackgroundImage

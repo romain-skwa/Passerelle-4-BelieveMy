@@ -17,7 +17,7 @@ import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageCont
 import deleteIntroduction from "@/actions/eraseOneIntroduction";
 import handleEraseAllImages from "@/actions/handleEraseAllImages";
 
-const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
+const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
   const router = useRouter();
   const [gameId, setGameId] = useState();
   const [email, setEmail] = useState();
@@ -213,6 +213,7 @@ const UpdateIntro = ({ game, fetchgameData, setLoading }) => {
     if(!confirm("Voulez vraiment supprimer la présentation de votre jeu ?")) return;
 
     try {
+      setWeAreDeleting(true);
       await handleEraseAllImages(game);
       await deleteIntroduction(gameId, nameOfGameUpdate);
       }

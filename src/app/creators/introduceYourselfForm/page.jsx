@@ -13,7 +13,7 @@ import logoItchi from "../../../../public/logo/itch-io-icon.png";
 import logoTwitter from "../../../../public/logo/x__twitter-logo.png";
 import Loading from "@/components/ForLayout/Loading/Loading";
 import "../../styles/formIntroYourself.css";
-import TextOneByOne from "@/components/TextOneByOne/TextOneByOne";
+import TextOneByOne from "@/components/CreatorsForm/TextOneByOne/TextOneByOne";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import MadeByThisCreator from "@/components/MadeByThisCreator/MadeByThisCreator";
 
@@ -178,12 +178,19 @@ const introduceYourself = () => {
         <Loading /> // Affiche le composant Loading pendant le chargement
       ) : (
         <>
-          <form onSubmit={handleFormSubmit} className="w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center">
+          <form
+            onSubmit={handleFormSubmit}
+            className="w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center"
+          >
             <section className="sectionTextareaIntroYourself  shadowPurple ">
-              <TextOneByOne 
-                frenchPhrase={"Présentez votre parcours. Évoquez vos jeux. C'est à vous..."} 
-                englishPhrase={"Present your background. Mention your games. It's your turn..."}
-                />
+              <TextOneByOne
+                frenchPhrase={
+                  "Présentez votre parcours. Évoquez vos jeux. C'est à vous..."
+                }
+                englishPhrase={
+                  "Present your background. Mention your games. It's your turn..."
+                }
+              />
               <textarea
                 value={bio}
                 onChange={(event) => setBio(event.target.value)}
@@ -331,7 +338,11 @@ const introduceYourself = () => {
               value={websiteUrl}
               onChange={(event) => setWebsiteUrl(event.target.value)}
               className="w-[95%] laptop:w-[60%] my-4 p-2 rounded-xl transparentWhite text-white"
-              placeholder={ language == "fr" ? "URL de votre site web :" : "URL of your website" }
+              placeholder={
+                language == "fr"
+                  ? "URL de votre site web :"
+                  : "URL of your website"
+              }
             />
 
             <div className="social">
@@ -463,7 +474,9 @@ const introduceYourself = () => {
               {language == "fr" ? "Mettre à jour" : "Update"}
             </button>
           </form>
-          <div className="w-[95%] laptop:w-[50vw] mx-auto"><MadeByThisCreator user={user} /></div>          
+          <div className="w-[95%] laptop:w-[50vw] mx-auto">
+            <MadeByThisCreator user={user} />
+          </div>
         </>
       )}
     </GeneralLayout>

@@ -1,5 +1,5 @@
 "use client";
-// Formulary  introduction Games
+// Formulary introduction Games
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
@@ -11,7 +11,7 @@ import UserProfileSection from "@/components/UserProfileSection/UserProfileSecti
 import ObligatoryButtons from "@/components/CreatorsForm/ObligatoryButtons/ObligatoryButtons";
 import OptionalButtons from "@/components/CreatorsForm/OptionalButtons/OptionalButtons";
 import GamePresentationSections from "@/components/CreatorsForm/GamePresentationSections/GamePresentationSections";
-import TextOneByOne from "@/components/TextOneByOne/TextOneByOne";
+import TextOneByOne from "@/components/CreatorsForm/TextOneByOne/TextOneByOne";
 import { Press_Start_2P } from "next/font/google";
 import Loading from "@/components/ForLayout/Loading/Loading";
 import WeAreSendingData from "@/components/WeAreSendingData/WeAreSendingData";
@@ -84,32 +84,32 @@ export default function introductionGameForm() {
 
   return (
     <GeneralLayout>
-       {loading || weAreSendingData ? (
-
-weAreSendingData ? (
-
-  <WeAreSendingData filesToSend={filesToSend} nameOfGame={nameOfGame} />
-
-) : (
-
-  <Loading weAreSendingData={weAreSendingData} />
-
-)
-
-) : (
+      {loading || weAreSendingData ? (
+        weAreSendingData ? (
+          <WeAreSendingData filesToSend={filesToSend} nameOfGame={nameOfGame} />
+        ) : (
+          <Loading />
+        )
+      ) : (
         <>
           {/*<section className="h-[100px] largeScreen:h-[66px] flex flex-col  shadowPurple">*/}
           <section className="w-[95vw] largeScreen:w-[68vw] mx-auto px-0 tablet:px-8 text-white font-bold border border-purple-600 rounded-3xl bg-black/30">
-          <div className="m-4 min-h-[44px] largeScreen:min-h-[24px] text-xs laptop:text-sm shadowPurple">
-            {session?.user?.username &&
-              <>
-                <span className={`capitalize ${pressStart2P.className}`}>{session?.user.username}</span>                 
-                <TextOneByOne 
-                  frenchPhrase={", sur cette page, vous êtes invité à remplir la présentation de votre jeu."} 
-                  englishPhrase={", on this page, you are invited to fill out the presentation of your game."}
-                />      
-              </>  
-            }
+            <div className="m-4 min-h-[44px] largeScreen:min-h-[24px] text-xs laptop:text-sm shadowPurple">
+              {session?.user?.username && (
+                <>
+                  <span className={`capitalize ${pressStart2P.className}`}>
+                    {session?.user.username}
+                  </span>
+                  <TextOneByOne
+                    frenchPhrase={
+                      ", sur cette page, vous êtes invité à remplir la présentation de votre jeu."
+                    }
+                    englishPhrase={
+                      ", on this page, you are invited to fill out the presentation of your game."
+                    }
+                  />
+                </>
+              )}
             </div>
 
             {/************ Informations Obligatoires **********************************************************/}
@@ -132,7 +132,9 @@ weAreSendingData ? (
                 <OptionalButtons
                   nameOfGame={nameOfGame}
                   setNameOfGame={setNameOfGame}
-                  urlBackgroundCloudinary={filesToSend.backgroundGlimpseFile || ""}
+                  urlBackgroundCloudinary={
+                    filesToSend.backgroundGlimpseFile || ""
+                  }
                   genreOfGame={genreOfGame}
                   videoLink={videoLink}
                   webSiteOfThisGame={webSiteOfThisGame}
@@ -147,21 +149,35 @@ weAreSendingData ? (
 
               {/*************************** LES ENCADRÉS ******************************************************/}
               <GamePresentationSections
-                nameOfGame={nameOfGame} setNameOfGame={setNameOfGame}
-                shortIntroduction={shortIntroduction} setShortIntroduction={setShortIntroduction}
-                introductionOfTheGame={introductionOfTheGame} setIntroductionOfTheGame={setIntroductionOfTheGame}
-                platform={platform} setPlatform={setPlatform}
-                releaseDate={releaseDate} setReleaseDate={setReleaseDate}
-                selectedAgePegi={selectedAgePegi} setSelectedAgePegi={setSelectedAgePegi}
-                selectedAdditionalPegi={selectedAdditionalPegi} setSelectedAdditionalPegi={setSelectedAdditionalPegi}
-                SoloMulti={SoloMulti} setSoloMulti={setSoloMulti}
+                nameOfGame={nameOfGame}
+                setNameOfGame={setNameOfGame}
+                shortIntroduction={shortIntroduction}
+                setShortIntroduction={setShortIntroduction}
+                introductionOfTheGame={introductionOfTheGame}
+                setIntroductionOfTheGame={setIntroductionOfTheGame}
+                platform={platform}
+                setPlatform={setPlatform}
+                releaseDate={releaseDate}
+                setReleaseDate={setReleaseDate}
+                selectedAgePegi={selectedAgePegi}
+                setSelectedAgePegi={setSelectedAgePegi}
+                selectedAdditionalPegi={selectedAdditionalPegi}
+                setSelectedAdditionalPegi={setSelectedAdditionalPegi}
+                SoloMulti={SoloMulti}
+                setSoloMulti={setSoloMulti}
                 setBackgroundPreview={setBackgroundPreview}
-                videoLink={videoLink} setVideoLink={setVideoLink}
-                webSiteOfThisGame={webSiteOfThisGame} setWebSiteOfThisGame={setWebSiteOfThisGame}
-                webSiteOfThisCreator={webSiteOfThisCreator} setWebSiteOfThisCreator={setWebSiteOfThisCreator}
-                steamLink={steamLink} setSteamLink={setSteamLink}
-                epicGamesLink={epicGamesLink} setEpicGamesLink={setEpicGamesLink}
-                genreOfGame={genreOfGame} setGenreOfGame={setGenreOfGame}
+                videoLink={videoLink}
+                setVideoLink={setVideoLink}
+                webSiteOfThisGame={webSiteOfThisGame}
+                setWebSiteOfThisGame={setWebSiteOfThisGame}
+                webSiteOfThisCreator={webSiteOfThisCreator}
+                setWebSiteOfThisCreator={setWebSiteOfThisCreator}
+                steamLink={steamLink}
+                setSteamLink={setSteamLink}
+                epicGamesLink={epicGamesLink}
+                setEpicGamesLink={setEpicGamesLink}
+                genreOfGame={genreOfGame}
+                setGenreOfGame={setGenreOfGame}
                 isDarkMode={isDarkMode}
                 isIntroOfYourself={isIntroOfYourself}
                 setIsIntroOfYourself={setIsIntroOfYourself}
@@ -200,7 +216,7 @@ weAreSendingData ? (
               steamLink={steamLink}
               epicGamesLink={epicGamesLink}
               filesToSend={filesToSend}
-              isIntroOfYourself={isIntroOfYourself}          
+              isIntroOfYourself={isIntroOfYourself}
             />
 
             {/*************************** Biography of the creator *******************************************/}

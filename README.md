@@ -3,3 +3,7 @@ Après avoir envisagé un court moment un site sur lequel les artisans auraient 
 Le nombre de jeux sortant sur les plate-formes comme Steam se compte en milliers chaque année. Ils sont pour ainsi dire "noyés dans la masse". Si une partie d'entre eux est visible sur un site comme le mien, peut-être seront-ils plus succeptibles d'attirer l'attention. Mais ce n'est le tout d'avoir une idée. Encore faut-il l'exploiter correctement. Et pour mon épreuve, j'ai choisi un projet qui pourrait-être utilisable après la formation.
 
 J'ai choisi d'indiquer les messages d'alertes identiques quand l'adresse mail ou le mot de passe sont erronés. Je souhaite resté volontairement évasif. Le message "le mot de passe est incorrect" est trop explicite. Il indique que l'adresse mail est bonne ;  et que le problème ne provient que du mot de passe. Les hackers qui tentent d'entrer des mails dont ils disposent découvriraient de cette façon qu'une des adresses
+
+Loading pendant chargment des pages
+chargment pendant l'envoi des données à mongodb (avec layout)
+chargement encore différent quand on supprime une présentation (sans le layout)
