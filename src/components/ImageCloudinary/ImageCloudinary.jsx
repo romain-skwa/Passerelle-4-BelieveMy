@@ -24,12 +24,10 @@ const ImageCloudinary = ({ name, setFilesToSend }) => {
   };
 
   // Définir les dimensions en fonction de la valeur de `name`
-  const isUrlPosterCloudinary = name === "urlPosterCloudinary";
+  const isUrlPosterCloudinary = name === "posterGlimpseFile";
   const width = isUrlPosterCloudinary ? 192 : 275;
   const height = isUrlPosterCloudinary ? 311 : 154;
-  const dimensionCss = isUrlPosterCloudinary
-    ? "w-[192px] h-[311px]"
-    : "w-[275px] h-[154px]";
+  const dimensionCss = isUrlPosterCloudinary ? "w-[192px] h-[311px]" : "w-[275px] h-[154px]";
 
   // Nettoyer l'URL de prévisualisation lors du démontage du composant
   useEffect(() => {

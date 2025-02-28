@@ -21,29 +21,17 @@ console.log(`username : session.user.username dans le composant FLAG : `, userna
     const flagUpdateResult = await updateFlag(username, gameId, nameOfGame);
 
     if (!flagUpdateResult.success) {
-
-      toast.error(flagUpdateResult.message); // Affiche un message d'erreur si le jeu a déjà été signalé
+      toast.error(flagUpdateResult.message); // Affiche un message d'erreur si le jeu a déjà été signalé  
+      return;  
+    }  
   
-      return;
-  
-    }
-  
-  
-    // Si le signalement a été ajouté avec succès, envoyez l'email
-  
-    const emailResult = await sendReportEmail({ gameId, nameOfGame, username, pathname });
-  
-  
-    if (emailResult.success) {
-  
-      toast.success(emailResult.message);
-  
+    // Si le signalement a été ajouté avec succès, envoyez l'email  
+    const emailResult = await sendReportEmail({ gameId, nameOfGame, username, pathname }); 
+    if (emailResult.success) {  
+      toast.success(emailResult.message);  
     } else {
-  
-      toast.error(emailResult.message);
-  
-    }
-  
+      toast.error(emailResult.message);  
+    }  
   };
 
   return (

@@ -125,3 +125,60 @@
   .contentLogo {
     @apply w-[15%] laptop:w-[20%] flex justify-end items-center;
   }
+  /****** WeAreSendingData **** Clignotement sur mobile **************************/
+  .blinkSend{
+    animation: clignote 2s infinite;
+  }
+  
+  .blinkSend:nth-of-type(2){animation-delay: 0.4s;}
+  .blinkSend:nth-of-type(3){animation-delay: 0.8s;}
+  .blinkSend:nth-of-type(4){animation-delay: 1.2s;}
+  .blinkSend:nth-of-type(5){animation-delay: 1.6s;}
+  
+  @keyframes clignote {
+    0%  {opacity: 1;}
+    30% {opacity: 0.3;}
+    90% {opacity: 0.3;}
+    100%{opacity: 1;}
+  }
+  /****** WeAreSendingData **** Titre qui bouge **************************/
+  .truc{
+    margin-left: auto; /* Pousse l'élément vers la droite */
+    margin-right: 0; 
+    overflow: hidden;
+    animation: shrink 4s infinite;
+  }
+
+  @keyframes shrink {
+    0% { width: 100%; }   /* Largeur initiale */
+    9% { width: 100%; }   /* Largeur initiale */
+    
+    10% { width: 90%; }   /* Rétrécit à 90% */
+    19% { width: 90%; }   /* Reste à 90% */
+    
+    20% { width: 80%; }   /* Rétrécit à 80% */
+    29% { width: 80%; }   /* Reste à 80% */
+    
+    30% { width: 70%; }   /* Rétrécit à 70% */
+    39% { width: 70%; }   /* Reste à 70% */
+    
+    40% { width: 60%; }   /* Rétrécit à 60% */
+    49% { width: 60%; }   /* Reste à 60% */
+    
+    50% { width: 50%; }   /* Rétrécit à 50% */
+    59% { width: 50%; }   /* Reste à 50% */
+    
+    60% { width: 40%; }   /* Rétrécit à 40% */
+    69% { width: 40%; }   /* Reste à 40% */
+    
+    70% { width: 30%; }   /* Rétrécit à 30% */
+    79% { width: 30%; }   /* Reste à 30% */
+    
+    80% { width: 20%; }   /* Rétrécit à 20% */
+    89% { width: 20%; }   /* Reste à 20% */
+    
+    90% { width: 10%; }   /* Rétrécit à 10% */
+    99% { width: 10%; }   /* Reste à 10% */
+    
+    100% { width: 0%; }   /* Rétrécit à 0% */
+}

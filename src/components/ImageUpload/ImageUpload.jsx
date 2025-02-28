@@ -65,7 +65,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
   return (
     <CldUploadWidget
       uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
-      signatureEndpoint="/api/cloudinary/route"
+      signatureEndpoint="/api/cloudinary/sendOneImage"
       onSuccess={handleImageUploadSuccess} // Appeler après le téléchargement avec succès
       options={{
         singleUploadAutoClose: true, // Fermeture automatique

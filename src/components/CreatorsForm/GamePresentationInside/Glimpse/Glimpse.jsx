@@ -52,7 +52,6 @@ const ApercuFormulaire = ({
   shortIntroduction,
   releaseDate,
   platform,
-  urlPosterCloudinary,
   genreOfGame,
   videoLink,
   webSiteOfThisGame,
@@ -60,9 +59,6 @@ const ApercuFormulaire = ({
   steamLink,
   epicGamesLink,
   SoloMulti,
-  urlImageOne,
-  urlImageTwo,
-  urlImageThree,
   filesToSend,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

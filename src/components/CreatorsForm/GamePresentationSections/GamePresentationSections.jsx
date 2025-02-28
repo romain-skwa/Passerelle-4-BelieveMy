@@ -25,11 +25,6 @@ const GamePresentationSections = ({
   selectedAgePegi, setSelectedAgePegi,
   selectedAdditionalPegi, setSelectedAdditionalPegi,
   SoloMulti, setSoloMulti,
-  urlPosterCloudinary, setUrlPosterCloudinary,
-  urlImageOne, setUrlImageOne,
-  urlImageTwo, setUrlImageTwo,
-  urlImageThree, setUrlImageThree,
-  urlBackgroundCloudinary, setUrlBackgroundCloudinary,
   setBackgroundPreview,
   videoLink, setVideoLink,
   webSiteOfThisGame, setWebSiteOfThisGame,
@@ -40,26 +35,17 @@ const GamePresentationSections = ({
   isDarkMode,
   isIntroOfYourself,setIsIntroOfYourself,
   filesToSend, setFilesToSend,
+  setLoading,
+  setWeAreSendingData,
 }) => {
   const { language, changeLanguage } = useLanguage();
   const router = useRouter();
   /********* Variable ************************************************************/  
-  console.log(`filesToSend :`, filesToSend);
-  const combienfilesToSend = Object.keys(filesToSend).length
-  console.log(`le lenght indiqué dans filesToSend :`, combienfilesToSend);
-  
+  // When the images have been sent to Cloudinary, their URLs are stored in urlMongoDB.
   const [urlMongoDB, setUrlMongoDB] = useState("");
-  console.log(`urlMongoDB :`, urlMongoDB);
-  const combienurlMongoDB = Object.keys(urlMongoDB).length
-  console.log(`le lenght indiqué dans urlMongoDB :`, combienurlMongoDB);
   
-    // Vérifiez les valeurs avant l'envoi
-    console.log("URL Poster dessous la déclaration de mongoDB : ", urlMongoDB.posterGlimpseFile);
-    console.log("URL Image One dessous la déclaration de mongoDB : ", urlMongoDB.imageOneGlimpseFile);
-    console.log("URL Image Two dessous la déclaration de mongoDB : ", urlMongoDB.imageTwoGlimpseFile);
-    console.log("URL Image Three dessous la déclaration de mongoDB : ", urlMongoDB.imageThreeGlimpseFile);
-    console.log("URL Background dessous la déclaration de mongoDB : ", urlMongoDB.backgroundGlimpseFile);
-  // When backgroundGlimpseFile exist, we extract the Url from the file. And we send it to introductionGameForm
+  // When backgroundGlimpseFile exist, we extract the Url from the file. 
+  // And we send it to introductionGameForm to display it.
   useEffect(() => {
     if(filesToSend.backgroundGlimpseFile){
       const url = URL.createObjectURL(filesToSend.backgroundGlimpseFile);      
@@ -69,9 +55,15 @@ const GamePresentationSections = ({
     }
   }, [filesToSend.backgroundGlimpseFile])
 
-  /****************** Send data to API createIntroduction **************************/
+  // (1-2) Send data to API createIntroduction  -- try catch
+  // (3)   Are all url ready to be send ?       -- useEffect
+  // (4)   Send data to MongoDB                 -- try catch 
+
+  /****************** Send data to API createIntroduction *****************************************************/
+    /** 1 **** verification *******/
   const handleSendSubmit = async (event) => {
     event.preventDefault();
+ 
     try {
       if (!selectedAgePegi) {
         return toast.error(
@@ -130,7 +122,7 @@ const GamePresentationSections = ({
         );
       }
 
-      /*********** Upload Image To Cloudinary **************************************************************************************/
+      /*** 2 ******** Upload Image To Cloudinary ***************************************************************/
       const cld = new Cloudinary({
         cloud: {
           cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
@@ -176,7 +168,7 @@ const GamePresentationSections = ({
     }
   };
   
-  // Are all url ready to be send ?
+  // ** 3 ** Are all url ready to be send ? ********************************************************************
   useEffect(() => {
     const checkUrls = async () => {
       // Check urlMongoDB contain all values before to call handleFormSubmit
@@ -188,20 +180,12 @@ const GamePresentationSections = ({
       }
     };
     checkUrls(); 
-  }, [urlMongoDB])
+  }, [urlMongoDB]);
 
-  /******************** Send data to MongoDB ********************************************************** */
+  /****** 4 ************** Send data to MongoDB ********************************************************** */
   const handleFormSubmit = async () => {
-    
+   setWeAreSendingData(true);
     try {
-      // Vérifiez les valeurs avant l'envoi
-      /*
-      console.log("URL Poster juste avant l'envoi des données vers mongoDB : ", urlMongoDB.posterGlimpseFile);
-      console.log("URL Image One juste avant l'envoi des données vers mongoDB : ", urlMongoDB.imageOneGlimpseFile);
-      console.log("URL Image Two juste avant l'envoi des données vers mongoDB : ", urlMongoDB.imageTwoGlimpseFile);
-      console.log("URL Image Three juste avant l'envoi des données vers mongoDB : ", urlMongoDB.imageThreeGlimpseFile);
-      console.log("URL Background juste avant l'envoi des données vers mongoDB : ", urlMongoDB.backgroundGlimpseFile);
-      */
       // Function to send the data to createIntroduction function      
       const introductionFormaData = new FormData()
       introductionFormaData.append("nameOfGame", encodeURIComponent(nameOfGame));
@@ -235,6 +219,8 @@ const GamePresentationSections = ({
     } catch (error) {
       console.log(error);
       return toast.error(error.message);
+    } finally {
+      console.log("----------------------------- C'est tout bon ! ---------------------------------------");
     }
   };
 
