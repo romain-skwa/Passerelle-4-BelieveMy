@@ -1,7 +1,7 @@
 // components/GamePresentationSections/GamePresentationSections.js
 
 import React, { useEffect, useState } from "react";
-import EditorPerso from "@/components/CreatorsForm/GamePresentationInside/EditorPerso/EditorPerso";
+import EditorPerso from "../../../../public/poubelle/EditorPerso/EditorPerso";
 import Platform from "../GamePresentationInside/Platform/Platform";
 import Pegi from "@/components/CreatorsForm/GamePresentationInside/Pegi/Pegi";
 import ButtonSoloMulti from "@/components/CreatorsForm/GamePresentationInside/ButtonSoloMulti/ButtonSoloMulti";
@@ -15,55 +15,72 @@ import { createIntroduction } from "@/actions/create-introduction";
 import he from "he";
 import { useRouter } from "next/navigation";
 import { Cloudinary } from "@cloudinary/url-gen";
+import MyEditor from "@/components/MyEditor/MyEditor";
 
 const GamePresentationSections = ({
-  nameOfGame, setNameOfGame,
-  shortIntroduction, setShortIntroduction,
-  introductionOfTheGame, setIntroductionOfTheGame,
-  platform, setPlatform,
-  releaseDate, setReleaseDate,
-  selectedAgePegi, setSelectedAgePegi,
-  selectedAdditionalPegi, setSelectedAdditionalPegi,
-  SoloMulti, setSoloMulti,
+  nameOfGame,
+  setNameOfGame,
+  shortIntroduction,
+  setShortIntroduction,
+  introductionOfTheGame,
+  setIntroductionOfTheGame,
+  platform,
+  setPlatform,
+  releaseDate,
+  setReleaseDate,
+  selectedAgePegi,
+  setSelectedAgePegi,
+  selectedAdditionalPegi,
+  setSelectedAdditionalPegi,
+  SoloMulti,
+  setSoloMulti,
   setBackgroundPreview,
-  videoLink, setVideoLink,
-  webSiteOfThisGame, setWebSiteOfThisGame,
-  webSiteOfThisCreator, setWebSiteOfThisCreator,
-  steamLink, setSteamLink,
-  epicGamesLink, setEpicGamesLink,
-  genreOfGame, setGenreOfGame,
+  videoLink,
+  setVideoLink,
+  webSiteOfThisGame,
+  setWebSiteOfThisGame,
+  webSiteOfThisCreator,
+  setWebSiteOfThisCreator,
+  steamLink,
+  setSteamLink,
+  epicGamesLink,
+  setEpicGamesLink,
+  genreOfGame,
+  setGenreOfGame,
   isDarkMode,
-  isIntroOfYourself,setIsIntroOfYourself,
-  filesToSend, setFilesToSend,
+  isIntroOfYourself,
+  setIsIntroOfYourself,
+  filesToSend,
+  setFilesToSend,
   setLoading,
   setWeAreSendingData,
 }) => {
   const { language, changeLanguage } = useLanguage();
   const router = useRouter();
-  /********* Variable ************************************************************/  
+  /********* Variable ************************************************************/
   // When the images have been sent to Cloudinary, their URLs are stored in urlMongoDB.
   const [urlMongoDB, setUrlMongoDB] = useState("");
-  
-  // When backgroundGlimpseFile exist, we extract the Url from the file. 
+
+  // When backgroundGlimpseFile exist, we extract the Url from the file.
   // And we send it to introductionGameForm to display it.
   useEffect(() => {
-    if(filesToSend.backgroundGlimpseFile){
-      const url = URL.createObjectURL(filesToSend.backgroundGlimpseFile);      
+    if (filesToSend.backgroundGlimpseFile) {
+      const url = URL.createObjectURL(filesToSend.backgroundGlimpseFile);
       setBackgroundPreview(url);
     } else {
       setBackgroundPreview("");
     }
-  }, [filesToSend.backgroundGlimpseFile])
+  }, [filesToSend.backgroundGlimpseFile]);
 
   // (1-2) Send data to API createIntroduction  -- try catch
   // (3)   Are all url ready to be send ?       -- useEffect
-  // (4)   Send data to MongoDB                 -- try catch 
+  // (4)   Send data to MongoDB                 -- try catch
 
   /****************** Send data to API createIntroduction *****************************************************/
-    /** 1 **** verification *******/
+  /** 1 **** verification *******/
   const handleSendSubmit = async (event) => {
     event.preventDefault();
- 
+
     try {
       if (!selectedAgePegi) {
         return toast.error(
@@ -91,7 +108,8 @@ const GamePresentationSections = ({
 
       // Vérifiez si le site des créateurs commence par "https://"
       if (
-        webSiteOfThisCreator && !webSiteOfThisCreator.startsWith("https://")
+        webSiteOfThisCreator &&
+        !webSiteOfThisCreator.startsWith("https://")
       ) {
         return toast.error(
           "Le lien du site officiel doit commencer par 'https://'"
@@ -125,93 +143,136 @@ const GamePresentationSections = ({
       /*** 2 ******** Upload Image To Cloudinary ***************************************************************/
       const cld = new Cloudinary({
         cloud: {
-          cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+          cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
         },
         url: {
-          secure: true
-        }
+          secure: true,
+        },
       });
 
-      const uploadPromises = Object.entries(filesToSend).map(async ([key, file]) => {      
-        if (file) {
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', process.env.NEXT_UPLOAD_PRESET_UNSIGNED);
-  
-          try {
-            const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`, {
-              method: 'POST',
-              body: formData,
-            });
-            const data = await response.json();
-            console.log(`Upload successful for ${key}:`, data.secure_url);
-            
-            
-            // Stocker l'URL dans l'état approprié
-            setUrlMongoDB(prev => ({
-              ...prev,
-              [key]: data.secure_url // Mettez à jour l'URL directement dans sendImages
-            }));
+      const uploadPromises = Object.entries(filesToSend).map(
+        async ([key, file]) => {
+          if (file) {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append(
+              "upload_preset",
+              process.env.NEXT_UPLOAD_PRESET_UNSIGNED
+            );
 
-          } catch (error) {
-            console.error(`Upload error for ${key}:`, error);
+            try {
+              const response = await fetch(
+                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
+              const data = await response.json();
+              console.log(`Upload successful for ${key}:`, data.secure_url);
+
+              // Stocker l'URL dans l'état approprié
+              setUrlMongoDB((prev) => ({
+                ...prev,
+                [key]: data.secure_url, // Mettez à jour l'URL directement dans sendImages
+              }));
+            } catch (error) {
+              console.error(`Upload error for ${key}:`, error);
+            }
           }
         }
-      });
+      );
 
-      // Attendez que tous les téléchargements soient terminés  
+      // Attendez que tous les téléchargements soient terminés
       await Promise.all(uploadPromises);
-
     } catch (error) {
       console.log(error);
       return toast.error(error.message);
     }
   };
-  
+
   // ** 3 ** Are all url ready to be send ? ********************************************************************
   useEffect(() => {
     const checkUrls = async () => {
       // Check urlMongoDB contain all values before to call handleFormSubmit
       if (Object.keys(urlMongoDB).length < Object.keys(filesToSend).length) {
         console.log("Il reste des URL à stocker dans urlMongoDB.");
-      } else if (Object.keys(urlMongoDB).length === Object.keys(filesToSend).length && Object.keys(filesToSend).length > 0){
-        console.log("Maintenant que les images ont été envoyées, on lance la fonction handleFormSubmit pour envoyer les données à mongoDB");
+      } else if (
+        Object.keys(urlMongoDB).length === Object.keys(filesToSend).length &&
+        Object.keys(filesToSend).length > 0
+      ) {
+        console.log(
+          "Maintenant que les images ont été envoyées, on lance la fonction handleFormSubmit pour envoyer les données à mongoDB"
+        );
         await handleFormSubmit();
       }
     };
-    checkUrls(); 
+    checkUrls();
   }, [urlMongoDB]);
 
   /****** 4 ************** Send data to MongoDB ********************************************************** */
   const handleFormSubmit = async () => {
-   setWeAreSendingData(true);
+    setWeAreSendingData(true);
     try {
-      // Function to send the data to createIntroduction function      
-      const introductionFormaData = new FormData()
-      introductionFormaData.append("nameOfGame", encodeURIComponent(nameOfGame));
-      introductionFormaData.append("shortIntroduction", he.encode(shortIntroduction));
-      introductionFormaData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
+      // Function to send the data to createIntroduction function
+      const introductionFormaData = new FormData();
+      introductionFormaData.append(
+        "nameOfGame",
+        encodeURIComponent(nameOfGame)
+      );
+      introductionFormaData.append(
+        "shortIntroduction",
+        he.encode(shortIntroduction)
+      );
+      introductionFormaData.append(
+        "introductionOfTheGame",
+        he.encode(introductionOfTheGame)
+      );
       introductionFormaData.append("platform", JSON.stringify(platform));
       introductionFormaData.append("releaseDate", releaseDate);
-      introductionFormaData.append("urlPosterCloudinary", urlMongoDB.posterGlimpseFile || "");
-      introductionFormaData.append("urlImageOneCloudinary", urlMongoDB.imageOneGlimpseFile || "");
-      introductionFormaData.append("urlImageTwoCloudinary", urlMongoDB.imageTwoGlimpseFile || "");
-      introductionFormaData.append("urlImageThreeCloudinary", urlMongoDB.imageThreeGlimpseFile || "");
-      introductionFormaData.append("urlBackgroundCloudinary", urlMongoDB.backgroundGlimpseFile || "");
+      introductionFormaData.append(
+        "urlPosterCloudinary",
+        urlMongoDB.posterGlimpseFile || ""
+      );
+      introductionFormaData.append(
+        "urlImageOneCloudinary",
+        urlMongoDB.imageOneGlimpseFile || ""
+      );
+      introductionFormaData.append(
+        "urlImageTwoCloudinary",
+        urlMongoDB.imageTwoGlimpseFile || ""
+      );
+      introductionFormaData.append(
+        "urlImageThreeCloudinary",
+        urlMongoDB.imageThreeGlimpseFile || ""
+      );
+      introductionFormaData.append(
+        "urlBackgroundCloudinary",
+        urlMongoDB.backgroundGlimpseFile || ""
+      );
       introductionFormaData.append("SoloMulti", JSON.stringify(SoloMulti));
       introductionFormaData.append("selectedAgePegi", selectedAgePegi);
-      introductionFormaData.append("selectedAdditionalPegi", selectedAdditionalPegi);
+      introductionFormaData.append(
+        "selectedAdditionalPegi",
+        selectedAdditionalPegi
+      );
       introductionFormaData.append("genreOfGame", JSON.stringify(genreOfGame));
       introductionFormaData.append("videoLink", videoLink);
       introductionFormaData.append("steamLink", steamLink);
       introductionFormaData.append("epicGamesLink", epicGamesLink);
       introductionFormaData.append("webSiteOfThisGame", webSiteOfThisGame);
-      introductionFormaData.append("webSiteOfThisCreator", webSiteOfThisCreator);
+      introductionFormaData.append(
+        "webSiteOfThisCreator",
+        webSiteOfThisCreator
+      );
       introductionFormaData.append("isDarkMode", isDarkMode.toString());
-      introductionFormaData.append("isIntroOfYourself", isIntroOfYourself.toString());
+      introductionFormaData.append(
+        "isIntroOfYourself",
+        isIntroOfYourself.toString()
+      );
 
       await createIntroduction(introductionFormaData);
-      toast.success("Présentation du jeu envoyée avec succès !");     
+      toast.success("Présentation du jeu envoyée avec succès !");
       console.log("Présentation du jeu envoyée avec succès !");
 
       // Redirect
@@ -220,12 +281,13 @@ const GamePresentationSections = ({
       console.log(error);
       return toast.error(error.message);
     } finally {
-      console.log("----------------------------- C'est tout bon ! ---------------------------------------");
+      console.log(
+        "----------------------------- C'est tout bon ! ---------------------------------------"
+      );
     }
   };
 
   return (
-    
     <form
       onSubmit={handleSendSubmit}
       className="neuphormismFormularyIntroductionGame w-full mb-4 rounded-lg"
@@ -265,13 +327,7 @@ const GamePresentationSections = ({
       </div>
 
       {/**************** Editeur de texte ********************************************** */}
-      <EditorPerso
-        introductionOfTheGame={introductionOfTheGame}
-        setIntroductionOfTheGame={setIntroductionOfTheGame}
-        onTextChange={(newText) => {
-          setIntroductionOfTheGame(newText);
-        }}
-      />
+      <MyEditor setIntroductionOfTheGame={setIntroductionOfTheGame} />
 
       <Platform platform={platform} setPlatform={setPlatform} />
 
@@ -313,8 +369,11 @@ const GamePresentationSections = ({
             ? "Choisissez l'affiche du jeu"
             : "Choose the game's poster."}{" "}
         </p>
-        
-        <ImageCloudinary name="posterGlimpseFile" setFilesToSend={setFilesToSend} />
+
+        <ImageCloudinary
+          name="posterGlimpseFile"
+          setFilesToSend={setFilesToSend}
+        />
       </div>
 
       <section className="flex flex-col tablet:flex-row w-[100%] justify-center">
@@ -326,7 +385,10 @@ const GamePresentationSections = ({
               ? "Choisissez l'image d'illustration n°1"
               : "Choose illustration image #1."}{" "}
           </p>
-          <ImageCloudinary name="imageOneGlimpseFile" setFilesToSend={setFilesToSend} />
+          <ImageCloudinary
+            name="imageOneGlimpseFile"
+            setFilesToSend={setFilesToSend}
+          />
         </div>
 
         {/**************** Image d'illustration n°2 [encadré] ***************************** */}
@@ -336,7 +398,10 @@ const GamePresentationSections = ({
               ? "Choisissez l'image d'illustration n°2"
               : "Choose illustration image #2."}{" "}
           </p>
-          <ImageCloudinary name="imageTwoGlimpseFile" setFilesToSend={setFilesToSend} />
+          <ImageCloudinary
+            name="imageTwoGlimpseFile"
+            setFilesToSend={setFilesToSend}
+          />
         </div>
 
         {/**************** Image d'illustration n°3 [encadré] ***************************** */}
@@ -346,7 +411,10 @@ const GamePresentationSections = ({
               ? "Choisissez l'image d'illustration n°3"
               : "Choose illustration image #3."}{" "}
           </p>
-          <ImageCloudinary name="imageThreeGlimpseFile" setFilesToSend={setFilesToSend} />
+          <ImageCloudinary
+            name="imageThreeGlimpseFile"
+            setFilesToSend={setFilesToSend}
+          />
         </div>
       </section>
 
@@ -357,9 +425,12 @@ const GamePresentationSections = ({
             ? "Choisissez une image pour l'arrière-plan"
             : "Choose an image for the background."}{" "}
         </p>
-        
+
         <div className="flex justify-center ">
-          <ImageCloudinary name="backgroundGlimpseFile" setFilesToSend={setFilesToSend}  />
+          <ImageCloudinary
+            name="backgroundGlimpseFile"
+            setFilesToSend={setFilesToSend}
+          />
         </div>
       </div>
 
@@ -440,7 +511,7 @@ const GamePresentationSections = ({
           setSelectedGenres={setGenreOfGame}
         />
       </section>
-  
+
       {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
       <div className="flex justify-center">
         <div
@@ -468,7 +539,7 @@ const GamePresentationSections = ({
             ? "Envoyer la présentation"
             : "Submit the presentation"}
         </button>
-      </div>      
+      </div>
     </form>
   );
 };

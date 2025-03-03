@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import "../../app/styles/TinyMce.css";
 
-const MyEditor = ({ value, onChange }) => {
+const MyEditor = ({ introductionOfTheGame, setIntroductionOfTheGame }) => {
   const handleEditorChange = (newContent) => {
-    onChange(newContent);
+    setIntroductionOfTheGame(newContent);
   };
 
   return (
     <Editor
       apiKey="jwpduyj2wsgco2wubq610ogqntre0it79yiz6hx2cgpvq4j5"
-      value={value}
+      value={introductionOfTheGame}
       init={{
         height: 200,
         menubar: false,

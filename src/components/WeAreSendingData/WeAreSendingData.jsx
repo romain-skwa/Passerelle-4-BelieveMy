@@ -46,7 +46,7 @@ export default function WeAreSendingData({filesToSend, nameOfGame}) {
             return (
               <Image
                 src={url}
-                className="w-[275px] h-[154px] py-3 inline-block"
+                className="w-[62px] h-[104px] py-3 inline-block"
                 width={275}
                 height={154}
                 unoptimized={true}
@@ -86,8 +86,8 @@ export default function WeAreSendingData({filesToSend, nameOfGame}) {
         <div className="w-[12px] h-[6px] bg-white mr-1 blinkSend"></div>
       </div>
       <div className="flex-1 hidden laptop:block">
-        <div className={`h-[100px] flex items-center text-xl ${pressStart2P.className}`}>
-          <p className="truc">{nameOfGame}</p>
+        <div className={`h-[100px] flex items-center text-xl ${pressStart2P.className} `}>
+          <p className="nameMoving h-[32px]">{nameOfGame}</p>
         </div>
       </div>
       <div>

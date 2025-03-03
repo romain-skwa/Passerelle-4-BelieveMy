@@ -14,7 +14,7 @@ export default function TestPage() {
 
   return (
     <GeneralLayout>
-     <WeAreDeleting />
+    <WeAreDeleting />
       <SocialFrame />
     </GeneralLayout>
   );

@@ -142,11 +142,11 @@
     100%{opacity: 1;}
   }
   /****** WeAreSendingData **** Titre qui bouge **************************/
-  .truc{
+  .nameMoving{
     margin-left: auto; /* Pousse l'élément vers la droite */
     margin-right: 0; 
     overflow: hidden;
-    animation: shrink 4s infinite;
+    animation: shrink 5s infinite;
   }
 
   @keyframes shrink {

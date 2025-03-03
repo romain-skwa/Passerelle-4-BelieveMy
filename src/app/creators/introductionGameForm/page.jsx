@@ -132,9 +132,7 @@ export default function introductionGameForm() {
                 <OptionalButtons
                   nameOfGame={nameOfGame}
                   setNameOfGame={setNameOfGame}
-                  urlBackgroundCloudinary={
-                    filesToSend.backgroundGlimpseFile || ""
-                  }
+                  urlBackgroundCloudinary={filesToSend.backgroundGlimpseFile || ""}
                   genreOfGame={genreOfGame}
                   videoLink={videoLink}
                   webSiteOfThisGame={webSiteOfThisGame}

@@ -41,14 +41,14 @@ export default async function Index({ searchParams }) {
           {introductionsImages.map((post) => (
             <div
               key={post._id}
-              className="rounded mt-2 relative overflow-hidden tablet:shadow-xl bg-black/70"
+              className="rounded mt-2 relative overflow-hidden tablet:shadow-xl bg-black/70 hover:bg-black/80 duration-300"
               style={{
                 boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.8)",
                 padding: "10px",
               }}
             >
               <Link href={`dynamic/introduction/${post.nameofgame}`}>
-                <div className="relative">
+                <div className="relative w-[146px] h-[240px] lg:w-[192px] lg:h-[311px] overflow-hidden">
                   <Image
                     src={
                       post.urlPosterCloudinary
