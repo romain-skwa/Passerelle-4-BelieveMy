@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@mantine/hooks": "^7.13.3",
+    "@stripe/react-stripe-js": "^3.3.0",
+    "@stripe/stripe-js": "^5.9.2",
     "@tinymce/tinymce-react": "^5.1.1",
     "@tiptap/extension-text-style": "^2.7.3",
     "@tiptap/pm": "^2.7.2",
@@ -23,7 +25,7 @@
     "he": "^1.2.0",
     "moment-timezone": "^0.5.45",
     "mongodb": "^6.8.0",
-    "next": "14.2.7",
+    "next": "^14.2.7",
     "next-auth": "^4.24.7",
     "next-cloudinary": "^6.16.0",
     "nodemailer": "^6.9.16",
@@ -35,6 +37,7 @@
     "resend": "^4.1.2",
     "sanitize-html": "^2.13.1",
     "sharp": "^0.33.5",
+    "stripe": "^17.7.0",
     "swr": "^2.2.5",
     "tinymce": "^7.3.0"
   },

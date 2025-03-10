@@ -1,5 +1,5 @@
+// Component used in UpdateIntro
 "use client";
-
 import { CldUploadWidget } from "next-cloudinary";
 
 // Fonction pour extraire l'ID public de l'URL Cloudinary

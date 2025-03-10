@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import deleteIntroduction from "@/actions/eraseOneIntroduction";
 import handleEraseAllImages from "@/actions/handleEraseAllImages";
-import MyEditor from "@/components/MyEditor/MyEditor";
+import MyEditor from "@/components/TinyMceEditor/TinyMceEditor";
 
 const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
   const router = useRouter();
@@ -24,27 +24,20 @@ const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
   const [email, setEmail] = useState();
   const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
   const [shortIntroductionUpdate, setShortIntroductionUpdate] = useState();
-  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] =
-    useState();
+  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] =    useState();
   const [platformUpdate, setPlatformUpdate] = useState([]);
   const [releaseDateUpdate, setReleaseDateUpdate] = useState();
   const [selectedAgePegiUpdate, setSelectedAgePegiUpdate] = useState();
-  const [selectedAdditionalPegiUpdate, setSelectedAdditionalPegiUpdate] =
-    useState([]);
+  const [selectedAdditionalPegiUpdate, setSelectedAdditionalPegiUpdate] =    useState([]);
   const [soloMultiUpdate, setSoloMultiUpdate] = useState([]);
   const [urlPosterCloudinaryUpdate, setUrlPosterCloudinaryUpdate] = useState();
-  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] =
-    useState();
-  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] =
-    useState();
-  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] =
-    useState();
-  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] =
-    useState();
+  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] =    useState();
+  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] =    useState();
+  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] =    useState();
+  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] =    useState();
   const [videoLinkUpdate, setVideoLinkUpdate] = useState();
   const [webSiteOfThisGameUpdate, setWebSiteOfThisGameUpdate] = useState();
-  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] =
-    useState();
+  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] =    useState();
   const [steamLinkUpdate, setSteamLinkUpdate] = useState();
   const [epicGamesLinkUpdate, setEpicGamesLinkUpdate] = useState();
   const [genreOfGameUpdate, setGenreOfGameUpdate] = useState([]);

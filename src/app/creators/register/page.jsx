@@ -71,11 +71,7 @@ export default function Register() {
 
       // Success
       if (result.success) {
-        toast.success(
-          language == "fr"
-            ? "Un courriel vous a été envoyé"
-            : "An email has been sent to you."
-        );
+        toast.success(language == "fr" ? "Un courriel vous a été envoyé" : "An email has been sent to you.");
         router.push("/creators/login");
       } else {
         toast.error(result.message); 

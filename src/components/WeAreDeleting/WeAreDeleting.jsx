@@ -1,3 +1,7 @@
+// When the connected user delete one of his introduction
+// Component used in UpdateIntro in Dynamic/introduction
+// LOADING page with hitman
+
 "use client";
 import Image from "next/image";
 import hitman from "../../../public/background/hitman47.jpg";
@@ -28,7 +32,7 @@ export default function WeAreDeleting(){
                 <div className={`text-white text-center uppercase ${vt323.className} text-2xl mt-6`} style={{letterSpacing: '0.1em'}}>
                     {language === "fr"
                         ? "Un agent qualifié fait disparaitre vos données. Veuillez attendre..."
-                        : "Your data has been deleted"
+                        : "A qualified agent is deleting your data. Please wait..."
                     }
                 </div>
             </section>

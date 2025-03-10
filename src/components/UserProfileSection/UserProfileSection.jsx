@@ -21,19 +21,41 @@ const UserProfileSection = ({ user }) => {
           : "w-[95%] laptop:w-[48vw] mx-auto p-2 laptop:p-4 rounded-xl text-black bg-white"
       }
     >
-      <div className="text-center mb-2">
+      <section className="text-center mb-2">
         <div className="hidden tablet:block">
           ------------- {language == "fr" ? "A propos de : " : "About : "}{" "}
           <h1 className="inline capitalize">{decodeURIComponent(user.username)}</h1>{" "}
           -------------
-          {/* Ajouter ici le logo */}
+            {user && user.logoUrl ? (
+          <div>
+              <Image
+              src={user.logoUrl}
+              width={150} 
+              height={150}
+              alt="Bidule"
+              style={{ maxWidth: "100%", marginTop: "10px" }}
+              className="py-3 inline-block"
+              />
+          </div>
+            ) : null}
         </div>
         <div className="block tablet:hidden">
           {language == "fr" ? "A propos de : " : "About : "}{" "}
           <h1 className="inline capitalize">{decodeURIComponent(user.username)}</h1>
-          {/* Ajouter ici le logo */}
+          <div>
+            {user && user.logoUrl ? (
+              <Image
+              src={user.logoUrl}
+              width={150} 
+              height={150}
+              alt="Logo"
+              style={{ maxWidth: "100%", marginTop: "10px" }}
+              className="py-3 inline-block"
+              />
+            ) : null}
+          </div>
         </div>
-      </div>
+      </section>
 
       {user.bio ? (
         <p>{user.bio}</p>

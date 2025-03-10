@@ -1,3 +1,7 @@
+// When the formulary is submit
+// Component used in introductionGameForm
+// LOADING component with logos and nameOfGame between
+
 "use client";
 import Image from "next/image";
 import Chrome from "../../../public/navigator/Chrome.png";

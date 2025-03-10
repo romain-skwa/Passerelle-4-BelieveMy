@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 
 const updateBioCreator = async (
   bio,
-  logoUser ,
+  logoUrl,
   websiteUrl,
   discordUrl,
   twitchUrl,
@@ -41,7 +41,7 @@ const updateBioCreator = async (
 
   // Ajoutez les champs non vides à $set et les champs vides à $unset
   if (bio)             { updateData.$set.bio = bio; } else { updateData.$unset.bio = ""; }
-  if (logoUser)        { updateData.$set.logo = logoUser; } else { updateData.$unset.logo = ""; }
+  if (logoUrl)      { updateData.$set.logoUrl = logoUrl; } else { updateData.$unset.logoUrl = ""; }
   if (websiteUrl)      { updateData.$set.websiteUrl = websiteUrl; } else { updateData.$unset.websiteUrl = ""; }
   if (discordUrl)      { updateData.$set.discordUrl = discordUrl; } else { updateData.$unset.discordUrl = ""; }
   if (twitchUrl)       { updateData.$set.twitchUrl = twitchUrl; } else { updateData.$unset.twitchUrl = ""; }

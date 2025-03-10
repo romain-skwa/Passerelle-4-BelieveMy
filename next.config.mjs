@@ -16,7 +16,13 @@ export default () => {
         NEXT_PUBLIC_CLOUDINARY_API_SECRET: "_eVZpxeOYr_uTs-MZQufmaok8Y4",
         //MAIL_USERNAME: "believeromain@demomailtrap.com", 
         //MAIL_PASSWORD: "25gjwE34G4rZmB",
+        // RESEND
         RESEND_API_KEY: "re_KtKBeLdf_6AJwBAm5d7NdFqGnjdv99Hay",
+        // TINY MCE
+        TINY_MCE_KEY:"jwpduyj2wsgco2wubq610ogqntre0it79yiz6hx2cgpvq4j5",
+        // STRIPE
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:"pk_test_51QysjDR7y14UuYVIUj7PWSxVhjshz3mYhH3eZR53qisiSoLfIer4oEmIldbJu3qv4Hak7pha7PhIQFprXUHbxQq50046JZetCF",
+        STRIPE_SECRET_KEY:"sk_test_51QysjDR7y14UuYVI9SowA1mzRnqfFTJ7BWSo5Ii7XN3RQi5ZX3XibXwL6BaBAQ4RFVPg8GEWvh3bRf2B5dWmHo9c00H8tJ2cNq",
       },
       images: {
         remotePatterns: [

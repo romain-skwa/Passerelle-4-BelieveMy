@@ -81,15 +81,13 @@ export const newCreatorData = async (
       username,
       email,
       password: encryptedPassword,
-      profile: "/picture.png",
+      logoUrl: "",
       bio: "Biographie",
-      url: "",
       creation: new Date(),
     });
 
     // 5 -- Envoi de l'email de confirmation
     try {
-      //await sendEmail(email, 'Bienvenue sur notre site !', `Bonjour ${username}, merci de vous être inscrit !`);
       const resend = new Resend(process.env.RESEND_API_KEY);
       const decodedUsername = decodeURIComponent(username);
 

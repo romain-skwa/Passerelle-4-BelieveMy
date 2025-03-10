@@ -1,3 +1,5 @@
+// Component used in GamePresentationSections
+
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
@@ -45,7 +47,6 @@ const ImageCloudinary = ({ name, setFilesToSend }) => {
         accept="image/*"
         name={name}
         id={name}
-        //onChange={handleImageChange}
         onChange={(e) => handleImageChange(e, name)}
         className="hidden" // Masque l'input de fichier
       />

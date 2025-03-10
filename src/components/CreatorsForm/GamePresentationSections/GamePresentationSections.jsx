@@ -1,13 +1,11 @@
 // components/GamePresentationSections/GamePresentationSections.js
 
 import React, { useEffect, useState } from "react";
-import EditorPerso from "../../../../public/poubelle/EditorPerso/EditorPerso";
 import Platform from "../GamePresentationInside/Platform/Platform";
 import Pegi from "@/components/CreatorsForm/GamePresentationInside/Pegi/Pegi";
 import ButtonSoloMulti from "@/components/CreatorsForm/GamePresentationInside/ButtonSoloMulti/ButtonSoloMulti";
 import GenreOfGame from "../GamePresentationInside/GenreOfGame/GenreOfGame";
 import DatePicker from "react-datepicker";
-import Image from "next/image";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import ImageCloudinary from "@/components/ImageCloudinary/ImageCloudinary";
 import { toast } from "react-toastify";
@@ -15,48 +13,34 @@ import { createIntroduction } from "@/actions/create-introduction";
 import he from "he";
 import { useRouter } from "next/navigation";
 import { Cloudinary } from "@cloudinary/url-gen";
-import MyEditor from "@/components/MyEditor/MyEditor";
+import TinyMceEditor from "@/components/TinyMceEditor/TinyMceEditor";
+
 
 const GamePresentationSections = ({
   nameOfGame,
   setNameOfGame,
-  shortIntroduction,
-  setShortIntroduction,
-  introductionOfTheGame,
-  setIntroductionOfTheGame,
-  platform,
-  setPlatform,
-  releaseDate,
-  setReleaseDate,
-  selectedAgePegi,
-  setSelectedAgePegi,
-  selectedAdditionalPegi,
-  setSelectedAdditionalPegi,
-  SoloMulti,
-  setSoloMulti,
+  shortIntroduction,  setShortIntroduction,
+  introductionOfTheGame,  setIntroductionOfTheGame,
+  platform,  setPlatform,
+  releaseDate,  setReleaseDate,
+  selectedAgePegi,  setSelectedAgePegi,
+  selectedAdditionalPegi,  setSelectedAdditionalPegi,
+  SoloMulti,  setSoloMulti,
   setBackgroundPreview,
-  videoLink,
-  setVideoLink,
-  webSiteOfThisGame,
-  setWebSiteOfThisGame,
-  webSiteOfThisCreator,
-  setWebSiteOfThisCreator,
-  steamLink,
-  setSteamLink,
-  epicGamesLink,
-  setEpicGamesLink,
-  genreOfGame,
-  setGenreOfGame,
+  videoLink,  setVideoLink,
+  webSiteOfThisGame,  setWebSiteOfThisGame,
+  webSiteOfThisCreator,  setWebSiteOfThisCreator,
+  steamLink,  setSteamLink,
+  epicGamesLink,  setEpicGamesLink,
+  genreOfGame,  setGenreOfGame,
   isDarkMode,
-  isIntroOfYourself,
-  setIsIntroOfYourself,
-  filesToSend,
-  setFilesToSend,
-  setLoading,
+  isIntroOfYourself,  setIsIntroOfYourself,
+  filesToSend,  setFilesToSend,
   setWeAreSendingData,
 }) => {
-  const { language, changeLanguage } = useLanguage();
+  const { language } = useLanguage();
   const router = useRouter();
+  
   /********* Variable ************************************************************/
   // When the images have been sent to Cloudinary, their URLs are stored in urlMongoDB.
   const [urlMongoDB, setUrlMongoDB] = useState("");
@@ -72,8 +56,8 @@ const GamePresentationSections = ({
     }
   }, [filesToSend.backgroundGlimpseFile]);
 
-  // (1-2) Send data to API createIntroduction  -- try catch
-  // (3)   Are all url ready to be send ?       -- useEffect
+  // (1-2) Send data to API createIntroduction  -- try catch -- verifications - Upload Image To Cloudinary
+  // (3)   Are all url ready to be sent ?       -- useEffect
   // (4)   Send data to MongoDB                 -- try catch
 
   /****************** Send data to API createIntroduction *****************************************************/
@@ -88,7 +72,7 @@ const GamePresentationSections = ({
         );
       }
 
-      //Vérifiez le nombre de caractères de la présentation détaillée
+      //Vérifiez le nombre de caractères de la présentation détaillée.
       if (introductionOfTheGame.length > 10000) {
         return toast.error(
           "La présentation doit comporter 10 000 caractères maximum."
@@ -155,10 +139,7 @@ const GamePresentationSections = ({
           if (file) {
             const formData = new FormData();
             formData.append("file", file);
-            formData.append(
-              "upload_preset",
-              process.env.NEXT_UPLOAD_PRESET_UNSIGNED
-            );
+            formData.append("upload_preset",process.env.NEXT_UPLOAD_PRESET_UNSIGNED);
 
             try {
               const response = await fetch(
@@ -191,19 +172,14 @@ const GamePresentationSections = ({
     }
   };
 
-  // ** 3 ** Are all url ready to be send ? ********************************************************************
+  // ** 3 ** Are all url ready to be sent ? ********************************************************************
   useEffect(() => {
     const checkUrls = async () => {
       // Check urlMongoDB contain all values before to call handleFormSubmit
       if (Object.keys(urlMongoDB).length < Object.keys(filesToSend).length) {
         console.log("Il reste des URL à stocker dans urlMongoDB.");
-      } else if (
-        Object.keys(urlMongoDB).length === Object.keys(filesToSend).length &&
-        Object.keys(filesToSend).length > 0
-      ) {
-        console.log(
-          "Maintenant que les images ont été envoyées, on lance la fonction handleFormSubmit pour envoyer les données à mongoDB"
-        );
+      } else if (/* Two conditions*/Object.keys(urlMongoDB).length === Object.keys(filesToSend).length && Object.keys(filesToSend).length > 0) {
+        console.log("Maintenant que les images ont été envoyées, on lance la fonction handleFormSubmit pour envoyer les données à mongoDB");
         await handleFormSubmit();
       }
     };
@@ -216,60 +192,27 @@ const GamePresentationSections = ({
     try {
       // Function to send the data to createIntroduction function
       const introductionFormaData = new FormData();
-      introductionFormaData.append(
-        "nameOfGame",
-        encodeURIComponent(nameOfGame)
-      );
-      introductionFormaData.append(
-        "shortIntroduction",
-        he.encode(shortIntroduction)
-      );
-      introductionFormaData.append(
-        "introductionOfTheGame",
-        he.encode(introductionOfTheGame)
-      );
+      introductionFormaData.append("nameOfGame", encodeURIComponent(nameOfGame));
+      introductionFormaData.append("shortIntroduction", he.encode(shortIntroduction) );
+      introductionFormaData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
       introductionFormaData.append("platform", JSON.stringify(platform));
       introductionFormaData.append("releaseDate", releaseDate);
-      introductionFormaData.append(
-        "urlPosterCloudinary",
-        urlMongoDB.posterGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlImageOneCloudinary",
-        urlMongoDB.imageOneGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlImageTwoCloudinary",
-        urlMongoDB.imageTwoGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlImageThreeCloudinary",
-        urlMongoDB.imageThreeGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlBackgroundCloudinary",
-        urlMongoDB.backgroundGlimpseFile || ""
-      );
+      introductionFormaData.append("urlPosterCloudinary", urlMongoDB.posterGlimpseFile || "");
+      introductionFormaData.append("urlImageOneCloudinary",urlMongoDB.imageOneGlimpseFile || "");
+      introductionFormaData.append("urlImageTwoCloudinary",urlMongoDB.imageTwoGlimpseFile || "");
+      introductionFormaData.append("urlImageThreeCloudinary",urlMongoDB.imageThreeGlimpseFile || "");
+      introductionFormaData.append("urlBackgroundCloudinary",urlMongoDB.backgroundGlimpseFile || "");
       introductionFormaData.append("SoloMulti", JSON.stringify(SoloMulti));
       introductionFormaData.append("selectedAgePegi", selectedAgePegi);
-      introductionFormaData.append(
-        "selectedAdditionalPegi",
-        selectedAdditionalPegi
-      );
+      introductionFormaData.append("selectedAdditionalPegi",selectedAdditionalPegi);
       introductionFormaData.append("genreOfGame", JSON.stringify(genreOfGame));
       introductionFormaData.append("videoLink", videoLink);
       introductionFormaData.append("steamLink", steamLink);
       introductionFormaData.append("epicGamesLink", epicGamesLink);
       introductionFormaData.append("webSiteOfThisGame", webSiteOfThisGame);
-      introductionFormaData.append(
-        "webSiteOfThisCreator",
-        webSiteOfThisCreator
-      );
+      introductionFormaData.append("webSiteOfThisCreator",webSiteOfThisCreator);
       introductionFormaData.append("isDarkMode", isDarkMode.toString());
-      introductionFormaData.append(
-        "isIntroOfYourself",
-        isIntroOfYourself.toString()
-      );
+      introductionFormaData.append("isIntroOfYourself",isIntroOfYourself.toString());
 
       await createIntroduction(introductionFormaData);
       toast.success("Présentation du jeu envoyée avec succès !");
@@ -327,7 +270,7 @@ const GamePresentationSections = ({
       </div>
 
       {/**************** Editeur de texte ********************************************** */}
-      <MyEditor setIntroductionOfTheGame={setIntroductionOfTheGame} />
+      <TinyMceEditor setIntroductionOfTheGame={setIntroductionOfTheGame} />
 
       <Platform platform={platform} setPlatform={setPlatform} />
 
@@ -439,11 +382,7 @@ const GamePresentationSections = ({
         <input
           type="url"
           name="videoLink"
-          placeholder={
-            language === "fr"
-              ? "Lien YouTube de la vidéo"
-              : "YouTube link of the video."
-          }
+          placeholder={ language === "fr" ? "Lien YouTube de la vidéo" : "YouTube link of the video."}
           className="neuphormismUndergroung inputLink"
           value={videoLink}
           onChange={(e) => setVideoLink(e.target.value)}
@@ -453,11 +392,7 @@ const GamePresentationSections = ({
         <input
           type="url"
           name="webSiteOfThisGame"
-          placeholder={
-            language === "fr"
-              ? "Lien vers le site officiel du jeu"
-              : "Link to the official game website."
-          }
+          placeholder={language === "fr" ? "Lien vers le site officiel du jeu" : "Link to the official game website."}
           className="neuphormismUndergroung inputLink mx-2 tablet:mx-4"
           value={webSiteOfThisGame}
           onChange={(e) => setWebSiteOfThisGame(e.target.value)}
@@ -467,11 +402,7 @@ const GamePresentationSections = ({
         <input
           type="url"
           name="webSiteOfThisCreator"
-          placeholder={
-            language === "fr"
-              ? "Lien vers le site officiel du/des créateur(s)"
-              : "Link to the official website of the creator(s)."
-          }
+          placeholder={language === "fr" ? "Lien vers le site officiel du/des créateur(s)" : "Link to the official website of the creator(s)."}
           className="neuphormismUndergroung inputLink"
           value={webSiteOfThisCreator}
           onChange={(e) => setWebSiteOfThisCreator(e.target.value)}
@@ -481,11 +412,7 @@ const GamePresentationSections = ({
         <input
           type="url"
           name="steamLink"
-          placeholder={
-            language === "fr"
-              ? "Lien vers le site Steam"
-              : "Link to the Steam page."
-          }
+          placeholder={language === "fr" ? "Lien vers le site Steam" : "Link to the Steam page."}
           className="neuphormismUndergroung inputLink"
           value={steamLink}
           onChange={(e) => setSteamLink(e.target.value)}
@@ -495,11 +422,7 @@ const GamePresentationSections = ({
         <input
           type="url"
           name="epicGamesLink"
-          placeholder={
-            language === "fr"
-              ? "Lien vers le site Epic Games"
-              : "Link to the Epic Games site."
-          }
+          placeholder={language === "fr" ? "Lien vers le site Epic Games" : "Link to the Epic Games site."}
           className="neuphormismUndergroung inputLink"
           value={epicGamesLink}
           onChange={(e) => setEpicGamesLink(e.target.value)}
@@ -518,11 +441,12 @@ const GamePresentationSections = ({
           className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
           onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
         >
-          {language == "fr"
-            ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?"
-            : "Would you like to add a presentation of yourself or your team?"}
+          {language == "fr" ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?" : "Would you like to add a presentation of yourself or your team?"}
         </div>
       </div>
+
+      {/******************* Paiement ********************************** */}
+     
 
       <div className="flex justify-center">
         <button
@@ -535,9 +459,7 @@ const GamePresentationSections = ({
             urlMongoDB.posterGlimpseFile === ""
           } /* Désactivé si les champs sont vides */
         >
-          {language == "fr"
-            ? "Envoyer la présentation"
-            : "Submit the presentation"}
+          {language == "fr" ? "Envoyer la présentation" : "Submit the presentation"}
         </button>
       </div>
     </form>
