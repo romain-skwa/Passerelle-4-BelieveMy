@@ -26,13 +26,13 @@ const UserProfileSection = ({ user }) => {
           ------------- {language == "fr" ? "A propos de : " : "About : "}{" "}
           <h1 className="inline capitalize">{decodeURIComponent(user.username)}</h1>{" "}
           -------------
-            {user && user.logoUrl ? (
+          {user && user.logoUrl ? (
           <div>
               <Image
               src={user.logoUrl}
               width={150} 
               height={150}
-              alt="Bidule"
+              alt="LOGO"
               style={{ maxWidth: "100%", marginTop: "10px" }}
               className="py-3 inline-block"
               />

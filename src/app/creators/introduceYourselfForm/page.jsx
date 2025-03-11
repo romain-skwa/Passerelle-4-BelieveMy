@@ -42,11 +42,11 @@ const introduceYourself = () => {
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage("");
   const [logoUrl, setLogoUrl] = useState("");// Url data in mongoDB
-  //console.log(`logoUrl `, logoUrl);
+  console.log(`logoUrl `, logoUrl);
   const [logoFile, setLogoFile] = useState("");
-  //console.log(`logoFile `, logoFile);
+  console.log(`logoFile `, logoFile);
   const [previewUrl, setPreviewUrl] = useState(null);// Url preview now
-  //console.log(`Dans la page formulaire, l'url du logo : previewUrl `, previewUrl);
+  console.log(`Dans la page formulaire, l'url du logo : previewUrl `, previewUrl);
   const [isLogoChanged, setIsLogoChanged] = useState(false);
   //console.log(`Dans la page formulaire : isLogoChanged `, isLogoChanged);
 
@@ -399,7 +399,15 @@ const handleSendLogoFirst = async () => {
 
             {/******************************************************************************************** */}
             {/* Bouton TELECHARGER votre Logo */}
-           <ImageLogoUser previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} setLogoFile={setLogoFile} setIsLogoChanged={setIsLogoChanged} />
+           <ImageLogoUser
+            previewUrl={previewUrl}
+            setPreviewUrl={setPreviewUrl}
+            setLogoFile={setLogoFile}
+            setIsLogoChanged={setIsLogoChanged}
+            logoUrl={logoUrl}
+            handleDeleteImage={handleDeleteImage}
+            extractPublicIdFromUrl={extractPublicIdFromUrl}
+            />
 
             {/******************************************************************************************** */}
             {/* Lien votre propre site */}
