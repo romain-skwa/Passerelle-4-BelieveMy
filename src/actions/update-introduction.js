@@ -1,3 +1,4 @@
+// Linked to UpdateIntro component in dynamic/introduction
 "use server";
 // Importations nécessaires
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -35,7 +36,8 @@ export const updateIntroduction = async (formData) => {
       shortIntroduction: formData.get("shortIntroduction"),
       content: formData.get("introductionOfTheGame"),
       SoloMulti: JSON.parse(formData.get("SoloMulti")),
-      urlPosterCloudinary: formData.get("urlPosterCloudinary"),
+      urlPosterCloudinary: formData.get("urlPosterCloudinary") || null,
+      urlPoster: formData.get("urlPoster") || null,
       urlImageOneCloudinary: formData.get("urlImageOneCloudinary"),
       urlImageTwoCloudinary: formData.get("urlImageTwoCloudinary"),
       urlImageThreeCloudinary: formData.get("urlImageThreeCloudinary"),

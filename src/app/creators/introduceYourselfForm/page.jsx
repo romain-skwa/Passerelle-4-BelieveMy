@@ -2,7 +2,7 @@
 
 // introduceYourself.js
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import updateBioCreator from "@/actions/updateBioCreator";
@@ -17,7 +17,7 @@ import TextOneByOne from "@/components/CreatorsForm/TextOneByOne/TextOneByOne";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import MadeByThisCreator from "@/components/MadeByThisCreator/MadeByThisCreator";
 import ImageLogoUser from "@/components/ImageLogoUser/ImageLogoUser";
-import { Cloudinary } from "@cloudinary/url-gen";
+import WeAreUpdatingProfil from "@/components/WeAreUpdatingProfil/WeAreUpdatingProfil";
 
 const introduceYourself = () => {
   const [bio, setBio] = useState("");
@@ -42,13 +42,14 @@ const introduceYourself = () => {
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage("");
   const [logoUrl, setLogoUrl] = useState("");// Url data in mongoDB
-  console.log(`logoUrl `, logoUrl);
+  //console.log(`logoUrl `, logoUrl);
   const [logoFile, setLogoFile] = useState("");
-  console.log(`logoFile `, logoFile);
+  //console.log(`logoFile `, logoFile);
   const [previewUrl, setPreviewUrl] = useState(null);// Url preview now
-  console.log(`Dans la page formulaire, l'url du logo : previewUrl `, previewUrl);
+  //console.log(`Dans la page formulaire, l'url du logo : previewUrl `, previewUrl);
   const [isLogoChanged, setIsLogoChanged] = useState(false);
   //console.log(`Dans la page formulaire : isLogoChanged `, isLogoChanged);
+  const [weAreUpdatingProfil, setWeAreUpdatingProfil] = useState(false);
 
   // Get data about user
   useEffect(() => {
@@ -146,6 +147,7 @@ const handleDeleteImage = async (publicId) => {
 /*************** On submit, Check if a new image is choosen (1) ***********************************/
   const handleSubmitForm = async (event) => {
     event.preventDefault();
+    setWeAreUpdatingProfil(true);
 
     if(isLogoChanged){ // When a new image is chosen
       handleSendLogoFirst();
@@ -177,12 +179,12 @@ const handleSendLogoFirst = async () => {
     await handleDeleteImage(oldPublicId);
     
     //----- Step TWO ---------------------------------------
-    // Créer un FormData pour l'envoi
+    // Create one FormData for the sending
     const formData = new FormData();
     formData.append("file", logoFile);
     formData.append("upload_preset", process.env.NEXT_UPLOAD_PRESET_UNSIGNED);
 
-    // Envoyer le fichier à Cloudinary
+    // Send file to Cloudinary
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
       {
@@ -191,7 +193,7 @@ const handleSendLogoFirst = async () => {
       }
     );
 
-    // Vérifiez si la réponse est correcte
+    // Check if response is correct
     if (!response.ok) {
       const errorData = await response.json();
       console.error("Erreur de réponse de Cloudinary:", errorData);
@@ -201,7 +203,7 @@ const handleSendLogoFirst = async () => {
     const data = await response.json();
     console.log("Upload réussi :", data.secure_url);
 
-    // Stocker l'URL dans l'état approprié
+    // Store URL in the appropriate state
     setLogoUrl(data.secure_url);
 
   } catch (error) {
@@ -251,6 +253,7 @@ const handleSendLogoFirst = async () => {
       );
       toast.success(language == "fr" ? "Informations mises à jour avec succès !" : "Data updated");
       setLoading(false);
+      setWeAreUpdatingProfil(false);
     } catch (error) {
       console.error(`error dans la page introduceYourself`, error); // Affichez l'erreur dans la console
       toast.error(
@@ -265,7 +268,9 @@ const handleSendLogoFirst = async () => {
     <GeneralLayout>
       {loading ? (
         <Loading /> // Display component LOADING
-      ) : (
+      ) :  weAreUpdatingProfil ? (
+        <WeAreUpdatingProfil />
+        ) : ( 
         <>
           <form
             onSubmit={handleSubmitForm} // On submit, we start to send the logo (1)
