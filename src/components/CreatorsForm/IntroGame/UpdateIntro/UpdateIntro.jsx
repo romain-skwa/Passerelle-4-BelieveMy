@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updateIntroduction } from "@/actions/update-introduction";
 import { useRouter } from "next/navigation";
 import React from "react";
-import EditorPerso from "../../../../../public/poubelle/EditorPerso/EditorPerso";
 import Platform from "@/components/CreatorsForm/GamePresentationInside/Platform/Platform";
 import Pegi from "@/components/CreatorsForm/GamePresentationInside/Pegi/Pegi";
 import ButtonSoloMulti from "@/components/CreatorsForm/GamePresentationInside/ButtonSoloMulti/ButtonSoloMulti";
@@ -18,26 +17,26 @@ import deleteIntroduction from "@/actions/eraseOneIntroduction";
 import handleEraseAllImages from "@/actions/handleEraseAllImages";
 import MyEditor from "@/components/TinyMceEditor/TinyMceEditor";
 
-const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
+const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting, setWeAreUpdatingData, setComparaison }) => {
   const router = useRouter();
   const [gameId, setGameId] = useState();
   const [email, setEmail] = useState();
   const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
   const [shortIntroductionUpdate, setShortIntroductionUpdate] = useState();
-  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] =    useState();
+  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] = useState();
   const [platformUpdate, setPlatformUpdate] = useState([]);
   const [releaseDateUpdate, setReleaseDateUpdate] = useState();
   const [selectedAgePegiUpdate, setSelectedAgePegiUpdate] = useState();
-  const [selectedAdditionalPegiUpdate, setSelectedAdditionalPegiUpdate] =    useState([]);
+  const [selectedAdditionalPegiUpdate, setSelectedAdditionalPegiUpdate] = useState([]);
   const [soloMultiUpdate, setSoloMultiUpdate] = useState([]);
   const [urlPosterCloudinaryUpdate, setUrlPosterCloudinaryUpdate] = useState();
-  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] =    useState();
-  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] =    useState();
-  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] =    useState();
-  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] =    useState();
+  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] = useState();
+  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] = useState();
+  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] = useState();
+  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] = useState();
   const [videoLinkUpdate, setVideoLinkUpdate] = useState();
   const [webSiteOfThisGameUpdate, setWebSiteOfThisGameUpdate] = useState();
-  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] =    useState();
+  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] = useState();
   const [steamLinkUpdate, setSteamLinkUpdate] = useState();
   const [epicGamesLinkUpdate, setEpicGamesLinkUpdate] = useState();
   const [genreOfGameUpdate, setGenreOfGameUpdate] = useState([]);
@@ -47,183 +46,155 @@ const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
 
   // Get data about this game
   useEffect(() => {
-    if (game && game._id) {
-      setGameId(game._id);
-    }
-    if (game && game.email) {
-      setEmail(game.email);
-    }
+    if (game && game._id) {setGameId(game._id);}
+    if (game && game.email) {setEmail(game.email);}
     if (game && game.nameofgame) {
       const decodedNameOfGame = decodeURIComponent(game.nameofgame);
       setNameOfGameUpdate(decodedNameOfGame);
+      initialNameOfGameRef.current = decodedNameOfGame;
     }
     if (game && game.shortIntroduction) {
-      const encodedShortIntroduction = he.decode(game.shortIntroduction);
-      setShortIntroductionUpdate(encodedShortIntroduction);
+      const decodedShortIntroduction = he.decode(game.shortIntroduction);
+      setShortIntroductionUpdate(decodedShortIntroduction);
+      initialShortIntroductionRef.current = decodedShortIntroduction;
     }
     if (game && game.content) {
-      const encodedIntroductionOfTheGameUpdate = he.decode(game.content);
-      setIntroductionOfTheGameUpdate(encodedIntroductionOfTheGameUpdate);
+      const decodedIntroductionOfTheGameUpdate = he.decode(game.content);
+      setIntroductionOfTheGameUpdate(decodedIntroductionOfTheGameUpdate);
+      initialIntroductionOfTheGameRef.current = decodedIntroductionOfTheGameUpdate;
     }
-    if (game && game.platform) {
-      setPlatformUpdate(game.platform);
-    }
+    if (game && game.platform) {setPlatformUpdate(game.platform);initialPlatformRef.current = game.platform;}
+    if (game && game.selectedAgePegi) {setSelectedAgePegiUpdate(game.selectedAgePegi);initialSelectedAgePegiRef.current = game.selectedAgePegi;}
+    if (game && game.selectedAdditionalPegi) {setSelectedAdditionalPegiUpdate(game.selectedAdditionalPegi);initialSelectedAdditionalPegiRef.current = game.selectedAdditionalPegi;}
+    if (game && game.SoloMulti) {setSoloMultiUpdate(game.SoloMulti);initialSoloMultiRef.current = game.SoloMulti;}
+    if (game && game.urlPosterCloudinary) {setUrlPosterCloudinaryUpdate(game.urlPosterCloudinary);initialUrlPosterRef.current = game.urlPosterCloudinary;}
+    if (game && !game.urlPosterCloudinary) {setUrlPosterCloudinaryUpdate(game.urlPoster);initialUrlPosterRef.current = game.urlPoster;}
+    if (game && game.urlImageOneCloudinary) {setUrlImageOneCloudinaryUpdate(game.urlImageOneCloudinary);initialUrlImageOneRef.current = game.urlImageOneCloudinary;}
+    if (game && game.urlImageTwoCloudinary) {setUrlImageTwoCloudinaryUpdate(game.urlImageTwoCloudinary);initialUrlImageTwoRef.current = game.urlImageTwoCloudinary;}
+    if (game && game.urlImageThreeCloudinary) {setUrlImageThreeCloudinaryUpdate(game.urlImageThreeCloudinary);initialUrlImageThreeRef.current = game.urlImageThreeCloudinary;}
+    if (game && game.urlBackgroundCloudinary) {setUrlBackgroundCloudinaryUpdate(game.urlBackgroundCloudinary); initialUrlBackgroundRef.current = game.urlBackgroundCloudinary;}
+    if (game && game.videoLink) {setVideoLinkUpdate(game.videoLink);initialVideoLinkRef.current = game.videoLink;}
+    if (game && game.webSiteOfThisGame) {setWebSiteOfThisGameUpdate(game.webSiteOfThisGame);initialWebSiteOfThisGameRef.current = game.webSiteOfThisGame;}
+    if (game && game.webSiteOfThisCreator) {setWebSiteOfThisCreatorUpdate(game.webSiteOfThisCreator);initialWebSiteOfThisCreatorRef.current = game.webSiteOfThisCreator;}
+    if (game && game.steamLink) {setSteamLinkUpdate(game.steamLink);initialSteamLinkRef.current = game.steamLink;}
+    if (game && game.epicGamesLink) {setEpicGamesLinkUpdate(game.epicGamesLink);initialEpicGamesLinkRef.current = game.epicGamesLink;}
+    if (game && game.genreOfGame) {setGenreOfGameUpdate(game.genreOfGame);initialGenreOfGameRef.current = game.genreOfGame;}
+    if (game && game.isDarkMode) {setIsDarkModeUpdate(game.isDarkMode);initialIsDarkModeRef.current = game.isDarkMode;}
+    if (game && game.isIntroOfYourself) {setIsIntroOfYourselfUpdate(game.isIntroOfYourself);initialIsIntroOfYourselfRef.current = game.isIntroOfYourself;}
     if (game && game.releaseDate) {
       // Convertir la chaîne de caractères en objet Date pour la vérification ligne 115
       const date = new Date(game.releaseDate);
       if (!isNaN(date.getTime())) {
         // Vérifiez si la date est valide
         setReleaseDateUpdate(date);
+        initialReleaseDateRef.current = date;
       } else {
         console.error("Date invalide :", game.releaseDate);
         toast.error("La date de sortie est invalide.");
       }
     }
-    if (game && game.selectedAgePegi) {
-      setSelectedAgePegiUpdate(game.selectedAgePegi);
-    }
-    if (game && game.selectedAdditionalPegi) {
-      setSelectedAdditionalPegiUpdate(game.selectedAdditionalPegi);
-    }
-    if (game && game.SoloMulti) {
-      setSoloMultiUpdate(game.SoloMulti);
-    }
-    if (game && game.urlPosterCloudinary) {
-      setUrlPosterCloudinaryUpdate(game.urlPosterCloudinary);
-    }
-    if (game && !game.urlPosterCloudinary) {
-      setUrlPosterCloudinaryUpdate(game.urlPoster);
-    }
-    if (game && game.urlImageOneCloudinary) {
-      setUrlImageOneCloudinaryUpdate(game.urlImageOneCloudinary);
-    }
-    if (game && game.urlImageTwoCloudinary) {
-      setUrlImageTwoCloudinaryUpdate(game.urlImageTwoCloudinary);
-    }
-    if (game && game.urlImageThreeCloudinary) {
-      setUrlImageThreeCloudinaryUpdate(game.urlImageThreeCloudinary);
-    }
-    if (game && game.urlBackgroundCloudinary) {
-      setUrlBackgroundCloudinaryUpdate(game.urlBackgroundCloudinary);
-    }
-    if (game && game.videoLink) {
-      setVideoLinkUpdate(game.videoLink);
-    }
-    if (game && game.webSiteOfThisGame) {
-      setWebSiteOfThisGameUpdate(game.webSiteOfThisGame);
-    }
-    if (game && game.webSiteOfThisCreator) {
-      setWebSiteOfThisCreatorUpdate(game.webSiteOfThisCreator);
-    }
-    if (game && game.steamLink) {
-      setSteamLinkUpdate(game.steamLink);
-    }
-    if (game && game.epicGamesLink) {
-      setEpicGamesLinkUpdate(game.epicGamesLink);
-    }
-    if (game && game.genreOfGame) {
-      setGenreOfGameUpdate(game.genreOfGame);
-    }
-    if (game && game.isDarkMode) {
-      setIsDarkModeUpdate(game.isDarkMode);
-    }
-    if (game && game.isIntroOfYourself) {
-      setIsIntroOfYourselfUpdate(game.isIntroOfYourself);
-    }
   }, [game]);
 
+  // Keep initial data in useRef ***************************************************************
+  const initialNameOfGameRef = useRef();
+  const initialShortIntroductionRef = useRef();
+  const initialIntroductionOfTheGameRef = useRef();
+  const initialPlatformRef = useRef([]);
+  const initialReleaseDateRef = useRef();
+  const initialSelectedAgePegiRef = useRef();
+  const initialSelectedAdditionalPegiRef = useRef([]);
+  const initialSoloMultiRef = useRef([]);
+  const initialUrlPosterRef = useRef();
+  const initialUrlImageOneRef = useRef();
+  const initialUrlImageTwoRef = useRef();
+  const initialUrlImageThreeRef = useRef();
+  const initialUrlBackgroundRef = useRef();
+  const initialVideoLinkRef = useRef();
+  const initialWebSiteOfThisGameRef = useRef();
+  const initialWebSiteOfThisCreatorRef = useRef();
+  const initialSteamLinkRef = useRef();
+  const initialEpicGamesLinkRef = useRef();
+  const initialGenreOfGameRef = useRef([]);
+  const initialIsDarkModeRef = useRef(false);
+  const initialIsIntroOfYourselfRef = useRef(false);
+
+  /**** Compare  initial data with actual data *************/
+// État pour suivre les comparaisons
+
+
+
+useEffect(() => {
+  setComparaison({
+    isNameOfGameChanged: nameOfGameUpdate !== initialNameOfGameRef.current,
+    isShortIntroChanged: shortIntroductionUpdate !== initialShortIntroductionRef.current,
+    isDetailsIntroChanged: introductionOfTheGameUpdate !== initialIntroductionOfTheGameRef.current,
+    isPlatformChanged: JSON.stringify(platformUpdate) !== JSON.stringify(initialPlatformRef.current),
+    isReleaseDateChanged: releaseDateUpdate !== initialReleaseDateRef.current,
+    isSelectedAgePegiChanged: selectedAgePegiUpdate !== initialSelectedAgePegiRef.current,
+    isSelectedAdditionalPegiChanged: JSON.stringify(selectedAdditionalPegiUpdate) !== JSON.stringify(initialSelectedAdditionalPegiRef.current),
+    isSoloMultiChanged: JSON.stringify(soloMultiUpdate) !== JSON.stringify(initialSoloMultiRef.current),
+    isUrlPosterChanged: urlPosterCloudinaryUpdate !== initialUrlPosterRef.current,
+    isUrlImageOneChanged: urlImageOneCloudinaryUpdate !== initialUrlImageOneRef.current,
+    isUrlImageTwoChanged: urlImageTwoCloudinaryUpdate !== initialUrlImageTwoRef.current,
+    isUrlImageThreeChanged: urlImageThreeCloudinaryUpdate !== initialUrlImageThreeRef.current,
+    isUrlBackgroundChanged: urlBackgroundCloudinaryUpdate !== initialUrlBackgroundRef.current,
+    isVideoLinkChanged: videoLinkUpdate !== initialVideoLinkRef.current,
+    isWebSiteOfThisGameChanged: webSiteOfThisGameUpdate !== initialWebSiteOfThisGameRef.current,
+    isWebSiteOfThisCreatorChanged: webSiteOfThisCreatorUpdate !== initialWebSiteOfThisCreatorRef.current,
+    isSteamLinkChanged: steamLinkUpdate !== initialSteamLinkRef.current,
+    isEpicGamesLinkChanged: epicGamesLinkUpdate !== initialEpicGamesLinkRef.current,
+    isGenreOfGameChanged: JSON.stringify(genreOfGameUpdate) !== JSON.stringify(initialGenreOfGameRef.current),
+    isDarkModeChanged: isDarkModeUpdate !== initialIsDarkModeRef.current,
+    isIntroOfYourselfChanged: isIntroOfYourselfUpdate !== initialIsIntroOfYourselfRef.current,
+  });
+}, [nameOfGameUpdate, shortIntroductionUpdate, introductionOfTheGameUpdate, platformUpdate, releaseDateUpdate,
+  selectedAgePegiUpdate, selectedAdditionalPegiUpdate, soloMultiUpdate, urlPosterCloudinaryUpdate, urlImageOneCloudinaryUpdate,
+  urlImageTwoCloudinaryUpdate, urlImageThreeCloudinaryUpdate, urlBackgroundCloudinaryUpdate, videoLinkUpdate,
+  webSiteOfThisGameUpdate, webSiteOfThisCreatorUpdate, steamLinkUpdate, epicGamesLinkUpdate, genreOfGameUpdate,
+  isDarkModeUpdate, isIntroOfYourselfUpdate]
+);
+  /********************************************************************************************/
   /****************** Envoyer les données à l'API createIntroduction **************************/
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    setWeAreUpdatingData(true);
     try {
-      if (!urlPosterCloudinaryUpdate) {
-        return toast.error("Vous devez sélectionner un fichier image");
-      }
-
-      if (!urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)) {
-        return toast.error(
-          "Le lien de l'image doit être au format jpg, jpeg ou png"
-        );
-      }
-
-      if (!selectedAgePegiUpdate) {
-        return toast.error(
-          "Vous devez sélectionner un âge parmi les options disponibles."
-        );
-      }
-
+      if (!urlPosterCloudinaryUpdate) {return toast.error("Vous devez sélectionner un fichier image");}
+      if (!urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)) {return toast.error("Le lien de l'image doit être au format jpg, jpeg ou png");}
+      if (!selectedAgePegiUpdate) {return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");}
       // Vérifiez le nombre de caractères de la courte introduction
-      if (shortIntroductionUpdate.length > 400) {
-        return toast.error(
-          "L'introduction doit comporter 400 caractères maximum."
-        );
-      }
-
+      if (shortIntroductionUpdate.length > 400) {return toast.error("L'introduction doit comporter 400 caractères maximum.");}
       //Vérifiez le nombre de caractères de la présentation détaillée
-      if (introductionOfTheGameUpdate.length > 10000) {
-        return toast.error(
-          "La présentation doit comporter 10 000 caractères maximum."
-        );
-      }
-
+      if (introductionOfTheGameUpdate.length > 10000) {return toast.error("La présentation doit comporter 10 000 caractères maximum.");}
       // Vérifiez si au moins une plateforme est sélectionnée
-      if (platformUpdate.length === 0) {
-        return toast.error("Vous devez sélectionner au moins une plateforme.");
-      }
-
+      if (platformUpdate.length === 0) {return toast.error("Vous devez sélectionner au moins une plateforme.");}
       // Vérifiez si le site du jeu commence par "https://"
-      if (
-        webSiteOfThisGameUpdate &&
-        !webSiteOfThisGameUpdate.startsWith("https://")
-      ) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+      if (webSiteOfThisGameUpdate && !webSiteOfThisGameUpdate.startsWith("https://")) {
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
-
       // Vérifiez si le site des créateurs commence par "https://"
-      if (
-        webSiteOfThisCreatorUpdate &&
-        !webSiteOfThisCreatorUpdate.startsWith("https://")
-      ) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+      if (webSiteOfThisCreatorUpdate && !webSiteOfThisCreatorUpdate.startsWith("https://")) {
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
-
       // Vérifiez que releaseDateUpdate est un objet Date valide
-      if (
-        !(releaseDateUpdate instanceof Date) ||
-        isNaN(releaseDateUpdate.getTime())
-      ) {
+      if (!(releaseDateUpdate instanceof Date) || isNaN(releaseDateUpdate.getTime())) {
         return toast.error("Vous devez sélectionner une date de sortie.");
       }
-
       // Vérification de la date de sortie
       if (releaseDateUpdate) {
-        const releaseDateUpdateString =
-          releaseDateUpdate.toLocaleDateString("fr-FR"); // Format de la date en français
+        const releaseDateUpdateString = releaseDateUpdate.toLocaleDateString("fr-FR"); // Format de la date en français
         const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
 
         if (!datePattern.test(releaseDateUpdateString)) {
-          return toast.error(
-            "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)"
-          );
+          return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
         }
       } else {
         return toast.error("Vous devez sélectionner une date de sortie.");
       }
 
       // Vérifiez si le site Steam commence par "https://"
-      if (
-        steamLinkUpdate &&
-        (!steamLinkUpdate.startsWith("https://") ||
-          !steamLinkUpdate.includes("steam"))
-      ) {
-        return toast.error(
-          "Le lien vers Steam doit commencer par 'https://' et inclure steam"
-        );
+      if (steamLinkUpdate &&  (!steamLinkUpdate.startsWith("https://") || !steamLinkUpdate.includes("steam"))) {
+        return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
       }
 
       // Function to send the data to createIntroduction function
@@ -232,10 +203,7 @@ const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
       formData.append("email", email);
       formData.append("nameOfGame", encodeURIComponent(nameOfGameUpdate));
       formData.append("shortIntroduction", he.encode(shortIntroductionUpdate));
-      formData.append(
-        "introductionOfTheGame",
-        he.encode(introductionOfTheGameUpdate)
-      );
+      formData.append("introductionOfTheGame", he.encode(introductionOfTheGameUpdate));
       formData.append("platform", JSON.stringify(platformUpdate));
       formData.append("releaseDate", releaseDateUpdate);
       formData.append("urlPosterCloudinary", urlPosterCloudinaryUpdate);
@@ -246,55 +214,30 @@ const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
       formData.append("isDarkMode", isDarkModeUpdate.toString());
       formData.append("isIntroOfYourself", isIntroOfYourselfUpdate.toString());
       // Ajouts conditionnels
-      if (videoLinkUpdate) {
-        formData.append("videoLink", videoLinkUpdate);
-      }
-      if (steamLinkUpdate) {
-        formData.append("steamLink", steamLinkUpdate);
-      }
-      if (epicGamesLinkUpdate) {
-        formData.append("epicGamesLink", epicGamesLinkUpdate);
-      }
-      if (webSiteOfThisGameUpdate) {
-        formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);
-      }
-      if (webSiteOfThisCreatorUpdate) {
-        formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);
-      }
-      if (urlImageOneCloudinaryUpdate) {
-        formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);
-      }
-      if (urlImageTwoCloudinaryUpdate) {
-        formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);
-      }
-      if (urlImageThreeCloudinaryUpdate) {
-        formData.append(
-          "urlImageThreeCloudinary",
-          urlImageThreeCloudinaryUpdate
-        );
-      }
-      if (urlBackgroundCloudinaryUpdate) {
-        formData.append(
-          "urlBackgroundCloudinary",
-          urlBackgroundCloudinaryUpdate
-        );
-      }
+      if (videoLinkUpdate) {formData.append("videoLink", videoLinkUpdate);}
+      if (steamLinkUpdate) {formData.append("steamLink", steamLinkUpdate);}
+      if (epicGamesLinkUpdate) {formData.append("epicGamesLink", epicGamesLinkUpdate);}
+      if (webSiteOfThisGameUpdate) {formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);}
+      if (webSiteOfThisCreatorUpdate) {formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);}
+      if (urlImageOneCloudinaryUpdate) {formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);}
+      if (urlImageTwoCloudinaryUpdate) {formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);}
+      if (urlImageThreeCloudinaryUpdate) {formData.append("urlImageThreeCloudinary",urlImageThreeCloudinaryUpdate);}
+      if (urlBackgroundCloudinaryUpdate) {formData.append("urlBackgroundCloudinary",urlBackgroundCloudinaryUpdate);}
       console.log("Form data:", formData);
       await updateIntroduction(formData);
       toast.success("Présentation du jeu a été mise à jour !");
+      setWeAreUpdatingData(false);
       setLoading(true);
       fetchgameData();
       // Redirect
-      router.replace(
-        `/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}`
-      );
+      router.replace(`/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}`);
     } catch (error) {
       return toast.error(error.message);
     }
   };
 
   /* Suppression du jeu par le créateur *******************************************************************/
-  console.log(`gameId de la présentation à supprimer : `, gameId);
+  //console.log(`gameId de la présentation à supprimer : `, gameId);
 
   const handleDelete = async () => {
     if (!confirm("Voulez vraiment supprimer la présentation de votre jeu ?"))
@@ -633,7 +576,7 @@ const UpdateIntro = ({ game, fetchgameData, setLoading, setWeAreDeleting }) => {
           </div>
         </div>
 
-        {/* Bouton d'envoi */}
+        {/* UPDATE the introduction */}
         <div className="flex justify-center">
           <button
             className="bg-green-500 p-3 w-60 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"

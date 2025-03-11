@@ -36,6 +36,7 @@ import UpdateIntro from "@/components/CreatorsForm/IntroGame/UpdateIntro/UpdateI
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import Flag from "@/components/Flag/Flag";
 import WeAreDeleting from "@/components/WeAreDeleting/WeAreDeleting";
+import WeAreUpdatingData from "@/components/WeAreUpdatingData/WeAreUpdatingData";
 
 export default function IntroductionGame({ params: { introduction } }) {
   // Variable
@@ -57,6 +58,18 @@ export default function IntroductionGame({ params: { introduction } }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [weAreDeleting, setWeAreDeleting] = useState(false);
+  const [weAreUpdatingData, setWeAreUpdatingData] = useState(false);
+
+  const [comparaison, setComparaison] = useState({// What are the changement ?
+    isNameOfGameChanged: false,  isShortIntroChanged: false, isDetailsIntroChanged: false,
+    isPlatformChanged: false, isReleaseDateChanged: false,  isSelectedAgePegiChanged: false,
+    isSelectedAdditionalPegiChanged: false,  isSoloMultiChanged: false,  isUrlPosterChanged: false,
+    isUrlImageOneChanged: false,  isUrlImageTwoChanged: false,  isUrlImageThreeChanged: false,
+    isUrlBackgroundChanged: false,  isVideoLinkChanged: false,  isWebSiteOfThisGameChanged: false,
+    isWebSiteOfThisCreatorChanged: false,  isSteamLinkChanged: false,  isEpicGamesLinkChanged: false, 
+    isGenreOfGameChanged: false,  isDarkModeChanged: false,  isIntroOfYourselfChanged: false
+   });
+   console.log(`comparaison : `, comparaison);
 
   const openModal = (image) => {
     setSelectedImage(image);
@@ -70,7 +83,6 @@ export default function IntroductionGame({ params: { introduction } }) {
 
   // Récupérer l'URL actuelle pour les éventuels partages sur les réseaux sociaux
   useEffect(() => {
-    // Assurez-vous que le code est exécuté uniquement côté client
     if (typeof window !== "undefined") {
       const fullUrl = `${window.location.origin}${pathname}${
         searchParams.toString() ? `?${searchParams.toString()}` : ""
@@ -108,7 +120,7 @@ export default function IntroductionGame({ params: { introduction } }) {
     }
 
     setgame(data.game);
-    setCreatorOfThisGame(encodeURIComponent(data.game.username));
+    setCreatorOfThisGame(encodeURIComponent(data?.game?.username));
     setLoading(false);
   };
 
@@ -267,13 +279,12 @@ export default function IntroductionGame({ params: { introduction } }) {
   };
 
   return (
-    weAreDeleting ? (
-      <WeAreDeleting />
-     ) : (
+ weAreDeleting ? ((<WeAreDeleting />) 
+    ) : (
       <GeneralLayout backgroundImage={backgroundImage}>
-        {loading ? (
-          <Loading /> 
-        ) : (
+        {loading ? (<Loading />)
+         :   weAreUpdatingData ? <WeAreUpdatingData comparaison={comparaison} session={session} />          
+         : (
           <section
             className={`${isDarkClass} w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4`}
           >
@@ -593,6 +604,8 @@ export default function IntroductionGame({ params: { introduction } }) {
                 fetchgameData={fetchgameData}
                 setLoading={setLoading}
                 setWeAreDeleting={setWeAreDeleting}
+                setWeAreUpdatingData={setWeAreUpdatingData}
+                setComparaison={setComparaison}
               />
             ) : null}
           </section>
