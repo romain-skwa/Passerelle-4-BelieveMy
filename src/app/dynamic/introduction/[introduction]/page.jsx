@@ -46,7 +46,7 @@ export default function IntroductionGame({ params: { introduction } }) {
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire pour le partage
   // State
   const { data: session } = useSession(); //console.log(`session `, session);
-  const [game, setgame] = useState({}); //console.log(`game : `, game);
+  const [game, setgame] = useState({}); console.log(`game : `, game);
   const [creatorOfThisGame, setCreatorOfThisGame] = useState("");
   const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
@@ -405,38 +405,77 @@ export default function IntroductionGame({ params: { introduction } }) {
           {/******************* Solo / Multi ******************************/}
           {game.SoloMulti && game.SoloMulti.length > 0 && (
             <div className="flex justify-center mt-4 pb-2 gap-5 flex-wrap">
-              {game.SoloMulti.map((genre) => {
-                const icon = SoloMultis.find(
-                  (item) => item.genre === genre
-                )?.icon; // Trouver l'icône correspondante
-                const translatedGenre = translations[genre][isFrench];
-                return (
-                  <div
-                    key={genre}
-                    className="buttonSoloMulti"
+              {game.SoloMulti.includes("Solo") && (
+                <div
+                  className="buttonSoloMulti"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "10px",
+                  }}
+                >
+                  <span style={{ marginRight: "10px" }}>
+                    Solo {/* Affichez le nom du genre */}
+                  </span>
+                  <Image
+                    src={PlayerSolo}
+                    alt="Solo"
+                    width={50}
+                    height={50}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "10px",
+                      borderRadius: "10px",
                     }}
-                  >
-                    <span style={{ marginRight: "10px" }}>
-                      {translatedGenre}
-                    </span>
-                    {icon && (
-                      <img
-                        src={icon.src}
-                        alt={genre}
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          borderRadius: "10px",
-                        }}
-                      />
-                    )}
-                  </div>
-                );
-              })}
+                  />
+                </div>
+              )}
+
+              {game.SoloMulti.includes("Multijoueur local") && (
+                <div
+                  className="buttonSoloMulti"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "10px",
+                  }}
+                >
+                  <span style={{ marginRight: "10px" }}>
+                  {language == "fr" ? "Multijoueur local" : "Local Multiplayers"}
+                  </span>
+                  <Image
+                    src={MultiPlayersLocal} // Assurez-vous que MultiPlayersLocal est importé correctement
+                    alt="Multijoueur local"
+                    width={50}
+                    height={50}
+                    style={{
+                      borderRadius: "10px",
+                    }}
+                  />
+                </div>
+              )}
+
+              {game.SoloMulti.includes("Multijoueur en ligne") && (
+                <div
+                  className="buttonSoloMulti"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "10px",
+                  }}
+                >
+                  <span style={{ marginRight: "10px" }}>
+                  {language == "fr" ? "Multijoueur en ligne" : "Online Multiplayers"}
+                  </span>
+                  <Image
+                    src={MultiPlayersOnline} // Assurez-vous que MultiPlayersOnline est importé correctement
+                    alt="Multijoueur en ligne"
+                    width={50}
+                    height={50}
+                    style={{
+                      borderRadius: "10px",
+                    }}
+                  />
+                </div>
+              )}
             </div>
           )}
 

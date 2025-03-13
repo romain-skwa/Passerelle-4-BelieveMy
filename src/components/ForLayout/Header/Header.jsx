@@ -145,7 +145,7 @@ export default function Header({ background }) {
           style={{ display: "flex", alignItems: "center" }}
           className={`w-[65%] laptop:w-[25%] flex justify-center laptop:justify-start `}
         >
-          {/* ----------------Accueil------------------------- */}
+          {/* ----------------Home------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4">
             <Link
               href="../../"
@@ -155,7 +155,7 @@ export default function Header({ background }) {
               {language == "fr" ? "Accueil" : "Home"}
             </Link>
           </div>
-          {/* ----------------Recherche------------------------- */}
+          {/* ----------------Search------------------------- */}
           {!isSearchVisible && (
             <>
               <div
@@ -251,6 +251,15 @@ export default function Header({ background }) {
                         Your profile : <span style={{ textTransform: 'capitalize' }}>{username}</span>
                       </>
                     )}
+                  </Link>
+                </div>
+
+                {/* The creator introduce his GAME */}
+                <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
+                  <Link href="../../listOfYourGames" >
+                    {language == "fr"
+                      ? "Votre liste de jeux"
+                      : "List of your games"}{" "}
                   </Link>
                 </div>
 

@@ -40,7 +40,7 @@ const GamePresentationSections = ({
 }) => {
   const { language } = useLanguage();
   const router = useRouter();
-  
+   console.log(SoloMulti);
   /********* Variable ************************************************************/
   // When the images have been sent to Cloudinary, their URLs are stored in urlMongoDB.
   const [urlMongoDB, setUrlMongoDB] = useState("");
@@ -66,6 +66,10 @@ const GamePresentationSections = ({
     event.preventDefault();
 
     try {
+      if (!filesToSend || filesToSend.length === 0) {
+        return toast.error("Vous devez sélectionner au moins un fichier image");      
+      }      
+
       if (!selectedAgePegi) {
         return toast.error(
           "Vous devez sélectionner un âge parmi les options disponibles."
@@ -269,9 +273,10 @@ const GamePresentationSections = ({
         />
       </div>
 
-      {/**************** Editeur de texte ********************************************** */}
+      {/**************** Text Editor ********************************************** */}
       <TinyMceEditor setIntroductionOfTheGame={setIntroductionOfTheGame} />
 
+      {/**************** Platform ***************************** */}
       <Platform platform={platform} setPlatform={setPlatform} />
 
       {/**************** Date ***************************** */}

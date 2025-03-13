@@ -30,7 +30,7 @@ const ButtonPlatform = ({ platform, setPlatform }) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-3 justify-items-center largeScreen:flex largeScreen:justify-center">
+    <div className="grid grid-cols-2 gap-3 my-3 justify-items-center largeScreen:flex largeScreen:justify-center">
       {platforms.map((platformName) => (
         <div
           key={platformName}

@@ -2,7 +2,7 @@ import React from "react";
 import "@/app/styles/formulary.css";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
-import MultiPlayersOnline from "/public/icons/muliOnline.jpg";
+import MultiPlayersOnline from "/public/icons/multiOnline2.jpg";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const ButtonSoloMulti = ({ SoloMulti, setSoloMulti }) => {

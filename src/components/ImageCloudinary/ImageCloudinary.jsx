@@ -1,8 +1,7 @@
-// Component used in GamePresentationSections
-
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import { toast } from "react-toastify"; // Assurez-vous d'importer toast
 
 const ImageCloudinary = ({ name, setFilesToSend }) => {
   const { language } = useLanguage();
@@ -16,10 +15,18 @@ const ImageCloudinary = ({ name, setFilesToSend }) => {
       ` file dans le composant ImageCloudinary : `,
       file
     );
-    setFilesToSend(prevImages => ({ ...prevImages, [key]: file }));
 
-    // Créer une URL de prévisualisation
+    // Vérifie l'extension du fichier
     if (file) {
+      const fileName = file.name;
+      if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
+        toast.error("Seuls les fichiers JPG, JPEG ou PNG sont autorisés.");
+        return; // Ne pas continuer si le fichier n'est pas valide
+      }
+
+      setFilesToSend(prevImages => ({ ...prevImages, [key]: file }));
+
+      // Créer une URL de prévisualisation
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
     }

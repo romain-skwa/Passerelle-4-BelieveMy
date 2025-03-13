@@ -5,11 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
-export default function MadeByThisCreator({ user }) {
+export default function MadeByThisCreator({ user, usernameEncoded }) {
   const { language, changeLanguage } = useLanguage();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
-  const username = decodeURIComponent(user.username);
+  const username = user ? decodeURIComponent(user.username) : decodeURIComponent(usernameEncoded);
   const capitalizedUsername = username.charAt(0).toUpperCase() + username.slice(1);
   const [oneGameOr, setOneGameOr] = useState();
 
@@ -20,7 +20,7 @@ export default function MadeByThisCreator({ user }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: user.username }), // Utilisation de user.username
+        body: JSON.stringify({ username: user ? user.username : usernameEncoded }), // Utilisation de user.username ou usernameEncoded
       });
 
       const data = await response.json();
@@ -56,10 +56,8 @@ export default function MadeByThisCreator({ user }) {
   };
 
   useEffect(() => {
-    if (user && user.username) {
-      fetchgameData(); // Appel de la fonction pour récupérer les données
-    }
-  }, [user, language]); // Dépendance sur user
+    fetchgameData(); // Appel de la fonction pour récupérer les données
+  }, [user, usernameEncoded, language]); 
 
   return (
     <div>

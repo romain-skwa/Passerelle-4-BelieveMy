@@ -265,12 +265,12 @@ const UpdateIntro = ({
       }
       if (urlPosterCloudinaryUpdate && !urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)) {
         return toast.error(
-          "Le lien de l'image doit être au format jpg, jpeg ou png"
+          "L'image doit être au format jpg, jpeg ou png"
         );
       }
       if (urlPosterUpdate && !urlPosterUpdate.match(/\.(jpg|jpeg|png)$/i)) {
         return toast.error(
-          "Le lien de l'image doit être au format jpg, jpeg ou png"
+          "L'image doit être au format jpg, jpeg ou png"
         );
       }
       if (!selectedAgePegiUpdate) {
