@@ -397,21 +397,24 @@ const ApercuFormulaire = ({
             (() => {
             const url = URL.createObjectURL(filesToSend.posterGlimpseFile)
               return (
-                <Image
-                  src={url}
-                  className="w-[275px] h-[154px] py-3 inline-block"
-                  width={275}
-                  height={154}
-                  unoptimized={true}
-                  alt={`posterGlimpseFile`}
-                  onClick={() => openModal(url)}
-                />
+                <div className="flex justify-center">
+                  <Image
+                    src={url}
+                    className="w-[192px] h-[311px] py-3"
+                    width={192}
+                    height={311}
+                    unoptimized={true}
+                    alt={`posterGlimpseFile`}
+                    onClick={() => openModal(url)}
+                  />
+                </div>
               );
             })() 
           )}
         </section>
       )}
 
+      {/* When we want to check the image*/}
       {isModalOpen && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"

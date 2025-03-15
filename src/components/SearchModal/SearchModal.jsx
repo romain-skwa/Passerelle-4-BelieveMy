@@ -86,16 +86,23 @@ export default function SearchModal({ onClose }) {
     onClose(); // Ferme la modale après la redirection
   };
 
+  const handleOutsideClick = (event) => {
+    const modal = document.getElementById("modal-content");
+    if (modal && !modal.contains(event.target)) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 flex justify-center bg-black bg-opacity-50 z-50 text-black">
-      <div className="bg-white rounded-lg p-4 z-50 h-[650px] tablet:h-[700px] my-auto ">
-        <h2 className="text-lg font-bold">Recherche détaillée</h2>
+    <div onClick={handleOutsideClick} className="fixed inset-0 flex justify-center bg-black bg-opacity-50 z-50 text-black">
+      <div id="modal-content" className="rounded-lg p-4 z-50 h-[670px] tablet:h-[780px] my-auto neuphormismModalSearch">
+        <h2 className="text-lg font-bold text-center mb-2">Recherche détaillée</h2>
         <input
           type="text"
           value={searchTerm} // Lien avec l'état
           onChange={handleSearchChange} // Gestion du changement
           placeholder={language == "fr" ? "Nom du jeu" : "Game Name"}
-          className="text-black placeholder-gray-500 outline-none px-1 w-[100%] tablet:w-[245px] border-2" // Appliquez la couleur ici
+          className="text-black placeholder-gray-500 outline-none px-1 w-[100%] tablet:w-[245px] border-2 rounded-xl" // Appliquez la couleur ici
         />
 
         <section className="flex">
@@ -104,8 +111,8 @@ export default function SearchModal({ onClose }) {
             {genres.map((genre) => (
               <div
                 key={genre.id}
-                className={`p-1 tablet:p-2 cursor-pointer hover:bg-gray-200 ${
-                  selectedGenres.includes(genre.id) ? "bg-blue-200" : ""
+                className={`p-1 tablet:p-2 cursor-pointer hover:bg-gray-200 my-1 rounded ${
+                  selectedGenres.includes(genre.id) ? "bg-black text-white" : ""
                 }`}
                 onClick={() => handleGenreToggle(genre.id)}
               >
@@ -119,8 +126,8 @@ export default function SearchModal({ onClose }) {
             {platforms.map((platform) => (
               <div
                 key={platform}
-                className={`p-1 tablet:p-2 cursor-pointer hover:bg-gray-200 ${
-                  selectedPlatforms.includes(platform) ? "bg-blue-200" : ""
+                className={`p-1 tablet:p-2 cursor-pointer hover:bg-gray-200 my-1 rounded ${
+                  selectedPlatforms.includes(platform) ? "bg-black text-white" : ""
                 }`}
                 onClick={() => handlePlatformToggle(platform)}
               >
@@ -130,46 +137,49 @@ export default function SearchModal({ onClose }) {
           </div>
         </section>
 
-        <div
-          className={`mt-4 cursor-not-allowed ${
-            !(
-              selectedGenres.length > 0 ||
-              selectedPlatforms.length > 0 ||
-              searchTerm.length > 0
-            )
-              ? "opacity-50 "
-              : "opacity-100 "
-          }`}
-        >
-          <button
-            className={`bg-green-500 px-4 py-2 rounded text-white ${
+        <div className="flex flex-col items-center">
+          <div
+            className={`mt-4 cursor-not-allowed ${
               !(
                 selectedGenres.length > 0 ||
                 selectedPlatforms.length > 0 ||
                 searchTerm.length > 0
               )
-                ? "cursor-not-allowed"
-                : "cursor-pointer"
+                ? "opacity-50 "
+                : "opacity-100 "
             }`}
-            onClick={handleSearchClick}
-            disabled={
-              !(
-                selectedGenres.length > 0 ||
-                selectedPlatforms.length > 0 ||
-                searchTerm.length > 0
-              )
-            } // Désactive le bouton si la condition n'est pas remplie
           >
-            Rechercher
+            <button
+              className={`bg-green-500 px-4 py-2 rounded text-white ${
+                !(
+                  selectedGenres.length > 0 ||
+                  selectedPlatforms.length > 0 ||
+                  searchTerm.length > 0
+                )
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
+              onClick={handleSearchClick}
+              disabled={
+                !(
+                  selectedGenres.length > 0 ||
+                  selectedPlatforms.length > 0 ||
+                  searchTerm.length > 0
+                )
+              } // Désactive le bouton si la condition n'est pas remplie
+            >
+            {language == "fr" ? "Rechercher" : "Search"}  
+            </button>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="mt-2 bg-red-500 px-4 py-2 rounded text-white w-[100px] mx-auto"
+            >
+            {language == "fr" ? "Fermer" : "Close"}            
           </button>
         </div>
 
-        <button
-          onClick={onClose}
-          className="mt-2 bg-red-500 px-4 py-2 rounded text-black"
-        >
-          Fermer
-        </button>
       </div>
     </div>
   );

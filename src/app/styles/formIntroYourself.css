@@ -23,6 +23,16 @@
     inset  5px 5px 10px  rgb(31, 125, 207);
 }
 
+.neuphormismModalSearch{
+    box-shadow: 
+    5px 5px 10px black, 
+    -5px -5px 10px black, 
+    inset  -5px -5px 10px black, 
+    inset  5px 5px 5px  rgb(184, 31, 207);
+    background: linear-gradient(301deg, rgba(0,0,0,1) 30%, rgb(180, 57, 199) 100%);
+    color: white;
+}
+
 .inputLink{
     display: block;
     width: 90%;

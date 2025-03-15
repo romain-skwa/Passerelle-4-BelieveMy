@@ -1,5 +1,5 @@
 // src/app/resetPassword.js
-
+// We send to the user an email to reset a password
 "use client";
 
 import { useState } from "react";

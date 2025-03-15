@@ -258,7 +258,7 @@ export default function Header({ background }) {
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
                   <Link href="../../listOfYourGames" >
                     {language == "fr"
-                      ? "Votre liste de jeux"
+                      ? "Liste de vos jeux"
                       : "List of your games"}{" "}
                   </Link>
                 </div>

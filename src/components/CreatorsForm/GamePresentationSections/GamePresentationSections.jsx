@@ -17,8 +17,7 @@ import TinyMceEditor from "@/components/TinyMceEditor/TinyMceEditor";
 
 
 const GamePresentationSections = ({
-  nameOfGame,
-  setNameOfGame,
+  nameOfGame,  setNameOfGame,
   shortIntroduction,  setShortIntroduction,
   introductionOfTheGame,  setIntroductionOfTheGame,
   platform,  setPlatform,
@@ -40,7 +39,8 @@ const GamePresentationSections = ({
 }) => {
   const { language } = useLanguage();
   const router = useRouter();
-   console.log(SoloMulti);
+  const [nameLowerCase, setNameLowerCase] = useState();
+console.log(`nameOfGame : `, nameOfGame);
   /********* Variable ************************************************************/
   // When the images have been sent to Cloudinary, their URLs are stored in urlMongoDB.
   const [urlMongoDB, setUrlMongoDB] = useState("");
@@ -154,7 +154,7 @@ const GamePresentationSections = ({
                 }
               );
               const data = await response.json();
-              console.log(`Upload successful for ${key}:`, data.secure_url);
+              //console.log(`Upload successful for ${key}:`, data.secure_url);
 
               // Stocker l'URL dans l'état approprié
               setUrlMongoDB((prev) => ({
@@ -196,7 +196,7 @@ const GamePresentationSections = ({
     try {
       // Function to send the data to createIntroduction function
       const introductionFormaData = new FormData();
-      introductionFormaData.append("nameOfGame", encodeURIComponent(nameOfGame));
+      introductionFormaData.append("nameOfGame", encodeURIComponent(nameLowerCase));
       introductionFormaData.append("shortIntroduction", he.encode(shortIntroduction) );
       introductionFormaData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
       introductionFormaData.append("platform", JSON.stringify(platform));
@@ -244,12 +244,12 @@ const GamePresentationSections = ({
         <input
           type="text"
           name="nameOfGame"
-          placeholder="Nom du jeu"
+          placeholder="Nom du jeu entièrement en minuscule"
           className="px-3 py-2 rounded-md w-[92%] tablet:w-[100%] mx-4 mt-4 text-white neuphormismUndergroung"
           maxLength={80}
           size={80}
           value={nameOfGame}
-          onChange={(e) => setNameOfGame(e.target.value)}
+          onChange={(e) => setNameOfGame(e.target.value.toLowerCase())}
         />
       </div>
 
