@@ -1,3 +1,4 @@
+// Component used  with listOfYourGames, props : usernameEncoded, usernameDecoded, setHowManyGame
 "use client";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -5,14 +6,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
-export default function MadeByThisCreator({ user, usernameEncoded }) {
+export default function MadeByThisCreator({ user, usernameEncoded, usernameDecoded, setHowManyGame }) {
   const { language, changeLanguage } = useLanguage();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
-  const username = user ? decodeURIComponent(user.username) : decodeURIComponent(usernameEncoded);
-  const capitalizedUsername = username.charAt(0).toUpperCase() + username.slice(1);
-  const [oneGameOr, setOneGameOr] = useState();
-
+  const [oneGameOr, setOneGameOr] = useState("Aucun jeu n'a été présenté par ");
+ 
   const fetchgameData = async () => {
     try {
       const response = await fetch("/api/MadeByThisCreator", {
@@ -20,7 +19,7 @@ export default function MadeByThisCreator({ user, usernameEncoded }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: user ? user.username : usernameEncoded }), // Utilisation de user.username ou usernameEncoded
+        body: JSON.stringify({ username: user ? user.username : usernameEncoded }), // When we are on listOfYourGames, usernameEncoded is necessary.
       });
 
       const data = await response.json();
@@ -37,12 +36,15 @@ export default function MadeByThisCreator({ user, usernameEncoded }) {
           setOneGameOr(
             language == "fr" ? "Le jeu créé par" : "The game created by"
           );
+          setHowManyGame(1);
         } else {
           setOneGameOr(
             language == "fr" ? "Les jeux créés par" : "The games created by"
           );
+          setHowManyGame(2);
         }
       } else {
+        setHowManyGame(0);
         toast.error("Aucun jeu trouvé");
       }
     } catch (error) {
@@ -65,9 +67,11 @@ export default function MadeByThisCreator({ user, usernameEncoded }) {
         <p>{language == "fr" ? "Chargement des jeux... " : "Loading... "}</p>
       ) : (
         <>
-          <p className="text-center">
-            {oneGameOr} {capitalizedUsername}{" "}
+        <div className="flex justify-center">
+          <p className="text-white bg-black/70 border-2 py-3 px-4 rounded-full m-2 text-center inline-block">
+            {oneGameOr} <span className="uppercase">{user ? decodeURIComponent(user.username) : (usernameDecoded)}</span>{" "}
           </p>
+        </div>
           <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] laptop:w-full mx-auto">
             {games.map((game) => (
               <div

@@ -1,9 +1,6 @@
 "use client"
-import { usePathname } from 'next/navigation';
 // LanguageContext.js
 import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 const LanguageContext = createContext();
 
@@ -31,11 +28,7 @@ export const LanguageProvider = ({ children }) => {
 /************************************************************************* */
 
   return (
-    <LanguageContext.Provider value={{ 
-      language,
-      setLanguage,
-      changeLanguage,
-      }}>
+    <LanguageContext.Provider value={{ language, setLanguage, changeLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

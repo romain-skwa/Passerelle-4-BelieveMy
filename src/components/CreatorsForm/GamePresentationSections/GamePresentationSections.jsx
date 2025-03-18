@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { Cloudinary } from "@cloudinary/url-gen";
 import TinyMceEditor from "@/components/TinyMceEditor/TinyMceEditor";
 
-
 const GamePresentationSections = ({
   nameOfGame,  setNameOfGame,
   shortIntroduction,  setShortIntroduction,
@@ -39,8 +38,6 @@ const GamePresentationSections = ({
 }) => {
   const { language } = useLanguage();
   const router = useRouter();
-  const [nameLowerCase, setNameLowerCase] = useState();
-console.log(`nameOfGame : `, nameOfGame);
   /********* Variable ************************************************************/
   // When the images have been sent to Cloudinary, their URLs are stored in urlMongoDB.
   const [urlMongoDB, setUrlMongoDB] = useState("");
@@ -196,7 +193,7 @@ console.log(`nameOfGame : `, nameOfGame);
     try {
       // Function to send the data to createIntroduction function
       const introductionFormaData = new FormData();
-      introductionFormaData.append("nameOfGame", encodeURIComponent(nameLowerCase));
+      introductionFormaData.append("nameOfGame", encodeURIComponent(nameOfGame));
       introductionFormaData.append("shortIntroduction", he.encode(shortIntroduction) );
       introductionFormaData.append("introductionOfTheGame", he.encode(introductionOfTheGame));
       introductionFormaData.append("platform", JSON.stringify(platform));
@@ -280,15 +277,15 @@ console.log(`nameOfGame : `, nameOfGame);
       <Platform platform={platform} setPlatform={setPlatform} />
 
       {/**************** Date ***************************** */}
-      <div className="my-2 flex justify-center">
+      <div className="my-2 flex justify-center border rounded-3xl py-2 w-[300px] tablet:w-[380px] mx-auto bg-black/70">
         <p
           className="text-white font-bold mr-2"
           style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
         >
-          {language === "fr" ? "Date de sortie :" : "Release date:"}
+          {language === "fr" ? "Date de sortie : " : "Release date : "}
         </p>
         <DatePicker
-          className="pl-2 text-black"
+          className="pl-2 text-black w-[130px]"
           selected={releaseDate}
           dateFormat="dd/MM/yyyy"
           id="releaseDate"
@@ -315,7 +312,7 @@ console.log(`nameOfGame : `, nameOfGame);
         <p className="choisissezLimage">
           {language === "fr"
             ? "Choisissez l'affiche du jeu"
-            : "Choose the game's poster."}{" "}
+            : "Choose the game's poster"}{" "}
         </p>
 
         <ImageCloudinary
@@ -441,12 +438,12 @@ console.log(`nameOfGame : `, nameOfGame);
       </section>
 
       {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
-      <div className="flex justify-center">
+      <div className="flex justify-center mx-auto">
         <div
-          className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer"
+          className="grasFondBleuborder border p-2 flex justify-center mt-3 mb-3 font-bold text-white cursor-pointer rounded-3xl py-2 w-[320px] tablet:w-[620px]"
           onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
         >
-          {language == "fr" ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?" : "Would you like to add a presentation of yourself or your team?"}
+          {language == "fr" ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?" : "Would you like to add a presentation of yourself or your team ?"}
         </div>
       </div>
 

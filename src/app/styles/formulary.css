@@ -115,7 +115,6 @@ h3 {
   display: flex;
   flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'espace est insuffisant */
   justify-content: center;
-  color: white;
   text-shadow: 3px 3px 4px rgba(7, 7, 7, 0.635);
   margin-top: 1rem;
   padding: 1rem;
@@ -180,13 +179,6 @@ h3 {
   font-weight: 600;
   border-radius: 10px;
   transition: background-color 0.3s;
-}
-
-@media (max-width: 600px) {
-  .bandeauTop div {
-    font-size: 0.8rem;
-    padding: 0.2rem 0.4rem;
-  }
 }
 
 .shadowPurple{

@@ -209,7 +209,7 @@ const ApercuFormulaire = ({
               .map((genre) => {
                 const icon = SoloMultis.find(
                   (item) => item.genre === genre
-                )?.icon; // Trouver l'icône correspondante
+                )?.icon; // Trouver l'icône correspondante.
                 return (
                   <div
                     key={genre}

@@ -28,7 +28,7 @@ const pressStart2P = Press_Start_2P({
 export default function Header({ background }) {
   const { data: session } = useSession();
   const username = session?.user.username;
-  const { language, changeLanguage, handleLinkClick, } = useLanguage();
+  const { language, changeLanguage, } = useLanguage();
   const [isModalSearchOpen, setModalSearchOpen] = useState(false);
   const router = useRouter();
 
@@ -138,7 +138,7 @@ export default function Header({ background }) {
       {/* ----------------LIGNE 2------------------------------------------------------------- */}
       {/* ------------------------------------------------------------------------------------ */}
 
-      <section className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative ">
+      <nav className="flex flex-col laptop:flex-row px-2 laptop:px-8 py-2 items-center laptop:justify-between relative ">
         {" "}
         {/* Part left */}
         <div
@@ -149,8 +149,7 @@ export default function Header({ background }) {
           <div className="text-center hidden laptop:block laptop:mr-4">
             <Link
               href="../../"
-              className="border px-4 pb-1 pt-[3px] rounded-2xl bg-black/70"
-              
+              className="border px-4 pb-1 pt-[3px] rounded-2xl bg-black/70"              
             >
               {language == "fr" ? "Accueil" : "Home"}
             </Link>
@@ -338,7 +337,7 @@ export default function Header({ background }) {
             />
           </div>
         </div>
-      </section>
+      </nav>
     </header>
   );
 }

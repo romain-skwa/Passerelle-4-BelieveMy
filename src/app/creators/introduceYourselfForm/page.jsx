@@ -51,6 +51,13 @@ const introduceYourself = () => {
   //console.log(`Dans la page formulaire : isLogoChanged `, isLogoChanged);
   const [weAreUpdatingProfil, setWeAreUpdatingProfil] = useState(false);
 
+  // Title
+  const titleNow = language === "fr" ? "Ma biographie" : "My biography";
+
+  useEffect(() => {
+    document.title = titleNow;
+  }, [language, titleNow]);
+
   // Get data about user
   useEffect(() => {
     const fetchUserData = async () => {

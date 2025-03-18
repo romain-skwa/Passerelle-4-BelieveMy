@@ -9,7 +9,7 @@ import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
@@ -19,6 +19,14 @@ export default function Login() {
   const { language } = useLanguage();
   const [focused, setFocused] = useState({ email: false, password: false });
 
+  // Title
+    const titleNow = language === "fr" ? "Se connecter" : "Login";
+  
+    useEffect(() => {
+      document.title = titleNow;
+    }, [language, titleNow]);
+  
+  // -----------------------------
   const handleFocus = (event) => {
     setFocused((prevFocused) => ({
       ...prevFocused,

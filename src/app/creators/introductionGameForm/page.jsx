@@ -15,6 +15,7 @@ import TextOneByOne from "@/components/CreatorsForm/TextOneByOne/TextOneByOne";
 import { Press_Start_2P } from "next/font/google";
 import Loading from "@/components/ForLayout/Loading/Loading";
 import WeAreSendingData from "@/components/WeAreSendingData/WeAreSendingData";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 // FORMULARY used by a the creator to introduce one game
 const pressStart2P = Press_Start_2P({
@@ -27,6 +28,14 @@ const pressStart2P = Press_Start_2P({
 export default function introductionGameForm() {
   // Variable
   const { data: session } = useSession();
+  const { language } = useLanguage();
+
+  // Title
+  const titleNow = language === "fr" ? "Je présente mon jeu" : "I introduce my game";
+
+  useEffect(() => {
+    document.title = titleNow;
+  }, [language, titleNow]);
 
   // State
   const [user, setUser] = useState({});

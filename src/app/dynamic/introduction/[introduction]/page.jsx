@@ -44,9 +44,10 @@ export default function IntroductionGame({ params: { introduction } }) {
   const { language } = useLanguage();
   const pathname = usePathname(); // Récupérer le chemin actuel pour le partage
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire pour le partage
+
   // State
   const { data: session } = useSession(); //console.log(`session `, session);
-  const [game, setgame] = useState({}); console.log(`game : `, game);
+  const [game, setgame] = useState({});
   const [creatorOfThisGame, setCreatorOfThisGame] = useState("");
   const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
   const username = game.username;
@@ -139,9 +140,13 @@ export default function IntroductionGame({ params: { introduction } }) {
     setCreatorOfThisGame(encodeURIComponent(data?.game?.username));
     setLoading(false);
   };
-
-  // When the creator choose to show his biography, we get... his biography
+    
+  // When game is loaded -----------------------------------------------------
   useEffect(() => {
+    // Title
+    document.title = decodeURIComponent(game.nameofgame);
+    
+    // When the creator choose to show his biography, we get... his biography
     if (game.isIntroOfYourself === "true" && creatorOfThisGame) {
       const fetchDataCreatorOfThisGame = async () => {
         const response = await fetch("/api/getDataCreatorOfThisGame", {
@@ -171,10 +176,10 @@ export default function IntroductionGame({ params: { introduction } }) {
 
   /**************************************************** */
 
-  // Déterminer les classes en fonction de isDarkMode
-  const isDarkMode = game.isDarkMode; // Récupérer la valeur
+  // Determining classes based on isDarkMode
+  const isDarkMode = game.isDarkMode; 
 
-  let isDarkClass; // Valeur par défaut
+  let isDarkClass;
 
   if (isDarkMode === "true") {
     isDarkClass = "text-white bg-[rgba(0,0,0,0.90)]";
@@ -183,12 +188,12 @@ export default function IntroductionGame({ params: { introduction } }) {
     isDarkClass = "text-black bg-white";
   }
 
-  // Vérifiez si videoLink existe et modifiez-le si nécessaire
+  // Check if videoLink exists and modify it if necessary
   if (game.videoLink && game.videoLink.includes("watch?v=")) {
     game.videoLink = game.videoLink.replace("watch?v=", "embed/");
   }
 
-  // Convertir selectedAdditionalPegi en tableau
+  // Convert selectedAdditionalPegi to array
   if (game.selectedAdditionalPegi) {
     // Vérifiez si c'est une chaîne avant de faire split
     if (typeof game.selectedAdditionalPegi === "string") {
@@ -242,7 +247,7 @@ export default function IntroductionGame({ params: { introduction } }) {
     }
   };
 
-  // Formatage de la date
+  // Date formatting
   const formattedDate = game.releaseDate
     ? new Date(game.releaseDate).toLocaleDateString("fr-FR", {
         day: "numeric",
@@ -258,24 +263,12 @@ export default function IntroductionGame({ params: { introduction } }) {
     }
   }, [game]);
 
-  // Liste des modes de jeu
-
+  // List of game modes
   const SoloMultis = [
     { genre: "Solo", icon: PlayerSolo },
     { genre: "Multijoueur local", icon: MultiPlayersLocal },
     { genre: "Multijoueur en ligne", icon: MultiPlayersOnline },
   ];
-
-  // French or English (for solo / multi)
-  const [isFrench, setIsFrench] = useState(true);
-
-  useEffect(() => {
-    if (language == "fr") {
-      setIsFrench(true);
-    } else {
-      setIsFrench(false);
-    }
-  }, [language]);
 
   const translations = {
     "Multijoueur en ligne": {
@@ -489,7 +482,7 @@ export default function IntroductionGame({ params: { introduction } }) {
           {/******************** Présentation détaillée ************************************************/}
           <div className="p-4">
             {game.content ? (
-              <div
+              <article
                 dangerouslySetInnerHTML={{
                   __html: he.decode(game.content.toString()),
                 }}

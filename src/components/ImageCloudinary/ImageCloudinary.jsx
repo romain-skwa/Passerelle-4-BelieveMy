@@ -57,7 +57,7 @@ const ImageCloudinary = ({ name, setFilesToSend }) => {
         onChange={(e) => handleImageChange(e, name)}
         className="hidden" // Masque l'input de fichier
       />
-      <label htmlFor={name} className="cursor-pointer bg-blue-500 text-white py-1 px-4 rounded">
+      <label htmlFor={name} className="cursor-pointer text-white py-1 px-4 rounded bg-black/30 border">
         {language === "fr" ? "Parcourir" : "Browse"}
       </label>
 

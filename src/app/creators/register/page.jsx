@@ -10,11 +10,19 @@ import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import { useEffect } from "react";
 
 export default function Register() {
   // Variable
   const router = useRouter();
   const { language } = useLanguage();
+
+  // Title
+    const titleNow = language === "fr" ? "Inscription" : "Register";
+  
+    useEffect(() => {
+      document.title = titleNow;
+    }, [language, titleNow]);
 
   // Function
   const registerNewCreator = async (formData) => {
