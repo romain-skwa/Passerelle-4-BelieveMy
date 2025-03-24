@@ -142,19 +142,16 @@ export default function IntroductionGame({ params: { introduction } }) {
   };
     
   // When game is loaded -----------------------------------------------------
-  useEffect(() => {
-    // Title
-    document.title = decodeURIComponent(game.nameofgame);
-    
+  useEffect(() => {    
     // When the creator choose to show his biography, we get... his biography
     if (game.isIntroOfYourself === "true" && creatorOfThisGame) {
       const fetchDataCreatorOfThisGame = async () => {
         const response = await fetch("/api/getDataCreatorOfThisGame", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ creatorOfThisGame }),
+          // No body for GET
         });
 
         const data = await response.json();
@@ -628,7 +625,7 @@ export default function IntroductionGame({ params: { introduction } }) {
             <section className="tablet:flex tablet:justify-between">
               <div className="p-1 tablet:p-4 tablet:inline-block text-center">
                 <Link
-                  href={`../../../dynamic/profilecreators/@${encodedUsername}`}
+                  href={`../../../dynamic/profilecreators/@${encodedUsername}?lang=${language}`}
                 >
                   {language === "fr" ? "Jeu créé par : " : "Game created by : "}{" "}
                   {decodeURIComponent(game.username)}

@@ -20,7 +20,7 @@ export async function POST(request) {
         const db = client.db(process.env.MONGODB_DATABASE);
 
         // Récupérer l'utilisateur
-        const user = await db.collection("créateurs").find({ username: creatorOfThisGame }).limit(1).toArray();
+        const user = await db.collection("créateurs").find({ username: creatorOfThisGame }, { projection: { password: 0, email: 0 } } ).limit(1).toArray();
 
         // Vérifiez si l'utilisateur existe
         if (user.length === 0) {

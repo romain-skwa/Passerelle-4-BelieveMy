@@ -8,7 +8,7 @@ import MadeByThisCreator from "../MadeByThisCreator/MadeByThisCreator";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const UserProfileSection = ({ user }) => {
-  const { language, changeLanguage } = useLanguage();
+  const { language } = useLanguage();
 
   if (!user) {
     return <div>Aucun utilisateur connecté</div>;

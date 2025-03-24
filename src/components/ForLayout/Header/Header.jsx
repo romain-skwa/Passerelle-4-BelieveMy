@@ -28,7 +28,7 @@ const pressStart2P = Press_Start_2P({
 export default function Header({ background }) {
   const { data: session } = useSession();
   const username = session?.user.username;
-  const { language, changeLanguage, } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [isModalSearchOpen, setModalSearchOpen] = useState(false);
   const router = useRouter();
 
@@ -48,18 +48,17 @@ export default function Header({ background }) {
 
   // Function to change the language
   const handleChangeToEnglish = () => {
-    changeLanguage("en"); // Change la langue à l'anglais
+    setLanguage("en"); // Change la langue à l'anglais
   };
 
   const handleChangeToFrench = () => {
-    changeLanguage("fr"); // Change la langue au français
+    setLanguage("fr"); // Change la langue au français
   };
 
   const handleLogout = async () => {
     await signOut({ redirect: false }); // Se déconnecter
     router.replace("/"); // Rediriger vers la page d'accueil
   };
-
   return (
     <header className={`text-white pb-2 ${background}`}>
       <section className="flex justify-between laptop:px-8 pt-3 relative">
@@ -148,7 +147,7 @@ export default function Header({ background }) {
           {/* ----------------Home------------------------- */}
           <div className="text-center hidden laptop:block laptop:mr-4">
             <Link
-              href="../../"
+              href={`../../?lang=${language}`}
               className="border px-4 pb-1 pt-[3px] rounded-2xl bg-black/70"              
             >
               {language == "fr" ? "Accueil" : "Home"}
@@ -193,18 +192,14 @@ export default function Header({ background }) {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       router.push(
-                        `/dynamic/searchResult/${encodeURIComponent(
-                          searchTerm
-                        )}`
+                        `/dynamic/searchResult/${encodeURIComponent(searchTerm)}?lang=${(language)}&searchResult=${encodeURIComponent(searchTerm)}`
                       ); // Redirection when "Enter" is pressed
                     }
                   }}
                   className="text-black placeholder-gray-500 outline-none px-1 tablet:w-[245px]"
                 />
                 <Link
-                  href={`/dynamic/searchResult/${encodeURIComponent(
-                    searchTerm
-                  )}`}
+                  href={`/dynamic/searchResult/${encodeURIComponent(searchTerm)}?lang=${(language)}&searchResult=${encodeURIComponent(searchTerm)}`}
                 >
                   {" "}
                   {/* Link to result Page*/}
@@ -212,8 +207,7 @@ export default function Header({ background }) {
                     src={searchIconWhite}
                     alt="Search Icon"
                     className="mt-[2px] ml-[10px] w-5 h-5 cursor-pointer"
-                    unoptimized={true}
-                    
+                    unoptimized={true}                    
                   />
                 </Link>
               </div>
@@ -222,7 +216,10 @@ export default function Header({ background }) {
                 className="text-center text-sm cursor-pointer"
                 onClick={() => setModalSearchOpen(true)} // Ouvre le modal
               >
-                Recherche détaillée
+                {language == "fr"
+                  ? "Recherche détaillée"
+                  : "Detailed search"
+                  }{" "}                
               </div>
             </div>
           )}
@@ -239,7 +236,7 @@ export default function Header({ background }) {
               <>
                 {/* The creator introduce himself */}
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
-                  <Link href="../../creators/introduceYourselfForm" >
+                  <Link href={`../../creators/introduceYourselfForm?lang=${language}`} >
                   {language === "fr" 
                       ? (
                       <>
@@ -255,7 +252,7 @@ export default function Header({ background }) {
 
                 {/* The creator introduce his GAME */}
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
-                  <Link href="../../listOfYourGames" >
+                  <Link href={`../../listOfYourGames?lang=${language}`} >
                     {language == "fr"
                       ? "Liste de vos jeux"
                       : "List of your games"}{" "}
@@ -264,7 +261,7 @@ export default function Header({ background }) {
 
                 {/* The creator introduce his GAME */}
                 <div className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
-                  <Link href="../../creators/introductionGameForm" >
+                  <Link href={`../../creators/introductionGameForm?lang=${language}`} >
                     {language == "fr"
                       ? "Présentez votre jeu"
                       : "Introduce your game"}{" "}
@@ -298,12 +295,12 @@ export default function Header({ background }) {
             ) : (
               <>
                 <div className="border bg-black/70 rounded-2xl py-1 px-3">
-                  <Link href="../../creators/login">
+                  <Link href={`../../creators/login?lang=${language}`}>
                     {language == "fr" ? "Se connecter" : "Login"}
                   </Link>
                 </div>
                 <div className="ml-3 mr-0 laptop:mr-2 flex justify-end border bg-black/70  rounded-2xl py-1 px-3">
-                  <Link href="../../creators/register">
+                  <Link href={`../../creators/register?lang=${language}`}>
                     {language == "fr" ? "S'inscrire" : "Sign up"}
                   </Link>
                 </div>
@@ -315,7 +312,6 @@ export default function Header({ background }) {
           <Link
             href="../../"
             className="border bg-black/70 rounded-2xl p-[10px] opacity-100 absolute left-0 ml-4 top-[6px] laptop:hidden"
-            
           >
             <Image
               src={homeIconWhite}

@@ -20,7 +20,7 @@ const pressStart2P = Press_Start_2P({
   weight: "400",
 });
 
-export default function WeAreSendingData({filesToSend, nameOfGame}) {
+export default function WeAreSendingData({filesToSend, nameOfGame, avatar}) {
   const getBrowserInfo = () => {
     const userAgent = navigator.userAgent;
 
@@ -43,6 +43,7 @@ export default function WeAreSendingData({filesToSend, nameOfGame}) {
 
   return (
     <section className="bg-[rgba(3,3,3,0.8)] rounded-md py-4 px-6 lg:w-2/3 neuphormism w-[90%] tablet:w-[50%] mx-auto flex text-white">
+      {/* Screen phone*/}
       <div className="laptop:hidden">
         {filesToSend && filesToSend.posterGlimpseFile ? (
           (() => {
@@ -64,23 +65,29 @@ export default function WeAreSendingData({filesToSend, nameOfGame}) {
         )}
       </div>
 
+      {/* Large Screen Laptop */}
       <div className="hidden laptop:block">
-        {browser === "Chrome" && (
-          <Image src={Chrome} alt="Chrome Browser" width={100} height={100} />
-        )}
-        {browser === "Firefox" && (
-          <Image src={Firefox} alt="Firefox Browser" width={100} height={100} />
-        )}
-        {browser === "Safari" && (
-          <Image src={Safari} alt="Safari Browser" width={100} height={100} />
-        )}
-        {browser === "Edge" && (
-          <Image src={Edge} alt="Edge Browser" width={100} height={100} />
-        )}
-        {browser === "Internet Explorer" && (
-          <p>Internet Explorer is not supported.</p>
-        )}
-        {browser === "Unknown Browser" && <p>Browser not recognized.</p>}
+        {avatar ? <Image src={avatar} alt="Avatar"  width={100} height={100} /> 
+        :
+          <>
+            {browser === "Chrome" && (
+              <Image src={Chrome} alt="Chrome Browser" width={100} height={100} />
+            )}
+            {browser === "Firefox" && (
+              <Image src={Firefox} alt="Firefox Browser" width={100} height={100} />
+            )}
+            {browser === "Safari" && (
+              <Image src={Safari} alt="Safari Browser" width={100} height={100} />
+            )}
+            {browser === "Edge" && (
+              <Image src={Edge} alt="Edge Browser" width={100} height={100} />
+            )}
+            {browser === "Internet Explorer" && (
+              <p>Internet Explorer is not supported.</p>
+            )}
+            {browser === "Unknown Browser" && <p>Browser not recognized.</p>}
+          </>
+        }
       </div>
       <div className="flex-1 laptop:hidden flex items-center justify-around">
         <div className="w-[12px] h-[6px] bg-white mr-1 blinkSend"></div>

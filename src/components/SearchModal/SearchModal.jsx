@@ -78,7 +78,7 @@ export default function SearchModal({ onClose }) {
 
     // Navigue vers la page des résultats en ajoutant les query params
     router.push(
-      `/dynamic/searchResultsDetails/searchResultsDetails?${query.toString()}`
+      `/dynamic/searchResultsDetails/searchResultsDetails?${query.toString()}&lang=${language}`
     );
     console.log(
       `/dynamic/searchResultsDetails/searchResultsDetails?${query.toString()}`

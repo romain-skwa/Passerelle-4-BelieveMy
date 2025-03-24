@@ -4,7 +4,8 @@ import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
-    // Get all data about user
+
+// Get all data about user
 export async function GET(request) {
     // Variable
     const session = await getServerSession(authOptions);
@@ -26,18 +27,21 @@ export async function GET(request) {
         // Connect to the MongoDB database
         const db = client.db(process.env.MONGODB_DATABASE);
 
-        // Récupérer l'utilisateur
-        const user = await db.collection("créateurs").find({ email: userMail }).limit(1).toArray();
+        // Récupérer l'utilisateur sans le mot de passe
+        const user = await db.collection("créateurs").findOne(
+            { email: userMail },
+            { projection: { password: 0 } } // Exclure le champ "password"
+        );
 
         // Vérifiez si l'utilisateur existe
-        if (user.length === 0) {
+        if (!user) {
             throw new Error("Cet utilisateur n'existe pas");
         }
 
         await client.close();
 
         return NextResponse.json({
-            user: user[0], // Renvoie le premier utilisateur trouvé
+            user, // Renvoie l'utilisateur trouvé sans le mot de passe
         }, { status: 200 });
     } catch (error) {
         console.error(`Erreur à la fin de catch : `, error);

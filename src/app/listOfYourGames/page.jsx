@@ -45,7 +45,10 @@ export default function listOfYourGames() {
     return(
         <GeneralLayout>
             <div className="tablet:w-[70vw] laptop:w-[50vw] mx-auto">
-                <MadeByThisCreator usernameEncoded={encodeURIComponent(usernameDecoded)} usernameDecoded={usernameDecoded} setHowManyGame={setHowManyGame} />     
+                <MadeByThisCreator
+                 usernameEncoded={encodeURIComponent(usernameDecoded)}
+                 usernameDecoded={usernameDecoded}
+                 setHowManyGame={setHowManyGame} />     
             </div>
         </GeneralLayout>           
     );

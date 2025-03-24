@@ -26,7 +26,7 @@ export async function POST(request) {
         console.log(`Jeux trouvés: ${games.length}`); // Log pour le nombre de jeux trouvés
 
         // Afficher les jeux récupérés dans la console
-        console.log("Jeux récupérés:", JSON.stringify(games, null, 2)); // Affichage formaté des jeux
+        //console.log("Jeux récupérés:", JSON.stringify(games, null, 2)); // Affichage formaté des jeux
 
         // Formatage des données
         const formattedGames = games.map(game => ({

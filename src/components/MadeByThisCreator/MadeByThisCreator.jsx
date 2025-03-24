@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import Loading from "../ForLayout/Loading/Loading";
 
 export default function MadeByThisCreator({ user, usernameEncoded, usernameDecoded, setHowManyGame }) {
-  const { language, changeLanguage } = useLanguage();
+  const { language } = useLanguage();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [oneGameOr, setOneGameOr] = useState("Aucun jeu n'a été présenté par ");
@@ -33,18 +34,14 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
       if (data.games && data.games.length > 0) {
         setGames(data.games);
         if (data.games && data.games.length === 1) {
-          setOneGameOr(
-            language == "fr" ? "Le jeu créé par" : "The game created by"
-          );
-          setHowManyGame(1);
+          setOneGameOr(language === "fr" ? "Le jeu créé par" : "The game created by");
+          if (typeof setHowManyGame === 'function') {setHowManyGame(1);}
         } else {
-          setOneGameOr(
-            language == "fr" ? "Les jeux créés par" : "The games created by"
-          );
-          setHowManyGame(2);
+          setOneGameOr(language === "fr" ? "Les jeux créés par" : "The games created by");
+          if (typeof setHowManyGame === 'function') {setHowManyGame(2);}
         }
       } else {
-        setHowManyGame(0);
+        if (typeof setHowManyGame === 'function') {setHowManyGame(0);}
         toast.error("Aucun jeu trouvé");
       }
     } catch (error) {
@@ -64,7 +61,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
   return (
     <div>
       {loading ? (
-        <p>{language == "fr" ? "Chargement des jeux... " : "Loading... "}</p>
+        <Loading /> 
       ) : (
         <>
         <div className="flex justify-center">

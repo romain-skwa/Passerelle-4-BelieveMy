@@ -38,6 +38,7 @@ const GamePresentationSections = ({
 }) => {
   const { language } = useLanguage();
   const router = useRouter();
+
   /********* Variable ************************************************************/
   // When the images have been sent to Cloudinary, their URLs are stored in urlMongoDB.
   const [urlMongoDB, setUrlMongoDB] = useState("");
@@ -63,20 +64,38 @@ const GamePresentationSections = ({
     event.preventDefault();
 
     try {
+      /**************************************************************** */
+      const gameToCheck = he.encode(nameOfGame); // Assurez-vous que le nom du jeu est correctement encodé
+
+      // Vérifier si le nom du jeu existe déjà  
+      const response = await fetch('/api/checkIfGameExists', {  
+        method: 'POST',  
+        headers: {  
+          'Content-Type': 'application/json',  
+        },  
+        body: JSON.stringify({ gameToCheck }),  
+      });  
+  
+      if (!response.ok) {  
+        throw new Error('Erreur lors de la vérification du jeu');  
+      }  
+  
+      const data = await response.json();  
+      if (data.exists) {  
+        return toast.error("Ce nom de jeu existe déjà dans la base de données.");
+      }
+
       if (!filesToSend || filesToSend.length === 0) {
         return toast.error("Vous devez sélectionner au moins un fichier image");      
       }      
 
       if (!selectedAgePegi) {
-        return toast.error(
-          "Vous devez sélectionner un âge parmi les options disponibles."
-        );
+        return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
       }
 
       //Vérifiez le nombre de caractères de la présentation détaillée.
       if (introductionOfTheGame.length > 10000) {
-        return toast.error(
-          "La présentation doit comporter 10 000 caractères maximum."
+        return toast.error("La présentation doit comporter 10 000 caractères maximum."
         );
       }
       // Vérifiez si au moins une plateforme est sélectionnée
@@ -107,11 +126,13 @@ const GamePresentationSections = ({
         const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
 
         if (!datePattern.test(releaseDateString)) {
+          setWeAreSendingData(false);
           return toast.error(
             "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)"
           );
         }
       } else {
+        setWeAreSendingData(false);
         return toast.error("Vous devez sélectionner une date de sortie.");
       }
 
@@ -120,6 +141,7 @@ const GamePresentationSections = ({
         steamLink &&
         (!steamLink.startsWith("https://") || !steamLink.includes("steam"))
       ) {
+        setWeAreSendingData(false);
         return toast.error(
           "Le lien vers Steam doit commencer par 'https://' et inclure steam"
         );
@@ -226,7 +248,7 @@ const GamePresentationSections = ({
       return toast.error(error.message);
     } finally {
       console.log(
-        "----------------------------- C'est tout bon ! ---------------------------------------"
+        "------------------- Création de la présentation terminée ou interrompue ! ----------------------"
       );
     }
   };
