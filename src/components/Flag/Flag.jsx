@@ -8,9 +8,9 @@ import { updateFlag } from "@/actions/updateFlag";
 export default function Flag({ gameId, nameOfGame, session, pathname }) {
   const { language } = useLanguage();
   const username = session.user.username;
-console.log(`username : session.user.username dans le composant FLAG : `, username);
+    //console.log(`username : session.user.username dans le composant FLAG : `, username);
 //const encodedUsername = encodeURIComponent(username);
-//console.log(`encodedUsername = encodeURIComponent(username); dans le composant FLAG : `, encodedUsername);
+    //console.log(`encodedUsername = encodeURIComponent(username); dans le composant FLAG : `, encodedUsername);
 
   const handleFlag = async () => {
     if (!confirm("Souhaitez-vous signaler le contenu de cette page ?")) {

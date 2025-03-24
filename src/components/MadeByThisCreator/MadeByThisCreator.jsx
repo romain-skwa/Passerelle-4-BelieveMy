@@ -61,7 +61,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
   return (
     <div>
       {loading ? (
-        <Loading /> 
+        <p className="text-white text-3xl">Chargement des affiches</p>
       ) : (
         <>
         <div className="flex justify-center">

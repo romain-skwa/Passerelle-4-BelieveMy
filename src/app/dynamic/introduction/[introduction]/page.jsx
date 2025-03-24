@@ -46,14 +46,17 @@ export default function IntroductionGame({ params: { introduction } }) {
   const searchParams = useSearchParams(); // Récupérer les paramètres de recherche, si nécessaire pour le partage
 
   // State
-  const { data: session } = useSession(); //console.log(`session `, session);
-  const [game, setgame] = useState({});
-  const [creatorOfThisGame, setCreatorOfThisGame] = useState("");
-  const [userBio, setUserBio] = useState(); // When the bio of the creator of this game is called
+  const { data: session } = useSession(); 
+  const [game, setgame] = useState({}); // game is defined when the data of introduction are loaded
   const username = game.username;
   const encodedUsername = encodeURIComponent(username);
+  const [creatorOfThisGame, setCreatorOfThisGame] = useState(""); // creatorOfThisGame is also defined when the data of introduction are loaded
+  const [userBio, setUserBio] = useState(undefined); // When the bio of the creator of this game is needed
+  const [OnlyBio, setOnlyBio] = useState(undefined); // When the bio of the creator of this game is not asked
+
+  /*************************************************/
   const [loading, setLoading] = useState(true);
-  const [backgroundImage, setBackgroundImage] = useState("");
+  const [backgroundImage, setBackgroundImage] = useState(""); // Sometimes there is an image as background
   /*************************************************/
   const [currentUrl, setCurrentUrl] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -141,35 +144,50 @@ export default function IntroductionGame({ params: { introduction } }) {
     setLoading(false);
   };
     
-  // When game is loaded -----------------------------------------------------
+  // When creatorOfThisGame is defined -----------------------------------------------------
   useEffect(() => {    
     // When the creator choose to show his biography, we get... his biography
-    if (game.isIntroOfYourself === "true" && creatorOfThisGame) {
+    if (game.isIntroOfYourself === "true" && creatorOfThisGame) { // when game.isIntroOfYourself === "true"
+        //console.log("isIntroOfYourself est à true donc on doit obtenir toutes les données du creatorOfThisGame dans userBio");
       const fetchDataCreatorOfThisGame = async () => {
-        const response = await fetch("/api/getDataCreatorOfThisGame", {
-          method: "GET",
+        const response = await fetch("/api/getAllDataCreatorOfThisGame", {
+          method:  "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          // No body for GET
+          body: JSON.stringify({ creatorOfThisGame }),
         });
 
         const data = await response.json();
 
-        if (!data) {
-          throw new Error("Invalid JSON response");
-        }
+        if (!data) {throw new Error("Invalid JSON response");}
 
-        if (!response.ok) {
-          toast.error("Une erreur est intervenue");
-        }
+        if (!response.ok) {toast.error("Une erreur est intervenue");}
 
         setUserBio(data.user);
       };
 
       fetchDataCreatorOfThisGame();
+    } else if(creatorOfThisGame) {// when game.isIntroOfYourself === "false" or undefined
+        //console.log("On devrait obtenir une donnée userBio avec seulement... la bio");
+      const fetchDataCreatorOfThisGame = async () => {
+        const response = await fetch("/api/getBioDataCreatorOfThisGame", {
+          method:  "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ creatorOfThisGame }),
+        });
+
+        const data = await response.json();
+        if (!data) {throw new Error("Invalid JSON response");}
+        if (!response.ok) {toast.error("Une erreur est intervenue pendant qu'on cherchait la BIO");}
+        
+        setOnlyBio(data.user);
+      };
+      fetchDataCreatorOfThisGame();
     }
-  }, [game, creatorOfThisGame]);
+  }, [ creatorOfThisGame]);
 
   /**************************************************** */
 
@@ -625,7 +643,7 @@ export default function IntroductionGame({ params: { introduction } }) {
             <section className="tablet:flex tablet:justify-between">
               <div className="p-1 tablet:p-4 tablet:inline-block text-center">
                 <Link
-                  href={`../../../dynamic/profilecreators/@${encodedUsername}?lang=${language}&creator=${encodedUsername}`}
+                  href={`../../../dynamic/profilecreators/@${encodedUsername}?lang=${language}&creator=${encodedUsername}&bio=${OnlyBio?.bio}`}
                 >
                   {language === "fr" ? "Jeu créé par : " : "Game created by : "}{" "}
                   {decodeURIComponent(game.username)}

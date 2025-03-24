@@ -41,6 +41,8 @@ La page "Votre profil" permet de se présenter. Le bouton pour y accéder affich
 
 J'ai tout de même créé une page "Liste de vos jeux" pour y afficher cet ensemble.
 
+Sur la page Biographie de chaque créateur, les méta données sont personnalisées. Dans le titre, le nom du créateur est visible. On le voit dans l'onglet. Et la description lue par les robots des moteurs de recherche contient la biographie écrite par le créateur. Celle qui est lisible à l'écran sera également présentée dans les pages de résultat de recherche.
+
 Loading pendant chargement des pages
 chargement pendant l'envoi des données à mongodb (avec layout)
 chargement encore différent quand on supprime une présentation (sans le layout)
