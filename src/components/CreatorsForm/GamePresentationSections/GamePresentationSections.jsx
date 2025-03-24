@@ -64,10 +64,9 @@ const GamePresentationSections = ({
     event.preventDefault();
 
     try {
-      /**************************************************************** */
-      const gameToCheck = he.encode(nameOfGame); // Assurez-vous que le nom du jeu est correctement encodé
-
-      // Vérifier si le nom du jeu existe déjà  
+      /***** Check if the name already exists *********************************************************** */
+      const gameToCheck = encodeURIComponent(nameOfGame); // Assurez-vous que le nom du jeu est correctement encodé
+  console.log(`gameToCheck : `, gameToCheck);
       const response = await fetch('/api/checkIfGameExists', {  
         method: 'POST',  
         headers: {  
@@ -82,9 +81,11 @@ const GamePresentationSections = ({
   
       const data = await response.json();  
       if (data.exists) {  
+        setWeAreSendingData(false);
         return toast.error("Ce nom de jeu existe déjà dans la base de données.");
       }
-
+      /************************************************************************** */
+      
       if (!filesToSend || filesToSend.length === 0) {
         return toast.error("Vous devez sélectionner au moins un fichier image");      
       }      

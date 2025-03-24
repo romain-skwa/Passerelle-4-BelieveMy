@@ -625,7 +625,7 @@ export default function IntroductionGame({ params: { introduction } }) {
             <section className="tablet:flex tablet:justify-between">
               <div className="p-1 tablet:p-4 tablet:inline-block text-center">
                 <Link
-                  href={`../../../dynamic/profilecreators/@${encodedUsername}?lang=${language}`}
+                  href={`../../../dynamic/profilecreators/@${encodedUsername}?lang=${language}&creator=${encodedUsername}`}
                 >
                   {language === "fr" ? "Jeu créé par : " : "Game created by : "}{" "}
                   {decodeURIComponent(game.username)}

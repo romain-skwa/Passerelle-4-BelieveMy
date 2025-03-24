@@ -260,6 +260,28 @@ const UpdateIntro = ({
     e.preventDefault();
     setWeAreUpdatingIntro(true);
     try {
+      /***** Check if the name already exists *********************************************************** */
+      const gameToCheck = encodeURIComponent(nameOfGameUpdate); // Assurez-vous que le nom du jeu est correctement encodé
+  
+      const response = await fetch('/api/checkIfGameExists', {  
+        method: 'POST',  
+        headers: {  
+          'Content-Type': 'application/json',  
+        },  
+        body: JSON.stringify({ gameToCheck }),  
+      });  
+  
+      if (!response.ok) {  
+        throw new Error('Erreur lors de la vérification du jeu');  
+      }  
+  
+      const data = await response.json();  
+      if (data.exists) {  
+        setWeAreUpdatingIntro(false);
+        return toast.error("Ce nom de jeu existe déjà dans la base de données.");
+      }
+      
+      /************************************************* */
       if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {
         return toast.error("Vous devez sélectionner un fichier image");
       }
@@ -280,18 +302,17 @@ const UpdateIntro = ({
       }
       // Vérifiez le nombre de caractères de la courte introduction
       if (shortIntroductionUpdate.length > 400) {
-        return toast.error(
-          "L'introduction doit comporter 400 caractères maximum."
-        );
+        setWeAreUpdatingIntro(false);
+        return toast.error("L'introduction doit comporter 400 caractères maximum.");
       }
       //Vérifiez le nombre de caractères de la présentation détaillée
       if (introductionOfTheGameUpdate.length > 10000) {
-        return toast.error(
-          "La présentation doit comporter 10 000 caractères maximum."
-        );
+        setWeAreUpdatingIntro(false);
+        return toast.error("La présentation doit comporter 10 000 caractères maximum.");
       }
       // Vérifiez si au moins une plateforme est sélectionnée
       if (platformUpdate.length === 0) {
+        setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner au moins une plateforme.");
       }
       // Vérifiez si le site du jeu commence par "https://"
@@ -299,24 +320,23 @@ const UpdateIntro = ({
         webSiteOfThisGameUpdate &&
         !webSiteOfThisGameUpdate.startsWith("https://")
       ) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+        setWeAreUpdatingIntro(false);
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
       // Vérifiez si le site des créateurs commence par "https://"
       if (
         webSiteOfThisCreatorUpdate &&
         !webSiteOfThisCreatorUpdate.startsWith("https://")
       ) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+        setWeAreUpdatingIntro(false);
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
       // Vérifiez que releaseDateUpdate est un objet Date valide
       if (
         !(releaseDateUpdate instanceof Date) ||
         isNaN(releaseDateUpdate.getTime())
       ) {
+        setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner une date de sortie.");
       }
       // Vérification de la date de sortie
@@ -326,9 +346,8 @@ const UpdateIntro = ({
         const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
 
         if (!datePattern.test(releaseDateUpdateString)) {
-          return toast.error(
-            "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)"
-          );
+          setWeAreUpdatingIntro(false);
+          return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
         }
       } else {
         return toast.error("Vous devez sélectionner une date de sortie.");
@@ -337,12 +356,10 @@ const UpdateIntro = ({
       // Vérifiez si le site Steam commence par "https://"
       if (
         steamLinkUpdate &&
-        (!steamLinkUpdate.startsWith("https://") ||
-          !steamLinkUpdate.includes("steam"))
+        (!steamLinkUpdate.startsWith("https://") || !steamLinkUpdate.includes("steam"))
       ) {
-        return toast.error(
-          "Le lien vers Steam doit commencer par 'https://' et inclure steam"
-        );
+        setWeAreUpdatingIntro(false);
+        return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
       }
 
       // Function to send the data to createIntroduction function
