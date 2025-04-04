@@ -31,21 +31,21 @@ export async function POST(req) {
     // Get the username from the data
     const username = decodeURIComponent(user[0].username);
 
-    // Générer un token de réinitialisation
-    const resetToken = Math.random().toString(36).slice(2); // Ce n'est qu'un exemple, génère un token sécurisé en vrai
+    // Generate a reset token
+    const resetToken = Math.random().toString(36).slice(2);
     const expirationDate = new Date(Date.now() + 3600000); 
 
-    // Stocker le token dans la base de données avec l'email de l'utilisateur
+    // Store the token in the database with the user's email
     await db.collection("réinitialisation_tokens").insertOne({
-      email: user[0].email, // ou user[0]._id si vous utilisez l'ID
+      email: user[0].email, // or user[0]._id if you are using the ID
       token: resetToken,
       expires: expirationDate,
     });
 
-    // Crée un lien unique pour réinitialiser le mot de passe
+    // Create a unique link to reset your password
     const resetLink = `${process.env.NEXTAUTH_URL}/dynamic/resetPassword/resetPassword?token=${resetToken}`;
 
-    // Envoi de l'email de réinitialisation
+    // Sending the reset email
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>',
@@ -74,12 +74,12 @@ export async function POST(req) {
   } catch (error) {
     console.error('Erreur lors de la récupération de l\'utilisateur ou de l\'envoi de l\'email:', error);
     if (client) {
-      await client.close(); // Assurez-vous de fermer le client en cas d'erreur
+      await client.close();
     }
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   } finally {
     if (client) {
-      await client.close(); // Ferme le client MongoDB dans tous les cas
+      await client.close();
     }
   }
 }

@@ -5,7 +5,7 @@ import AllCompResultsDetails from "@/components/AllCompResultsDetails/AllCompRes
 // Function to generate dynamics metada
 export function generateMetadata({searchParams}) {
 
-  const lang = searchParams.lang || 'fr'; // Récupérer la langue depuis les paramètres de recherche
+  const lang = searchParams.lang || 'fr'; // Retrieve language from search params URL
   return {
     title: lang === "fr" ? `Recherche détaillée` : `Result details`,
     description: lang === "fr" 

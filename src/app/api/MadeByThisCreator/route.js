@@ -8,7 +8,7 @@ export async function POST(request) {
     let client;
     console.log("La fonction POST a été appelée");
     try {
-        console.log("Connexion à MongoDB..."); // Log avant la connexion
+        console.log("Connexion à MongoDB..."); // Log before connection
         // Connect to the MongoDB cluster
         client = await MongoClient.connect(process.env.MONGODB_CLIENT);
 
@@ -17,27 +17,24 @@ export async function POST(request) {
 
         const normalizedUsername = decodeURIComponent(user.username).normalize("NFC");
         console.log(`normalizedUsername : `, normalizedUsername);
-        // Récupérer les jeux par email
+        // Find games via email
         const games = await db.collection("introduction-database").find(
             { username: normalizedUsername },
-            { projection: { nameofgame: 1, urlPoster: 1, urlPosterCloudinary: 1 } }
+            { projection: { nameofgame: 1, urlPoster: 1, urlPosterCloudinary: 1, shortIntroduction: 1, } }
         ).toArray();
 
-        console.log(`Jeux trouvés: ${games.length}`); // Log pour le nombre de jeux trouvés
+        console.log(`Jeux trouvés: ${games.length}`); // Log for the number of games found
 
-        // Afficher les jeux récupérés dans la console
-        //console.log("Jeux récupérés:", JSON.stringify(games, null, 2)); // Affichage formaté des jeux
-
-        // Formatage des données
+        // Data formatting
         const formattedGames = games.map(game => ({
             ...game,
             _id: game._id.toString(),
-            urlPoster: game.urlPoster || game.urlPosterCloudinary // Utiliser urlPosterCloudinary si urlPoster n'existe pas
+            urlPoster: game.urlPoster || game.urlPosterCloudinary // Use urlPosterCloudinary if urlPoster does not exist
         }));
 
         await client.close();
 
-        console.log("Réponse envoyée avec succès."); // Log avant d'envoyer la réponse
+        console.log("Réponse envoyée avec succès."); // Log before sending the response
 
         return NextResponse.json({
             games: formattedGames,

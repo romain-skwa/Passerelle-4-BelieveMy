@@ -22,11 +22,9 @@ export default function Register() {
 
   return (
     <>
-     
-      
-    <GeneralLayout>
-      <AllCompRegister />
-    </GeneralLayout>
+      <GeneralLayout>
+        <AllCompRegister />
+      </GeneralLayout>
     </>
   );
 }

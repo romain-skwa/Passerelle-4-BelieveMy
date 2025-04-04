@@ -34,7 +34,7 @@ const ObligatoryButtons = ({
       
       {/* List ------------------ */}
       <div className="flex justify-center text-white text-xl mb-2" style={{ textShadow: "3px 3px 4px blue" }}>
-        Obligatoire
+        {language == "fr" ? "Obligatoire" : "Obligatory"}
       </div>
       
       <div className="bandeauTop">

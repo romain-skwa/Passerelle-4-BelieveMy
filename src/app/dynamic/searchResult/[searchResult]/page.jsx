@@ -11,7 +11,7 @@ export function generateMetadata({ searchParams }) {
   const nameofgame = decodeURIComponent(searchParams.searchResult || '');
   console.log(`nameofgame : `, nameofgame);
 
-  const lang = searchParams.lang || 'fr'; // Récupérer la langue depuis les paramètres de recherche
+  const lang = searchParams.lang || 'fr'; // Retrieve the language from the search parameters URL
   return {
     title: lang === "fr" ? `Recherche ${nameofgame}` : `Result : ${nameofgame}`,
     description: lang === "fr" 

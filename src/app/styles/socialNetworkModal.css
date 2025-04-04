@@ -1,0 +1,33 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Assurez-vous que la modale est au-dessus des autres éléments */
+}
+
+.modal-content {
+    background-color: rgba(91, 3, 96, 0.864);
+    width: 40vw;
+    margin-inline: 15px;
+    padding-top: 50px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 
+    5px 5px 10px black, 
+    -5px -5px 10px black, 
+    inset  -5px -5px 10px black, 
+    inset  5px 5px 5px  rgb(184, 31, 207);
+}
+
+.close {
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+}

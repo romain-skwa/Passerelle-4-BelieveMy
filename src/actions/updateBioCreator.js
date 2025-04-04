@@ -33,13 +33,13 @@ const updateBioCreator = async (
     throw new Error("Vous devez être connecté");
   }
 
-  // Créez un objet pour les mises à jour
+  // Create an object for updates
   const updateData = {
     $set: {},
     $unset: {}
   };
 
-  // Ajoutez les champs non vides à $set et les champs vides à $unset
+  // Add non-empty fields to $set and empty fields to $unset
   if (bio)             { updateData.$set.bio = bio; } else { updateData.$unset.bio = ""; }
   if (logoUrl)      { updateData.$set.logoUrl = logoUrl; } else { updateData.$unset.logoUrl = ""; }
   if (websiteUrl)      { updateData.$set.websiteUrl = websiteUrl; } else { updateData.$unset.websiteUrl = ""; }

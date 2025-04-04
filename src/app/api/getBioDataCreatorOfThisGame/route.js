@@ -19,10 +19,10 @@ export async function POST(request) {
         // Connect to the MongoDB database
         const db = client.db(process.env.MONGODB_DATABASE);
 
-        // Récupérer l'utilisateur
+        // Get user data
         const user = await db.collection("créateurs").find({ username: creatorOfThisGame }, { projection: { bio: 1, _id: 0 } } ).limit(1).toArray();
 
-        // Vérifiez si l'utilisateur existe
+        // Check if user exists
         if (user.length === 0) {
             throw new Error("Cet utilisateur n'existe pas");
         }
@@ -30,13 +30,13 @@ export async function POST(request) {
         await client.close();
 
         return NextResponse.json({
-            user: user[0], // Renvoie le premier utilisateur trouvé
+            user: user[0], // Returns the first user found
         }, { status: 200 });
     } catch (error) {
         console.error(`Erreur à la fin de catch : `, error);
         if (client) {
-            await client.close(); // Assurez-vous de fermer le client en cas d'erreur
+            await client.close(); // Make sure to close the client if there is an error
         }
-        return NextResponse.json({ error: error.message }, { status: 500 }); // Renvoie un message d'erreur
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

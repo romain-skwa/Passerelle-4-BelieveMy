@@ -2,14 +2,14 @@
 // UpdateIntro.jsx
 import { v2 as cloudinary } from "cloudinary";
 
-// Configurer Cloudinary avec les variables d'environnement
+// Configure Cloudinary with environment variables
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
   api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
 });
 
-// Fonction pour gérer les requêtes POST
+// Function to handle POST requests
 export async function POST(request) {
   const { public_id, invalidate } = await request.json();
   console.log(`public_id dans l'API Destroy : `, public_id);
@@ -19,13 +19,13 @@ export async function POST(request) {
   }
 
   try {
-    // Supprimer l'image à partir du public_id
+    // Remove image from public_id
     const result = await cloudinary.uploader.destroy(public_id, {
       invalidate: invalidate || true, // Optionnel : invalider le cache de Cloudinary
     });
 
     console.log(`result dans l'API Destroy : `, result);
-    // Vérifier si l'image a été supprimée
+    // Check if the image has been deleted
     if (result.result === "ok") {
       return new Response(JSON.stringify({ message: "Image supprimée avec succès.", result }), { status: 200 });
     } else {

@@ -10,11 +10,11 @@ export const LanguageProvider = ({ children }) => {
   useEffect(() => {
     const userLanguages = navigator.languages || [navigator.language]; // Récupère les langues préférées
 
-    // Vérifie si la première langue est française ou un de ses dérivés
+    // Verify the first language in French or one of its own versions
     const firstLanguage = userLanguages[0];
     const isFrenchPreferred = firstLanguage.startsWith('fr');
 
-    // Détermine la langue détectée
+    // Determines the detected language
     const detectedLanguage = isFrenchPreferred ? 'fr' : firstLanguage;
 
     setLanguage(detectedLanguage);

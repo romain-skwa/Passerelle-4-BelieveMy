@@ -5,6 +5,8 @@ import MadeByThisCreator from "@/components/MadeByThisCreator/MadeByThisCreator"
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+// On this page, the connected user see the list of his games
+
 export default function listOfYourGames() {
     const { data: session } = useSession();
     const { language } = useLanguage("");

@@ -5,11 +5,10 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
-import Loading from "../ForLayout/Loading/Loading";
 
 export default function MadeByThisCreator({ user, usernameEncoded, usernameDecoded, setHowManyGame }) {
   const { language } = useLanguage();
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState([]); console.log(games);
   const [loading, setLoading] = useState(true);
   const [oneGameOr, setOneGameOr] = useState("Aucun jeu n'a été présenté par ");
  
@@ -30,7 +29,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
         return;
       }
 
-      // Vérifiez si des jeux existent dans data.games
+      // Vérifiez si des jeux existent dans data.games,
       if (data.games && data.games.length > 0) {
         setGames(data.games);
         if (data.games && data.games.length === 1) {
@@ -79,7 +78,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
                   padding: "10px",
                 }}
               >
-                <Link href={`/dynamic/introduction/${game.nameofgame}`}>
+                <Link href={`dynamic/introduction/${game.nameofgame}?nameOfGame=${game?.nameofgame}&description=${game?.shortIntroduction}`}>
                   <div className="relative">
                     <Image
                       src={

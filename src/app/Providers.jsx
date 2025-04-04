@@ -6,4 +6,4 @@ export const AuthProvider = ({children}) => {
     return <SessionProvider>{children}</SessionProvider>
 }
 
-// Ce composant provider est créé à part parcequ'il fonctionne avec un "use client"
+// This provider component is created separately because it works with a "use client"

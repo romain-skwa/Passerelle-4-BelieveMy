@@ -18,7 +18,7 @@ export async function POST(request) {
         // First : Get the user
         let user = await db.collection("créateurs").find(
             { username: pseudo },
-            { projection: { password: 0, email: 0 } } // Exclut le champ "password"
+            { projection: { password: 0, email: 0 } } // Excludes the "password" and "email" fields
         ).limit(1).toArray();
 
         if(!user) {

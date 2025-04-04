@@ -6,33 +6,33 @@ import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
 const deleteIntroduction = async (gameId, nameOfGameUpdate) => {
-    // Obtenir la session de l'utilisateur ff
+    // Get user session
     const session = await getServerSession(authOptions);
     const objectId = ObjectId.createFromHexString(gameId);
 
     let client;
     try {
-        // 1 -- Connecter à la base de données MongoDB
+        // 1 -- Connect to MongoDB database
         client = await MongoClient.connect(process.env.MONGODB_CLIENT);
         const db = client.db(process.env.MONGODB_DATABASE);
 
-        // 2 -- Trouver le jeu
+        // 2 -- Find the game
         const result = await db.collection("introduction-database").find({ _id: objectId }).toArray();
 
-        // 3 -- Vérifier si le jeu existe
+        // 3 -- Check if the game exists
         if (result.length === 0) {
             throw new Error("Aucune présentation trouvée avec cet ID de jeu.");
         }
 
-        // 4 -- Vérifier si l'utilisateur est l'auteur de cette introduction
+        // 4 -- Check if the user is the author of this introduction
         if (result[0].username !== session.user.username) {
             throw new Error("Vous n'êtes pas l'auteur de cette présentation.");
         }
 
-        // 5 -- Supprimer l'introduction
+        // 5 -- Delete the introduction
         await db.collection("introduction-database").deleteOne({ _id: objectId });
 
-        // 6 -- Envoi de l'email de confirmation
+        // 6 -- Sending confirmation email
         const resend = new Resend(process.env.RESEND_API_KEY);
         const decodedUsername = decodeURIComponent(session.user.username); // Name of user connected
         const email = session.user.email; // Mail of user connected
@@ -52,7 +52,7 @@ const deleteIntroduction = async (gameId, nameOfGameUpdate) => {
                 return { success: false, message: 'Erreur lors de l\'envoi de l\'email.' };
             }
 
-            // Révalidation du cache
+            // Cache revalidation
             revalidatePath("/");
 
             return { success: true, message: 'Un courriel vous a été envoyé.' };
@@ -62,9 +62,9 @@ const deleteIntroduction = async (gameId, nameOfGameUpdate) => {
         }
     } catch (error) {
         console.error(error);
-        throw new Error(error.message); // Renvoie l'erreur
+        throw new Error(error.message); 
     } finally {
-        await client?.close(); // Assurez-vous de fermer la connexion
+        await client?.close(); // Make sure to close the connection
     }
 };
 

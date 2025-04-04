@@ -86,7 +86,7 @@ export const newCreatorData = async (
       creation: new Date(),
     });
 
-    // 5 -- Envoi de l'email de confirmation
+    // 5 -- Sending confirmation email
     try {
       const resend = new Resend(process.env.RESEND_API_KEY);
       const decodedUsername = decodeURIComponent(username);
@@ -103,7 +103,7 @@ export const newCreatorData = async (
           return { success: false, message: 'Erreur lors de l\'envoi de l\'email.' };    
         }    
     
-        return { success: true, message: 'Un courriel vous a été envoyé.' }; // Retourne un message de succès    
+        return { success: true, message: 'Un courriel vous a été envoyé.' }; // Return success message   
 
     } catch (error) {
       console.error('Erreur lors de l\'envoi de l\'email:', error);
@@ -111,7 +111,7 @@ export const newCreatorData = async (
       return { success: false, message: 'Erreur lors de l\'envoi de l\'email.' };
       }
     } catch (error) {
-      await client.close(); // On ferme la connexion au cluster
+      await client.close(); // We close the connexion to the cluster
       throw new Error(error);
     }
 };

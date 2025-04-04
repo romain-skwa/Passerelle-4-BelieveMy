@@ -5,29 +5,29 @@ import ToastNotification from "@/components/ToastNotification/ToastNotification"
 import Image from "next/image";
 import Link from "next/link";
 
-// API: Récupération des images côté serveur
+// API: Server-side image retrieval
 async function fetchImages(count) {
   try {
     const response = await fetch(
       `http://localhost:3000/api/homeImages?count=${count}`,
       {
-        cache: "no-store", // pour un rendu coté serveur
+        cache: "no-store", // for server-side rendering
       }
-    ); // API à l'URL absolue
+    ); // API to absolute URL
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des images");
     }
     const data = await response.json();
 
-    return { introductionsImages: data || [] }; // Assurez-vous que vous renvoyez toujours un tableau
+    return { introductionsImages: data || [] }; // Make sure you always return an array
   } catch (error) {
-    return { introductionsImages: [], error: error.message }; // Si erreur, renvoyez un tableau vide
+    return { introductionsImages: [], error: error.message }; // If error, return an empty array
   }
 }
 
-// Ce composant sera rendu côté serveur (Server Component)
+// This component will be rendered server-side (Server Component)
 export default async function Index({ searchParams }) {
-  const count = parseInt(searchParams.count) || 10; // Récupérer le nombre d'images depuis les paramètres d'URL
+  const count = parseInt(searchParams.count) || 10; // Retrieve image count from URL parameters
   const { introductionsImages, error } = await fetchImages(count);
 
   return (
@@ -47,7 +47,7 @@ export default async function Index({ searchParams }) {
                 padding: "10px",
               }}
             >
-              <Link href={`dynamic/introduction/${post.nameofgame}`}>
+              <Link href={`dynamic/introduction/${post.nameofgame}?nameOfGame=${post?.nameofgame}&description=${post?.shortIntroduction}`}>
                 <div className="relative w-[146px] h-[240px] lg:w-[192px] lg:h-[311px] overflow-hidden">
                   <Image
                     src={

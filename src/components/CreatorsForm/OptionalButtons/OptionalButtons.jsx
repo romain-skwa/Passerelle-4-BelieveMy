@@ -26,7 +26,7 @@ const OptionalButtons = ({
         className="flex justify-center text-white text-xl mb-2"
         style={{ textShadow: "3px 3px 4px blue" }}
       >
-        Facultatif
+        {language == "fr" ? "Facultatif" : "Optional"}
       </div>
 
       <div className="bandeauTop">

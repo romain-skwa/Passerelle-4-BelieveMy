@@ -23,6 +23,7 @@ const UpdateIntro = ({
   setLoading,
   setWeAreDeleting,
   setWeAreUpdatingIntro,
+  comparaison,
   setComparaison,
 }) => {
   const router = useRouter();
@@ -194,7 +195,7 @@ const UpdateIntro = ({
   const initialIsDarkModeRef = useRef(false);
   const initialIsIntroOfYourselfRef = useRef(false);
 
-  /**** Compare  initial data with actual data *************/
+  /**** Compare initial data with actual data *************/
   // État pour suivre les comparaisons
 
   useEffect(() => {
@@ -260,26 +261,28 @@ const UpdateIntro = ({
     e.preventDefault();
     setWeAreUpdatingIntro(true);
     try {
-      /***** Check if the name already exists *********************************************************** */
-      const gameToCheck = encodeURIComponent(nameOfGameUpdate); // Assurez-vous que le nom du jeu est correctement encodé
-  
-      const response = await fetch('/api/checkIfGameExists', {  
-        method: 'POST',  
-        headers: {  
-          'Content-Type': 'application/json',  
-        },  
-        body: JSON.stringify({ gameToCheck }),  
-      });  
-  
-      if (!response.ok) {  
-        throw new Error('Erreur lors de la vérification du jeu');  
-      }  
-  
-      const data = await response.json();  
-      if (data.exists) {  
-        setWeAreUpdatingIntro(false);
-        return toast.error("Ce nom de jeu existe déjà dans la base de données.");
-      }
+      /***** When the name have been changed, check if the name already exists in database ***********************/
+      if(comparaison.isNameOfGameChanged){
+        const gameToCheck = encodeURIComponent(nameOfGameUpdate); // Assurez-vous que le nom du jeu est correctement encodé
+    
+        const response = await fetch('/api/checkIfGameExists', {  
+          method: 'POST',  
+          headers: {  
+            'Content-Type': 'application/json',  
+          },  
+          body: JSON.stringify({ gameToCheck }),  
+        });  
+    
+        if (!response.ok) {  
+          throw new Error('Erreur lors de la vérification du jeu');  
+        }  
+    
+        const data = await response.json();  
+        if (data.exists) {  
+          setWeAreUpdatingIntro(false);
+          return toast.error("Ce nom de jeu existe déjà dans la base de données.");
+        }
+      }else{console.log("Le nom du jeu n'a pas été changé")}
       
       /************************************************* */
       if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {

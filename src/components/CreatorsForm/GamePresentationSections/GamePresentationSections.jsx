@@ -82,7 +82,7 @@ const GamePresentationSections = ({
       const data = await response.json();  
       if (data.exists) {  
         setWeAreSendingData(false);
-        return toast.error("Ce nom de jeu existe déjà dans la base de données.");
+        return toast.error("Ce nom de jeu existe déjà dans la base de données. GamePresentationSections");
       }
       /************************************************************************** */
       

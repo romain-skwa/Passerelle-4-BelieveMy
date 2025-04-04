@@ -1,4 +1,4 @@
-// Afin de se connecter, il faut paramétrer le système d'API de next.js
+// In order to connect, you need to configure the next.js API system
 
 import { MongoClient } from "mongodb";
 import Credentials from "next-auth/providers/credentials";
@@ -7,14 +7,13 @@ import bcrypt from "bcrypt";
 import NextAuth from "next-auth/next";
 
 export const authOptions = {
-    /* Les providers sont des services tiers qui gèrent les informations d'identification des utilisateurs, 
-    comme les mots de passe, les adresses e-mail, les comptes sociaux, etc.*/
+    /* Providers are third-party services that manage user credentials, such as passwords, email addresses, social media accounts, etc.*/
     providers: [
         Credentials({
-            name: "credentials"/* Ne jamais mettre de majuscule dans ce nom */,
-            // Nom qu'on utilisera quand on voudra se servir de SignIn
+            name: "credentials"/* Never capitalize this name. */,
+            // Name that we will use when we want to use SignIn
             credentials:{},
-            async authorize(credentials) { // Ici on va recevoir les Credentials : les données
+            async authorize(credentials) { // Here we will receive the Credentials: the data
                 const { email, password } = credentials;
 
                 try {
@@ -45,7 +44,7 @@ export const authOptions = {
 
                     // 3 -- Our user is authenticated
                     // Format user Do NOT add sensitive data
-// Tout ce qu'on va stocker ici sera visible dans le cookie. Donc interdiction d'y stocker des données sensibles
+// Everything we store here will be visible in the cookie. So it's forbidden to store sensitive data there.
                     createurs = createurs.map(createurs => ({
                         _id: createurs._id.toString(),
                         username: decodeURIComponent(createurs.username),

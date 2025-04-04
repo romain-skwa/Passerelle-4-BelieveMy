@@ -14,23 +14,22 @@ export async function POST(request) {
         client = await MongoClient.connect(process.env.MONGODB_CLIENT);
         const db = client.db(process.env.MONGODB_DATABASE);
 
-        // Retirer .limit(1) pour récupérer tous les jeux correspondants
         const games = await db.collection("introduction-database").find({
             nameofgame: { $regex: new RegExp(regexPattern, 'i') }
         }, {
-            projection: { // Projection pour récupérer uniquement les champs nécessaires
+            projection: { // Projection to retrieve only the necessary fields
                 nameofgame: 1,
                 urlPosterCloudinary: 1,
                 urlPoster: 1
             }
-        }).toArray(); // Récupérer tous les jeux
+        }).toArray(); // Recover all games
 
-        // Vérifier si des jeux ont été trouvés
+        // Check if any games were found
         if (games.length === 0) {
             return NextResponse.json({ games: [], error: "Aucun jeu trouvé" }, { status: 404 });
         }
 
-        // Convertir les _id en chaînes de caractères
+        // Convert _ids to strings
         const formattedGames = games.map(g => ({
             ...g,
             _id: g._id.toString()

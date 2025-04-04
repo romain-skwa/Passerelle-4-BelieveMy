@@ -1,10 +1,10 @@
 // actions/handleEraseAllImages.js
 import { toast } from "react-toastify";
 
-// Fonction pour supprimer toutes les images
+// Function to delete all images
 const handleDeleteAllImages = async (game) => {
    console.log(`Dans handleDeleteAllImages, la fonction qui doit effacer toutes les images : `, game);
-  // Fonction pour extraire l'ID public de l'URL Cloudinary
+  // Function to extract public ID from Cloudinary URL
   const extractPublicIdFromUrl = (url) => {
     const uploadIndex = url.indexOf('upload') + 7;
     const startIndex = url.indexOf('/', uploadIndex) + 1;
@@ -29,12 +29,12 @@ const handleDeleteAllImages = async (game) => {
     if (publicId) {
       const success = await handleDeleteImage(publicId);
       if (!success) {
-        deleteSuccess = false; // Si une suppression échoue, mettre à jour la variable
+        deleteSuccess = false; // If a deletion fails, update the variable
       }
     }
   }
 
-  // Afficher un message de toast
+  // Display a toast message
   if (deleteSuccess) {
     toast.success("Toutes les images ont été supprimées avec succès !");
   } else {
@@ -42,7 +42,7 @@ const handleDeleteAllImages = async (game) => {
   }
 };
 
-// Fonction pour supprimer une image de Cloudinary
+// Function to delete an image from Cloudinary
 const handleDeleteImage = async (publicId) => {
   if (publicId) {
     console.log(`On est censé effacer l'image précédente dans Cloudinary. Son identifiant public est : ${publicId}`);
@@ -56,19 +56,19 @@ const handleDeleteImage = async (publicId) => {
       const result = await response.json();
       if (response.ok) {
         console.log("Image supprimée de Cloudinary :", result);
-        return true; // Indiquer que la suppression a réussi
+        return true; // Indicate that the deletion was successful
       } else {
         console.error("Erreur lors de la suppression de l'image :", result.error);
-        return false; // Indiquer que la suppression a échoué
+        return false; // Indicate that deletion failed
       }
     } catch (error) {
       console.error("Error deleting image:", error);
-      return false; // Indiquer que la suppression a échoué
+      return false; // Indicate that deletion failed
     }
   } else {
     console.log("On dirait qu'il n'y a pas de publicId à supprimer.");
-    return false; // Indiquer que la suppression a échoué
+    return false;
   }
 };
 
-export default handleDeleteAllImages; // Assurez-vous d'exporter par défaut
+export default handleDeleteAllImages;

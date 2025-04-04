@@ -1,35 +1,35 @@
 // Linked to UpdateIntro component in dynamic/introduction
 "use server";
-// Importations nécessaires
+// Necessary imports
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { MongoClient, ObjectId } from "mongodb";
 
-// Fonction pour mettre à jour l'introduction d'un jeu
+// Function to update a game's introduction
 export const updateIntroduction = async (formData) => {
   const session = await getServerSession(authOptions);
 
-  // Vérifier si l'utilisateur est connecté
+  // Check if user is logged in
   if (!session.user) {
     throw new Error("Vous devez être connecté");
   }
 
-  // Récupérer l'identifiant du jeu et les nouvelles données 
+  // Retrieve game ID and new data 
   const gameId = formData.get("gameId");
   const email = formData.get("email");
 
   let client;
   try {
-    // Connecter à MongoDB
+    // Connect to MongoDB
     client = await MongoClient.connect(process.env.MONGODB_CLIENT);
     const db = client.db(process.env.MONGODB_DATABASE);
 
-    // Décoder le gameId si nécessaire (si c'est encodé en URL)
+    // Decode the gameId if necessary (if it's URL encoded)
     const decodedGameId = decodeURIComponent(gameId);
-    // Convertir gameId en ObjectId si nécessaire
+    // Convert gameId to ObjectId if necessary
     const objectId = new ObjectId(decodedGameId);
 
-    // Préparer les données à mettre à jour
+    // Prepare the data to be updated
     const updateData = {
       nameofgame: formData.get("nameOfGame"),
       releaseDate: formData.get("releaseDate"),
@@ -56,23 +56,23 @@ export const updateIntroduction = async (formData) => {
       updatedAt: new Date(), // Date de mise à jour
     };
 
-    // Préparer un objet pour $unset
+    // Prepare an object for $unset
     const unsetData = {};
 
-    // Filtrer les valeurs nulles et undefined avant de mettre à jour dans la base de données
+    // Filter out null and undefined values ​​before updating in the database
     Object.keys(updateData).forEach((key) => {
       if (updateData[key] === null || updateData[key] === undefined) {
-        unsetData[key] = ""; // Ajouter le champ à unsetData
-        delete updateData[key]; // Supprimer le champ de updateData
+        unsetData[key] = ""; // Add the field to unsetData
+        delete updateData[key]; // Remove the field from updateData
       }
     });
 
-    // Mettre à jour le document dans la base de données
+    // Update the document in the database
     const result = await db.collection("introduction-database").updateOne(
-      { _id: objectId, email: email }, // Filtre pour retrouver les bonnes données
+      { _id: objectId, email: email }, // Filter to find the right data
       { 
-        $set: updateData, // Mise à jour des champs
-        $unset: unsetData // Suppression des champs null ou undefined
+        $set: updateData, // Updating fields
+        $unset: unsetData // Removing null or undefined fields
       }
     );
 
@@ -83,6 +83,6 @@ export const updateIntroduction = async (formData) => {
     console.error("Erreur lors de la mise à jour:", e); // Log l'erreur pour le débogage
     throw new Error("Une erreur est survenue lors de la mise à jour des données.");
   } finally {
-    await client?.close(); // Assurez-vous que le client est fermé
+    await client?.close(); // Make sure the client is closed
   }
 };

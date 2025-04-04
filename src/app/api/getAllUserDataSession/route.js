@@ -10,12 +10,12 @@ export async function GET(request) {
     // Variable
     const session = await getServerSession(authOptions);
     
-    // Vérifiez si la session existe
+    // Check if the session exists
     if (!session || !session.user) {
         return NextResponse.json({ error: "Utilisateur non authentifié" }, { status: 401 });
     }
 
-    // Récupérer l'adresse e-mail de l'utilisateur connecté
+    // Get the email address of the logged in user
     const userMail = session.user.email;
 
     let client;
@@ -27,13 +27,13 @@ export async function GET(request) {
         // Connect to the MongoDB database
         const db = client.db(process.env.MONGODB_DATABASE);
 
-        // Récupérer l'utilisateur sans le mot de passe
+        // Get data user but email
         const user = await db.collection("créateurs").findOne(
             { email: userMail },
             { projection: { password: 0 } } // Exclure le champ "password"
         );
 
-        // Vérifiez si l'utilisateur existe
+        // Check if user exists
         if (!user) {
             throw new Error("Cet utilisateur n'existe pas");
         }
@@ -41,13 +41,13 @@ export async function GET(request) {
         await client.close();
 
         return NextResponse.json({
-            user, // Renvoie l'utilisateur trouvé sans le mot de passe
+            user, // Returns the found user without the password data
         }, { status: 200 });
     } catch (error) {
         console.error(`Erreur à la fin de catch : `, error);
         if (client) {
-            await client.close(); // Assurez-vous de fermer le client en cas d'erreur
+            await client.close(); 
         }
-        return NextResponse.json({ error: error.message }, { status: 500 }); // Renvoie un message d'erreur
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

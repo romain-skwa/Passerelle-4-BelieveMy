@@ -86,9 +86,9 @@ const pressStart2P = Press_Start_2P({
     return(
         loading || weAreSendingData ? (
         weAreSendingData ? (
-          <WeAreSendingData filesToSend={filesToSend} nameOfGame={nameOfGame} avatar={avatar} />
+          <WeAreSendingData filesToSend={filesToSend} nameOfGame={nameOfGame} avatar={avatar} />// Loading component when we are sending data
         ) : (
-          <Loading />
+          <Loading />// Loading component when the page is not yet loaded
         )
       ) : (
         <>
@@ -111,7 +111,7 @@ const pressStart2P = Press_Start_2P({
               )}
             </div>
 
-            {/************ Informations Obligatoires **********************************************************/}
+            {/************ Mandatory Information **********************************************************/}
             <section className="flex" /* colonne + choix */>
               <div className="mr-4 hidden laptop:block">
                 <ObligatoryButtons
@@ -127,7 +127,7 @@ const pressStart2P = Press_Start_2P({
                   SoloMulti={SoloMulti}
                 />
 
-                {/************ Informations Facultatifs **********************************************************/}
+                {/************ Optional Information **********************************************************/}
                 <OptionalButtons
                   nameOfGame={nameOfGame}
                   setNameOfGame={setNameOfGame}
@@ -144,7 +144,7 @@ const pressStart2P = Press_Start_2P({
                 />
               </div>
 
-              {/*************************** LES ENCADRÉS ******************************************************/}
+              {/*************************** Frames ******************************************************/}
               <GamePresentationSections
                 nameOfGame={nameOfGame}
                 setNameOfGame={setNameOfGame}
@@ -185,7 +185,7 @@ const pressStart2P = Press_Start_2P({
               />
             </section>
           </section>
-          {/*weAreSendingData ? <WeAreSendingData /> : ""}
+          
           {/*************************** Glimpse ******************************************************/}
           <section
             style={{

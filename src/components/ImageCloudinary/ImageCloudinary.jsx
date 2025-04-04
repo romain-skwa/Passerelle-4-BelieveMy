@@ -9,12 +9,7 @@ const ImageCloudinary = ({ name, setFilesToSend }) => {
 
   const handleImageChange = (e, key) => {
     const file = e.target.files[0];
-    console.log(
-      `name : `,
-      name,
-      ` file dans le composant ImageCloudinary : `,
-      file
-    );
+    // console.log(`name : `, name,` file dans le composant ImageCloudinary : `, file);
 
     // Vérifie l'extension du fichier
     if (file) {

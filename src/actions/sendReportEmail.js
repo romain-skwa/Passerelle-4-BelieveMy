@@ -1,5 +1,5 @@
 // actions/sendReportEmail.js
-"use server"; // Indique que ce fichier est exécuté côté serveur
+"use server";
 
 import { Resend } from "resend";
 

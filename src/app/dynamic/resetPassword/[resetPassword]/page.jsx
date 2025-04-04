@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation"; // Importer useSearchParams
+import { useSearchParams } from "next/navigation"; // Import useSearchParams
 import { toast } from "react-toastify";
 import ButtonForm from "@/components/Button/ButtonForm";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams(); // Utiliser useSearchParams
-  const token = searchParams.get("token"); // Récupérer le token depuis l'URL
+  const searchParams = useSearchParams(); // Use useSearchParams
+  const token = searchParams.get("token"); // Get the token from URL
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   console.log(`router : `, router);
-  console.log(`token : `, token); // Affiche le token récupéré
+  console.log(`token : `, token); // Displays the retrieved token
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,7 +32,7 @@ export default function ResetPasswordPage() {
       return toast.error("Les mots de passe ne correspondent pas.");
     }
 
-    // Logique pour réinitialiser le mot de passe
+    // Logic to reset password
     try {
       const response = await fetch("/api/resetPasswordConfirm", {
         method: "POST",
@@ -46,7 +46,7 @@ export default function ResetPasswordPage() {
 
       if (data.success) {
         toast.success("Votre mot de passe a été réinitialisé avec succès.");
-        // Rediriger l'utilisateur vers la page de connexion ou une autre page
+        // Redirect user to login page or another page
         router.push("/creators/login");
       } else {
         toast.error(data.message);

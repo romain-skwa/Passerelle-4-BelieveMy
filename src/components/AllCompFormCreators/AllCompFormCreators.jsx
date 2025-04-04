@@ -41,13 +41,9 @@ export default function AllCompFormCreators(){
       const [loading, setLoading] = useState(true);
       const { language } = useLanguage("");
       const [logoUrl, setLogoUrl] = useState("");// Url data in mongoDB
-      //console.log(`logoUrl `, logoUrl);
       const [logoFile, setLogoFile] = useState("");
-      //console.log(`logoFile `, logoFile);
       const [previewUrl, setPreviewUrl] = useState(null);// Url preview now
-      //console.log(`Dans la page formulaire, l'url du logo : previewUrl `, previewUrl);
       const [isLogoChanged, setIsLogoChanged] = useState(false);
-      //console.log(`Dans la page formulaire : isLogoChanged `, isLogoChanged);
       const [weAreUpdatingProfil, setWeAreUpdatingProfil] = useState(false);
     
       // Get data about user
@@ -71,15 +67,15 @@ export default function AllCompFormCreators(){
             const data = await response.json();
             setUser(data.user);
     
-            // ** Modification ici : initialisez isDarkMode en fonction des données utilisateur **
+            // ** Change here: Initialize isDarkMode based on user data **
             if (data.user.isDarkMode !== undefined) {
               // Radiobox will be checked automatically
-              setIsDarkMode(data.user.isDarkMode); // Utilisez la valeur existante
+              setIsDarkMode(data.user.isDarkMode);
             } else {
-              setIsDarkMode(false); // Si isDarkMode n'existe pas, on le met à false
+              setIsDarkMode(false); // If isDarkMode does not exist, set it to false
             }
     
-            // Si elles existent, les données concernant l'utilisateur sont affichées dans les champs de texte
+            // If present, user data is displayed in text fields
             if (data.user.bio) {setBio(data.user.bio);}
             if (data.user.nameOtherGames1) {setNameOtherGames1(data.user.nameOtherGames1);}
             if (data.user.linkOtherGame1) {setLinkOtherGame1(data.user.linkOtherGame1);}
@@ -219,7 +215,7 @@ export default function AllCompFormCreators(){
           // Now we may call a function to send data to MongoDB
           if(isLogoChanged){// isLogoChanged === true only when a new image is selected
             handleSendDataMongoDB();   
-            console.log("On est dans le useEffect qui s'enclenche quand logoUrl change et apparemment isLogoChanged === true") ;
+            // console.log("On est dans le useEffect qui s'enclenche quand logoUrl change et apparemment isLogoChanged === true") ;
             setIsLogoChanged(false);
           }
         }  
@@ -227,7 +223,7 @@ export default function AllCompFormCreators(){
     
       /*********** we send data in MongoDB (4) *************************************************************************************/
       const handleSendDataMongoDB = async () => {    
-        console.log("handleSendDataMongoDB entre en action");
+
         try {
           // Envoyez les données à la fonction pour mettre à jour les informations de l'utilisateur
           await updateBioCreator(
@@ -254,7 +250,7 @@ export default function AllCompFormCreators(){
           setLoading(false);
           setWeAreUpdatingProfil(false);
         } catch (error) {
-          console.error(`error dans la page introduceYourself`, error); // Affichez l'erreur dans la console
+          // console.error(`error dans la page introduceYourself`, error);
           toast.error(
             language == "fr"
               ? "Erreur lors de la mise à jour des informations"
@@ -402,7 +398,7 @@ export default function AllCompFormCreators(){
                 </div>
     
                 {/******************************************************************************************** */}
-                {/* Bouton TELECHARGER votre Logo */}
+                {/* UPLOAD your Logo button */}
                <ImageLogoUser
                 previewUrl={previewUrl}
                 setPreviewUrl={setPreviewUrl}
@@ -414,7 +410,7 @@ export default function AllCompFormCreators(){
                 />
     
                 {/******************************************************************************************** */}
-                {/* Lien votre propre site */}
+                {/* Link your own site */}
                 <input
                   type="url"
                   value={websiteUrl}
@@ -425,7 +421,7 @@ export default function AllCompFormCreators(){
     
                 <div className="social">
                   {" "}
-                  {/* Liens réseaux sociaux */}
+                  {/* Social media links */}
                   <div className="flex">
                     <div className="contentLogo">
                       <Image
@@ -513,6 +509,7 @@ export default function AllCompFormCreators(){
                   </div>
                 </div>
     
+                {/* DarkMode or not ? */}
                 <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
                   <span>
                     {language == "fr"
@@ -542,7 +539,8 @@ export default function AllCompFormCreators(){
                     </label>
                   </div>
                 </div>
-    
+                
+                {/* Submit button */}
                 <button
                   type="submit"
                   className="border block bg-green-500 text-white mx-auto p-2 rounded-xl"
@@ -550,6 +548,7 @@ export default function AllCompFormCreators(){
                   {language == "fr" ? "Mettre à jour" : "Update"}
                 </button>
               </form>
+              {/* Display posters of games created by this creator */}
               <div className="w-[95%] laptop:w-[50vw] mx-auto">
                 <MadeByThisCreator user={user} />
               </div>

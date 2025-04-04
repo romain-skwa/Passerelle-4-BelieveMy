@@ -3,7 +3,7 @@
 
 import { MongoClient } from 'mongodb';
 
-// Vérifier si le nom du jeu existe déjà
+// Check if the game name already exists
 const checkIfGameExists = async (gameToCheck) => {
   const client = await MongoClient.connect(process.env.MONGODB_CLIENT);
   const db = client.db(process.env.MONGODB_DATABASE);
@@ -15,9 +15,9 @@ const checkIfGameExists = async (gameToCheck) => {
   return existingGame !== null; // Renvoie true si le jeu existe déjà
 };
 
-// Handler pour l'API - méthode POST
+// Handler for API - POST method
 export async function POST(req) {
-  const { gameToCheck } = await req.json(); // Récupérer le nom du jeu du corps de la requête
+  const { gameToCheck } = await req.json(); // Retrieve the game name from the request body
 
   if (!gameToCheck) {
     return new Response(JSON.stringify({ error: 'Le nom du jeu est requis.' }), { status: 400 });
