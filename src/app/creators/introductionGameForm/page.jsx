@@ -4,8 +4,8 @@ import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import AllCompIntroGameForm from "@/components/AllCompIntroGameForm/AllCompIntroGameForm";
 
 // Function to generate dynamics metada
-export function generateMetadata({ searchParams }) {
-  const lang = searchParams.lang || 'fr'; // Récupérer la langue depuis les paramètres de recherche
+export async  function generateMetadata({ searchParams }) {
+  const { lang } = await searchParams; // Récupérer la langue depuis les paramètres de recherche
   return {
     title: lang === "fr" ? "Présentez votre jeu" : "Introduce your game",
     description: lang === "fr" ? "Formulaire de présentation de jeu" : "Game Presentation Form",

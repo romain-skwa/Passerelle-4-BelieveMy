@@ -21,6 +21,7 @@ export function ImageUpload({ urlCloudinary, setter, buttonText, tag, nameOfGame
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ public_id: publicId, invalidate: true }),
+          cache: "no-store", // Be sure to exploit the newest data
         });
         
         const result = await response.json();

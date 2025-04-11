@@ -99,6 +99,7 @@ export default function AllCompResultsDetails(){
               platforms: selectedPlatforms,
               searchTerm: selectedTitle,
             }), // Envoi des genres et plateformes
+            cache: "no-store", // Be sure to exploit the newest data
           });
     
           if (!response.ok) {

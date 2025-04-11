@@ -10,16 +10,19 @@ function capitalizeFirstLetter(string) {
 }
 
 // Function to generate dynamics metada
-export function generateMetadata({ searchParams }) {
-  const lang = searchParams.lang || 'fr'; // Retrieve language from search settings
-  const creator = searchParams.creator ? capitalizeFirstLetter(searchParams.creator) : ''; // Retrieve and format creator name // Retrieve creator name from search parameters
-  const bio = searchParams.bio || '';
+export async function generateMetadata({ searchParams }) {
+  const { lang, creator, bio } = await searchParams; // Récupérer les paramètres de recherche
+
+  const formattedLang = lang || 'fr'; // Valeur par défaut pour la langue
+  const formattedCreator = creator ? capitalizeFirstLetter(creator) : ''; // Récupérer et formater le nom du créateur
+  const formattedBio = bio || ''; // Récupérer la biographie
+
   return {
-    title: lang === "fr" ? `Biographie de ${creator}` : `Biography of ${creator}`,
-    description: lang === "fr" 
-    ? `Thisismygame.com, biographie de ${creator} : ${bio}` 
-    : `Thisismygame.com, biography of ${creator} : ${bio}`,
-    icons: {
+    title: formattedLang === "fr" ? `Biographie de ${formattedCreator}` : `Biography of ${formattedCreator}`,
+    description: formattedLang === "fr" 
+      ? `Thisismygame.com, biographie de ${formattedCreator} : ${formattedBio}` 
+      : `Thisismygame.com, biography of ${formattedCreator} : ${formattedBio}`,
+   icons: {
       icon: "/icons/favicon.ico",
     },
   };

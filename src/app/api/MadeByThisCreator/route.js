@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
     const user = await request.json();
-    console.log(`user : `, user);
+    // console.log(`user : `, user);
 
     let client;
-    console.log("La fonction POST a été appelée");
+    // console.log("La fonction POST a été appelée");
     try {
-        console.log("Connexion à MongoDB..."); // Log before connection
+        // console.log("Connexion à MongoDB..."); // Log before connection
         // Connect to the MongoDB cluster
         client = await MongoClient.connect(process.env.MONGODB_CLIENT);
 
@@ -16,14 +16,14 @@ export async function POST(request) {
         const db = client.db(process.env.MONGODB_DATABASE);
 
         const normalizedUsername = decodeURIComponent(user.username).normalize("NFC");
-        console.log(`normalizedUsername : `, normalizedUsername);
+        // console.log(`normalizedUsername : `, normalizedUsername);
         // Find games via email
         const games = await db.collection("introduction-database").find(
             { username: normalizedUsername },
             { projection: { nameofgame: 1, urlPoster: 1, urlPosterCloudinary: 1, shortIntroduction: 1, } }
         ).toArray();
 
-        console.log(`Jeux trouvés: ${games.length}`); // Log for the number of games found
+        // console.log(`Jeux trouvés: ${games.length}`); // Log for the number of games found
 
         // Data formatting
         const formattedGames = games.map(game => ({
@@ -34,7 +34,7 @@ export async function POST(request) {
 
         await client.close();
 
-        console.log("Réponse envoyée avec succès."); // Log before sending the response
+        // console.log("Réponse envoyée avec succès."); // Log before sending the response
 
         return NextResponse.json({
             games: formattedGames,

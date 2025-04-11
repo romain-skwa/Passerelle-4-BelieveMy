@@ -27,8 +27,10 @@ async function fetchImages(count) {
 
 // This component will be rendered server-side (Server Component)
 export default async function Index({ searchParams }) {
-  const count = parseInt(searchParams.count) || 10; // Retrieve image count from URL parameters
-  const { introductionsImages, error } = await fetchImages(count);
+  const { count } = await searchParams;
+
+  const parsedCount = parseInt(count) || 10; // Retrieve image count from URL parameters
+  const { introductionsImages, error } = await fetchImages(parsedCount);
 
   return (
     <GeneralLayout>

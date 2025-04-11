@@ -3,12 +3,12 @@ import "@/app/styles/formIntroYourself.css";
 import AllCompResultsDetails from "@/components/AllCompResultsDetails/AllCompResultsDetails";
 
 // Function to generate dynamics metada
-export function generateMetadata({searchParams}) {
-
-  const lang = searchParams.lang || 'fr'; // Retrieve language from search params URL
+export async function generateMetadata({searchParams}) {
+  const { lang } = await searchParams; 
+  const formattedLang = lang || 'fr'; // Retrieve language from search params URL
   return {
-    title: lang === "fr" ? `Recherche détaillée` : `Result details`,
-    description: lang === "fr" 
+    title: formattedLang === "fr" ? `Recherche détaillée` : `Result details`,
+    description: formattedLang === "fr" 
     ? `Recherche détaillée  sur le site ThisIsMyGame.com. Voici le résultat de votre recherche.` 
     : `Result details on the website ThisIsMyGame.com. Here is the result of your search.`,
     icons: {

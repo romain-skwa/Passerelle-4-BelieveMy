@@ -73,6 +73,7 @@ const GamePresentationSections = ({
           'Content-Type': 'application/json',  
         },  
         body: JSON.stringify({ gameToCheck }),  
+        cache: "no-store", // Be sure to exploit the newest data
       });  
   
       if (!response.ok) {  

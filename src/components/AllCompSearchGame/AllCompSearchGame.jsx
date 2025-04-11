@@ -36,6 +36,7 @@ export default function AllCompSearchGame(){
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ nameofgame }),
+            cache: "no-store", // Be sure to exploit the newest data
           });
     
           const data = await response.json();

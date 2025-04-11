@@ -20,6 +20,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username: user ? user.username : usernameEncoded }), // When we are on listOfYourGames, usernameEncoded is necessary.
+        cache: "no-store", // Be sure to exploit the newest data
       });
 
       const data = await response.json();
@@ -78,7 +79,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
                   padding: "10px",
                 }}
               >
-                <Link href={`dynamic/introduction/${game.nameofgame}?nameOfGame=${game?.nameofgame}&description=${game?.shortIntroduction}`}>
+                <Link href={`/dynamic/introduction/${game.nameofgame}?nameOfGame=${game?.nameofgame}&description=${game?.shortIntroduction}`}>
                   <div className="relative">
                     <Image
                       src={

@@ -3,8 +3,8 @@ import AllCompLogin from "@/components/AllCompLogin/AllCompLogin";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 
 // Function to generate dynamics metada
-export function generateMetadata({ searchParams }) {
-  const lang = searchParams.lang || 'fr'; // Récupérer la langue depuis les paramètres de recherche
+export async function generateMetadata({ searchParams }) {
+  const { lang } = await searchParams; 
   return {
     title: lang === "fr" ? "Se connecter" : "Login",
     description: lang === "fr" 

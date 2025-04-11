@@ -271,6 +271,7 @@ const UpdateIntro = ({
             'Content-Type': 'application/json',  
           },  
           body: JSON.stringify({ gameToCheck }),  
+          cache: "no-store", // Be sure to exploit the newest data
         });  
     
         if (!response.ok) {  
@@ -286,19 +287,23 @@ const UpdateIntro = ({
       
       /************************************************* */
       if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {
+        setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner un fichier image");
       }
       if (urlPosterCloudinaryUpdate && !urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)) {
+        setWeAreUpdatingIntro(false);
         return toast.error(
           "L'image doit être au format jpg, jpeg ou png"
         );
       }
       if (urlPosterUpdate && !urlPosterUpdate.match(/\.(jpg|jpeg|png)$/i)) {
+        setWeAreUpdatingIntro(false);
         return toast.error(
           "L'image doit être au format jpg, jpeg ou png"
         );
       }
       if (!selectedAgePegiUpdate) {
+        setWeAreUpdatingIntro(false);
         return toast.error(
           "Vous devez sélectionner un âge parmi les options disponibles."
         );

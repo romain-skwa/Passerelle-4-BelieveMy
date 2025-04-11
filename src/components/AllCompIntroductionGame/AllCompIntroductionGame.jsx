@@ -53,7 +53,7 @@ export default function AllCompIntroductionGame({introduction}) {
       const [creatorOfThisGame, setCreatorOfThisGame] = useState(""); // creatorOfThisGame is also defined when the data of introduction are loaded
       const [userBio, setUserBio] = useState(undefined); // When the bio of the creator of this game is needed
       const [OnlyBio, setOnlyBio] = useState(undefined); // When the bio of the creator of this game is not asked
-    
+
       /*************************************************/
       const [loading, setLoading] = useState(true);
       const [backgroundImage, setBackgroundImage] = useState(""); // Sometimes there is an image as background
@@ -126,6 +126,7 @@ export default function AllCompIntroductionGame({introduction}) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ nameofgame }),
+          cache: "no-store", // Be sure to exploit the newest data
         });
     
         const data = await response.json();
@@ -154,6 +155,7 @@ export default function AllCompIntroductionGame({introduction}) {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ creatorOfThisGame }),
+              cache: "no-store", // Be sure to exploit the newest data
             });
     
             const data = await response.json();
@@ -174,6 +176,7 @@ export default function AllCompIntroductionGame({introduction}) {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ creatorOfThisGame }),
+              cache: "no-store", // Be sure to exploit the newest data
             });
     
             const data = await response.json();

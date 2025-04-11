@@ -64,7 +64,7 @@ export const authOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: { // déterminer où se situe notre formulaire de connexion
-        signIn: "/src/app/creators/login"
+        signIn: "/creators/login"
     },
     callbacks: { // ce sont des fonctions qui sont appelés quand on détecte un JSon Web Token
         async jwt({token, user}) {

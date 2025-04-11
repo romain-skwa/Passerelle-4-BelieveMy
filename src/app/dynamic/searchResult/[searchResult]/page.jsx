@@ -5,16 +5,16 @@ import "@/app/styles/formIntroYourself.css";
 import AllCompSearchGame from "@/components/AllCompSearchGame/AllCompSearchGame";
 
 // Function to generate dynamics metada
-export function generateMetadata({ searchParams }) {
-  console.log(`searchParams : `, searchParams);
+export async function generateMetadata({ searchParams }) {
   // Variable
-  const nameofgame = decodeURIComponent(searchParams.searchResult || '');
-  console.log(`nameofgame : `, nameofgame);
-
-  const lang = searchParams.lang || 'fr'; // Retrieve the language from the search parameters URL
+  const { searchResult, lang } = await searchParams; // Récupérer les paramètres de recherche
+  // Décoder le nom du jeu
+  const nameofgame = decodeURIComponent(searchResult || '');
+  const formattedLang = lang || 'fr'; 
+  
   return {
-    title: lang === "fr" ? `Recherche ${nameofgame}` : `Result : ${nameofgame}`,
-    description: lang === "fr" 
+    title: formattedLang === "fr" ? `Recherche ${nameofgame}` : `Result : ${nameofgame}`,
+    description: formattedLang === "fr" 
     ? `Vous recherchez le nom : "${nameofgame}" sur le site ThisIsMyGame.com. Voici le résultat de votre recherche.` 
     : `You are searching the name : "${nameofgame}" on the website ThisIsMyGame.com. Here is the result of your search.`,
     icons: {

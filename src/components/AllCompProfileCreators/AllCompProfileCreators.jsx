@@ -33,6 +33,7 @@ export default function AllCompProfileCreators() {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ pseudo }),
+            cache: "no-store", // Be sure to exploit the newest data
           });
     
           const data = await response.json();

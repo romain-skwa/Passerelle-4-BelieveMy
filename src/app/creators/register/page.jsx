@@ -4,11 +4,13 @@ import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import AllCompRegister from "@/components/AllCompRegister/AllCompRegister";
 
 // Function to generate dynamics metada
-export function generateMetadata({ searchParams }) {
-  const lang = searchParams.lang || 'fr'; // Récupérer la langue depuis les paramètres de recherche
+export async function generateMetadata({ searchParams }) {
+  const { lang } = await searchParams; // Récupérer la langue depuis les paramètres de recherche
+  const formattedLang = lang || 'fr'; 
+
   return {
-    title: lang === "fr" ? "S'inscrire" : "Register",
-    description: lang === "fr" 
+    title: formattedLang === "fr" ? "S'inscrire" : "Register",
+    description: formattedLang === "fr" 
     ? "Inscrivez-vous sur le site ThisIsMyGame.com pour présenter votre jeux vidéo" 
     : "Register on ThisIsMyGame.com to introduce your video game.",
     icons: {

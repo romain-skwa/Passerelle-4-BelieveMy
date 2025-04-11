@@ -11,20 +11,22 @@ function capitalizeFirstLetter(string) {
 }
 
 // Function to generate dynamics metada
-export function generateMetadata({ searchParams }) {
-  const nameOfGame = searchParams.nameOfGame ? capitalizeFirstLetter(searchParams.nameOfGame) : ''; // Récupérer et formater le nom du créateur // Récupérer le nom du créateur depuis les paramètres de recherche
-  const description = searchParams.description || '';
+export async function generateMetadata({ searchParams }) {
+  const { nameOfGame, description } = await searchParams;
+
+  const formattedNameOfGame = nameOfGame ? capitalizeFirstLetter(nameOfGame) : '';
+  const formattedDescription = description || '';
   return {
-    title: `${nameOfGame}`,
-    description: `${description}. ThisismyGame.`,
+    title: `${formattedNameOfGame}`,
+    description: `${formattedDescription}. ThisismyGame.`,
     icons: {
       icon: "/icons/favicon.ico",
     },
   };
 }
 
-export default function IntroductionGame({ params: { introduction } }) {
-
+export default async function IntroductionGame({ params }) {
+  const { introduction } = await params;
   return (
     <AllCompIntroductionGame  introduction={introduction} />
   );

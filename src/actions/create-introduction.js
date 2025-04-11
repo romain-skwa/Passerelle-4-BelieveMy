@@ -4,8 +4,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { MongoClient } from "mongodb";
 
-
-
 export const createIntroduction = async (formData) => {
   // Variable
   const session = await getServerSession(authOptions);
@@ -14,7 +12,6 @@ export const createIntroduction = async (formData) => {
   if (!session.user) {
     throw new Error("Vous devez être connecté");
   }
-
  
   let client;
   try {

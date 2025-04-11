@@ -65,6 +65,7 @@ const pressStart2P = Press_Start_2P({
             "Content-Type": "application/json",
           },
           //There is no body with method GET
+          cache: "no-store", // Be sure to exploit the newest data
         });
     
         const data = await response.json();
