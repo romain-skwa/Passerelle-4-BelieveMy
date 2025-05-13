@@ -5,13 +5,12 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import updateBioCreator from "@/actions/updateBioCreator";
-import formulary from "@/app/styles/formulary.css";
+import formularyCss from "@/app/styles/formulary.module.css";
 import logoDiscord from "../../../public/logo/discord-logo.png";
 import logoTwitch from "../../../public/logo/twitch_logo.png";
 import logoItchi from "../../../public/logo/itch-io-icon.png";
 import logoTwitter from "../../../public/logo/x__twitter-logo.png";
 import Loading from "@/components/ForLayout/Loading/Loading";
-import "@/app/styles/formIntroYourself.css";
 import TextOneByOne from "@/components/CreatorsForm/TextOneByOne/TextOneByOne";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import MadeByThisCreator from "@/components/MadeByThisCreator/MadeByThisCreator";
@@ -271,7 +270,7 @@ export default function AllCompFormCreators(){
                 onSubmit={handleSubmitForm} // On submit, we start to send the logo (1)
                 className="w-[95%] laptop:w-[50vw] mx-auto p-1 laptop:p-4 rounded-xl border border-purple-600 bg-black/30 text-center"
               >
-                <section className="sectionTextareaIntroYourself  shadowPurple ">
+                <section className={`${formularyCss.sectionTextareaIntroYourself}  ${formularyCss.shadowPurple}`}>
                   <TextOneByOne
                     frenchPhrase={"Présentez votre parcours. Évoquez vos jeux. C'est à vous..."}
                     englishPhrase={"Present your background. Mention your games. It's your turn..."}
@@ -279,13 +278,13 @@ export default function AllCompFormCreators(){
                   <textarea
                     value={bio}
                     onChange={(event) => setBio(event.target.value)}
-                    className="textareaIntroYourself w-[100%] h-36"
+                    className={`${formularyCss.textareaIntroYourself} w-[100%] h-36`}
                     placeholder="Biographie..."
                   />
                 </section>
                 <br />
-                <div className="linksOtherGames">
-                  <div className="linearUp w-[60%] mx-auto">
+                <div className={`${formularyCss.linksOtherGames}`}>
+                  <div className={`${formularyCss.linearUp} w-[60%] mx-auto`}>
                     <input
                       type="text"
                       value={nameOtherGames1}
@@ -303,8 +302,8 @@ export default function AllCompFormCreators(){
                       }
                     />
                   </div>
-    
-                  <div className="linearUp w-[60%] mx-auto">
+
+                  <div className={`${formularyCss.linearUp} w-[60%] mx-auto`}>
                     <input
                       type="text"
                       value={nameOtherGames2}
@@ -327,7 +326,7 @@ export default function AllCompFormCreators(){
                     />
                   </div>
     
-                  <div className="linearUp w-[60%] mx-auto">
+                  <div className={`${formularyCss.linearUp} w-[60%] mx-auto`}>
                     <input
                       type="text"
                       value={nameOtherGames3}
@@ -350,7 +349,7 @@ export default function AllCompFormCreators(){
                     />
                   </div>
     
-                  <div className="linearUp w-[60%] mx-auto">
+                  <div className={`${formularyCss.linearUp} w-[60%] mx-auto`}>
                     <input
                       type="text"
                       value={nameOtherGames4}
@@ -373,7 +372,7 @@ export default function AllCompFormCreators(){
                     />
                   </div>
     
-                  <div className="linearUp w-[60%] mx-auto">
+                  <div className={`${formularyCss.linearUp} w-[60%] mx-auto`}>
                     <input
                       type="text"
                       value={nameOtherGames5}
@@ -415,15 +414,15 @@ export default function AllCompFormCreators(){
                   type="url"
                   value={websiteUrl}
                   onChange={(event) => setWebsiteUrl(event.target.value)}
-                  className="w-[95%] laptop:w-[60%] my-4 p-2 rounded-xl transparentWhite text-white"
+                  className={`w-[95%] laptop:w-[60%] my-4 p-2 rounded-xl ${formularyCss.transparentWhite} text-white`}
                   placeholder={language == "fr" ? "URL de votre site web :" : "URL of your website"}
                 />
     
-                <div className="social">
+                <div className={formularyCss.social}>
                   {" "}
                   {/* Social media links */}
                   <div className="flex">
-                    <div className="contentLogo">
+                    <div className={`${formularyCss.contentLogo}`}>
                       <Image
                         src={logoDiscord}
                         alt="Logo Discord"
@@ -437,13 +436,13 @@ export default function AllCompFormCreators(){
                       type="url"
                       value={discordUrl}
                       onChange={(event) => setDiscordUrl(event.target.value)}
-                      className="transparentWhite"
+                      className={formularyCss.transparentWhite}
                       placeholder={language == "fr" ? "Lien Discord :" : "Link Discord"                  }
                     />
                   </div>
                   <br />
                   <div className="flex">
-                    <div className="contentLogo">
+                    <div className={formularyCss.contentLogo}>
                       <Image
                         src={logoTwitch}
                         alt="Logo Twitch"
@@ -457,7 +456,7 @@ export default function AllCompFormCreators(){
                       type="url"
                       value={twitchUrl}
                       onChange={(event) => setTwitchUrl(event.target.value)}
-                      className="transparentWhite"
+                      className={formularyCss.transparentWhite}
                       placeholder={
                         language == "fr" ? "Lien Twitch :" : "Link Twitch"
                       }
@@ -465,7 +464,7 @@ export default function AllCompFormCreators(){
                   </div>
                   <br />
                   <div className="flex">
-                    <div className="contentLogo">
+                    <div className={formularyCss.contentLogo}>
                       <Image
                         src={logoItchi}
                         alt="Logo Itchi.io"
@@ -479,7 +478,7 @@ export default function AllCompFormCreators(){
                       type="url"
                       value={itchIoUrl}
                       onChange={(event) => setItchIoUrl(event.target.value)}
-                      className="transparentWhite"
+                      className={formularyCss.transparentWhite}
                       placeholder={
                         language == "fr" ? "Lien itch.io :" : "Link itch.io"
                       }
@@ -487,7 +486,7 @@ export default function AllCompFormCreators(){
                   </div>
                   <br />
                   <div className="flex">
-                    <div className="contentLogo">
+                    <div className={formularyCss.contentLogo}>
                       <Image
                         src={logoTwitter}
                         alt="Logo Twitter"
@@ -501,7 +500,7 @@ export default function AllCompFormCreators(){
                       type="url"
                       value={twitterUrl}
                       onChange={(event) => setTwitterUrl(event.target.value)}
-                      className="transparentWhite"
+                      className={formularyCss.transparentWhite}
                       placeholder={
                         language == "fr" ? "Lien X Twitter :" : "Link X Twitter"
                       }

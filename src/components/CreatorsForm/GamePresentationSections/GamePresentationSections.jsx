@@ -14,6 +14,8 @@ import he from "he";
 import { useRouter } from "next/navigation";
 import { Cloudinary } from "@cloudinary/url-gen";
 import TinyMceEditor from "@/components/TinyMceEditor/TinyMceEditor";
+import formularyCss from "@/app/styles/formulary.module.css";
+import componentsCss from "@/app/styles/components.module.css";
 
 const GamePresentationSections = ({
   nameOfGame,  setNameOfGame,
@@ -258,7 +260,7 @@ const GamePresentationSections = ({
   return (
     <form
       onSubmit={handleSendSubmit}
-      className="neuphormismFormularyIntroductionGame w-full mb-4 rounded-lg"
+      className={`${formularyCss.neuphormismFormularyIntroductionGame} w-full mb-4 rounded-lg`}
     >
       <div className="laptop:flex items-center mb-3 w-[100%]">
         {/* Input Nom du Jeu*/}
@@ -266,7 +268,7 @@ const GamePresentationSections = ({
           type="text"
           name="nameOfGame"
           placeholder="Nom du jeu entièrement en minuscule"
-          className="px-3 py-2 rounded-md w-[92%] tablet:w-[100%] mx-4 mt-4 text-white neuphormismUndergroung"
+          className={`px-3 py-2 rounded-md w-[92%] tablet:w-[100%] mx-4 mt-4 text-white ${formularyCss.neuphormismUndergroung}`}
           maxLength={80}
           size={80}
           value={nameOfGame}
@@ -285,12 +287,11 @@ const GamePresentationSections = ({
             : "This short introduction will be displayed in bold."}
         </p>
         <textarea
-          name="shortIntroduction"
-          id="shortIntroduction"
+          name={`${formularyCss.shortIntroduction}`}
           placeholder="Cette introduction courte sera affichée en gras"
           value={shortIntroduction}
           onChange={(e) => setShortIntroduction(e.target.value)}
-          className="text-white neuphormismUndergroung"
+          className={`${formularyCss.shortIntroduction} ${formularyCss.neuphormismUndergroung}`}
         />
       </div>
 
@@ -332,8 +333,8 @@ const GamePresentationSections = ({
 
       {/**************** Image Affiche [encadré] ***************************** */}
 
-      <div className="encadreViolet">
-        <p className="choisissezLimage">
+      <div className={`${componentsCss.encadreViolet}`}>
+        <p className={`${componentsCss.choisissezLimage}`}>
           {language === "fr"
             ? "Choisissez l'affiche du jeu"
             : "Choose the game's poster"}{" "}
@@ -348,8 +349,8 @@ const GamePresentationSections = ({
       <section className="flex flex-col tablet:flex-row w-[100%] justify-center">
         {/**************** Image d'illustration n°1 [encadré] ***************************** */}
 
-        <div className="encadreViolet">
-          <p className="choisissezLimage">
+        <div className={`${componentsCss.encadreViolet}`}>
+          <p className={`${componentsCss.choisissezLimage}`}>
             {language === "fr"
               ? "Choisissez l'image d'illustration n°1"
               : "Choose illustration image #1."}{" "}
@@ -361,8 +362,8 @@ const GamePresentationSections = ({
         </div>
 
         {/**************** Image d'illustration n°2 [encadré] ***************************** */}
-        <div className="encadreViolet">
-          <p className="choisissezLimage">
+        <div className={`${componentsCss.encadreViolet}`}>
+          <p className={`${componentsCss.choisissezLimage}`}>
             {language === "fr"
               ? "Choisissez l'image d'illustration n°2"
               : "Choose illustration image #2."}{" "}
@@ -374,8 +375,8 @@ const GamePresentationSections = ({
         </div>
 
         {/**************** Image d'illustration n°3 [encadré] ***************************** */}
-        <div className="encadreViolet">
-          <p className="choisissezLimage">
+        <div className={`${componentsCss.encadreViolet}`}>
+          <p className={`${componentsCss.choisissezLimage}`}>
             {language === "fr"
               ? "Choisissez l'image d'illustration n°3"
               : "Choose illustration image #3."}{" "}
@@ -388,7 +389,7 @@ const GamePresentationSections = ({
       </section>
 
       {/**************** Arrière plan [encadré] ***************************** */}
-      <div className="w-[90%] p-2 mx-auto mt-4 grasFondBleu">
+      <div className={`w-[90%] p-2 mx-auto mt-4 ${componentsCss.grasFondBleu}`}>
         <p className="text-center mb-2">
           {language === "fr"
             ? "Choisissez une image pour l'arrière-plan"
@@ -409,7 +410,7 @@ const GamePresentationSections = ({
           type="url"
           name="videoLink"
           placeholder={ language === "fr" ? "Lien YouTube de la vidéo" : "YouTube link of the video."}
-          className="neuphormismUndergroung inputLink"
+          className={`${formularyCss.neuphormismUndergroung} ${formularyCss.inputLink}`}
           value={videoLink}
           onChange={(e) => setVideoLink(e.target.value)}
         />
@@ -419,7 +420,7 @@ const GamePresentationSections = ({
           type="url"
           name="webSiteOfThisGame"
           placeholder={language === "fr" ? "Lien vers le site officiel du jeu" : "Link to the official game website."}
-          className="neuphormismUndergroung inputLink mx-2 tablet:mx-4"
+          className={`${formularyCss.neuphormismUndergroung} ${formularyCss.inputLink} mx-2 tablet:mx-4`}
           value={webSiteOfThisGame}
           onChange={(e) => setWebSiteOfThisGame(e.target.value)}
         />
@@ -429,7 +430,7 @@ const GamePresentationSections = ({
           type="url"
           name="webSiteOfThisCreator"
           placeholder={language === "fr" ? "Lien vers le site officiel du/des créateur(s)" : "Link to the official website of the creator(s)."}
-          className="neuphormismUndergroung inputLink"
+          className={`${formularyCss.neuphormismUndergroung} ${formularyCss.inputLink}`}
           value={webSiteOfThisCreator}
           onChange={(e) => setWebSiteOfThisCreator(e.target.value)}
         />
@@ -439,7 +440,7 @@ const GamePresentationSections = ({
           type="url"
           name="steamLink"
           placeholder={language === "fr" ? "Lien vers le site Steam" : "Link to the Steam page."}
-          className="neuphormismUndergroung inputLink"
+          className={`${formularyCss.neuphormismUndergroung} ${formularyCss.inputLink}`}
           value={steamLink}
           onChange={(e) => setSteamLink(e.target.value)}
         />
@@ -449,7 +450,7 @@ const GamePresentationSections = ({
           type="url"
           name="epicGamesLink"
           placeholder={language === "fr" ? "Lien vers le site Epic Games" : "Link to the Epic Games site."}
-          className="neuphormismUndergroung inputLink"
+          className={`${formularyCss.neuphormismUndergroung} ${formularyCss.inputLink}`}
           value={epicGamesLink}
           onChange={(e) => setEpicGamesLink(e.target.value)}
         />
@@ -464,7 +465,7 @@ const GamePresentationSections = ({
       {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
       <div className="flex justify-center mx-auto">
         <div
-          className="grasFondBleuborder border p-2 flex justify-center mt-3 mb-3 font-bold text-white cursor-pointer rounded-3xl py-2 w-[320px] tablet:w-[620px]"
+          className={`${componentsCss.grasFondBleu} border p-2 flex justify-center mt-3 mb-3 font-bold text-white cursor-pointer rounded-3xl py-2 w-[320px] tablet:w-[620px]`}
           onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
         >
           {language == "fr" ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?" : "Would you like to add a presentation of yourself or your team ?"}
@@ -472,7 +473,6 @@ const GamePresentationSections = ({
       </div>
 
       {/******************* Paiement ********************************** */}
-     
 
       <div className="flex justify-center">
         <button

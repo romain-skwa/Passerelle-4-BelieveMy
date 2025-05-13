@@ -25,7 +25,9 @@ export default function ResetPasswordPage() {
     }
 
     if (!newPassword || !confirmPassword) {
-      return toast.error("Veuillez entrer un nouveau mot de passe et sa confirmation.");
+      return toast.error(
+        "Veuillez entrer un nouveau mot de passe et sa confirmation."
+      );
     }
 
     if (newPassword !== confirmPassword) {
@@ -59,30 +61,32 @@ export default function ResetPasswordPage() {
   return (
     <GeneralLayout>
       <form onSubmit={handleSubmit} className="mt-36">
-        <div className="input-component">
+        <div className="input_component">
           <input
             type="password"
             name="newPassword"
             required
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="input-register-section"
+            className="input_register_section"
             placeholder="Nouveau mot de passe"
           />
         </div>
-        <div className="input-component">
+        <div className="input_component">
           <input
             type="password"
             name="confirmPassword"
             required
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="input-register-section"
+            className="input_register_section"
             placeholder="Confirmer le mot de passe"
           />
         </div>
         <div className="flex justify-center">
-          <ButtonForm type="submit" disabled={!token}>Réinitialiser le mot de passe</ButtonForm>
+          <ButtonForm type="submit" disabled={!token}>
+            Réinitialiser le mot de passe
+          </ButtonForm>
         </div>
       </form>
     </GeneralLayout>

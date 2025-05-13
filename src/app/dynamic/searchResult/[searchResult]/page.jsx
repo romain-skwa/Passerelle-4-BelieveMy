@@ -1,7 +1,6 @@
 // INTRODUCTION OF ONE GAME
 // Dynamic page
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
-import "@/app/styles/formIntroYourself.css";
 import AllCompSearchGame from "@/components/AllCompSearchGame/AllCompSearchGame";
 
 // Function to generate dynamics metada

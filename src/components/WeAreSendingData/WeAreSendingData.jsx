@@ -11,7 +11,7 @@ import Edge from "../../../public/navigator/Edge.png";
 import MongoDB from "../../../public/navigator/mongodb.jpg";
 import pad from "../../../public/logo/icon-manette.png";
 import { Press_Start_2P } from "next/font/google";
-import "@/app/styles/formIntroYourself.css";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 const pressStart2P = Press_Start_2P({
   // Police d'écriture
@@ -42,7 +42,7 @@ export default function WeAreSendingData({filesToSend, nameOfGame, avatar}) {
   const browser = getBrowserInfo(); // Obtenez le nom du navigateur
 
   return (
-    <section className="bg-[rgba(3,3,3,0.8)] rounded-md py-4 px-6 lg:w-2/3 neuphormism w-[90%] tablet:w-[50%] mx-auto flex text-white">
+    <section className={`bg-[rgba(3,3,3,0.8)] rounded-md py-4 px-6 lg:w-2/3 ${formularyCss.neuphormism} w-[90%] tablet:w-[50%] mx-auto flex text-white`}>
       {/* Screen phone*/}
       <div className="laptop:hidden">
         {filesToSend && filesToSend.posterGlimpseFile ? (
@@ -90,15 +90,15 @@ export default function WeAreSendingData({filesToSend, nameOfGame, avatar}) {
         }
       </div>
       <div className="flex-1 laptop:hidden flex items-center justify-around">
-        <div className="w-[12px] h-[6px] bg-white mr-1 blinkSend"></div>
-        <div className="w-[12px] h-[6px] bg-white mr-1 blinkSend"></div>
-        <div className="w-[12px] h-[6px] bg-white mr-1 blinkSend"></div>
-        <div className="w-[12px] h-[6px] bg-white mr-1 blinkSend"></div>
-        <div className="w-[12px] h-[6px] bg-white mr-1 blinkSend"></div>
+        <div className={`w-[12px] h-[6px] bg-white mr-1 ${formularyCss.blinkSend}`}></div>
+        <div className={`w-[12px] h-[6px] bg-white mr-1 ${formularyCss.blinkSend}`}></div>
+        <div className={`w-[12px] h-[6px] bg-white mr-1 ${formularyCss.blinkSend}`}></div>
+        <div className={`w-[12px] h-[6px] bg-white mr-1 ${formularyCss.blinkSend}`}></div>
+        <div className={`w-[12px] h-[6px] bg-white mr-1 ${formularyCss.blinkSend}`}></div>
       </div>
       <div className="flex-1 hidden laptop:block">
         <div className={`h-[100px] flex items-center text-xl ${pressStart2P.className} `}>
-          <p className="nameMoving h-[32px]">{nameOfGame}</p>
+          <p className={`${formularyCss.nameMoving} h-[32px]`}>{nameOfGame}</p>
         </div>
       </div>
       <div>

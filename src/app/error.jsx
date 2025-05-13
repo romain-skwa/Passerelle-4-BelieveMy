@@ -3,7 +3,7 @@ import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import marioMovie from "/public/background/mario.jpg";
 import Image from "next/image";
 import { Press_Start_2P } from "next/font/google";
-import "@/app/styles/formulary.css";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 // FORMULARY used by a the creator to introduce one game
 const pressStart2P = Press_Start_2P({

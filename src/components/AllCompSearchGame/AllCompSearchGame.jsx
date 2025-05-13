@@ -1,14 +1,13 @@
 "use client";
 // INTRODUCTION OF ONE GAME
 // Dynamic page
-import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import Link from "next/link";
 import Loading from "@/components/ForLayout/Loading/Loading";
-import "@/app/styles/formIntroYourself.css";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 export default function AllCompSearchGame(){
       // Variable
@@ -67,7 +66,7 @@ export default function AllCompSearchGame(){
             <Loading />
           ) : (
             <>
-              <div className="bg-[rgba(3,3,3,0.8)] w-[95vw] tablet:w-[85vw] laptop:w-[900px] mx-auto rounded-md py-4 px-6 lg:w-2/3 neuphormism">
+              <div className={`bg-[rgba(3,3,3,0.8)] w-[95vw] tablet:w-[85vw] laptop:w-[900px] mx-auto rounded-md py-4 px-6 lg:w-2/3 ${formularyCss.neuphormism}`}>
                 <div className="flex justify-center w-full text-white text-center">
                   <h1>
                     Résultats de la recherche : <br></br>{" "}
@@ -89,10 +88,7 @@ export default function AllCompSearchGame(){
                           <Link href={`/dynamic/introduction/${game.nameofgame}`}>
                             <div className="relative">
                               <Image
-                                src={
-                                  game.urlPosterCloudinary ||
-                                  `/presentation/${game.urlPoster}`
-                                } // When urlPosterCloudinary exist, or urlPoster
+                                src={game.urlPosterCloudinary || `/presentation/${game.urlPoster}`} // When urlPosterCloudinary exist, or urlPoster
                                 width={192}
                                 height={311}
                                 className="w-[154px] h-[248px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
@@ -103,10 +99,7 @@ export default function AllCompSearchGame(){
                           </Link>
                           <div className="text-center mt-2 font-semibold capitalize text-white">
                             {decodeURIComponent(game.nameofgame).length > 16
-                              ? `${decodeURIComponent(game.nameofgame).slice(
-                                  0,
-                                  16
-                                )}...`
+                              ? `${decodeURIComponent(game.nameofgame).slice(0,16)}...`
                               : decodeURIComponent(game.nameofgame)}
                           </div>
                         </li>

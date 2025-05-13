@@ -1,3 +1,105 @@
+/********** shortIntroduction ***********************/
+.shortIntroduction {
+  width: 100%;
+  margin-inline: 1rem;
+  min-height: 9vh;
+  padding: 0.5rem 1rem;
+  border-radius: 0.7rem;
+  margin-inline: auto;
+  color: white;
+}
+/********** PEGI ***********************/
+.pegi {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.pegi img {
+  width: 3.5rem;
+}
+.pegi label {
+  padding: 0.3rem;
+  border: 1px black solid;
+  border-radius: 10px;
+  background-color: rgba(31, 125, 207, 0.6);
+}
+/********** Solo Multi Online *******************/
+.buttonSoloMulti_container_formulary {
+  display: flex;
+  flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'espace est insuffisant */
+  justify-content: center;
+  text-shadow: 3px 3px 4px rgba(7, 7, 7, 0.635);
+  margin-top: 1rem;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+/********** Platform *******************/
+.buttonPlatform {
+  padding: 1px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-inline: 0.5rem; /* Espacement entre les boutons */
+  transition: background-color 0.3s; /* Effet de transition pour le survol */
+  display: inline-block;
+}
+
+.buttonPlatform:hover {
+  background-color: rgb(20, 118, 46); /* Changement de couleur au survol */
+}
+
+.PlatformIntro {
+  padding: 1px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  border-radius: 5px;
+  margin-inline: 0.5rem; /* Espacement entre les boutons */
+  transition: background-color 0.3s; /* Effet de transition pour le survol */
+  display: inline-block;
+}
+/******************** Solo ou Multi ***********************************/
+.buttonSoloMulti_container_glimpse{
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+.buttonSoloMulti {
+  height: 34px;
+  border-radius: 5px;
+}
+/*******************************************************/
+.bandeauTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-inline: auto;
+  margin-bottom: 1rem;
+}
+
+.bandeauTop div {
+  width: 220px;
+  border: 2px solid rgb(27, 35, 141);  
+  background-color: rgb(114, 2, 2);
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
+  font-weight: 600;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.shadowPurple{
+  text-shadow: 0px 5px 8px purple ;
+}
+/*******************************************************************/
 .neuphormism{
     margin-bottom: 1rem;
     border-radius: 0.5rem;

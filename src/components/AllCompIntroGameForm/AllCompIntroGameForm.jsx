@@ -4,7 +4,7 @@
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/app/styles/formulary.css";
+import formularyCss from "@/app/styles/formulary.module.css";
 import Glimpse from "@/components/CreatorsForm/GamePresentationInside/Glimpse/Glimpse"; // Aperçu
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
 import ObligatoryButtons from "@/components/CreatorsForm/ObligatoryButtons/ObligatoryButtons";
@@ -94,7 +94,7 @@ const pressStart2P = Press_Start_2P({
       ) : (
         <>
           <section className="w-[95vw] largeScreen:w-[68vw] mx-auto px-0 tablet:px-8 text-white font-bold border border-purple-600 rounded-3xl bg-black/30">
-            <div className="m-4 min-h-[44px] largeScreen:min-h-[24px] text-xs laptop:text-sm shadowPurple">
+            <div className={`m-4 min-h-[44px] largeScreen:min-h-[24px] text-xs laptop:text-sm ${formularyCss.shadowPurple}`}>
               {session?.user?.username && (
                 <>
                   <span className={`capitalize ${pressStart2P.className}`}>

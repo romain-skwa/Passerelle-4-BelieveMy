@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/components/ForLayout/Loading/Loading";
-import "@/app/styles/formIntroYourself.css";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 export default function AllCompResultsDetails(){
     const { language } = useLanguage();
@@ -128,7 +128,7 @@ export default function AllCompResultsDetails(){
         {loading ? (
           <Loading />
         ) : (
-          <div className="neuphormism bg-[rgba(255,255,255,0.90)] w-[95vw] tablet:w-[85vw] laptop:w-[900px] mx-auto rounded-md py-4 px-6 lg:w-2/3 neuphormism">
+          <div className={`${formularyCss.neuphormism} bg-[rgba(255,255,255,0.90)] w-[95vw] tablet:w-[85vw] laptop:w-[900px] mx-auto rounded-md py-4 px-6 lg:w-2/3`}>
             <section className="text-center">
               <h1 className="text-center">
                 {language == "fr"

@@ -77,9 +77,7 @@ const UserProfileSection = ({ user }) => {
             src={logoDiscord}
             unoptimized={true}
             alt="Logo Discord"
-            className={`w-9 h-9 mr-3 ${
-              user.isDarkMode ? "bg-black bg-opacity-50" : ""
-            } rounded-md p-1 inline`}
+            className={`w-9 h-9 mr-3 ${user.isDarkMode ? "bg-black bg-opacity-50" : ""} rounded-md p-1 inline`}
           />
         </a>
       )}

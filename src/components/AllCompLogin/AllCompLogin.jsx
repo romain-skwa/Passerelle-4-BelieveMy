@@ -1,19 +1,19 @@
 "use client";
 
 import ButtonForm from "@/components/Button/ButtonForm";
-import "@/app/styles/components.css";
+import componentsCss from "@/app/styles/components.module.css";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import {  useState } from "react";
+import { useState } from "react";
 import { useRef } from "react";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
-export default function AllCompLogin(){
-      // Variable
+export default function AllCompLogin() {
+  // Variable
   const router = useRouter();
   const { language } = useLanguage();
   const [focused, setFocused] = useState({ email: false, password: false });
@@ -72,71 +72,73 @@ export default function AllCompLogin(){
     // Redirect
     router.replace("/");
   };
-    return(
+  return (
     <form action={prepareLogin} className="mt-36">
-        <div className="input-component">
-          <input
-            type="email"
-            name="email"
-            required
-            onFocus={handleFocus}
-            ref={emailInputRef}
-            className={
-              focused.email
-                ? "focused input-register-section"
-                : "input-register-section"
-            }
-          />
-          <label
-            htmlFor="email"
-            className="label"
-            onClick={() => handleLabelClick(emailInputRef)}
-          >
-            {language == "fr" ? "Courriel" : "Email"}
-          </label>
-        </div>
+      <div className={componentsCss.input_component}>
+        <input
+          type="email"
+          name="email"
+          required
+          onFocus={handleFocus}
+          ref={emailInputRef}
+          className={
+            focused.email
+              ? `focused ${componentsCss.input_register_section}`
+              : `${componentsCss.input_register_section}`
+          }
+        />
+        <label
+          htmlFor="email"
+          className="label"
+          onClick={() => handleLabelClick(emailInputRef)}
+        >
+          {language == "fr" ? "Courriel" : "Email"}
+        </label>
+      </div>
 
-        <div className="input-component">
-          <input
-            type="password"
-            name="password"
-            required
-            onFocus={handleFocus}
-            ref={passwordInputRef}
-            className={
-              focused.password
-                ? "focused input-register-section"
-                : "input-register-section"
-            }
-          />
+      <div className={`${componentsCss.input_component}`}>
+        <input
+          type="password"
+          name="password"
+          required
+          onFocus={handleFocus}
+          ref={passwordInputRef}
+          className={
+            focused.password
+              ? `focused ${componentsCss.input_register_section}`
+              : `${componentsCss.input_register_section}`
+          }
+        />
 
-          <label
-            htmlFor="password"
-            className="label"
-            onClick={() => handleLabelClick(passwordInputRef)}
-          >
-            {language == "fr" ? "Mot de passe" : "Password"}
-          </label>
-        </div>
+        <label
+          htmlFor="password"
+          className="label"
+          onClick={() => handleLabelClick(passwordInputRef)}
+        >
+          {language == "fr" ? "Mot de passe" : "Password"}
+        </label>
+      </div>
 
-        {/*----------------------*/}
+      {/*----------------------*/}
 
-        <div className="flex justify-center">
-          <ButtonForm>{language == "fr" ? "Se connecter" : "Login"}</ButtonForm>
-        </div>
+      <div className="flex justify-center">
+        <ButtonForm>{language == "fr" ? "Se connecter" : "Login"}</ButtonForm>
+      </div>
 
-        <div className="flex justify-center">
-          <Link href="../../creators/register">
-            <ButtonForm formButton>
-              {language == "fr" ? "S'inscrire" : "Sign up"}
-            </ButtonForm>
-          </Link>
-        </div>
-        <div className="flex justify-center">
-          <Link href="../../creators/sendResetLink">
-            <ButtonForm formButton>{language == "fr" ? "Mot de passe oublié ?" : "Forgot password ?"}</ButtonForm>
-          </Link>
-        </div>
-      </form>
-    )
+      <div className="flex justify-center">
+        <Link href="../../creators/register">
+          <ButtonForm formButton>
+            {language == "fr" ? "S'inscrire" : "Sign up"}
+          </ButtonForm>
+        </Link>
+      </div>
+      <div className="flex justify-center">
+        <Link href="../../creators/sendResetLink">
+          <ButtonForm formButton>
+            {language == "fr" ? "Mot de passe oublié ?" : "Forgot password ?"}
+          </ButtonForm>
+        </Link>
+      </div>
+    </form>
+  );
 }

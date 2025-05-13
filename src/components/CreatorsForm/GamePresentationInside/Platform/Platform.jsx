@@ -1,5 +1,5 @@
 import React from "react";
-import "@/app/styles/formulary.css";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 const ButtonPlatform = ({ platform, setPlatform }) => {
   // Liste des plateformes
@@ -35,7 +35,7 @@ const ButtonPlatform = ({ platform, setPlatform }) => {
         <div
           key={platformName}
           onClick={() => handlePlatformClick(platformName)}
-          className={`buttonPlatform ${
+          className={`${formularyCss.buttonPlatform} ${
             platform.includes(platformName)
               ? "bg-green-900 border border-white text-white"
               : "bg-gray-800 border-2 border-gray-600 text-white"

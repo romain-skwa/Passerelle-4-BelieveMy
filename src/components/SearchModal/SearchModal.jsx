@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // Utilisation de next/navigation
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 const genres = [
   { id: "Action", label: "Action" },
@@ -95,7 +96,7 @@ export default function SearchModal({ onClose }) {
 
   return (
     <div onClick={handleOutsideClick} className="fixed inset-0 flex justify-center bg-black bg-opacity-50 z-50 text-black">
-      <div id="modal-content" className="rounded-lg p-4 z-50 h-[670px] tablet:h-[780px] my-auto neuphormismModalSearch">
+      <div id="modal-content" className={`rounded-lg p-4 z-50 h-[670px] tablet:h-[780px] my-auto ${formularyCss.modalSearch}`}>
         <h2 className="text-lg font-bold text-center mb-2">Recherche détaillée</h2>
         <input
           type="text"

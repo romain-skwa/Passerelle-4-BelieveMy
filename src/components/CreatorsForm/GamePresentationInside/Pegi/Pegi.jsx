@@ -13,6 +13,7 @@ import logoPegiLangageGrossier from "/public/logo/pegi_langageGrossier.jpg";
 import logoPegiPeur from "/public/logo/pegi_peur.jpg";
 import logoPegiDrogue from "/public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "/public/logo/pegi_discrimination.jpg";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 const Pegi = ({
   selectedAgePegi,
@@ -32,7 +33,7 @@ const Pegi = ({
 
   return (
     <section className="my-2">
-      <div className="pegi">
+      <div className={`${formularyCss.pegi}`}>
         <label>
           <Image src={logoPegi3} alt="Logo Pegi 3" unoptimized={true} />
           <div className="flex justify-center pt-1">
@@ -94,7 +95,7 @@ const Pegi = ({
         </label>
       </div>
       {/******************* Catégories *********************************************************************************** */}
-      <div className="pegi flex-wrap">
+      <div className={`${formularyCss.pegi} flex-wrap`}>
         <label>
           <Image src={logoPegiSexe} alt="Logo Pegi Sexe" title="Sexe" unoptimized={true} />
           <div className="flex justify-center pt-1">

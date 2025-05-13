@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 import { toast } from "react-toastify";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 const LogoUploader = (
   {
@@ -85,12 +86,12 @@ const handleDeleteLogo = async (event) => {
         onChange={handleImageChange}
         className="hidden" // Masque l'input de fichier
       />
-      <label htmlFor="logo-upload" className="cursor-pointer w-[200px] linearUp text-white py-1 px-4 rounded">
+      <label htmlFor="logo-upload" className={`cursor-pointer w-[200px] ${formularyCss.linearUp} text-white py-1 px-4 rounded`}>
         {language === "fr" ? "Télécharger votre logo" : "Upload your logo"}
       </label>
 
       {previewUrl && (
-        <div className="cursor-pointer w-[200px] linearUp text-white py-1 px-4 rounded"
+        <div className={`cursor-pointer w-[200px] ${formularyCss.linearUp} text-white py-1 px-4 rounded`}
           onClick={() => {
             const confirmDelete = window.confirm(language === "fr" ? "Êtes-vous sûr de vouloir effacer l'image ?" : "Are you sure you want to delete the image?");
             if (confirmDelete) {

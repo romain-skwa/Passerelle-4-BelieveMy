@@ -1,5 +1,6 @@
 import React from "react";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 const colorDark =
   "linear-gradient(70deg, rgba(25,21,70,1) 0%, rgba(9,9,121,0.5) 35%, rgba(25,21,70,1) 100%)";
@@ -19,7 +20,7 @@ const ObligatoryButtons = ({
 }) => {
   const { language } = useLanguage();
   return (
-    <section className="w-[241px] p-2 mb-3 rounded-xl font-bold neuphormismUndergroung">
+    <section className={`w-[241px] p-2 mb-3 rounded-xl font-bold ${formularyCss.neuphormismUndergroung}`}>
       <div className="flex justify-center mt-3 laptop:mt-0 mx-auto">
         {/* is Dark Mode */}
         <div
@@ -36,9 +37,9 @@ const ObligatoryButtons = ({
       <div className="flex justify-center text-white text-xl mb-2" style={{ textShadow: "3px 3px 4px blue" }}>
         {language == "fr" ? "Obligatoire" : "Obligatory"}
       </div>
-      
-      <div className="bandeauTop">
-        {/* Short introduction */}
+
+      <div className={formularyCss.bandeauTop}>
+        {/* Name of game */}
         <div
           style={{
             backgroundImage:

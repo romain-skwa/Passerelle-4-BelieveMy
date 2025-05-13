@@ -5,8 +5,8 @@ import logoFacebook from "/public/logo/facebook_logo.png";
 import logoTwitch from "/public/logo/twitch_logo.png";
 import logoDiscord from "/public/logo/discord-logo.png";
 import logoYoutube from "/public/logo/youtube_logo.png";
-
-import "../../app/styles/socialNetworkModal.css";
+import  socialNetworkModal from "../../app/styles/socialNetworkModal.module.css";
+import componentsCss from "@/app/styles/components.module.css";
 
 export default function SocialFrame() {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function SocialFrame() {
     return (
         <>
             <section className="w-[3.25rem] overflow-hidden" onClick={handleOpenModal}>
-                <div className="flex gap-1 allIconSocial">
+                <div className={`flex gap-1 ${componentsCss.allIconSocial}`}>
                     <Image src={logoDiscord} alt="Logo Discord" className="w-[1.5rem]" unoptimized={true} />
                     <Image src={logoYoutube} alt="Logo Youtube" className="w-[1.5rem]" unoptimized={true} />
                     <Image src={logoInstagram} alt="Logo Instagram" className="w-[1.5rem]" unoptimized={true} />
@@ -39,8 +39,8 @@ export default function SocialFrame() {
             </section>
 
             {isModalOpen && (
-                <div className="modal" onClick={handleModalClick}>
-                    <div className="modal-content">
+                <div className={socialNetworkModal.modal} onClick={handleModalClick}>
+                    <div className={socialNetworkModal["modal-content"]}>
                         <div className="flex flex-col gap-3 items-center">
                             <a href="https://discord.com" target="_blank" rel="noopener noreferrer">
                                 <Image src={logoDiscord} alt="Logo Discord" className="w-[3rem]" unoptimized={true} />

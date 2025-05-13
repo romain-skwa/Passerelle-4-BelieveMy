@@ -1,7 +1,5 @@
 // ApercuFormulaire.js
 import React, { useState } from "react";
-import "@/app/styles/components.css";
-import "@/app/styles/formIntroYourself.css";
 import Image from "next/image";
 import logoPegi3 from "/public/logo/pegi_3.jpg";
 import logoPegi7 from "/public/logo/pegi_7.jpg";
@@ -23,6 +21,7 @@ import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/multiOnline2.jpg";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 const pegiImages = {
   3: { src: logoPegi3, title: "Pegi 3" },
@@ -94,11 +93,11 @@ const ApercuFormulaire = ({
   return (
     <>
       <section
-        className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${
+        className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 ${formularyCss.neuphormism} mt-4 ${
           isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
         } `}
       >
-        <h3>
+        <h3 className="text-md font-semibold">
           {language === "fr"
             ? "Aperçu de la présentation de votre jeu :"
             : "Preview of your game's presentation:"}
@@ -203,7 +202,7 @@ const ApercuFormulaire = ({
 
         {/******************* Solo / Multi ******************************/}
         {SoloMulti && SoloMulti.length > 0 && (
-          <div className="buttonSoloMulti-container">
+          <div className={`${formularyCss.buttonSoloMulti_container_glimpse}`}>
             {SoloMulti.slice()
               .sort((a, b) => displayOrder.indexOf(a) - displayOrder.indexOf(b)) // Trier selon l'ordre défini
               .map((genre) => {
@@ -213,7 +212,7 @@ const ApercuFormulaire = ({
                 return (
                   <div
                     key={genre}
-                    className="buttonSoloMulti"
+                    className={`${formularyCss.buttonSoloMulti}`}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -383,7 +382,7 @@ const ApercuFormulaire = ({
 
       {filesToSend.posterGlimpseFile && (
         <section
-          className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4 ${
+          className={`w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 ${formularyCss.neuphormism} mt-4 ${
             isDarkMode ? "text-white bg-[#121212]" : "text-black bg-white"
           } `}
         >

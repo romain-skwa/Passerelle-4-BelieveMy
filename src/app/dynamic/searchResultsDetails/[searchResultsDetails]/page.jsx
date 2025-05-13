@@ -1,5 +1,4 @@
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
-import "@/app/styles/formIntroYourself.css";
 import AllCompResultsDetails from "@/components/AllCompResultsDetails/AllCompResultsDetails";
 
 // Function to generate dynamics metada

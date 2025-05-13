@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import he from "he";
-import "@/app/styles/formIntroYourself.css";
 import Image from "next/image";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
@@ -37,6 +36,7 @@ import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageCont
 import Flag from "@/components/Flag/Flag";
 import WeAreDeleting from "@/components/WeAreDeleting/WeAreDeleting";
 import WeAreUpdatingIntro from "@/components/WeAreUpdatingIntro/WeAreUpdatingIntro";
+import formularyCss from "@/app/styles/formulary.module.css";
 
 export default function AllCompIntroductionGame({introduction}) {
       // Variable
@@ -312,7 +312,7 @@ export default function AllCompIntroductionGame({introduction}) {
             <WeAreUpdatingIntro comparaison={comparaison} session={session} />
           ) : (
             <section
-              className={`${isDarkClass} w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 neuphormism mt-4`}
+              className={`${isDarkClass} w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 ${formularyCss.neuphormism} mt-4`}
             >
               <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
                 {decodeURIComponent(game.nameofgame)}{" "}
@@ -325,7 +325,7 @@ export default function AllCompIntroductionGame({introduction}) {
                   {game.platform.map((plat, index) => (
                     <div
                       key={index}
-                      className={`PlatformIntro
+                      className={`${formularyCss.PlatformIntro}
                                     ${
                                       isDarkMode == true
                                         ? " border border-white"
@@ -415,7 +415,7 @@ export default function AllCompIntroductionGame({introduction}) {
                 <div className="flex justify-center mt-4 pb-2 gap-5 flex-wrap">
                   {game.SoloMulti.includes("Solo") && (
                     <div
-                      className="buttonSoloMulti"
+                      className={`${formularyCss.buttonSoloMulti}`}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -439,7 +439,7 @@ export default function AllCompIntroductionGame({introduction}) {
     
                   {game.SoloMulti.includes("Multijoueur local") && (
                     <div
-                      className="buttonSoloMulti"
+                      className={`${formularyCss.buttonSoloMulti}`}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -463,7 +463,7 @@ export default function AllCompIntroductionGame({introduction}) {
     
                   {game.SoloMulti.includes("Multijoueur en ligne") && (
                     <div
-                      className="buttonSoloMulti"
+                      className={`${formularyCss.buttonSoloMulti}`}
                       style={{
                         display: "flex",
                         alignItems: "center",

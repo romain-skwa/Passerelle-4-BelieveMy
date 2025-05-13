@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import "../../app/styles/TinyMce.css";
 
 const TinyMceEditor = ({ introductionOfTheGame, setIntroductionOfTheGame }) => {
   const handleEditorChange = (newContent) => {

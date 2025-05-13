@@ -21,7 +21,6 @@ export default function ResetPassword() {
 
     // Logique pour envoyer un e-mail de réinitialisation de mot de passe
     try {
-
       await fetch("/api/sendResetLink", {
         method: "POST",
         headers: {
@@ -31,8 +30,8 @@ export default function ResetPassword() {
       });
 
       toast.success(
-        language === "fr" 
-          ? "Un e-mail de réinitialisation a été envoyé à votre adresse." 
+        language === "fr"
+          ? "Un e-mail de réinitialisation a été envoyé à votre adresse."
           : "A reset email has been sent to your address."
       );
     } catch (error) {
@@ -43,27 +42,27 @@ export default function ResetPassword() {
   return (
     <GeneralLayout>
       <form onSubmit={handleSubmit} className="mt-36">
-        <div className="input-component">
+        <div className="input_component">
           <input
             type="email"
             name="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input-register-section"
+            className="input_register_section"
             placeholder={language === "fr" ? "Courriel" : "Email"}
           />
-          <label htmlFor="email" className="label">
-            
-          </label>
-        </div> 
+          <label htmlFor="email" className="label"></label>
+        </div>
 
         <div className="flex justify-center">
           <ButtonForm type="submit">
-            {language === "fr" ? "Envoyer le lien de réinitialisation" : "Send reset link"}
+            {language === "fr"
+              ? "Envoyer le lien de réinitialisation"
+              : "Send reset link"}
           </ButtonForm>
         </div>
-      </form> 
+      </form>
     </GeneralLayout>
   );
 }
