@@ -17,6 +17,7 @@ import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageCont
 import SearchModal from "@/components/SearchModal/SearchModal";
 import { useRouter } from "next/navigation";
 import { Press_Start_2P } from "next/font/google";
+import componentsCss from "@/app/styles/components.module.css";
 
 const pressStart2P = Press_Start_2P({
   // Police d'écriture
@@ -94,9 +95,9 @@ export default function Header({ background }) {
         </div>
 
         {/* ----------------Logo------------------------- */}
-        <div className="h-16 w-[200px] laptop:w-[370px] borderTitle flex justify-center px-4 rounded-[40px] relative mb-2 mt-2">
+        <div className={`h-16 w-[200px] laptop:w-[370px] ${componentsCss.borderTitle} flex justify-center px-4 rounded-[40px] relative mb-2 mt-2`}>
           <Image src={logoManette} width={60} alt="Logo manette" />
-          <div className={`tablet:ml-3 title ${pressStart2P.className}`}>
+          <div className={`tablet:ml-3 ${componentsCss.title} ${pressStart2P.className}`}>
             This is my game
           </div>
         </div>

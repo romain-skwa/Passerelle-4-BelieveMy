@@ -27,11 +27,10 @@ async function fetchImages(count) {
 
 // This component will be rendered server-side (Server Component)
 export default async function Index({ searchParams }) {
-  const { count } = await searchParams;
-
-  const parsedCount = parseInt(count) || 10; // Retrieve image count from URL parameters
-  const { introductionsImages, error } = await fetchImages(parsedCount);
-
+  const numberInParams = await searchParams;
+  const count = parseInt(numberInParams?.count) || 10;
+  const { introductionsImages, error } = await fetchImages(count);
+  
   return (
     <GeneralLayout>
       {error && <ToastNotification message={error} type="error" />}
@@ -49,7 +48,7 @@ export default async function Index({ searchParams }) {
                 padding: "10px",
               }}
             >
-              <Link href={`dynamic/introduction/${post.nameofgame}?nameOfGame=${post?.nameofgame}&description=${post?.shortIntroduction}`}>
+              <Link href={`dynamic/introduction/${post.nameofgame}?nameOfGame=${post?.nameofgame}&description=${post?.shortIntroduction}&urlPoster=${post.urlPosterCloudinary}`}>
                 <div className="relative w-[146px] h-[240px] lg:w-[192px] lg:h-[311px] overflow-hidden">
                   <Image
                     src={
