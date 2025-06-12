@@ -8,9 +8,7 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import he from "he";
 import Image from "next/image";
-import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
-import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
-import Share from "@/components/CreatorsForm/IntroGame/Share/Share";
+// Images
 import logoPegi3 from "/public/logo/pegi_3.jpg";
 import logoPegi7 from "/public/logo/pegi_7.jpg";
 import logoPegi12 from "/public/logo/pegi_12.jpg";
@@ -25,17 +23,23 @@ import logoPegiLangageGrossier from "/public/logo/pegi_langageGrossier.jpg";
 import logoPegiPeur from "/public/logo/pegi_peur.jpg";
 import logoPegiDrogue from "/public/logo/pegi_drogue.jpg";
 import logoPegiDiscrimination from "/public/logo/pegi_discrimination.jpg";
-import Loading from "@/components/ForLayout/Loading/Loading";
 import iconeSteam from "/public/icons/steam-icon.png";
 import iconeEpicGames from "/public/icons/epicGamesIcon.png";
 import PlayerSolo from "/public/icons/solo.png";
 import MultiPlayersLocal from "/public/icons/multiLocal.png";
 import MultiPlayersOnline from "/public/icons/multiOnline2.jpg";
-import UpdateIntro from "@/components/CreatorsForm/IntroGame/UpdateIntro/UpdateIntro";
+// Context about language fr & en
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+// Components
+import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
+import UserProfileSection from "@/components/UserProfileSection/UserProfileSection";
+import Share from "@/components/CreatorsForm/IntroGame/Share/Share";
+import Loading from "@/components/ForLayout/Loading/Loading";
+import UpdateIntro from "@/components/CreatorsForm/IntroGame/UpdateIntro/UpdateIntro";
 import Flag from "@/components/Flag/Flag";
 import WeAreDeleting from "@/components/WeAreDeleting/WeAreDeleting";
 import WeAreUpdatingIntro from "@/components/WeAreUpdatingIntro/WeAreUpdatingIntro";
+// Css
 import formularyCss from "@/app/styles/formulary.module.css";
 
 export default function AllCompIntroductionGame({introduction}) {

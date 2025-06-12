@@ -19,7 +19,7 @@ export async function GET(req) {
     // Select the introductions collection
     introductionsImages = await db
       .collection("introduction-database")
-      .find({}, { projection: { urlPoster: 1, nameofgame: 1, urlPosterCloudinary: 1, shortIntroduction: 1 } })
+      .find({}, { projection: { urlPoster: 1, nameofgame: 1, urlPosterCloudinary: 1, } })
       .sort({ creation: -1 }) // The most recent data will be get first
       .limit(count) // Limit the quantity of images
       .toArray();

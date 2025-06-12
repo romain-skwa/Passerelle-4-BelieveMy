@@ -79,7 +79,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
                   padding: "10px",
                 }}
               >
-                <Link href={`/dynamic/introduction/${game.nameofgame}?nameOfGame=${game?.nameofgame}&description=${game?.shortIntroduction}`}>
+                <Link href={`/dynamic/introduction/${game.nameofgame}?nameOfGame=${game?.nameofgame}`}>
                   <div className="relative">
                     <Image
                       src={

@@ -36,8 +36,7 @@ export const config = {
   matcher: [
     "/creators/introduceYourselfForm",
     "/creators/introduceGameForm",
-    "/creators/sendResetLink",
-    "/dynamic/resetPassword",
+    "/dynamic/resetPassword", // Pourquoi ça marche encore alors que j'ai ajouté cette page sur la liste ?
     "/listOfYouGames",
   ], // matcher est utilisé pour spécifier les URL qui doivent être prises en compte par la configuration de routage international définie dans l'objet config.
   // Ici, ce sont les pages censées être inaccessibles aux utilisateurs non connectés

@@ -10,7 +10,7 @@ export async function POST(request) {
     let client;
 
     try {
-        // Connect to the MongoDB cluster
+        //  Connect to the MongoDB cluster
         client = await MongoClient.connect(process.env.MONGODB_CLIENT);
 
         // Connect to the MongoDB database

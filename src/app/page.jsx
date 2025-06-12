@@ -5,6 +5,35 @@ import ToastNotification from "@/components/ToastNotification/ToastNotification"
 import Image from "next/image";
 import Link from "next/link";
 
+export const metadata = {
+  title: "This is my game",
+  description: "Introduce your video game by yourself",
+  keywords: 'video, game, introduction, creator, developer',
+  authors: [{ name: 'Romain Delbos', url: 'https://romain-delbos.dev' }],
+  icons: {
+    icon: "/icons/favicon.ico",
+  },
+  openGraph: {
+    title: "This is my game",
+    description: "On this website, you may introduce your own video game",
+    url: "https://thisismygame.com",
+    siteName: "romain-delbos.dev",
+    images: [
+      {
+        url: "https://romain-delbos.dev/public/home/logoRomainDelbos.jpg",
+        alt: "Logo de romain-delbos.dev",
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@romain-delbos.dev",
+    images: ["https://romain-delbos.dev/public/home/logoRomainDelbos.jpg"],
+  },
+};
+
 // API: Server-side image retrieval
 async function fetchImages(count) {
   try {
@@ -32,6 +61,8 @@ export default async function Index({ searchParams }) {
   const { introductionsImages, error } = await fetchImages(count);
   
   return (
+    <>
+    
     <GeneralLayout>
       {error && <ToastNotification message={error} type="error" />}
 
@@ -48,7 +79,7 @@ export default async function Index({ searchParams }) {
                 padding: "10px",
               }}
             >
-              <Link href={`dynamic/introduction/${post.nameofgame}?nameOfGame=${post?.nameofgame}&description=${post?.shortIntroduction}&urlPoster=${post.urlPosterCloudinary}`}>
+              <Link href={`dynamic/introduction/${post.nameofgame}?nameofgame=${post?.nameofgame}`}>
                 <div className="relative w-[146px] h-[240px] lg:w-[192px] lg:h-[311px] overflow-hidden">
                   <Image
                     src={
@@ -84,5 +115,6 @@ export default async function Index({ searchParams }) {
       </div>
       <div id="bottom" />
     </GeneralLayout>
+    </>
   );
 }

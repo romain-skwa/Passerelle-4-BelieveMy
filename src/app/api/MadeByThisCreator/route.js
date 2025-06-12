@@ -20,7 +20,7 @@ export async function POST(request) {
         // Find games via email
         const games = await db.collection("introduction-database").find(
             { username: normalizedUsername },
-            { projection: { nameofgame: 1, urlPoster: 1, urlPosterCloudinary: 1, shortIntroduction: 1, } }
+            { projection: { nameofgame: 1, urlPoster: 1, urlPosterCloudinary: 1, } }
         ).toArray();
 
         // console.log(`Jeux trouvés: ${games.length}`); // Log for the number of games found

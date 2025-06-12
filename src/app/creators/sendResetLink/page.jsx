@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import ButtonForm from "@/components/Button/ButtonForm";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
+import componentsCss from "@/app/styles/components.module.css";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ export default function ResetPassword() {
       return toast.error("Veuillez entrer votre courriel");
     }
 
-    // Logique pour envoyer un e-mail de réinitialisation de mot de passe
+    // Logique pour envoyer un e-mail de réinitialisation de mot de passe 
     try {
       await fetch("/api/sendResetLink", {
         method: "POST",
@@ -42,14 +43,14 @@ export default function ResetPassword() {
   return (
     <GeneralLayout>
       <form onSubmit={handleSubmit} className="mt-36">
-        <div className="input_component">
+        <div className={componentsCss.input_component}>
           <input
             type="email"
             name="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input_register_section"
+            className={componentsCss.input_register_section}
             placeholder={language === "fr" ? "Courriel" : "Email"}
           />
           <label htmlFor="email" className="label"></label>

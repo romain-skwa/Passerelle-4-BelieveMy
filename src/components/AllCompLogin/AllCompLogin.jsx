@@ -13,7 +13,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 export default function AllCompLogin() {
-  // Variable
+  // Variable 
   const router = useRouter();
   const { language } = useLanguage();
   const [focused, setFocused] = useState({ email: false, password: false });
@@ -83,13 +83,13 @@ export default function AllCompLogin() {
           ref={emailInputRef}
           className={
             focused.email
-              ? `focused ${componentsCss.input_register_section}`
+              ? `${componentsCss.focused} ${componentsCss.input_register_section}`
               : `${componentsCss.input_register_section}`
           }
         />
         <label
           htmlFor="email"
-          className="label"
+          className={componentsCss.label}
           onClick={() => handleLabelClick(emailInputRef)}
         >
           {language == "fr" ? "Courriel" : "Email"}
@@ -105,14 +105,14 @@ export default function AllCompLogin() {
           ref={passwordInputRef}
           className={
             focused.password
-              ? `focused ${componentsCss.input_register_section}`
+              ? `${componentsCss.focused} ${componentsCss.input_register_section}`
               : `${componentsCss.input_register_section}`
           }
         />
 
         <label
           htmlFor="password"
-          className="label"
+          className={componentsCss.label}
           onClick={() => handleLabelClick(passwordInputRef)}
         >
           {language == "fr" ? "Mot de passe" : "Password"}

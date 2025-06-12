@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { checkEmail } from "@/utils/check-email-syntax";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
-import componentsCss from "@/app/styles/components.module.css";
 
 export default function AllCompRegister() {
   // Variable

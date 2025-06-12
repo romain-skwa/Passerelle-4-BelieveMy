@@ -1,6 +1,6 @@
 "use client";
 
-export default function creatorLayout({ children }) {
+export default function creatorLayout({ children }) { 
   return (
     <>
       <video

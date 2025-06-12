@@ -10,50 +10,84 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 
 }
-
-// Function to generate dynamics metada
+// Function to generate dynamics metadata
 export async function generateMetadata({ searchParams }) {
-  /*
-  Pour voir le contenu exact transmis dans searchParams
-    const params = await searchParams;
-    console.log("searchParams:", params);
-    const { nameOfGame, description } = await params;
-  */
-  const { nameOfGame, description, urlPoster } = await searchParams;
+  const resolvedSearchParams = await searchParams;
+  const { nameofgame } = resolvedSearchParams || {};
+  const encodedName = encodeURIComponent(nameofgame);
 
-  const formattedNameOfGame = nameOfGame ? capitalizeFirstLetter(nameOfGame) : '';
-  const formattedDescription = description || '';
+  // Appel API avec nameofgame
+  const response = await fetch("http://localhost:3000/api/introduction", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ nameofgame: encodedName }),
+    cache: "no-store",
+  });
+
+  const dataGame = await response.json();
+  const game = dataGame.game;
+
+  // Sécurité : fallback si game n'est pas trouvé
+  if (!game) {
+    return {
+      title: "Jeu introuvable",
+      description: "Aucune introduction trouvée pour ce jeu.",
+      icons: { icon: "/icons/favicon.ico" },
+    };
+  }
+
+  // Décodage des champs nécessaires
+  const decodedName = decodeURIComponent(game.nameofgame || "");
+  const decodedShortIntroduction = decodeURIComponent(game.shortIntroduction || "");
+
+  // Construction dynamique des métadonnées
+  const keywords = [
+    ...(game.genreOfGame || []),
+    ...(game.platform || []),
+    ...(game.SoloMulti || []),
+    "video", "game", "introduction", "creator", "developer"
+  ].join(", ");
+
+  const url = `https://thisismygame.com/dynamic/introduction/${game.nameofgame}?nameofgame=${game?.nameofgame}`;
+
   return {
-    title: `${formattedNameOfGame}`,
-    description: `${formattedDescription}. ThisismyGame.`,
+    title: decodedName,
+    description: decodedShortIntroduction || "Découvrez ce jeu vidéo présenté par son créateur.",
+    keywords,
+    authors: [{ name: game.username, url: url }],
     icons: {
       icon: "/icons/favicon.ico",
+    },
+    openGraph: {
+      title: decodedName,
+      description: decodedShortIntroduction || "Découvrez ce jeu vidéo présenté par son créateur.",
+      url,
+      siteName: "romain-delbos.dev",
+      images: [
+        {
+          url: game.urlPosterCloudinary || "https://romain-delbos.dev/public/home/logoRomainDelbos.jpg",
+          alt: `Affiche de ${decodedName}`,
+        },
+      ],
+      locale: "fr_FR",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@romain-delbos.dev",
+      images: [game.urlPosterCloudinary || "https://romain-delbos.dev/public/home/logoRomainDelbos.jpg"],
     },
   };
 }
 
 export default async function IntroductionGame({ params }) {
   const { introduction } = await params;
-  const metadata = await generateMetadata({ searchParams: params });
-
 
   return (
         <>
-      <Head>
-        <meta name="description" content={metadata.description} />
-        <meta name="keywords" content={metadata.keywords} />
-        <meta name="author" content={metadata.authors?.[0]?.name} />
-        <meta property="og:title" content={metadata.nameOfGame} />
-        <meta property="og:description" content={metadata.description} />
-        <meta property="og:image" content={metadata.urlPoster} />
-        <meta property="og:url" content={`dynamic/introduction/${metadata.nameOfGame}?nameOfGame=${metadata?.nameOfGame}&description=${metadata?.shortIntroduction}&urlPoster=${metadata.urlPosterCloudinary}`} />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:site" content="@romain-delbos.dev" />
-        <meta property="fb:app_id" content="app_id" />
-        <meta property="og:site_name" content="thisismygame.com" />
-        <meta property="og:image:alt" content="Logo de thisismygame.com" />
-        <title>{metadata.title}</title>
-      </Head>
+      
       <AllCompIntroductionGame introduction={introduction} />
     </>
   );

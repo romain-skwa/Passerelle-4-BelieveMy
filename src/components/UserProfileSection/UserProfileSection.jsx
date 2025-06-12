@@ -1,10 +1,12 @@
 // UserProfileSection.js
 import Image from "next/image";
+// Images
 import logoDiscord from "/public/logo/discord-logo.png";
 import logoTwitch from "/public/logo/twitch_logo.png";
 import logoItchi from "/public/logo/itch-io-icon.png";
 import logoTwitter from "/public/logo/x__twitter-logo.png";
 import MadeByThisCreator from "../MadeByThisCreator/MadeByThisCreator";
+// Context about language fr & en
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const UserProfileSection = ({ user }) => {

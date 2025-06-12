@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"; // Import useSearchParams
 import { toast } from "react-toastify";
 import ButtonForm from "@/components/Button/ButtonForm";
 import GeneralLayout from "@/components/ForLayout/GeneralLayout/GeneralLayout";
+import componentsCss from "@/app/styles/components.module.css";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -61,25 +62,25 @@ export default function ResetPasswordPage() {
   return (
     <GeneralLayout>
       <form onSubmit={handleSubmit} className="mt-36">
-        <div className="input_component">
+        <div className={componentsCss.input_component}>
           <input
             type="password"
             name="newPassword"
             required
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="input_register_section"
+            className={componentsCss.input_register_section}
             placeholder="Nouveau mot de passe"
           />
         </div>
-        <div className="input_component">
+        <div className={componentsCss.input_component}>
           <input
             type="password"
             name="confirmPassword"
             required
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="input_register_section"
+            className={componentsCss.input_register_section}
             placeholder="Confirmer le mot de passe"
           />
         </div>
