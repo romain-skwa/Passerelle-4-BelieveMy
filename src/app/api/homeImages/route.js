@@ -16,11 +16,22 @@ export async function GET(req) {
     // Connect to the MongoDB database
     const db = client.db(process.env.MONGODB_DATABASE);
 
-    // Select the introductions collection
+    // Select the introductions collection - ONLY PAID PRESENTATIONS
     introductionsImages = await db
       .collection("introduction-database")
-      .find({}, { projection: { urlPoster: 1, nameofgame: 1, urlPosterCloudinary: 1, } })
-      .sort({ creation: -1 }) // The most recent data will be get first
+      .find(
+        {
+          status_payment: "paid",
+        },
+        {
+          projection: {
+            urlPoster: 1,
+            nameofgame: 1,
+            urlPosterCloudinary: 1,
+          },
+        }
+      )
+      .sort({ createdAt: -1 }) // The most recent data will be get first
       .limit(count) // Limit the quantity of images
       .toArray();
 
