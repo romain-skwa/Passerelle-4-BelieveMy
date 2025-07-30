@@ -31,37 +31,33 @@ const UpdateIntro = ({
   const [email, setEmail] = useState();
   const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
   const [shortIntroductionUpdate, setShortIntroductionUpdate] = useState();
-  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] =
-    useState();
+  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] = useState();
   const [platformUpdate, setPlatformUpdate] = useState([]);
   const [releaseDateUpdate, setReleaseDateUpdate] = useState();
   const [selectedAgePegiUpdate, setSelectedAgePegiUpdate] = useState();
-  const [selectedAdditionalPegiUpdate, setSelectedAdditionalPegiUpdate] =
-    useState([]);
+  const [selectedAdditionalPegiUpdate, setSelectedAdditionalPegiUpdate] = useState([]);
   const [soloMultiUpdate, setSoloMultiUpdate] = useState([]);
   const [urlPosterCloudinaryUpdate, setUrlPosterCloudinaryUpdate] = useState();
   const [urlPosterUpdate, setUrlPosterUpdate] = useState();
-  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] =
-    useState();
-  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] =
-    useState();
-  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] =
-    useState();
-  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] =
-    useState();
+  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] = useState();
+  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] = useState();
+  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] = useState();
+  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] = useState();
   const [videoLinkUpdate, setVideoLinkUpdate] = useState();
   const [webSiteOfThisGameUpdate, setWebSiteOfThisGameUpdate] = useState();
-  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] =
-    useState();
+  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] = useState();
   const [steamLinkUpdate, setSteamLinkUpdate] = useState();
   const [epicGamesLinkUpdate, setEpicGamesLinkUpdate] = useState();
   const [genreOfGameUpdate, setGenreOfGameUpdate] = useState([]);
   const [isDarkModeUpdate, setIsDarkModeUpdate] = useState(false);
   const [isIntroOfYourselfUpdate, setIsIntroOfYourselfUpdate] = useState(false);
+  const [upDateIntro, setUpDateIntro] = useState(false);
   const { language } = useLanguage();
-
+ 
   // Get data about this game
   useEffect(() => {
+    if (!upDateIntro) return; // Only if we want to update the introduction
+
     if (game && game._id) {
       setGameId(game._id);
     }
@@ -165,10 +161,10 @@ const UpdateIntro = ({
       initialIsIntroOfYourselfRef.current = game.isIntroOfYourself;
     }
     if (game && game.releaseDate) {
-      // Convertir la chaîne de caractères en objet Date pour la vérification ligne 115
+      // Convert the string to a Date object for verification
       const date = new Date(game.releaseDate);
       if (!isNaN(date.getTime())) {
-        // Vérifiez si la date est valide
+        // Check if the date is valid
         setReleaseDateUpdate(date);
         initialReleaseDateRef.current = date;
       } else {
@@ -176,7 +172,7 @@ const UpdateIntro = ({
         toast.error("La date de sortie est invalide.");
       }
     }
-  }, [game]);
+  }, [game, upDateIntro]);
 
   // Keep initial data in useRef ***************************************************************
   const initialNameOfGameRef = useRef();
@@ -206,6 +202,8 @@ const UpdateIntro = ({
   // État pour suivre les comparaisons
 
   useEffect(() => {
+    if (!upDateIntro) return; // Ne s'exécute que si on veut modifier
+
     setComparaison({
       isNameOfGameChanged: nameOfGameUpdate !== initialNameOfGameRef.current,
       isShortIntroChanged:
@@ -273,6 +271,7 @@ const UpdateIntro = ({
     genreOfGameUpdate,
     isDarkModeUpdate,
     isIntroOfYourselfUpdate,
+    upDateIntro,
   ]);
   /********************************************************************************************/
   /****************** Envoyer les données à l'API createIntroduction **************************/
@@ -498,353 +497,360 @@ const UpdateIntro = ({
 
   return (
     <>
-      <form
-        onSubmit={handleFormSubmit}
-        className="w-[87vw] tablet:w-[100%] laptop:w-[95%] tablet:mx-auto border p-2 mt-4"
-        style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
-      >
-        <div className="text-3xl">
-          Il vous est possible de modifier la description de votre jeu
-        </div>
+      {upDateIntro ? (
+        <form
+          onSubmit={handleFormSubmit}
+          className="w-[87vw] tablet:w-[100%] laptop:w-[95%] tablet:mx-auto border p-2 mt-4"
+          style={{ backgroundColor: "rgba(148, 163, 184, 0.7)" }}
+        >
+          {/* Fond noir et Texte blanc */}
+          <section className="flex justify-center">
+            <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
+              <span>Mode Sombre : Texte blanc sur fond noir</span>
+              <div className="ml-4">
+                <label>
+                  <input
+                    type="radio"
+                    value="true"
+                    className="mx-2"
+                    checked={isDarkModeUpdate === "true"}
+                    onChange={() => setIsDarkModeUpdate("true")}
+                  />
+                  Oui
+                </label>
+                <label className="ml-4">
+                  <input
+                    type="radio"
+                    value="false"
+                    className="mx-2"
+                    checked={isDarkModeUpdate === "false"}
+                    onChange={() => setIsDarkModeUpdate("false")}
+                  />
+                  Non
+                </label>
+              </div>
+            </div>
+          </section>
 
-        {/* Fond noir et Texte blanc */}
-        <section className="flex justify-center">
-          <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
-            <span>Mode Sombre : Texte blanc sur fond noir</span>
-            <div className="ml-4">
-              <label>
-                <input
-                  type="radio"
-                  value="true"
-                  className="mx-2"
-                  checked={isDarkModeUpdate === "true"}
-                  onChange={() => setIsDarkModeUpdate("true")}
-                />
-                Oui
-              </label>
-              <label className="ml-4">
-                <input
-                  type="radio"
-                  value="false"
-                  className="mx-2"
-                  checked={isDarkModeUpdate === "false"}
-                  onChange={() => setIsDarkModeUpdate("false")}
-                />
-                Non
-              </label>
+          {/* Nom */}
+          <input
+            type="text"
+            name="nameOfGameUpdate"
+            placeholder={nameOfGameUpdate}
+            className="px-3 py-2 rounded-md w-full flex-grow text-black "
+            maxLength={80}
+            size={80}
+            value={nameOfGameUpdate ? nameOfGameUpdate : ""}
+            onChange={(e) => setNameOfGameUpdate(e.target.value)}
+          />
+
+          {/* Introduction courte */}
+          <div className="border p-2 my-2">
+            <p
+              className="text-white text-center font-bold mb-3"
+              style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+            >
+              Cette introduction courte sera affichée en gras
+            </p>
+            <textarea
+              name="shortIntroductionUpdate"
+              id="shortIntroductionUpdate"
+              value={shortIntroductionUpdate ? shortIntroductionUpdate : ""}
+              onChange={(e) => setShortIntroductionUpdate(e.target.value)}
+              className="text-black w-[100%] p-2"
+            />
+          </div>
+          {/* Présentation détaillée */}
+          <MyEditor
+            introductionOfTheGame={introductionOfTheGameUpdate || ""}
+            setIntroductionOfTheGame={setIntroductionOfTheGameUpdate}
+          />
+          {/* Plateforme */}
+          <Platform platform={platformUpdate} setPlatform={setPlatformUpdate} />
+
+          {/* Date de sortie */}
+          <div className="my-2 flex">
+            <p
+              className="text-white font-bold mr-2"
+              style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
+            >
+              Date de sortie :
+            </p>
+            <DatePicker
+              className="pl-2"
+              selected={releaseDateUpdate}
+              dateFormat="dd/MM/yyyy"
+              id="releaseDateUpdate"
+              required
+              onChange={(date) => setReleaseDateUpdate(date)}
+            />
+          </div>
+
+          {/* PEGI */}
+          <Pegi
+            selectedAgePegi={selectedAgePegiUpdate}
+            setSelectedAgePegi={setSelectedAgePegiUpdate}
+            selectedAdditionalPegi={selectedAdditionalPegiUpdate}
+            setSelectedAdditionalPegi={setSelectedAdditionalPegiUpdate}
+          />
+
+          {/* Solo ou Multi */}
+          <ButtonSoloMulti
+            SoloMulti={soloMultiUpdate || ""}
+            setSoloMulti={setSoloMultiUpdate}
+          />
+
+          {/* Affiche [encadré] */}
+          <div className="w-[95%] tablet:w-[380px] p-4 mt-4 border grasFondBleu mx-auto">
+            <p className="text-center">Choisissez l'affiche du jeu </p>
+            <ImageUpload
+              urlCloudinary={urlPosterCloudinaryUpdate || ""}
+              setter={setUrlPosterCloudinaryUpdate}
+              buttonText="Télécharger Affiche"
+              tag={`Affiche - ${game.nameofgame}`}
+              nameOfGame={game.nameofgame}
+            />
+            <div className="flex justify-center">
+              <Image
+                src={
+                  game.urlPosterCloudinary
+                    ? `${game.urlPosterCloudinary}`
+                    : `/presentation/${game.urlPoster}`
+                }
+                className="lg:w-[192px] lg:h-[311px] py-3 mt-3 inline-block "
+                width={192}
+                height={311}
+                alt={`${game.nameofgame}`}
+                unoptimized={true}
+              />
             </div>
           </div>
-        </section>
 
-        {/* Nom */}
-        <input
-          type="text"
-          name="nameOfGameUpdate"
-          placeholder={nameOfGameUpdate}
-          className="px-3 py-2 rounded-md w-full flex-grow text-black "
-          maxLength={80}
-          size={80}
-          value={nameOfGameUpdate ? nameOfGameUpdate : ""}
-          onChange={(e) => setNameOfGameUpdate(e.target.value)}
-        />
+          <section className="flex flex-col tablet:flex-row w-full gap-2 justify-center">
+            {/* Image d'illustration n°1 [encadré] */}
+            <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
+              <p className="text-center ">
+                Choisissez l'image d'illustration n°1{" "}
+              </p>
+              <ImageUpload
+                urlCloudinary={urlImageOneCloudinaryUpdate || ""}
+                setter={setUrlImageOneCloudinaryUpdate}
+                buttonText="Télécharger l'image n°1"
+                tag={`Image d'illustration n°1 - ${nameOfGameUpdate}`}
+                nameOfGame={nameOfGameUpdate}
+              />
+              {urlImageOneCloudinaryUpdate && (
+                <Image
+                  src={urlImageOneCloudinaryUpdate}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  alt="urlImageOne"
+                  unoptimized={true}
+                />
+              )}
+            </div>
 
-        {/* Introduction courte */}
-        <div className="border p-2 my-2">
-          <p
-            className="text-white text-center font-bold mb-3"
-            style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
-          >
-            Cette introduction courte sera affichée en gras
-          </p>
-          <textarea
-            name="shortIntroductionUpdate"
-            id="shortIntroductionUpdate"
-            value={shortIntroductionUpdate ? shortIntroductionUpdate : ""}
-            onChange={(e) => setShortIntroductionUpdate(e.target.value)}
-            className="text-black w-[100%] p-2"
+            {/* Image d'illustration n°2 [encadré] */}
+            <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
+              <p className="text-center tablet:inline-block">
+                Choisissez l'image d'illustration n°2{" "}
+              </p>
+              <ImageUpload
+                urlCloudinary={urlImageTwoCloudinaryUpdate || ""}
+                setter={setUrlImageTwoCloudinaryUpdate}
+                buttonText="Télécharger l'image n°2"
+                tag={`Image d'illustration n°2 - ${nameOfGameUpdate}`}
+                nameOfGame={nameOfGameUpdate}
+              />
+              {urlImageTwoCloudinaryUpdate && (
+                <Image
+                  src={urlImageTwoCloudinaryUpdate}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  alt="urlImageTwo"
+                  unoptimized={true}
+                />
+              )}
+            </div>
+
+            {/* Image d'illustration n°3 [encadré] */}
+            <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
+              <p className="text-center tablet:inline-block">
+                Choisissez l'image d'illustration n°3{" "}
+              </p>
+              <ImageUpload
+                urlCloudinary={urlImageThreeCloudinaryUpdate || ""}
+                setter={setUrlImageThreeCloudinaryUpdate}
+                buttonText="Télécharger l'image n°3"
+                tag={`Image d'illustration n°3`}
+                nameOfGame={nameOfGameUpdate}
+              />
+              {urlImageThreeCloudinaryUpdate && (
+                <Image
+                  src={urlImageThreeCloudinaryUpdate}
+                  className="w-[275px] h-[154px] py-3 inline-block"
+                  width={275}
+                  height={154}
+                  alt="urlImageThree"
+                  unoptimized={true}
+                />
+              )}
+            </div>
+          </section>
+
+          {/* Arrière plan [encadré] */}
+          <div className="w-[95%] tablet:w-[40%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col item-center mx-auto">
+            <p className="text-center tablet:inline-block">
+              Choisissez une image pour l'arrière plan{" "}
+            </p>
+            <ImageUpload
+              urlCloudinary={urlBackgroundCloudinaryUpdate || ""}
+              setter={setUrlBackgroundCloudinaryUpdate}
+              buttonText="Télécharger Background"
+              tag="Background"
+              nameOfGame={nameOfGameUpdate}
+            />
+            {urlBackgroundCloudinaryUpdate && (
+              <Image
+                src={urlBackgroundCloudinaryUpdate}
+                className="w-[275px] h-[154px] py-3 mx-auto"
+                width={275}
+                height={154}
+                alt="Background Image"
+                unoptimized={true}
+              />
+            )}
+          </div>
+
+          {/* Lien vidéo Youtube [encadré] */}
+          <section className="flex flex-col justify-center items-center border rounded-md my-4 py-4">
+            <p>Lien Vidéo Youtube</p>
+            <input
+              type="url"
+              name="videoLinkUpdate"
+              placeholder="Lien YouTube de la vidéo"
+              className="block w-[95%] tablet:w-[60%] p-1 pl-2 m-2 text-black"
+              value={videoLinkUpdate || ""}
+              onChange={(e) => setVideoLinkUpdate(e.target.value)}
+            />
+            {videoLinkUpdate && (
+              <iframe
+                width="560"
+                height="315"
+                src={
+                  videoLinkUpdate.includes("watch?v=")
+                    ? videoLinkUpdate.replace("watch?v=", "embed/")
+                    : videoLinkUpdate
+                }
+                allowFullScreen
+              ></iframe>
+            )}
+          </section>
+
+          <section className="flex flex-col items-center gap-2">
+            {/* Lien Site officiel du jeu [encadré] */}
+            <input
+              type="url"
+              name="webSiteOfThisGameUpdate"
+              placeholder="Lien vers le site officiel du jeu"
+              className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
+              value={webSiteOfThisGameUpdate || ""}
+              onChange={(e) => setWebSiteOfThisGameUpdate(e.target.value)}
+            />
+            {/* Lien Site officiel des créateurs [encadré] */}
+            <input
+              type="url"
+              name="webSiteOfThisCreatorUpdate"
+              placeholder="Lien vers le site officiel du/des créateur(s)"
+              className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
+              value={webSiteOfThisCreatorUpdate || ""}
+              onChange={(e) => setWebSiteOfThisCreatorUpdate(e.target.value)}
+            />
+            {/* Lien Steam [encadré] */}
+            <input
+              type="url"
+              name="steamLinkUpdate"
+              placeholder="Lien vers le site Steam"
+              className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
+              value={steamLinkUpdate || ""}
+              onChange={(e) => setSteamLinkUpdate(e.target.value)}
+            />
+            {/* Lien Epic Games [encadré] */}
+            <input
+              type="url"
+              name="epicGamesLinkUpdate"
+              placeholder="Lien vers le site Epic Games"
+              className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
+              value={epicGamesLinkUpdate || ""}
+              onChange={(e) => setEpicGamesLinkUpdate(e.target.value)}
+            />
+          </section>
+
+          {/* Catégories [encadré] */}
+          <GenreOfGame
+            selectedGenres={genreOfGameUpdate || ""}
+            setSelectedGenres={setGenreOfGameUpdate}
           />
-        </div>
-        {/* Présentation détaillée */}
-        <MyEditor
-          introductionOfTheGame={introductionOfTheGameUpdate || ""}
-          setIntroductionOfTheGame={setIntroductionOfTheGameUpdate}
-        />
-        {/* Plateforme */}
-        <Platform platform={platformUpdate} setPlatform={setPlatformUpdate} />
 
-        {/* Date de sortie */}
-        <div className="my-2 flex">
-          <p
-            className="text-white font-bold mr-2"
-            style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
-          >
-            Date de sortie :
-          </p>
-          <DatePicker
-            className="pl-2"
-            selected={releaseDateUpdate}
-            dateFormat="dd/MM/yyyy"
-            id="releaseDateUpdate"
-            required
-            onChange={(date) => setReleaseDateUpdate(date)}
-          />
-        </div>
-
-        {/* PEGI */}
-        <Pegi
-          selectedAgePegi={selectedAgePegiUpdate}
-          setSelectedAgePegi={setSelectedAgePegiUpdate}
-          selectedAdditionalPegi={selectedAdditionalPegiUpdate}
-          setSelectedAdditionalPegi={setSelectedAdditionalPegiUpdate}
-        />
-
-        {/* Solo ou Multi */}
-        <ButtonSoloMulti
-          SoloMulti={soloMultiUpdate || ""}
-          setSoloMulti={setSoloMultiUpdate}
-        />
-
-        {/* Affiche [encadré] */}
-        <div className="w-[95%] tablet:w-[380px] p-4 mt-4 border grasFondBleu mx-auto">
-          <p className="text-center">Choisissez l'affiche du jeu </p>
-          <ImageUpload
-            urlCloudinary={urlPosterCloudinaryUpdate || ""}
-            setter={setUrlPosterCloudinaryUpdate}
-            buttonText="Télécharger Affiche"
-            tag={`Affiche - ${game.nameofgame}`}
-            nameOfGame={game.nameofgame}
-          />
+          {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
           <div className="flex justify-center">
-            <Image
-              src={
-                game.urlPosterCloudinary
-                  ? `${game.urlPosterCloudinary}`
-                  : `/presentation/${game.urlPoster}`
-              }
-              className="lg:w-[192px] lg:h-[311px] py-3 mt-3 inline-block "
-              width={192}
-              height={311}
-              alt={`${game.nameofgame}`}
-              unoptimized={true}
-            />
-          </div>
-        </div>
-
-        <section className="flex flex-col tablet:flex-row w-full gap-2 justify-center">
-          {/* Image d'illustration n°1 [encadré] */}
-          <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
-            <p className="text-center ">
-              Choisissez l'image d'illustration n°1{" "}
-            </p>
-            <ImageUpload
-              urlCloudinary={urlImageOneCloudinaryUpdate || ""}
-              setter={setUrlImageOneCloudinaryUpdate}
-              buttonText="Télécharger l'image n°1"
-              tag={`Image d'illustration n°1 - ${nameOfGameUpdate}`}
-              nameOfGame={nameOfGameUpdate}
-            />
-            {urlImageOneCloudinaryUpdate && (
-              <Image
-                src={urlImageOneCloudinaryUpdate}
-                className="w-[275px] h-[154px] py-3 inline-block"
-                width={275}
-                height={154}
-                alt="urlImageOne"
-                unoptimized={true}
-              />
-            )}
-          </div>
-
-          {/* Image d'illustration n°2 [encadré] */}
-          <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
-            <p className="text-center tablet:inline-block">
-              Choisissez l'image d'illustration n°2{" "}
-            </p>
-            <ImageUpload
-              urlCloudinary={urlImageTwoCloudinaryUpdate || ""}
-              setter={setUrlImageTwoCloudinaryUpdate}
-              buttonText="Télécharger l'image n°2"
-              tag={`Image d'illustration n°2 - ${nameOfGameUpdate}`}
-              nameOfGame={nameOfGameUpdate}
-            />
-            {urlImageTwoCloudinaryUpdate && (
-              <Image
-                src={urlImageTwoCloudinaryUpdate}
-                className="w-[275px] h-[154px] py-3 inline-block"
-                width={275}
-                height={154}
-                alt="urlImageTwo"
-                unoptimized={true}
-              />
-            )}
-          </div>
-
-          {/* Image d'illustration n°3 [encadré] */}
-          <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
-            <p className="text-center tablet:inline-block">
-              Choisissez l'image d'illustration n°3{" "}
-            </p>
-            <ImageUpload
-              urlCloudinary={urlImageThreeCloudinaryUpdate || ""}
-              setter={setUrlImageThreeCloudinaryUpdate}
-              buttonText="Télécharger l'image n°3"
-              tag={`Image d'illustration n°3`}
-              nameOfGame={nameOfGameUpdate}
-            />
-            {urlImageThreeCloudinaryUpdate && (
-              <Image
-                src={urlImageThreeCloudinaryUpdate}
-                className="w-[275px] h-[154px] py-3 inline-block"
-                width={275}
-                height={154}
-                alt="urlImageThree"
-                unoptimized={true}
-              />
-            )}
-          </div>
-        </section>
-
-        {/* Arrière plan [encadré] */}
-        <div className="w-[95%] tablet:w-[40%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col item-center mx-auto">
-          <p className="text-center tablet:inline-block">
-            Choisissez une image pour l'arrière plan{" "}
-          </p>
-          <ImageUpload
-            urlCloudinary={urlBackgroundCloudinaryUpdate || ""}
-            setter={setUrlBackgroundCloudinaryUpdate}
-            buttonText="Télécharger Background"
-            tag="Background"
-            nameOfGame={nameOfGameUpdate}
-          />
-          {urlBackgroundCloudinaryUpdate && (
-            <Image
-              src={urlBackgroundCloudinaryUpdate}
-              className="w-[275px] h-[154px] py-3 mx-auto"
-              width={275}
-              height={154}
-              alt="Background Image"
-              unoptimized={true}
-            />
-          )}
-        </div>
-
-        {/* Lien vidéo Youtube [encadré] */}
-        <section className="flex flex-col justify-center items-center border rounded-md my-4 py-4">
-          <p>Lien Vidéo Youtube</p>
-          <input
-            type="url"
-            name="videoLinkUpdate"
-            placeholder="Lien YouTube de la vidéo"
-            className="block w-[95%] tablet:w-[60%] p-1 pl-2 m-2 text-black"
-            value={videoLinkUpdate || ""}
-            onChange={(e) => setVideoLinkUpdate(e.target.value)}
-          />
-          {videoLinkUpdate && (
-            <iframe
-              width="560"
-              height="315"
-              src={
-                videoLinkUpdate.includes("watch?v=")
-                  ? videoLinkUpdate.replace("watch?v=", "embed/")
-                  : videoLinkUpdate
-              }
-              allowFullScreen
-            ></iframe>
-          )}
-        </section>
-
-        <section className="flex flex-col items-center gap-2">
-          {/* Lien Site officiel du jeu [encadré] */}
-          <input
-            type="url"
-            name="webSiteOfThisGameUpdate"
-            placeholder="Lien vers le site officiel du jeu"
-            className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
-            value={webSiteOfThisGameUpdate || ""}
-            onChange={(e) => setWebSiteOfThisGameUpdate(e.target.value)}
-          />
-          {/* Lien Site officiel des créateurs [encadré] */}
-          <input
-            type="url"
-            name="webSiteOfThisCreatorUpdate"
-            placeholder="Lien vers le site officiel du/des créateur(s)"
-            className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
-            value={webSiteOfThisCreatorUpdate || ""}
-            onChange={(e) => setWebSiteOfThisCreatorUpdate(e.target.value)}
-          />
-          {/* Lien Steam [encadré] */}
-          <input
-            type="url"
-            name="steamLinkUpdate"
-            placeholder="Lien vers le site Steam"
-            className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
-            value={steamLinkUpdate || ""}
-            onChange={(e) => setSteamLinkUpdate(e.target.value)}
-          />
-          {/* Lien Epic Games [encadré] */}
-          <input
-            type="url"
-            name="epicGamesLinkUpdate"
-            placeholder="Lien vers le site Epic Games"
-            className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
-            value={epicGamesLinkUpdate || ""}
-            onChange={(e) => setEpicGamesLinkUpdate(e.target.value)}
-          />
-        </section>
-
-        {/* Catégories [encadré] */}
-        <GenreOfGame
-          selectedGenres={genreOfGameUpdate || ""}
-          setSelectedGenres={setGenreOfGameUpdate}
-        />
-
-        {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
-        <div className="flex justify-center">
-          <div className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer">
-            Souhaitez-vous ajouter la présentation de vous-même ou de votre
-            équipe ?
-            <div className="flex justify-center mt-2 w-full">
-              <label className="flex items-center mr-4">
-                <input
-                  type="checkbox"
-                  checked={isIntroOfYourselfUpdate === "true"}
-                  onChange={() => setIsIntroOfYourselfUpdate("true")}
-                  className="mr-2"
-                />
-                Oui
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={isIntroOfYourselfUpdate === "false"}
-                  onChange={() => setIsIntroOfYourselfUpdate("false")}
-                  className="mr-2"
-                />
-                Non
-              </label>
+            <div className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer">
+              Souhaitez-vous ajouter la présentation de vous-même ou de votre
+              équipe ?
+              <div className="flex justify-center mt-2 w-full">
+                <label className="flex items-center mr-4">
+                  <input
+                    type="checkbox"
+                    checked={isIntroOfYourselfUpdate === "true"}
+                    onChange={() => setIsIntroOfYourselfUpdate("true")}
+                    className="mr-2"
+                  />
+                  Oui
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={isIntroOfYourselfUpdate === "false"}
+                    onChange={() => setIsIntroOfYourselfUpdate("false")}
+                    className="mr-2"
+                  />
+                  Non
+                </label>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* UPDATE the introduction */}
+          {/* UPDATE the introduction */}
+          <div className="flex justify-center">
+            <button
+              className="bg-green-500 p-3 w-60 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
+              disabled={
+                !nameOfGameUpdate ||
+                nameOfGameUpdate.length < 1 ||
+                !introductionOfTheGameUpdate ||
+                introductionOfTheGameUpdate.length < 1 ||
+                platformUpdate < 1 ||
+                !shortIntroductionUpdate ||
+                shortIntroductionUpdate.length < 1 ||
+                urlPosterCloudinaryUpdate === ""
+              } /* Désactivé si les champs sont vides */
+            >
+              Mettre à jour la présentation
+            </button>
+          </div>
+        </form>
+      ) : (
         <div className="flex justify-center">
           <button
-            className="bg-green-500 p-3 w-60 border-2 border-red-800 rounded-2xl m-2 disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:border-none"
-            disabled={
-              !nameOfGameUpdate ||
-              nameOfGameUpdate.length < 1 ||
-              !introductionOfTheGameUpdate ||
-              introductionOfTheGameUpdate.length < 1 ||
-              platformUpdate < 1 ||
-              !shortIntroductionUpdate ||
-              shortIntroductionUpdate.length < 1 ||
-              urlPosterCloudinaryUpdate === ""
-            } /* Désactivé si les champs sont vides */
+            onClick={() => setUpDateIntro(true)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
           >
-            Mettre à jour la présentation
+            Je veux modifier cette présentation
           </button>
         </div>
-      </form>
+      )}
 
       {/* DELETE this introduction */}
       <div

@@ -76,7 +76,7 @@ export default function AllCompSearchGame(){
                 <ul className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
                   {games.length > 0 ? (
                     games.map((game) =>
-                      game.urlPoster || game.urlPosterCloudinary ? ( // Check if these data exist
+                      game.urlPoster || game.urlPosterCloudinary ? ( // Check if these data exist 
                         <li
                           key={game._id}
                           className="rounded mt-2 relative overflow-hidden tablet:shadow-xl bg-black/70"
@@ -85,7 +85,7 @@ export default function AllCompSearchGame(){
                             padding: "10px",
                           }}
                         >
-                          <Link href={`/dynamic/introduction/${game.nameofgame}`}>
+                          <Link href={`/dynamic/introduction/${game.nameofgame}?nameofgame=${game?.nameofgame}`}>
                             <div className="relative">
                               <Image
                                 src={game.urlPosterCloudinary || `/presentation/${game.urlPoster}`} // When urlPosterCloudinary exist, or urlPoster

@@ -114,6 +114,8 @@ export default function AllCompIntroductionGame({introduction}) {
         }
       }, [pathname, searchParams]); // Re-trigger when path or parameters change
     
+      // When the page is loaded, we fetch the data of the introduction -----------------------------------------
+      // If the data is not found, we redirect to the notFound page
       useEffect(() => {
         if (!game) {
           notFound();
@@ -307,13 +309,13 @@ export default function AllCompIntroductionGame({introduction}) {
       };
     
     return(weAreDeleting ? (
-        <WeAreDeleting />
+        <WeAreDeleting /> // Loading while we are deleting the introduction
       ) : (
         <GeneralLayout backgroundImage={backgroundImage}>
           {loading ? (
-            <Loading />
+            <Loading /> // Loading while we are fetching the data
           ) : weAreUpdatingIntro ? (
-            <WeAreUpdatingIntro comparaison={comparaison} session={session} />
+            <WeAreUpdatingIntro comparaison={comparaison} session={session} /> // Loading while we are updating the introduction
           ) : (
             <section
               className={`${isDarkClass} w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 ${formularyCss.neuphormism} mt-4`}

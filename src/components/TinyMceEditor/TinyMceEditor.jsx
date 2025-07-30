@@ -15,12 +15,15 @@ const TinyMceEditor = ({ introductionOfTheGame, setIntroductionOfTheGame }) => {
           height: 200,
           menubar: false,
           plugins: [
-            "advlist autolink lists link charmap print preview anchor",
-            "searchreplace visualblocks code fullscreen",
-            "insertdatetime table paste code help wordcount",
-            "lists", // ajoutez ce plugin pour les listes
-            "textcolor", // ajoutez ce plugin pour les couleurs de texte
-            "colorpicker", // ajoutez ce plugin pour la sélection de couleurs
+            "lists",
+            "link",
+            "image",
+            "charmap",
+            "preview",
+            "searchreplace",
+            "visualblocks",
+            "code",
+            "fullscreen",
           ],
           toolbar:
             "undo redo | h3Button h4Button | fontsize | fontfamily  | bold italic underline strikethrough forecolor backcolor | \

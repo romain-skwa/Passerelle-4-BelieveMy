@@ -1,5 +1,4 @@
 import AllCompIntroductionGame from "@/components/AllCompIntroductionGame/AllCompIntroductionGame";
-import Head from "next/head";
 
 // INTRODUCTION OF ONE GAME
 // Dynamic page
@@ -8,8 +7,8 @@ import Head from "next/head";
 function capitalizeFirstLetter(string) {
   if (!string) return ''; // Check if the string is empty
   return string.charAt(0).toUpperCase() + string.slice(1);
-
 }
+
 // Function to generate dynamics metadata
 export async function generateMetadata({ searchParams }) {
   const resolvedSearchParams = await searchParams;

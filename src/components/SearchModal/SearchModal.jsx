@@ -96,7 +96,7 @@ export default function SearchModal({ onClose }) {
 
   return (
     <div onClick={handleOutsideClick} className="fixed inset-0 flex justify-center bg-black bg-opacity-50 z-50 text-black">
-      <div id="modal-content" className={`rounded-lg p-4 z-50 h-[670px] tablet:h-[780px] my-auto ${formularyCss.modalSearch}`}>
+      <div id="modal-content" className={`rounded-lg p-4 z-50 h-[670px] tablet:h-[780px] my-auto ${formularyCss.neuphormismModalSearch}`}>
         <h2 className="text-lg font-bold text-center mb-2">Recherche détaillée</h2>
         <input
           type="text"

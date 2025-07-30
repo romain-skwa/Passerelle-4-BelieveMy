@@ -55,7 +55,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
   };
 
   useEffect(() => {
-    fetchgameData(); // Appel de la fonction pour récupérer les données
+    fetchgameData(); // Appel de la fonction pour récupérer les données 
   }, [user, usernameEncoded, language]); 
 
   return (
@@ -79,7 +79,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
                   padding: "10px",
                 }}
               >
-                <Link href={`/dynamic/introduction/${game.nameofgame}?nameOfGame=${game?.nameofgame}`}>
+                <Link href={`/dynamic/introduction/${game.nameofgame}?nameofgame=${game?.nameofgame}`}>
                   <div className="relative">
                     <Image
                       src={

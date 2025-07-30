@@ -99,7 +99,7 @@ export default function AllCompResultsDetails(){
               platforms: selectedPlatforms,
               searchTerm: selectedTitle,
             }), // Envoi des genres et plateformes
-            cache: "no-store", // Be sure to exploit the newest data
+            cache: "no-store", // Be sure to exploit the newest data 
           });
     
           if (!response.ok) {
@@ -158,7 +158,8 @@ export default function AllCompResultsDetails(){
                     className="rounded-xl overflow-hidden"
                     style={{ boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.8)" }}
                   >
-                    <Link href={`/dynamic/introduction/${game.nameofgame}`}>
+                    
+                    <Link href={`/dynamic/introduction/${game.nameofgame}?nameofgame=${game?.nameofgame}`}>
                       <Image
                         src={
                           game.urlPosterCloudinary ||

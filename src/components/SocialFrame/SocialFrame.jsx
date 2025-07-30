@@ -41,7 +41,7 @@ export default function SocialFrame() {
             {isModalOpen && (
                 <div className={socialNetworkModal.modal} onClick={handleModalClick}>
                     <div className={socialNetworkModal["modal-content"]}>
-                        <div className="flex flex-col gap-3 items-center">
+                        <div className="flex flex-col gap-4 items-center">
                             <a href="https://discord.com" target="_blank" rel="noopener noreferrer">
                                 <Image src={logoDiscord} alt="Logo Discord" className="w-[3rem]" unoptimized={true} />
                             </a>

@@ -300,7 +300,7 @@ export default function Header({ background }) {
               <div></div>
             )}
 
-            {/* ----------------Comment présenter------------------------- */}
+            {/* ----------------How to introduce your game------------------------- */}
             <li className="cursor-pointer border text-center rounded-2xl bg-black/70 px-4 pb-1 pt-[3px] order-last laptop:order-none ml-4 mt-2 laptop:mt-0">
               {language == "fr"
                 ? "Comment présenter votre jeu ?"
@@ -351,7 +351,7 @@ export default function Header({ background }) {
               </li>
             </Link>
             {/* -------- Icon SEARCH visible on mobile screen --------------------------------------------------------------- */}
-            <div className="absolute right-0 mr-4 top-[7px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] ">
+            <div className="absolute right-0 mr-4 top-[7px] laptop:hidden border bg-black/70 rounded-2xl p-[11px] cursor-pointer">
               <li>
                 <Image
                   src={searchIconWhite}
