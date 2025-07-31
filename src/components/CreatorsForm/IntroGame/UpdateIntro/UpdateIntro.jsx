@@ -29,9 +29,8 @@ const UpdateIntro = ({
   const router = useRouter();
   const [gameId, setGameId] = useState();
   const [email, setEmail] = useState();
-  const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
   const [shortIntroductionUpdate, setShortIntroductionUpdate] = useState();
-  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] = useState();
+  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] =    useState();
   const [platformUpdate, setPlatformUpdate] = useState([]);
   const [releaseDateUpdate, setReleaseDateUpdate] = useState();
   const [selectedAgePegiUpdate, setSelectedAgePegiUpdate] = useState();
@@ -40,30 +39,26 @@ const UpdateIntro = ({
   const [urlPosterCloudinaryUpdate, setUrlPosterCloudinaryUpdate] = useState();
   const [urlPosterUpdate, setUrlPosterUpdate] = useState();
   const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] = useState();
-  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] = useState();
-  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] = useState();
-  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] = useState();
+  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] =    useState();
+  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] =    useState();
+  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] =    useState();
   const [videoLinkUpdate, setVideoLinkUpdate] = useState();
   const [webSiteOfThisGameUpdate, setWebSiteOfThisGameUpdate] = useState();
-  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] = useState();
+  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] =    useState();
   const [steamLinkUpdate, setSteamLinkUpdate] = useState();
   const [epicGamesLinkUpdate, setEpicGamesLinkUpdate] = useState();
   const [genreOfGameUpdate, setGenreOfGameUpdate] = useState([]);
   const [isDarkModeUpdate, setIsDarkModeUpdate] = useState(false);
   const [isIntroOfYourselfUpdate, setIsIntroOfYourselfUpdate] = useState(false);
   const [upDateIntro, setUpDateIntro] = useState(false);
+  const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
   const { language } = useLanguage();
- 
+
   // Get data about this game
   useEffect(() => {
-    if (!upDateIntro) return; // Only if we want to update the introduction
-
-    if (game && game._id) {
-      setGameId(game._id);
-    }
-    if (game && game.email) {
-      setEmail(game.email);
-    }
+    if (game && game._id) setGameId(game._id);
+    if (!upDateIntro) return;
+    if (game && game.email) setEmail(game.email);
     if (game && game.nameofgame) {
       const decodedNameOfGame = decodeURIComponent(game.nameofgame);
       setNameOfGameUpdate(decodedNameOfGame);
@@ -103,7 +98,6 @@ const UpdateIntro = ({
       setUrlImageOneCloudinaryUpdate("");
       initialUrlImageOneRef.current = "";
     }
-
     if (game && game.urlPoster) {
       setUrlPosterUpdate(game.urlPoster);
       initialUrlPosterRef.current = game.urlPoster;
@@ -111,7 +105,6 @@ const UpdateIntro = ({
       setUrlPosterUpdate("");
       initialUrlPosterRef.current = "";
     }
-
     if (game && game.urlImageOneCloudinary) {
       setUrlImageOneCloudinaryUpdate(game.urlImageOneCloudinary);
       initialUrlImageOneRef.current = game.urlImageOneCloudinary;
@@ -161,10 +154,8 @@ const UpdateIntro = ({
       initialIsIntroOfYourselfRef.current = game.isIntroOfYourself;
     }
     if (game && game.releaseDate) {
-      // Convert the string to a Date object for verification
       const date = new Date(game.releaseDate);
       if (!isNaN(date.getTime())) {
-        // Check if the date is valid
         setReleaseDateUpdate(date);
         initialReleaseDateRef.current = date;
       } else {
@@ -174,7 +165,7 @@ const UpdateIntro = ({
     }
   }, [game, upDateIntro]);
 
-  // Keep initial data in useRef ***************************************************************
+  // Keep initial data in useRef
   const initialNameOfGameRef = useRef();
   const initialShortIntroductionRef = useRef();
   const initialIntroductionOfTheGameRef = useRef();
@@ -198,12 +189,9 @@ const UpdateIntro = ({
   const initialIsDarkModeRef = useRef(false);
   const initialIsIntroOfYourselfRef = useRef(false);
 
-  /**** Compare initial data with actual data *************/
-  // État pour suivre les comparaisons
-
+  // Compare initial data with actual data
   useEffect(() => {
-    if (!upDateIntro) return; // Ne s'exécute que si on veut modifier
-
+    if (!upDateIntro) return;
     setComparaison({
       isNameOfGameChanged: nameOfGameUpdate !== initialNameOfGameRef.current,
       isShortIntroChanged:
@@ -273,29 +261,22 @@ const UpdateIntro = ({
     isIntroOfYourselfUpdate,
     upDateIntro,
   ]);
-  /********************************************************************************************/
-  /****************** Envoyer les données à l'API createIntroduction **************************/
+
+  // Envoyer les données à l'API createIntroduction
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setWeAreUpdatingIntro(true);
     try {
-      /***** When the name have been changed, check if the name already exists in database ***********************/
       if (comparaison.isNameOfGameChanged) {
-        const gameToCheck = encodeURIComponent(nameOfGameUpdate); // Assurez-vous que le nom du jeu est correctement encodé
-
+        const gameToCheck = encodeURIComponent(nameOfGameUpdate);
         const response = await fetch("/api/checkIfGameExists", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ gameToCheck }),
-          cache: "no-store", // Be sure to exploit the newest data
+          cache: "no-store",
         });
-
-        if (!response.ok) {
+        if (!response.ok)
           throw new Error("Erreur lors de la vérification du jeu");
-        }
-
         const data = await response.json();
         if (data.exists) {
           setWeAreUpdatingIntro(false);
@@ -303,11 +284,8 @@ const UpdateIntro = ({
             "Ce nom de jeu existe déjà dans la base de données."
           );
         }
-      } else {
-        console.log("Le nom du jeu n'a pas été changé");
-      }
+      } else console.log("Le nom du jeu n'a pas été changé");
 
-      /************************************************* */
       if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {
         setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner un fichier image");
@@ -329,26 +307,22 @@ const UpdateIntro = ({
           "Vous devez sélectionner un âge parmi les options disponibles."
         );
       }
-      // Vérifiez le nombre de caractères de la courte introduction
       if (shortIntroductionUpdate.length > 400) {
         setWeAreUpdatingIntro(false);
         return toast.error(
           "L'introduction doit comporter 400 caractères maximum."
         );
       }
-      //Vérifiez le nombre de caractères de la présentation détaillée
       if (introductionOfTheGameUpdate.length > 10000) {
         setWeAreUpdatingIntro(false);
         return toast.error(
           "La présentation doit comporter 10 000 caractères maximum."
         );
       }
-      // Vérifiez si au moins une plateforme est sélectionnée
       if (platformUpdate.length === 0) {
         setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner au moins une plateforme.");
       }
-      // Vérifiez si le site du jeu commence par "https://"
       if (
         webSiteOfThisGameUpdate &&
         !webSiteOfThisGameUpdate.startsWith("https://")
@@ -358,7 +332,6 @@ const UpdateIntro = ({
           "Le lien du site officiel doit commencer par 'https://'"
         );
       }
-      // Vérifiez si le site des créateurs commence par "https://"
       if (
         webSiteOfThisCreatorUpdate &&
         !webSiteOfThisCreatorUpdate.startsWith("https://")
@@ -368,7 +341,6 @@ const UpdateIntro = ({
           "Le lien du site officiel doit commencer par 'https://'"
         );
       }
-      // Vérifiez que releaseDateUpdate est un objet Date valide
       if (
         !(releaseDateUpdate instanceof Date) ||
         isNaN(releaseDateUpdate.getTime())
@@ -376,23 +348,17 @@ const UpdateIntro = ({
         setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner une date de sortie.");
       }
-      // Vérification de la date de sortie
       if (releaseDateUpdate) {
         const releaseDateUpdateString =
-          releaseDateUpdate.toLocaleDateString("fr-FR"); // Format de la date en français
-        const datePattern = /^\d{2}\/\d{2}\/\d{4}$/; // Expression régulière pour jj/mm/aaaa
-
+          releaseDateUpdate.toLocaleDateString("fr-FR");
+        const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
         if (!datePattern.test(releaseDateUpdateString)) {
           setWeAreUpdatingIntro(false);
           return toast.error(
             "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)"
           );
         }
-      } else {
-        return toast.error("Vous devez sélectionner une date de sortie.");
-      }
-
-      // Vérifiez si le site Steam commence par "https://"
+      } else return toast.error("Vous devez sélectionner une date de sortie.");
       if (
         steamLinkUpdate &&
         (!steamLinkUpdate.startsWith("https://") ||
@@ -404,7 +370,6 @@ const UpdateIntro = ({
         );
       }
 
-      // Function to send the data to createIntroduction function
       const formData = new FormData();
       formData.append("gameId", gameId);
       formData.append("email", email);
@@ -422,77 +387,43 @@ const UpdateIntro = ({
       formData.append("genreOfGame", JSON.stringify(genreOfGameUpdate));
       formData.append("isDarkMode", isDarkModeUpdate.toString());
       formData.append("isIntroOfYourself", isIntroOfYourselfUpdate.toString());
-      // Ajouts conditionnels
-      if (urlPosterCloudinaryUpdate) {
+      if (urlPosterCloudinaryUpdate)
         formData.append("urlPosterCloudinary", urlPosterCloudinaryUpdate);
-      }
-      if (urlPosterUpdate) {
-        formData.append("urlPoster", urlPosterUpdate);
-      }
-      if (videoLinkUpdate) {
-        formData.append("videoLink", videoLinkUpdate);
-      }
-      if (steamLinkUpdate) {
-        formData.append("steamLink", steamLinkUpdate);
-      }
-      if (epicGamesLinkUpdate) {
+      if (urlPosterUpdate) formData.append("urlPoster", urlPosterUpdate);
+      if (videoLinkUpdate) formData.append("videoLink", videoLinkUpdate);
+      if (steamLinkUpdate) formData.append("steamLink", steamLinkUpdate);
+      if (epicGamesLinkUpdate)
         formData.append("epicGamesLink", epicGamesLinkUpdate);
-      }
-      if (webSiteOfThisGameUpdate) {
+      if (webSiteOfThisGameUpdate)
         formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);
-      }
-      if (webSiteOfThisCreatorUpdate) {
+      if (webSiteOfThisCreatorUpdate)
         formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);
-      }
-      if (urlImageOneCloudinaryUpdate) {
+      if (urlImageOneCloudinaryUpdate)
         formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);
-      }
-      if (urlImageTwoCloudinaryUpdate) {
+      if (urlImageTwoCloudinaryUpdate)
         formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);
-      }
-      if (urlImageThreeCloudinaryUpdate) {
+      if (urlImageThreeCloudinaryUpdate)
         formData.append(
           "urlImageThreeCloudinary",
           urlImageThreeCloudinaryUpdate
         );
-      }
-      if (urlBackgroundCloudinaryUpdate) {
+      if (urlBackgroundCloudinaryUpdate)
         formData.append(
           "urlBackgroundCloudinary",
           urlBackgroundCloudinaryUpdate
         );
-      }
-      console.log("Form data:", formData);
+      //console.log("Form data:", formData);
       await updateIntroduction(formData);
       toast.success("Présentation du jeu a été mise à jour !");
       setWeAreUpdatingIntro(false);
       setLoading(true);
       fetchgameData();
-      // Redirect
       router.replace(
-        `/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}`
+        `/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}?nameofgame=${encodeURIComponent(nameOfGameUpdate)}`
       );
     } catch (error) {
       return toast.error(error.message);
     }
-  };
-
-  /* Suppression du jeu par le créateur *******************************************************************/
-  //console.log(`gameId de la présentation à supprimer : `, gameId);
-
-  const handleDelete = async () => {
-    if (!confirm("Voulez vraiment supprimer la présentation de votre jeu ?"))
-      return;
-
-    try {
-      setWeAreDeleting(true);
-      await handleEraseAllImages(game);
-      await deleteIntroduction(gameId, nameOfGameUpdate);
-    } catch (error) {
-      return toast.error(error.message);
-    }
-    toast.success("La présentation vient d'être supprimée.");
-    router.push("/");
   };
 
   return (
@@ -537,7 +468,7 @@ const UpdateIntro = ({
             type="text"
             name="nameOfGameUpdate"
             placeholder={nameOfGameUpdate}
-            className="px-3 py-2 rounded-md w-full flex-grow text-black "
+            className="px-3 py-2 rounded-md w-full flex-grow text-black"
             maxLength={80}
             size={80}
             value={nameOfGameUpdate ? nameOfGameUpdate : ""}
@@ -602,7 +533,7 @@ const UpdateIntro = ({
 
           {/* Affiche [encadré] */}
           <div className="w-[95%] tablet:w-[380px] p-4 mt-4 border grasFondBleu mx-auto">
-            <p className="text-center">Choisissez l'affiche du jeu </p>
+            <p className="text-center">Choisissez l'affiche du jeu</p>
             <ImageUpload
               urlCloudinary={urlPosterCloudinaryUpdate || ""}
               setter={setUrlPosterCloudinaryUpdate}
@@ -617,7 +548,7 @@ const UpdateIntro = ({
                     ? `${game.urlPosterCloudinary}`
                     : `/presentation/${game.urlPoster}`
                 }
-                className="lg:w-[192px] lg:h-[311px] py-3 mt-3 inline-block "
+                className="lg:w-[192px] lg:h-[311px] py-3 mt-3 inline-block"
                 width={192}
                 height={311}
                 alt={`${game.nameofgame}`}
@@ -629,8 +560,8 @@ const UpdateIntro = ({
           <section className="flex flex-col tablet:flex-row w-full gap-2 justify-center">
             {/* Image d'illustration n°1 [encadré] */}
             <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
-              <p className="text-center ">
-                Choisissez l'image d'illustration n°1{" "}
+              <p className="text-center">
+                Choisissez l'image d'illustration n°1
               </p>
               <ImageUpload
                 urlCloudinary={urlImageOneCloudinaryUpdate || ""}
@@ -654,7 +585,7 @@ const UpdateIntro = ({
             {/* Image d'illustration n°2 [encadré] */}
             <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
               <p className="text-center tablet:inline-block">
-                Choisissez l'image d'illustration n°2{" "}
+                Choisissez l'image d'illustration n°2
               </p>
               <ImageUpload
                 urlCloudinary={urlImageTwoCloudinaryUpdate || ""}
@@ -678,7 +609,7 @@ const UpdateIntro = ({
             {/* Image d'illustration n°3 [encadré] */}
             <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
               <p className="text-center tablet:inline-block">
-                Choisissez l'image d'illustration n°3{" "}
+                Choisissez l'image d'illustration n°3
               </p>
               <ImageUpload
                 urlCloudinary={urlImageThreeCloudinaryUpdate || ""}
@@ -703,7 +634,7 @@ const UpdateIntro = ({
           {/* Arrière plan [encadré] */}
           <div className="w-[95%] tablet:w-[40%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col item-center mx-auto">
             <p className="text-center tablet:inline-block">
-              Choisissez une image pour l'arrière plan{" "}
+              Choisissez une image pour l'arrière plan
             </p>
             <ImageUpload
               urlCloudinary={urlBackgroundCloudinaryUpdate || ""}
@@ -794,11 +725,10 @@ const UpdateIntro = ({
             setSelectedGenres={setGenreOfGameUpdate}
           />
 
-          {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
+          {/* Ajout de la biographie du créateur [encadré] */}
           <div className="flex justify-center">
             <div className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer">
-              Souhaitez-vous ajouter la présentation de vous-même ou de votre
-              équipe ?
+              Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
               <div className="flex justify-center mt-2 w-full">
                 <label className="flex items-center mr-4">
                   <input
@@ -835,7 +765,7 @@ const UpdateIntro = ({
                 !shortIntroductionUpdate ||
                 shortIntroductionUpdate.length < 1 ||
                 urlPosterCloudinaryUpdate === ""
-              } /* Désactivé si les champs sont vides */
+              }
             >
               Mettre à jour la présentation
             </button>
@@ -852,15 +782,6 @@ const UpdateIntro = ({
         </div>
       )}
 
-      {/* DELETE this introduction */}
-      <div
-        onClick={handleDelete}
-        className="w-[250px] p-2 flex justify-center mx-auto mt-4 hover:bg-red hover:text-white transition-colors duration-300 cursor-pointer"
-      >
-        {language === "fr"
-          ? "Supprimer cette présentation"
-          : "Delete this introduction"}
-      </div>
     </>
   );
 };

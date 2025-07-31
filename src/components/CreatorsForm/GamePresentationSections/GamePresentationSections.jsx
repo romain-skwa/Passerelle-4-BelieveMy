@@ -546,14 +546,35 @@ const GamePresentationSections = ({
       </section>
 
       {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
-      <div className="flex justify-center mx-auto">
+      <div className="flex flex-col justify-center items-center mx-auto">
         <div
-          className={`${componentsCss.grasFondBleu} border p-2 flex justify-center mt-3 mb-3 font-bold text-white cursor-pointer rounded-3xl py-2 w-[320px] tablet:w-[620px]`}
-          onClick={() => setIsIntroOfYourself(!isIntroOfYourself)}
+          className={`${componentsCss.grasFondBleu} border p-2 flex justify-center mt-3 mb-3 font-bold text-white rounded-3xl py-2 w-[320px] tablet:w-[620px]`}
         >
           {language == "fr"
             ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?"
             : "Would you like to add a presentation of yourself or your team ?"}
+        </div>
+        <div className="flex justify-center mt-2 w-full">
+          <label className="flex items-center mr-4">
+            <input
+              type="radio"
+              name="biographyChoice"
+              checked={isIntroOfYourself === "true"}
+              onChange={() => setIsIntroOfYourself("true")}
+              className="mr-2"
+            />
+            Oui
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="biographyChoice"
+              checked={isIntroOfYourself === "false"}
+              onChange={() => setIsIntroOfYourself("false")}
+              className="mr-2"
+            />
+            Non
+          </label>
         </div>
       </div>
 

@@ -8,7 +8,7 @@ import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageCont
 
 export default function MadeByThisCreator({ user, usernameEncoded, usernameDecoded, setHowManyGame }) {
   const { language } = useLanguage();
-  const [games, setGames] = useState([]); console.log(games);
+  const [games, setGames] = useState([]); //console.log(games);
   const [loading, setLoading] = useState(true);
   const [oneGameOr, setOneGameOr] = useState("Aucun jeu n'a été présenté par ");
  

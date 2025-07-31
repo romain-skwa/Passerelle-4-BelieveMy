@@ -36,6 +36,7 @@ import UserProfileSection from "@/components/UserProfileSection/UserProfileSecti
 import Share from "@/components/CreatorsForm/IntroGame/Share/Share";
 import Loading from "@/components/ForLayout/Loading/Loading";
 import UpdateIntro from "@/components/CreatorsForm/IntroGame/UpdateIntro/UpdateIntro";
+import DeleteIntro from "@/components/CreatorsForm/IntroGame/DeleteIntro/DeleteIntro";
 import Flag from "@/components/Flag/Flag";
 import WeAreDeleting from "@/components/WeAreDeleting/WeAreDeleting";
 import WeAreUpdatingIntro from "@/components/WeAreUpdatingIntro/WeAreUpdatingIntro";
@@ -57,6 +58,7 @@ export default function AllCompIntroductionGame({introduction}) {
       const [creatorOfThisGame, setCreatorOfThisGame] = useState(""); // creatorOfThisGame is also defined when the data of introduction are loaded
       const [userBio, setUserBio] = useState(undefined); // When the bio of the creator of this game is needed
       const [OnlyBio, setOnlyBio] = useState(undefined); // When the bio of the creator of this game is not asked
+
 
       /*************************************************/
       const [loading, setLoading] = useState(true);
@@ -93,7 +95,7 @@ export default function AllCompIntroductionGame({introduction}) {
         isDarkModeChanged: false,
         isIntroOfYourselfChanged: false,
       });
-    
+ 
       const openModal = (image) => {
         setSelectedImage(image);
         setIsModalOpen(true);
@@ -695,6 +697,9 @@ export default function AllCompIntroductionGame({introduction}) {
                   setComparaison={setComparaison}
                 />
               ) : null}
+
+              {/* DELETE this introduction */}
+              <DeleteIntro game={game} setWeAreDeleting={setWeAreDeleting} />
             </section>
           )}
           {isModalOpen && (

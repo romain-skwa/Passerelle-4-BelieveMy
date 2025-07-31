@@ -34,7 +34,8 @@ export default function AllCompIntroGameForm() {
   // State
   const [user, setUser] = useState({});
   const [avatar, setAvatar] = useState("");
-  const [isIntroOfYourself, setIsIntroOfYourself] = useState(false);
+  const [isIntroOfYourself, setIsIntroOfYourself] = useState("false");
+  console.log(isIntroOfYourself);
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
@@ -248,7 +249,7 @@ export default function AllCompIntroGameForm() {
         />
 
         {/*************************** Biography of the creator *******************************************/}
-        {isIntroOfYourself && <UserProfileSection user={user} />}
+        {isIntroOfYourself === "true" && <UserProfileSection user={user} />}
       </section>
     </>
   );

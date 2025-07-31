@@ -26,54 +26,60 @@ export default function AllCompRegister() {
     // If a field is empty
     if (!username || !email || !password || !passwordconfirm) {
       // Notification
-      return toast.error(
+      toast.error(
         language === "fr"
           ? "Aucun champ ne doit être vide."
           : "No field should be empty."
       );
+      return;
     }
 
     // Check if passwords are identical
     if (password !== passwordconfirm) {
-      return toast.error(
+      toast.error(
         language === "fr"
           ? "Les mots de passe ne sont pas identiques."
           : "The passwords do not match."
       );
+      return;
     }
 
     // Check if the email is valid
     if (!checkEmail(email)) {
-      return toast.error(
+      toast.error(
         language === "fr"
           ? "Veuillez entrer un email valide."
           : "Please enter a valid email."
       );
+      return;
     }
 
     // Check if the password is at least 8 characters long
     if (password.length < 8) {
-      return toast.error(
+      toast.error(
         language === "fr"
           ? "Le mot de passe est trop court. Il doit contenir au moins 8 caractères."
           : "The password is too short. It must contain at least 8 characters."
       );
+      return;
     }
 
     // Check if the password contains at least one digit
     if (!password.match(/.*[0-9].*/)) {
-      return toast.error(
+      toast.error(
         language === "fr"
           ? "Le mot de passe doit contenir au moins un chiffre."
           : "The password must contain at least one digit."
       );
+      return;
     }
     if (!password.match(/.*[a-zA-Z].*/)) {
-      return toast.error(
+      toast.error(
         language === "fr"
           ? "Le mot de passe doit contenir au moins une lettre."
           : "The password must contain at least one letter."
       );
+      return;
     }
 
     try {
@@ -99,9 +105,16 @@ export default function AllCompRegister() {
       // Redirect
       router.replace("/creators/login");
     } catch (error) {
-      return toast.error(error.message);
+      toast.error(error.message);
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    await registerNewCreator(formData);
+  };
+
   return (
     <section className="w-[90vw] tablet:w-[70vw] largeScreen:w-[30vw] mx-auto my-4 py-4 flex-col bg-white/10 border-2 rounded-2xl">
       <div className="text-center mx-auto w-[180px] p-3 bg-black/70 text-white text-2xl rounded-2xl border-2 border-black">
@@ -109,7 +122,7 @@ export default function AllCompRegister() {
       </div>
 
       {/* Form */}
-      <form action={registerNewCreator}>
+      <form onSubmit={handleSubmit}>
         <div className={`${componentsCss.input_component}`}>
           <input
             type="text"
