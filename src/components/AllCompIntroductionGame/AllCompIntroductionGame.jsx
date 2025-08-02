@@ -699,7 +699,9 @@ export default function AllCompIntroductionGame({introduction}) {
               ) : null}
 
               {/* DELETE this introduction */}
-              <DeleteIntro game={game} setWeAreDeleting={setWeAreDeleting} />
+              {session && session.user.email === game.email ? (
+                <DeleteIntro game={game} setWeAreDeleting={setWeAreDeleting} />
+              ) : null}
             </section>
           )}
           {isModalOpen && (

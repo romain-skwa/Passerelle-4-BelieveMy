@@ -54,7 +54,7 @@ export default function AllCompIntroGameForm() {
   const [backgroundPreview, setBackgroundPreview] = useState("");
   const [filesToSend, setFilesToSend] = useState({});
   const [loading, setLoading] = useState(true);
-  const [weAreSendingData, setWeAreSendingData] = useState(false);
+  const [weAreSendingData, setWeAreSendingData] = useState(false); console.log("weAreSendingData", weAreSendingData); 
   // Nouveaux états pour le paiement
   const [showPayment, setShowPayment] = useState(false);
   const [draftId, setDraftId] = useState(null);

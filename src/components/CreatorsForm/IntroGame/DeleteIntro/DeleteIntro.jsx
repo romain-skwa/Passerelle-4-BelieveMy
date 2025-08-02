@@ -20,10 +20,7 @@ const DeleteIntro = ({ game, setWeAreDeleting }) => {
   }, [game]);
 
   // Suppression du jeu par le créateur
-  console.log(
-    `gameId de la présentation à supprimer dans le composant DeleteIntro: `,
-    gameId
-  );
+  //console.log(`gameId de la présentation à supprimer dans le composant DeleteIntro: `, gameId);
 
   const handleDelete = async () => {
     if (!confirm("Voulez vraiment supprimer la présentation de votre jeu ?"))

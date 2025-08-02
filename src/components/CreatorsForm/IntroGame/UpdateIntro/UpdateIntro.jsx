@@ -8,20 +8,15 @@ import ButtonSoloMulti from "@/components/CreatorsForm/GamePresentationInside/Bu
 import GenreOfGame from "../../GamePresentationInside/GenreOfGame/GenreOfGame";
 import DatePicker from "react-datepicker";
 import ImageCloudinaryUpdate from "@/components/ImageCloudinaryUpdate/ImageCloudinaryUpdate";
-import Image from "next/image";
 import "react-datepicker/dist/react-datepicker.css";
 import he from "he";
 import { toast } from "react-toastify";
-import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
-import deleteIntroduction from "@/actions/eraseOneIntroduction";
-import handleEraseAllImages from "@/actions/handleEraseAllImages";
 import MyEditor from "@/components/TinyMceEditor/TinyMceEditor";
 
 const UpdateIntro = ({
   game,
   fetchgameData,
   setLoading,
-  setWeAreDeleting,
   setWeAreUpdatingIntro,
   comparaison,
   setComparaison,
@@ -43,6 +38,7 @@ const UpdateIntro = ({
   const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] = useState();
   const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] = useState();
   const [videoLinkUpdate, setVideoLinkUpdate] = useState();
+  const [filesToSend, setFilesToSend] = useState({});
   const [webSiteOfThisGameUpdate, setWebSiteOfThisGameUpdate] = useState();
   const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] = useState();
   const [steamLinkUpdate, setSteamLinkUpdate] = useState();
@@ -52,7 +48,6 @@ const UpdateIntro = ({
   const [isIntroOfYourselfUpdate, setIsIntroOfYourselfUpdate] = useState(false);
   const [upDateIntro, setUpDateIntro] = useState(false);
   const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
-  const { language } = useLanguage();
 
   // Get data about this game
   useEffect(() => {
@@ -72,25 +67,12 @@ const UpdateIntro = ({
     if (game && game.content) {
       const decodedIntroductionOfTheGameUpdate = he.decode(game.content);
       setIntroductionOfTheGameUpdate(decodedIntroductionOfTheGameUpdate);
-      initialIntroductionOfTheGameRef.current =
-        decodedIntroductionOfTheGameUpdate;
+      initialIntroductionOfTheGameRef.current = decodedIntroductionOfTheGameUpdate;
     }
-    if (game && game.platform) {
-      setPlatformUpdate(game.platform);
-      initialPlatformRef.current = game.platform;
-    }
-    if (game && game.selectedAgePegi) {
-      setSelectedAgePegiUpdate(game.selectedAgePegi);
-      initialSelectedAgePegiRef.current = game.selectedAgePegi;
-    }
-    if (game && game.selectedAdditionalPegi) {
-      setSelectedAdditionalPegiUpdate(game.selectedAdditionalPegi);
-      initialSelectedAdditionalPegiRef.current = game.selectedAdditionalPegi;
-    }
-    if (game && game.SoloMulti) {
-      setSoloMultiUpdate(game.SoloMulti);
-      initialSoloMultiRef.current = game.SoloMulti;
-    }
+    if (game && game.platform) {setPlatformUpdate(game.platform);initialPlatformRef.current = game.platform;}
+    if (game && game.selectedAgePegi) {setSelectedAgePegiUpdate(game.selectedAgePegi);initialSelectedAgePegiRef.current = game.selectedAgePegi;}
+    if (game && game.selectedAdditionalPegi) {setSelectedAdditionalPegiUpdate(game.selectedAdditionalPegi);initialSelectedAdditionalPegiRef.current = game.selectedAdditionalPegi;}
+    if (game && game.SoloMulti) {setSoloMultiUpdate(game.SoloMulti);initialSoloMultiRef.current = game.SoloMulti;}
     if (game && game.urlPosterCloudinary) {
       setUrlPosterCloudinaryUpdate(game.urlPosterCloudinary);
       initialUrlPosterCloudinaryRef.current = game.urlPosterCloudinary;
@@ -101,55 +83,19 @@ const UpdateIntro = ({
     if (game && game.urlPoster) {
       setUrlPosterUpdate(game.urlPoster);
       initialUrlPosterRef.current = game.urlPoster;
-    } else {
-      setUrlPosterUpdate("");
-      initialUrlPosterRef.current = "";
-    }
-    if (game && game.urlImageOneCloudinary) {
-      setUrlImageOneCloudinaryUpdate(game.urlImageOneCloudinary);
-      initialUrlImageOneRef.current = game.urlImageOneCloudinary;
-    }
-    if (game && game.urlImageTwoCloudinary) {
-      setUrlImageTwoCloudinaryUpdate(game.urlImageTwoCloudinary);
-      initialUrlImageTwoRef.current = game.urlImageTwoCloudinary;
-    }
-    if (game && game.urlImageThreeCloudinary) {
-      setUrlImageThreeCloudinaryUpdate(game.urlImageThreeCloudinary);
-      initialUrlImageThreeRef.current = game.urlImageThreeCloudinary;
-    }
-    if (game && game.urlBackgroundCloudinary) {
-      setUrlBackgroundCloudinaryUpdate(game.urlBackgroundCloudinary);
-      initialUrlBackgroundRef.current = game.urlBackgroundCloudinary;
-    }
-    if (game && game.videoLink) {
-      setVideoLinkUpdate(game.videoLink);
-      initialVideoLinkRef.current = game.videoLink;
-    }
-    if (game && game.webSiteOfThisGame) {
-      setWebSiteOfThisGameUpdate(game.webSiteOfThisGame);
-      initialWebSiteOfThisGameRef.current = game.webSiteOfThisGame;
-    }
-    if (game && game.webSiteOfThisCreator) {
-      setWebSiteOfThisCreatorUpdate(game.webSiteOfThisCreator);
-      initialWebSiteOfThisCreatorRef.current = game.webSiteOfThisCreator;
-    }
-    if (game && game.steamLink) {
-      setSteamLinkUpdate(game.steamLink);
-      initialSteamLinkRef.current = game.steamLink;
-    }
-    if (game && game.epicGamesLink) {
-      setEpicGamesLinkUpdate(game.epicGamesLink);
-      initialEpicGamesLinkRef.current = game.epicGamesLink;
-    }
-    if (game && game.genreOfGame) {
-      setGenreOfGameUpdate(game.genreOfGame);
-      initialGenreOfGameRef.current = game.genreOfGame;
-    }
+    } else {setUrlPosterUpdate("");initialUrlPosterRef.current = "";}
+    if (game && game.urlImageOneCloudinary) {setUrlImageOneCloudinaryUpdate(game.urlImageOneCloudinary);initialUrlImageOneRef.current = game.urlImageOneCloudinary;}
+    if (game && game.urlImageTwoCloudinary) {setUrlImageTwoCloudinaryUpdate(game.urlImageTwoCloudinary);initialUrlImageTwoRef.current = game.urlImageTwoCloudinary;}
+    if (game && game.urlImageThreeCloudinary) {setUrlImageThreeCloudinaryUpdate(game.urlImageThreeCloudinary);initialUrlImageThreeRef.current = game.urlImageThreeCloudinary;}
+    if (game && game.urlBackgroundCloudinary) {setUrlBackgroundCloudinaryUpdate(game.urlBackgroundCloudinary);initialUrlBackgroundRef.current = game.urlBackgroundCloudinary;}
+    if (game && game.videoLink) {setVideoLinkUpdate(game.videoLink);initialVideoLinkRef.current = game.videoLink;}
+    if (game && game.webSiteOfThisGame) {setWebSiteOfThisGameUpdate(game.webSiteOfThisGame);initialWebSiteOfThisGameRef.current = game.webSiteOfThisGame;}
+    if (game && game.webSiteOfThisCreator) {setWebSiteOfThisCreatorUpdate(game.webSiteOfThisCreator);initialWebSiteOfThisCreatorRef.current = game.webSiteOfThisCreator;}
+    if (game && game.steamLink) {setSteamLinkUpdate(game.steamLink);initialSteamLinkRef.current = game.steamLink;}
+    if (game && game.epicGamesLink) {setEpicGamesLinkUpdate(game.epicGamesLink);initialEpicGamesLinkRef.current = game.epicGamesLink;}
+    if (game && game.genreOfGame) {setGenreOfGameUpdate(game.genreOfGame);initialGenreOfGameRef.current = game.genreOfGame;}
     if (game && game.isDarkMode) {setIsDarkModeUpdate(game.isDarkMode);initialIsDarkModeRef.current = game.isDarkMode;}
-    if (game && game.isIntroOfYourself) {
-      setIsIntroOfYourselfUpdate(game.isIntroOfYourself);
-      initialIsIntroOfYourselfRef.current = game.isIntroOfYourself;
-    }
+    if (game && game.isIntroOfYourself) {setIsIntroOfYourselfUpdate(game.isIntroOfYourself);initialIsIntroOfYourselfRef.current = game.isIntroOfYourself;}
     if (game && game.releaseDate) {
       const date = new Date(game.releaseDate);
       if (!isNaN(date.getTime())) {
@@ -239,6 +185,35 @@ const UpdateIntro = ({
     upDateIntro,
   ]);
 
+  // Fonction pour uploader les images vers Cloudinary
+  const uploadImagesToCloudinary = async () => {
+    const uploadPromises = [];
+    const uploadedUrls = {};
+
+    for (const [key, file] of Object.entries(filesToSend)) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const uploadPromise = fetch('/api/cloudinary/upload', {
+        method: 'POST',
+        body: formData,
+      }).then(response => response.json())
+        .then(result => {
+          if (result.secure_url) {
+            uploadedUrls[key] = result.secure_url;
+          }
+        })
+        .catch(error => {
+          console.error(`Erreur upload ${key}:`, error);
+        });
+
+      uploadPromises.push(uploadPromise);
+    }
+
+    await Promise.all(uploadPromises);
+    return uploadedUrls;
+  };
+
   // Envoyer les données à l'API createIntroduction
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -314,6 +289,12 @@ const UpdateIntro = ({
         return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
       }
 
+      // Upload des images vers Cloudinary si nécessaire
+      let uploadedUrls = {};
+      if (Object.keys(filesToSend).length > 0) {
+        uploadedUrls = await uploadImagesToCloudinary();
+      }
+
       const formData = new FormData();
       formData.append("gameId", gameId);
       formData.append("email", email);
@@ -335,10 +316,22 @@ const UpdateIntro = ({
       if (epicGamesLinkUpdate) formData.append("epicGamesLink", epicGamesLinkUpdate);
       if (webSiteOfThisGameUpdate) formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);
       if (webSiteOfThisCreatorUpdate) formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);
-      if (urlImageOneCloudinaryUpdate) formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);
-      if (urlImageTwoCloudinaryUpdate) formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);
-      if (urlImageThreeCloudinaryUpdate) formData.append("urlImageThreeCloudinary", urlImageThreeCloudinaryUpdate);
-      if (urlBackgroundCloudinaryUpdate) formData.append("urlBackgroundCloudinary", urlBackgroundCloudinaryUpdate);
+      // Utiliser les nouvelles URLs uploadées ou les existantes
+      if (uploadedUrls.posterGlimpseFile || urlPosterCloudinaryUpdate) {
+        formData.append("urlPosterCloudinary", uploadedUrls.posterGlimpseFile || urlPosterCloudinaryUpdate);
+      }
+      if (uploadedUrls.imageOneGlimpseFile || urlImageOneCloudinaryUpdate) {
+        formData.append("urlImageOneCloudinary", uploadedUrls.imageOneGlimpseFile || urlImageOneCloudinaryUpdate);
+      }
+      if (uploadedUrls.imageTwoGlimpseFile || urlImageTwoCloudinaryUpdate) {
+        formData.append("urlImageTwoCloudinary", uploadedUrls.imageTwoGlimpseFile || urlImageTwoCloudinaryUpdate);
+      }
+      if (uploadedUrls.imageThreeGlimpseFile || urlImageThreeCloudinaryUpdate) {
+        formData.append("urlImageThreeCloudinary", uploadedUrls.imageThreeGlimpseFile || urlImageThreeCloudinaryUpdate);
+      }
+      if (uploadedUrls.backgroundGlimpseFile || urlBackgroundCloudinaryUpdate) {
+        formData.append("urlBackgroundCloudinary", uploadedUrls.backgroundGlimpseFile || urlBackgroundCloudinaryUpdate);
+      }
       //console.log("Form data:", formData);
       await updateIntroduction(formData);
       toast.success("Présentation du jeu a été mise à jour !");
@@ -464,6 +457,7 @@ const UpdateIntro = ({
               urlCloudinary={urlPosterCloudinaryUpdate || ""}
               setUrlCloudinary={setUrlPosterCloudinaryUpdate}
               buttonText="Télécharger Affiche"
+              setFilesToSend={setFilesToSend}
             />
           </div>
 
@@ -478,6 +472,7 @@ const UpdateIntro = ({
                 urlCloudinary={urlImageOneCloudinaryUpdate || ""}
                 setUrlCloudinary={setUrlImageOneCloudinaryUpdate}
                 buttonText="Télécharger l'image n°1"
+                setFilesToSend={setFilesToSend}
               />
             </div>
 
@@ -491,6 +486,7 @@ const UpdateIntro = ({
                 urlCloudinary={urlImageTwoCloudinaryUpdate || ""}
                 setUrlCloudinary={setUrlImageTwoCloudinaryUpdate}
                 buttonText="Télécharger l'image n°2"
+                setFilesToSend={setFilesToSend}
               />
             </div>
 
@@ -504,6 +500,7 @@ const UpdateIntro = ({
                 urlCloudinary={urlImageThreeCloudinaryUpdate || ""}
                 setUrlCloudinary={setUrlImageThreeCloudinaryUpdate}
                 buttonText="Télécharger l'image n°3"
+                setFilesToSend={setFilesToSend}
               />
             </div>
           </section>
@@ -518,6 +515,7 @@ const UpdateIntro = ({
               urlCloudinary={urlBackgroundCloudinaryUpdate || ""}
               setUrlCloudinary={setUrlBackgroundCloudinaryUpdate}
               buttonText="Télécharger Background"
+              setFilesToSend={setFilesToSend}
             />
           </div>
 
