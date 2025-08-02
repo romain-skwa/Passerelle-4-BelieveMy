@@ -8,9 +8,7 @@ import { LanguageProvider } from "@/components/ForLayout/LanguageContext/Languag
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <head>
-        
-      </head>
+      
       <body className="small:bg-villeretroSmall laptop:bg-villeretro2">
         <AuthProvider>
           <LanguageProvider>{children}</LanguageProvider>

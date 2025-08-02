@@ -191,7 +191,7 @@ export default function AllCompRegister() {
         {/*----------------------*/}
 
         <div className="flex justify-center">
-          <ButtonForm formButton>
+          <ButtonForm >
             {language === "fr" ? "S'inscrire" : "Register"}
           </ButtonForm>
         </div>

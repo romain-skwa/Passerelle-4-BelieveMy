@@ -7,7 +7,7 @@ import Pegi from "@/components/CreatorsForm/GamePresentationInside/Pegi/Pegi";
 import ButtonSoloMulti from "@/components/CreatorsForm/GamePresentationInside/ButtonSoloMulti/ButtonSoloMulti";
 import GenreOfGame from "../../GamePresentationInside/GenreOfGame/GenreOfGame";
 import DatePicker from "react-datepicker";
-import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import ImageCloudinaryUpdate from "@/components/ImageCloudinaryUpdate/ImageCloudinaryUpdate";
 import Image from "next/image";
 import "react-datepicker/dist/react-datepicker.css";
 import he from "he";
@@ -30,7 +30,7 @@ const UpdateIntro = ({
   const [gameId, setGameId] = useState();
   const [email, setEmail] = useState();
   const [shortIntroductionUpdate, setShortIntroductionUpdate] = useState();
-  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] =    useState();
+  const [introductionOfTheGameUpdate, setIntroductionOfTheGameUpdate] = useState();
   const [platformUpdate, setPlatformUpdate] = useState([]);
   const [releaseDateUpdate, setReleaseDateUpdate] = useState();
   const [selectedAgePegiUpdate, setSelectedAgePegiUpdate] = useState();
@@ -38,13 +38,13 @@ const UpdateIntro = ({
   const [soloMultiUpdate, setSoloMultiUpdate] = useState([]);
   const [urlPosterCloudinaryUpdate, setUrlPosterCloudinaryUpdate] = useState();
   const [urlPosterUpdate, setUrlPosterUpdate] = useState();
-  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] = useState();
-  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] =    useState();
-  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] =    useState();
-  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] =    useState();
+  const [urlImageOneCloudinaryUpdate, setUrlImageOneCloudinaryUpdate] =  useState();
+  const [urlImageTwoCloudinaryUpdate, setUrlImageTwoCloudinaryUpdate] =  useState();
+  const [urlImageThreeCloudinaryUpdate, setUrlImageThreeCloudinaryUpdate] = useState();
+  const [urlBackgroundCloudinaryUpdate, setUrlBackgroundCloudinaryUpdate] = useState();
   const [videoLinkUpdate, setVideoLinkUpdate] = useState();
   const [webSiteOfThisGameUpdate, setWebSiteOfThisGameUpdate] = useState();
-  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] =    useState();
+  const [webSiteOfThisCreatorUpdate, setWebSiteOfThisCreatorUpdate] = useState();
   const [steamLinkUpdate, setSteamLinkUpdate] = useState();
   const [epicGamesLinkUpdate, setEpicGamesLinkUpdate] = useState();
   const [genreOfGameUpdate, setGenreOfGameUpdate] = useState([]);
@@ -145,10 +145,7 @@ const UpdateIntro = ({
       setGenreOfGameUpdate(game.genreOfGame);
       initialGenreOfGameRef.current = game.genreOfGame;
     }
-    if (game && game.isDarkMode) {
-      setIsDarkModeUpdate(game.isDarkMode);
-      initialIsDarkModeRef.current = game.isDarkMode;
-    }
+    if (game && game.isDarkMode) {setIsDarkModeUpdate(game.isDarkMode);initialIsDarkModeRef.current = game.isDarkMode;}
     if (game && game.isIntroOfYourself) {
       setIsIntroOfYourselfUpdate(game.isIntroOfYourself);
       initialIsIntroOfYourselfRef.current = game.isIntroOfYourself;
@@ -194,47 +191,27 @@ const UpdateIntro = ({
     if (!upDateIntro) return;
     setComparaison({
       isNameOfGameChanged: nameOfGameUpdate !== initialNameOfGameRef.current,
-      isShortIntroChanged:
-        shortIntroductionUpdate !== initialShortIntroductionRef.current,
-      isDetailsIntroChanged:
-        introductionOfTheGameUpdate !== initialIntroductionOfTheGameRef.current,
-      isPlatformChanged:
-        JSON.stringify(platformUpdate) !==
-        JSON.stringify(initialPlatformRef.current),
+      isShortIntroChanged: shortIntroductionUpdate !== initialShortIntroductionRef.current,
+      isDetailsIntroChanged: introductionOfTheGameUpdate !== initialIntroductionOfTheGameRef.current,
+      isPlatformChanged: JSON.stringify(platformUpdate) !== JSON.stringify(initialPlatformRef.current),
       isReleaseDateChanged: releaseDateUpdate !== initialReleaseDateRef.current,
-      isSelectedAgePegiChanged:
-        selectedAgePegiUpdate !== initialSelectedAgePegiRef.current,
-      isSelectedAdditionalPegiChanged:
-        JSON.stringify(selectedAdditionalPegiUpdate) !==
-        JSON.stringify(initialSelectedAdditionalPegiRef.current),
-      isSoloMultiChanged:
-        JSON.stringify(soloMultiUpdate) !==
-        JSON.stringify(initialSoloMultiRef.current),
-      isUrlPosterCloudinaryChanged:
-        urlPosterCloudinaryUpdate !== initialUrlPosterCloudinaryRef.current,
+      isSelectedAgePegiChanged: selectedAgePegiUpdate !== initialSelectedAgePegiRef.current,
+      isSelectedAdditionalPegiChanged: JSON.stringify(selectedAdditionalPegiUpdate) !== JSON.stringify(initialSelectedAdditionalPegiRef.current),
+      isSoloMultiChanged: JSON.stringify(soloMultiUpdate) !== JSON.stringify(initialSoloMultiRef.current),
+      isUrlPosterCloudinaryChanged: urlPosterCloudinaryUpdate !== initialUrlPosterCloudinaryRef.current,
       isUrlPosterChanged: urlPosterUpdate !== initialUrlPosterRef.current,
-      isUrlImageOneChanged:
-        urlImageOneCloudinaryUpdate !== initialUrlImageOneRef.current,
-      isUrlImageTwoChanged:
-        urlImageTwoCloudinaryUpdate !== initialUrlImageTwoRef.current,
-      isUrlImageThreeChanged:
-        urlImageThreeCloudinaryUpdate !== initialUrlImageThreeRef.current,
-      isUrlBackgroundChanged:
-        urlBackgroundCloudinaryUpdate !== initialUrlBackgroundRef.current,
+      isUrlImageOneChanged: urlImageOneCloudinaryUpdate !== initialUrlImageOneRef.current,
+      isUrlImageTwoChanged: urlImageTwoCloudinaryUpdate !== initialUrlImageTwoRef.current,
+      isUrlImageThreeChanged: urlImageThreeCloudinaryUpdate !== initialUrlImageThreeRef.current,
+      isUrlBackgroundChanged: urlBackgroundCloudinaryUpdate !== initialUrlBackgroundRef.current,
       isVideoLinkChanged: videoLinkUpdate !== initialVideoLinkRef.current,
-      isWebSiteOfThisGameChanged:
-        webSiteOfThisGameUpdate !== initialWebSiteOfThisGameRef.current,
-      isWebSiteOfThisCreatorChanged:
-        webSiteOfThisCreatorUpdate !== initialWebSiteOfThisCreatorRef.current,
+      isWebSiteOfThisGameChanged: webSiteOfThisGameUpdate !== initialWebSiteOfThisGameRef.current,
+      isWebSiteOfThisCreatorChanged: webSiteOfThisCreatorUpdate !== initialWebSiteOfThisCreatorRef.current,
       isSteamLinkChanged: steamLinkUpdate !== initialSteamLinkRef.current,
-      isEpicGamesLinkChanged:
-        epicGamesLinkUpdate !== initialEpicGamesLinkRef.current,
-      isGenreOfGameChanged:
-        JSON.stringify(genreOfGameUpdate) !==
-        JSON.stringify(initialGenreOfGameRef.current),
+      isEpicGamesLinkChanged: epicGamesLinkUpdate !== initialEpicGamesLinkRef.current,
+      isGenreOfGameChanged: JSON.stringify(genreOfGameUpdate) !== JSON.stringify(initialGenreOfGameRef.current),
       isDarkModeChanged: isDarkModeUpdate !== initialIsDarkModeRef.current,
-      isIntroOfYourselfChanged:
-        isIntroOfYourselfUpdate !== initialIsIntroOfYourselfRef.current,
+      isIntroOfYourselfChanged: isIntroOfYourselfUpdate !== initialIsIntroOfYourselfRef.current,
     });
   }, [
     nameOfGameUpdate,
@@ -286,14 +263,8 @@ const UpdateIntro = ({
         }
       } else console.log("Le nom du jeu n'a pas été changé");
 
-      if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {
-        setWeAreUpdatingIntro(false);
-        return toast.error("Vous devez sélectionner un fichier image");
-      }
-      if (
-        urlPosterCloudinaryUpdate &&
-        !urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)
-      ) {
+      if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {setWeAreUpdatingIntro(false);return toast.error("Vous devez sélectionner un fichier image");}
+      if (urlPosterCloudinaryUpdate && !urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)) {
         setWeAreUpdatingIntro(false);
         return toast.error("L'image doit être au format jpg, jpeg ou png");
       }
@@ -303,71 +274,44 @@ const UpdateIntro = ({
       }
       if (!selectedAgePegiUpdate) {
         setWeAreUpdatingIntro(false);
-        return toast.error(
-          "Vous devez sélectionner un âge parmi les options disponibles."
-        );
+        return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
       }
       if (shortIntroductionUpdate.length > 400) {
         setWeAreUpdatingIntro(false);
-        return toast.error(
-          "L'introduction doit comporter 400 caractères maximum."
-        );
+        return toast.error("L'introduction doit comporter 400 caractères maximum.");
       }
       if (introductionOfTheGameUpdate.length > 10000) {
         setWeAreUpdatingIntro(false);
-        return toast.error(
-          "La présentation doit comporter 10 000 caractères maximum."
-        );
+        return toast.error("La présentation doit comporter 10 000 caractères maximum.");
       }
       if (platformUpdate.length === 0) {
         setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner au moins une plateforme.");
       }
-      if (
-        webSiteOfThisGameUpdate &&
-        !webSiteOfThisGameUpdate.startsWith("https://")
-      ) {
+      if (webSiteOfThisGameUpdate && !webSiteOfThisGameUpdate.startsWith("https://")) {
         setWeAreUpdatingIntro(false);
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
-      if (
-        webSiteOfThisCreatorUpdate &&
-        !webSiteOfThisCreatorUpdate.startsWith("https://")
-      ) {
+      if (webSiteOfThisCreatorUpdate && !webSiteOfThisCreatorUpdate.startsWith("https://")) {
         setWeAreUpdatingIntro(false);
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
-      if (
-        !(releaseDateUpdate instanceof Date) ||
-        isNaN(releaseDateUpdate.getTime())
-      ) {
+      if (!(releaseDateUpdate instanceof Date) || isNaN(releaseDateUpdate.getTime())) {
         setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner une date de sortie.");
       }
       if (releaseDateUpdate) {
-        const releaseDateUpdateString =
-          releaseDateUpdate.toLocaleDateString("fr-FR");
+        const releaseDateUpdateString = releaseDateUpdate.toLocaleDateString("fr-FR");
         const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
         if (!datePattern.test(releaseDateUpdateString)) {
           setWeAreUpdatingIntro(false);
-          return toast.error(
-            "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)"
-          );
+          return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
         }
-      } else return toast.error("Vous devez sélectionner une date de sortie.");
-      if (
-        steamLinkUpdate &&
-        (!steamLinkUpdate.startsWith("https://") ||
-          !steamLinkUpdate.includes("steam"))
-      ) {
+      } 
+      else return toast.error("Vous devez sélectionner une date de sortie.");
+      if (steamLinkUpdate && (!steamLinkUpdate.startsWith("https://") || !steamLinkUpdate.includes("steam"))) {
         setWeAreUpdatingIntro(false);
-        return toast.error(
-          "Le lien vers Steam doit commencer par 'https://' et inclure steam"
-        );
+        return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
       }
 
       const formData = new FormData();
@@ -375,10 +319,7 @@ const UpdateIntro = ({
       formData.append("email", email);
       formData.append("nameOfGame", encodeURIComponent(nameOfGameUpdate));
       formData.append("shortIntroduction", he.encode(shortIntroductionUpdate));
-      formData.append(
-        "introductionOfTheGame",
-        he.encode(introductionOfTheGameUpdate)
-      );
+      formData.append("introductionOfTheGame",he.encode(introductionOfTheGameUpdate));
       formData.append("platform", JSON.stringify(platformUpdate));
       formData.append("releaseDate", releaseDateUpdate);
       formData.append("SoloMulti", JSON.stringify(soloMultiUpdate));
@@ -387,40 +328,24 @@ const UpdateIntro = ({
       formData.append("genreOfGame", JSON.stringify(genreOfGameUpdate));
       formData.append("isDarkMode", isDarkModeUpdate.toString());
       formData.append("isIntroOfYourself", isIntroOfYourselfUpdate.toString());
-      if (urlPosterCloudinaryUpdate)
-        formData.append("urlPosterCloudinary", urlPosterCloudinaryUpdate);
+      if (urlPosterCloudinaryUpdate)formData.append("urlPosterCloudinary", urlPosterCloudinaryUpdate);
       if (urlPosterUpdate) formData.append("urlPoster", urlPosterUpdate);
       if (videoLinkUpdate) formData.append("videoLink", videoLinkUpdate);
       if (steamLinkUpdate) formData.append("steamLink", steamLinkUpdate);
-      if (epicGamesLinkUpdate)
-        formData.append("epicGamesLink", epicGamesLinkUpdate);
-      if (webSiteOfThisGameUpdate)
-        formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);
-      if (webSiteOfThisCreatorUpdate)
-        formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);
-      if (urlImageOneCloudinaryUpdate)
-        formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);
-      if (urlImageTwoCloudinaryUpdate)
-        formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);
-      if (urlImageThreeCloudinaryUpdate)
-        formData.append(
-          "urlImageThreeCloudinary",
-          urlImageThreeCloudinaryUpdate
-        );
-      if (urlBackgroundCloudinaryUpdate)
-        formData.append(
-          "urlBackgroundCloudinary",
-          urlBackgroundCloudinaryUpdate
-        );
+      if (epicGamesLinkUpdate) formData.append("epicGamesLink", epicGamesLinkUpdate);
+      if (webSiteOfThisGameUpdate) formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);
+      if (webSiteOfThisCreatorUpdate) formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);
+      if (urlImageOneCloudinaryUpdate) formData.append("urlImageOneCloudinary", urlImageOneCloudinaryUpdate);
+      if (urlImageTwoCloudinaryUpdate) formData.append("urlImageTwoCloudinary", urlImageTwoCloudinaryUpdate);
+      if (urlImageThreeCloudinaryUpdate) formData.append("urlImageThreeCloudinary", urlImageThreeCloudinaryUpdate);
+      if (urlBackgroundCloudinaryUpdate) formData.append("urlBackgroundCloudinary", urlBackgroundCloudinaryUpdate);
       //console.log("Form data:", formData);
       await updateIntroduction(formData);
       toast.success("Présentation du jeu a été mise à jour !");
       setWeAreUpdatingIntro(false);
       setLoading(true);
       fetchgameData();
-      router.replace(
-        `/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}?nameofgame=${encodeURIComponent(nameOfGameUpdate)}`
-      );
+      router.replace(`/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}?nameofgame=${encodeURIComponent(nameOfGameUpdate)}`);
     } catch (error) {
       return toast.error(error.message);
     }
@@ -534,27 +459,12 @@ const UpdateIntro = ({
           {/* Affiche [encadré] */}
           <div className="w-[95%] tablet:w-[380px] p-4 mt-4 border grasFondBleu mx-auto">
             <p className="text-center">Choisissez l'affiche du jeu</p>
-            <ImageUpload
+            <ImageCloudinaryUpdate
+              name="posterGlimpseFile"
               urlCloudinary={urlPosterCloudinaryUpdate || ""}
-              setter={setUrlPosterCloudinaryUpdate}
+              setUrlCloudinary={setUrlPosterCloudinaryUpdate}
               buttonText="Télécharger Affiche"
-              tag={`Affiche - ${game.nameofgame}`}
-              nameOfGame={game.nameofgame}
             />
-            <div className="flex justify-center">
-              <Image
-                src={
-                  game.urlPosterCloudinary
-                    ? `${game.urlPosterCloudinary}`
-                    : `/presentation/${game.urlPoster}`
-                }
-                className="lg:w-[192px] lg:h-[311px] py-3 mt-3 inline-block"
-                width={192}
-                height={311}
-                alt={`${game.nameofgame}`}
-                unoptimized={true}
-              />
-            </div>
           </div>
 
           <section className="flex flex-col tablet:flex-row w-full gap-2 justify-center">
@@ -563,23 +473,12 @@ const UpdateIntro = ({
               <p className="text-center">
                 Choisissez l'image d'illustration n°1
               </p>
-              <ImageUpload
+              <ImageCloudinaryUpdate
+                name="imageOneGlimpseFile"
                 urlCloudinary={urlImageOneCloudinaryUpdate || ""}
-                setter={setUrlImageOneCloudinaryUpdate}
+                setUrlCloudinary={setUrlImageOneCloudinaryUpdate}
                 buttonText="Télécharger l'image n°1"
-                tag={`Image d'illustration n°1 - ${nameOfGameUpdate}`}
-                nameOfGame={nameOfGameUpdate}
               />
-              {urlImageOneCloudinaryUpdate && (
-                <Image
-                  src={urlImageOneCloudinaryUpdate}
-                  className="w-[275px] h-[154px] py-3 inline-block"
-                  width={275}
-                  height={154}
-                  alt="urlImageOne"
-                  unoptimized={true}
-                />
-              )}
             </div>
 
             {/* Image d'illustration n°2 [encadré] */}
@@ -587,23 +486,12 @@ const UpdateIntro = ({
               <p className="text-center tablet:inline-block">
                 Choisissez l'image d'illustration n°2
               </p>
-              <ImageUpload
+              <ImageCloudinaryUpdate
+                name="imageTwoGlimpseFile"
                 urlCloudinary={urlImageTwoCloudinaryUpdate || ""}
-                setter={setUrlImageTwoCloudinaryUpdate}
+                setUrlCloudinary={setUrlImageTwoCloudinaryUpdate}
                 buttonText="Télécharger l'image n°2"
-                tag={`Image d'illustration n°2 - ${nameOfGameUpdate}`}
-                nameOfGame={nameOfGameUpdate}
               />
-              {urlImageTwoCloudinaryUpdate && (
-                <Image
-                  src={urlImageTwoCloudinaryUpdate}
-                  className="w-[275px] h-[154px] py-3 inline-block"
-                  width={275}
-                  height={154}
-                  alt="urlImageTwo"
-                  unoptimized={true}
-                />
-              )}
             </div>
 
             {/* Image d'illustration n°3 [encadré] */}
@@ -611,23 +499,12 @@ const UpdateIntro = ({
               <p className="text-center tablet:inline-block">
                 Choisissez l'image d'illustration n°3
               </p>
-              <ImageUpload
+              <ImageCloudinaryUpdate
+                name="imageThreeGlimpseFile"
                 urlCloudinary={urlImageThreeCloudinaryUpdate || ""}
-                setter={setUrlImageThreeCloudinaryUpdate}
+                setUrlCloudinary={setUrlImageThreeCloudinaryUpdate}
                 buttonText="Télécharger l'image n°3"
-                tag={`Image d'illustration n°3`}
-                nameOfGame={nameOfGameUpdate}
               />
-              {urlImageThreeCloudinaryUpdate && (
-                <Image
-                  src={urlImageThreeCloudinaryUpdate}
-                  className="w-[275px] h-[154px] py-3 inline-block"
-                  width={275}
-                  height={154}
-                  alt="urlImageThree"
-                  unoptimized={true}
-                />
-              )}
             </div>
           </section>
 
@@ -636,23 +513,12 @@ const UpdateIntro = ({
             <p className="text-center tablet:inline-block">
               Choisissez une image pour l'arrière plan
             </p>
-            <ImageUpload
+            <ImageCloudinaryUpdate
+              name="backgroundGlimpseFile"
               urlCloudinary={urlBackgroundCloudinaryUpdate || ""}
-              setter={setUrlBackgroundCloudinaryUpdate}
+              setUrlCloudinary={setUrlBackgroundCloudinaryUpdate}
               buttonText="Télécharger Background"
-              tag="Background"
-              nameOfGame={nameOfGameUpdate}
             />
-            {urlBackgroundCloudinaryUpdate && (
-              <Image
-                src={urlBackgroundCloudinaryUpdate}
-                className="w-[275px] h-[154px] py-3 mx-auto"
-                width={275}
-                height={154}
-                alt="Background Image"
-                unoptimized={true}
-              />
-            )}
           </div>
 
           {/* Lien vidéo Youtube [encadré] */}
@@ -728,7 +594,8 @@ const UpdateIntro = ({
           {/* Ajout de la biographie du créateur [encadré] */}
           <div className="flex justify-center">
             <div className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer">
-              Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?
+              Souhaitez-vous ajouter la présentation de vous-même ou de votre
+              équipe ?
               <div className="flex justify-center mt-2 w-full">
                 <label className="flex items-center mr-4">
                   <input
@@ -781,7 +648,6 @@ const UpdateIntro = ({
           </button>
         </div>
       )}
-
     </>
   );
 };

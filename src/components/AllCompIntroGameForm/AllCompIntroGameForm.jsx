@@ -17,6 +17,7 @@ import Loading from "@/components/ForLayout/Loading/Loading";
 import WeAreSendingData from "@/components/WeAreSendingData/WeAreSendingData";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { processPaymentSuccess } from "@/actions/process-payment-success";
 
 // FORMULARY used by a the creator to introduce one game
 const pressStart2P = Press_Start_2P({
@@ -35,7 +36,6 @@ export default function AllCompIntroGameForm() {
   const [user, setUser] = useState({});
   const [avatar, setAvatar] = useState("");
   const [isIntroOfYourself, setIsIntroOfYourself] = useState("false");
-  console.log(isIntroOfYourself);
   const [nameOfGame, setNameOfGame] = useState("");
   const [shortIntroduction, setShortIntroduction] = useState("");
   const [introductionOfTheGame, setIntroductionOfTheGame] = useState("");
@@ -58,6 +58,7 @@ export default function AllCompIntroGameForm() {
   // Nouveaux états pour le paiement
   const [showPayment, setShowPayment] = useState(false);
   const [draftId, setDraftId] = useState(null);
+  const [validatedFiles, setValidatedFiles] = useState(null);
 
   /************* Get data about user filling out the form ***************************/
   useEffect(() => {
@@ -92,6 +93,96 @@ export default function AllCompIntroGameForm() {
     setLoading(false);
   };
 
+  // Fonction pour traiter les données après paiement réussi
+  const handlePaymentSuccess = async (validatedData) => {
+    try {
+      setWeAreSendingData(true);
+
+      // 1. Upload des images vers Cloudinary côté client
+      console.log("Début de l'upload des images vers Cloudinary");
+      console.log("ValidatedFiles:", validatedFiles);
+      console.log(
+        "NEXT_UPLOAD_PRESET_UNSIGNED:",
+        process.env.NEXT_UPLOAD_PRESET_UNSIGNED
+      );
+      console.log(
+        "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:",
+        process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+      );
+
+      const uploadPromises = Object.entries(validatedFiles).map(
+        async ([key, file]) => {
+          if (file) {
+            console.log(`Uploading ${key}:`, file);
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append(
+              "upload_preset",
+              process.env.NEXT_UPLOAD_PRESET_UNSIGNED
+            );
+
+            try {
+              console.log(`Sending ${key} to Cloudinary...`);
+              const response = await fetch(
+                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
+
+              if (!response.ok) {
+                const errorData = await response.json();
+                console.error(`Cloudinary error for ${key}:`, errorData);
+                throw new Error(
+                  `Erreur Cloudinary pour ${key}: ${
+                    errorData.error || "Erreur inconnue"
+                  }`
+                );
+              }
+
+              const data = await response.json();
+              console.log(`Upload successful for ${key}:`, data.secure_url);
+              return { key, url: data.secure_url };
+            } catch (error) {
+              console.error(`Upload error for ${key}:`, error);
+              throw error;
+            }
+          }
+        }
+      );
+
+      // Attendre que tous les uploads soient terminés
+      const uploadResults = await Promise.all(uploadPromises);
+      const uploadedUrls = {};
+      uploadResults.forEach((result) => {
+        if (result) {
+          uploadedUrls[result.key] = result.url;
+        }
+      });
+
+      // 2. Traiter le paiement réussi avec les URLs uploadées
+      const dataToProcess = {
+        ...validatedData,
+        uploadedUrls,
+      };
+
+      const result = await processPaymentSuccess(dataToProcess);
+
+      // Nettoyer le sessionStorage et l'état
+      sessionStorage.removeItem("validatedGameData");
+      setValidatedFiles(null);
+
+      toast.success("Présentation créée avec succès !");
+      router.push("/");
+    } catch (error) {
+      console.error("Erreur lors du traitement après paiement:", error);
+      toast.error("Erreur lors de la création de la présentation");
+    } finally {
+      setWeAreSendingData(false);
+    }
+  };
+
   // Si le paiement est affiché, ne pas afficher le formulaire
   if (showPayment && draftId) {
     return (
@@ -99,8 +190,16 @@ export default function AllCompIntroGameForm() {
         draftId={draftId}
         gameName={nameOfGame}
         onPaymentSuccess={() => {
-          toast.success("Présentation activée avec succès !");
-          router.push("/");
+          // Récupérer les données validées du sessionStorage
+          const validatedData = JSON.parse(
+            sessionStorage.getItem("validatedGameData")
+          );
+          if (validatedData) {
+            handlePaymentSuccess(validatedData);
+          } else {
+            toast.error("Données de présentation non trouvées");
+            router.push("/");
+          }
         }}
       />
     );
@@ -210,9 +309,17 @@ export default function AllCompIntroGameForm() {
             setFilesToSend={setFilesToSend}
             setLoading={setLoading}
             setWeAreSendingData={setWeAreSendingData}
-            onDraftCreated={(draftId) => {
-              setDraftId(draftId);
-              setShowPayment(true);
+            onDraftCreated={(draftId, validatedData, filesToSend) => {
+              if (validatedData) {
+                // Nouvelles données validées, afficher le paiement
+                setDraftId("temp-draft-id"); // ID temporaire pour le paiement
+                setValidatedFiles(filesToSend); // Stocker les fichiers
+                setShowPayment(true);
+              } else if (draftId) {
+                // Ancien flux avec draftId (pour compatibilité)
+                setDraftId(draftId);
+                setShowPayment(true);
+              }
             }}
           />
         </section>

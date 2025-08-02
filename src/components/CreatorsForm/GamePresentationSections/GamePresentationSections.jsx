@@ -118,6 +118,13 @@ const GamePresentationSections = ({
         );
       }
 
+      //Vérifiez le nombre de caractères de l'introduction détaillée.
+      if (shortIntroduction.length > 1000) {
+        return toast.error(
+          "L'introduction doit comporter 1000 caractères maximum."
+        );
+      }
+
       //Vérifiez le nombre de caractères de la présentation détaillée.
       if (introductionOfTheGame.length > 10000) {
         return toast.error(
@@ -173,152 +180,51 @@ const GamePresentationSections = ({
         );
       }
 
-      /*** 2 ******** Upload Image To Cloudinary ***************************************************************/
-      const cld = new Cloudinary({
-        cloud: {
-          cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-        },
-        url: {
-          secure: true,
-        },
-      });
-
-      const uploadPromises = Object.entries(filesToSend).map(
-        async ([key, file]) => {
-          if (file) {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append(
-              "upload_preset",
-              process.env.NEXT_UPLOAD_PRESET_UNSIGNED
-            );
-
-            try {
-              const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
-                {
-                  method: "POST",
-                  body: formData,
-                }
-              );
-              const data = await response.json();
-              //console.log(`Upload successful for ${key}:`, data.secure_url);
-
-              // Stocker l'URL dans l'état approprié
-              setUrlMongoDB((prev) => ({
-                ...prev,
-                [key]: data.secure_url, // Mettez à jour l'URL directement dans sendImages
-              }));
-            } catch (error) {
-              console.error(`Upload error for ${key}:`, error);
-            }
-          }
-        }
-      );
-
-      // Attendez que tous les téléchargements soient terminés
-      await Promise.all(uploadPromises);
-    } catch (error) {
-      console.log(error);
-      return toast.error(error.message);
-    }
-  };
-
-  // ** 3 ** Are all url ready to be sent ? ********************************************************************
-  useEffect(() => {
-    const checkUrls = async () => {
-      // Check urlMongoDB contain all values before to call handleFormSubmit
-      if (Object.keys(urlMongoDB).length < Object.keys(filesToSend).length) {
-        console.log("Il reste des URL à stocker dans urlMongoDB.");
-      } else if (
-        /* Two conditions*/ Object.keys(urlMongoDB).length ===
-          Object.keys(filesToSend).length &&
-        Object.keys(filesToSend).length > 0
-      ) {
-        console.log(
-          "Maintenant que les images ont été envoyées, on lance la fonction handleFormSubmit pour envoyer les données à mongoDB"
-        );
-        await handleFormSubmit();
-      }
-    };
-    checkUrls();
-  }, [urlMongoDB]);
-
-  /****** 4 ************** Send data to MongoDB ********************************************************** */
-  const handleFormSubmit = async () => {
-    setWeAreSendingData(true);
-    try {
-      // Function to send the data to createIntroduction function
-      const introductionFormaData = new FormData();
-      introductionFormaData.append(
-        "nameOfGame",
-        encodeURIComponent(nameOfGame)
-      );
-      introductionFormaData.append(
-        "shortIntroduction",
-        he.encode(shortIntroduction)
-      );
-      introductionFormaData.append(
-        "introductionOfTheGame",
-        he.encode(introductionOfTheGame)
-      );
-      introductionFormaData.append("platform", JSON.stringify(platform));
-      introductionFormaData.append("releaseDate", releaseDate);
-      introductionFormaData.append(
-        "urlPosterCloudinary",
-        urlMongoDB.posterGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlImageOneCloudinary",
-        urlMongoDB.imageOneGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlImageTwoCloudinary",
-        urlMongoDB.imageTwoGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlImageThreeCloudinary",
-        urlMongoDB.imageThreeGlimpseFile || ""
-      );
-      introductionFormaData.append(
-        "urlBackgroundCloudinary",
-        urlMongoDB.backgroundGlimpseFile || ""
-      );
-      introductionFormaData.append("SoloMulti", JSON.stringify(SoloMulti));
-      introductionFormaData.append("selectedAgePegi", selectedAgePegi);
-      introductionFormaData.append(
-        "selectedAdditionalPegi",
-        selectedAdditionalPegi
-      );
-      introductionFormaData.append("genreOfGame", JSON.stringify(genreOfGame));
-      introductionFormaData.append("videoLink", videoLink);
-      introductionFormaData.append("steamLink", steamLink);
-      introductionFormaData.append("epicGamesLink", epicGamesLink);
-      introductionFormaData.append("webSiteOfThisGame", webSiteOfThisGame);
-      introductionFormaData.append(
-        "webSiteOfThisCreator",
-        webSiteOfThisCreator
-      );
-      introductionFormaData.append("isDarkMode", isDarkMode.toString());
-      introductionFormaData.append(
-        "isIntroOfYourself",
-        isIntroOfYourself.toString()
-      );
-      introductionFormaData.append("status_payment", "pending"); // Nouveau statut
-      introductionFormaData.append("createdAt", new Date().toISOString()); // Timestamp pour nettoyage
-
-      // Créer un brouillon avec statut "pending"
-      const newDraftId = await createIntroduction(introductionFormaData);
-      onDraftCreated(newDraftId); // Appeler la fonction du parent pour mettre à jour l'état
-    } catch (error) {
-      console.log(error);
-      return toast.error(error.message);
-    } finally {
+      // Si toutes les validations sont passées, on peut procéder au paiement
+      // Les images seront uploadées seulement après paiement réussi
       console.log(
-        "------------------- Création du brouillon terminée ! ----------------------"
+        "Toutes les validations sont passées, on peut procéder au paiement"
       );
+
+      // Créer un objet temporaire avec toutes les données validées (sans les fichiers)
+      const validatedData = {
+        nameOfGame,
+        shortIntroduction,
+        introductionOfTheGame,
+        platform,
+        releaseDate,
+        SoloMulti,
+        selectedAgePegi,
+        selectedAdditionalPegi,
+        genreOfGame,
+        videoLink,
+        steamLink,
+        epicGamesLink,
+        webSiteOfThisGame,
+        webSiteOfThisCreator,
+        isDarkMode,
+        isIntroOfYourself,
+      };
+
+      // Stocker temporairement les données validées (sans les fichiers)
+      sessionStorage.setItem(
+        "validatedGameData",
+        JSON.stringify(validatedData)
+      );
+
+      // Notifier le parent que les données sont validées et prêtes pour le paiement
+      // Passer les fichiers séparément car ils ne peuvent pas être sérialisés
+      onDraftCreated(null, validatedData, filesToSend);
+    } catch (error) {
+      console.log(error);
+      setWeAreSendingData(false);
+      return toast.error(error.message);
     }
   };
+
+  // Cette vérification n'est plus nécessaire car les images seront uploadées après paiement
+
+  // Cette fonction n'est plus nécessaire car les données sont maintenant traitées après paiement
 
   return (
     <form

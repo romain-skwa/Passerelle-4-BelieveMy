@@ -10,7 +10,6 @@ import {
 } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
 import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
-import { activateDraft } from "@/actions/create-introduction";
 import { useRouter } from "next/navigation";
 
 // Charger Stripe
@@ -64,13 +63,11 @@ const CheckoutForm = ({ draftId, gameName, onPaymentSuccess }) => {
       if (error) {
         toast.error(error.message);
       } else if (paymentIntent.status === "succeeded") {
-        // Activer le brouillon
-        await activateDraft(draftId);
+        // Paiement réussi, appeler la fonction de succès
         toast.success(
           language === "fr" ? "Paiement réussi !" : "Payment successful!"
         );
         onPaymentSuccess();
-        router.push("/");
       }
     } catch (error) {
       toast.error(
@@ -136,13 +133,12 @@ const AllCompStripe = ({ draftId, gameName, onPaymentSuccess }) => {
   return (
     <div className="min-h-screen  py-8">
       <div className="max-w-4xl mx-auto">
-
         <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center mb-8">
-          {language === "fr"
-            ? "Finaliser votre présentation"
-            : "Complete your presentation"}
-        </h1>
+          <h1 className="text-3xl font-bold text-center mb-8">
+            {language === "fr"
+              ? "Finaliser votre présentation"
+              : "Complete your presentation"}
+          </h1>
           <div className="mb-6 text-center">
             <p className="text-lg text-gray-600 mb-2">
               {language === "fr"
