@@ -54,7 +54,7 @@ export default function AllCompIntroGameForm() {
   const [backgroundPreview, setBackgroundPreview] = useState("");
   const [filesToSend, setFilesToSend] = useState({});
   const [loading, setLoading] = useState(true);
-  const [weAreSendingData, setWeAreSendingData] = useState(false); console.log("weAreSendingData", weAreSendingData); 
+  const [weAreSendingData, setWeAreSendingData] = useState(false);
   // Nouveaux états pour le paiement
   const [showPayment, setShowPayment] = useState(false);
   const [draftId, setDraftId] = useState(null);
@@ -101,14 +101,8 @@ export default function AllCompIntroGameForm() {
       // 1. Upload des images vers Cloudinary côté client
       console.log("Début de l'upload des images vers Cloudinary");
       console.log("ValidatedFiles:", validatedFiles);
-      console.log(
-        "NEXT_UPLOAD_PRESET_UNSIGNED:",
-        process.env.NEXT_UPLOAD_PRESET_UNSIGNED
-      );
-      console.log(
-        "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:",
-        process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-      );
+      console.log("NEXT_UPLOAD_PRESET_UNSIGNED:", process.env.NEXT_UPLOAD_PRESET_UNSIGNED);
+      console.log("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
 
       const uploadPromises = Object.entries(validatedFiles).map(
         async ([key, file]) => {
@@ -116,10 +110,7 @@ export default function AllCompIntroGameForm() {
             console.log(`Uploading ${key}:`, file);
             const formData = new FormData();
             formData.append("file", file);
-            formData.append(
-              "upload_preset",
-              process.env.NEXT_UPLOAD_PRESET_UNSIGNED
-            );
+            formData.append("upload_preset", process.env.NEXT_UPLOAD_PRESET_UNSIGNED);
 
             try {
               console.log(`Sending ${key} to Cloudinary...`);
@@ -172,18 +163,26 @@ export default function AllCompIntroGameForm() {
       // Nettoyer le sessionStorage et l'état
       sessionStorage.removeItem("validatedGameData");
       setValidatedFiles(null);
-
       toast.success("Présentation créée avec succès !");
       router.push("/");
     } catch (error) {
       console.error("Erreur lors du traitement après paiement:", error);
       toast.error("Erreur lors de la création de la présentation");
-    } finally {
-      setWeAreSendingData(false);
-    }
+    } 
   };
 
-  // Si le paiement est affiché, ne pas afficher le formulaire
+  // D'abord vérifier si on est en train d'envoyer des données
+  if (weAreSendingData) {
+    return (
+      <WeAreSendingData
+        filesToSend={filesToSend}
+        nameOfGame={nameOfGame}
+        avatar={avatar}
+      />
+    );
+  }
+
+  // Ensuite vérifier si on affiche le paiement
   if (showPayment && draftId) {
     return (
       <AllCompStripe
@@ -198,6 +197,7 @@ export default function AllCompIntroGameForm() {
             handlePaymentSuccess(validatedData);
           } else {
             toast.error("Données de présentation non trouvées");
+            setWeAreSendingData(false);
             router.push("/");
           }
         }}
@@ -205,17 +205,12 @@ export default function AllCompIntroGameForm() {
     );
   }
 
-  return loading || weAreSendingData ? (
-    weAreSendingData ? (
-      <WeAreSendingData
-        filesToSend={filesToSend}
-        nameOfGame={nameOfGame}
-        avatar={avatar}
-      /> // Loading component when we are sending data
-    ) : (
-      <Loading /> // Loading component when the page is not yet loaded
-    )
-  ) : (
+  // Enfin, vérifier si la page est en cours de chargement
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
     <>
       <section className="w-[95vw] largeScreen:w-[68vw] mx-auto px-0 tablet:px-8 text-white font-bold border border-purple-600 rounded-3xl bg-black/30">
         <div

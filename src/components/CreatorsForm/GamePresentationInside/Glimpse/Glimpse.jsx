@@ -111,11 +111,11 @@ const ApercuFormulaire = ({
 
         {/**************** Affichage des plate-formes PC et Consoles *******************/}
         {platform && (
-          <div className={` flex justify-center gap-2 items-center `}>
+          <div className={` flex justify-center gap-2 items-center`}>
             {platform.map((plat, index) => (
               <div
                 key={index}
-                className={`buttonPlatform ${
+                className={`${formularyCss.PlatformIntro} ${
                   isDarkMode
                     ? "text-white border border-white"
                     : "text-black border-2 border-gray-700 "

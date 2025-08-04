@@ -102,9 +102,7 @@ const GamePresentationSections = ({
       const data = await response.json();
       if (data.exists) {
         setWeAreSendingData(false);
-        return toast.error(
-          "Ce nom de jeu existe déjà dans la base de données. GamePresentationSections"
-        );
+        return toast.error("Ce nom de jeu existe déjà dans la base de données. GamePresentationSections");
       }
       /************************************************************************** */
 
@@ -113,23 +111,17 @@ const GamePresentationSections = ({
       }
 
       if (!selectedAgePegi) {
-        return toast.error(
-          "Vous devez sélectionner un âge parmi les options disponibles."
-        );
+        return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
       }
 
       //Vérifiez le nombre de caractères de l'introduction détaillée.
       if (shortIntroduction.length > 1000) {
-        return toast.error(
-          "L'introduction doit comporter 1000 caractères maximum."
-        );
+        return toast.error("L'introduction doit comporter 1000 caractères maximum.");
       }
 
       //Vérifiez le nombre de caractères de la présentation détaillée.
       if (introductionOfTheGame.length > 10000) {
-        return toast.error(
-          "La présentation doit comporter 10 000 caractères maximum."
-        );
+        return toast.error("La présentation doit comporter 10 000 caractères maximum.");
       }
       // Vérifiez si au moins une plateforme est sélectionnée
       if (platform.length === 0) {
@@ -138,19 +130,12 @@ const GamePresentationSections = ({
 
       // Vérifiez si le site du jeu commence par "https://"
       if (webSiteOfThisGame && !webSiteOfThisGame.startsWith("https://")) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
 
       // Vérifiez si le site des créateurs commence par "https://"
-      if (
-        webSiteOfThisCreator &&
-        !webSiteOfThisCreator.startsWith("https://")
-      ) {
-        return toast.error(
-          "Le lien du site officiel doit commencer par 'https://'"
-        );
+      if (webSiteOfThisCreator && !webSiteOfThisCreator.startsWith("https://")) {
+        return toast.error("Le lien du site officiel doit commencer par 'https://'");
       }
 
       // Vérification du format de la date de sortie
@@ -175,16 +160,12 @@ const GamePresentationSections = ({
         (!steamLink.startsWith("https://") || !steamLink.includes("steam"))
       ) {
         setWeAreSendingData(false);
-        return toast.error(
-          "Le lien vers Steam doit commencer par 'https://' et inclure steam"
-        );
+        return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
       }
 
       // Si toutes les validations sont passées, on peut procéder au paiement
       // Les images seront uploadées seulement après paiement réussi
-      console.log(
-        "Toutes les validations sont passées, on peut procéder au paiement"
-      );
+      console.log("Toutes les validations sont passées, on peut procéder au paiement");
 
       // Créer un objet temporaire avec toutes les données validées (sans les fichiers)
       const validatedData = {
@@ -221,10 +202,6 @@ const GamePresentationSections = ({
       return toast.error(error.message);
     }
   };
-
-  // Cette vérification n'est plus nécessaire car les images seront uploadées après paiement
-
-  // Cette fonction n'est plus nécessaire car les données sont maintenant traitées après paiement
 
   return (
     <form

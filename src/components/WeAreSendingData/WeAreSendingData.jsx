@@ -39,7 +39,7 @@ export default function WeAreSendingData({filesToSend, nameOfGame, avatar}) {
     }
   };
 
-  const browser = getBrowserInfo(); // Obtenez le nom du navigateur
+  const browser = getBrowserInfo(); // Get the name of browser
 
   return (
     <section className={`bg-[rgba(3,3,3,0.8)] rounded-md py-4 px-6 lg:w-2/3 ${formularyCss.neuphormism} w-[90%] tablet:w-[50%] mx-auto flex text-white`}>
