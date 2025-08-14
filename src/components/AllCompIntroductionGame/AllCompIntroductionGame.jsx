@@ -734,6 +734,7 @@ export default function AllCompIntroductionGame({introduction}) {
                     width={800}
                     height={600}
                     unoptimized={true}
+                    className="w-[800px] h-[600px] object-contain"
                   />
                 )}
               </div>
