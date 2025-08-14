@@ -395,7 +395,7 @@ export default function AllCompIntroductionGame({introduction}) {
               {/******************* Displaying categories **********************/}
               {game.genreOfGame && (
                 <div
-                  className={` flex justify-center gap-2 items-center flex-wrap`}
+                  className={` flex justify-center gap-2 items-center flex-wrap mb-3`}
                 >
                   {game.genreOfGame.map((genre, index) => (
                     <div
@@ -532,7 +532,11 @@ export default function AllCompIntroductionGame({introduction}) {
               <section className="mt-4 flex flex-col laptop:flex-row laptop:justify-center gap-6">
                 {/******************* Official game website **********************/}
                 {game.webSiteOfThisGame && (
-                  <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0">
+                  <div className={`font-semibold border-2 py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0 ${
+                    isDarkMode === "true" 
+                      ? "border-white" 
+                      : "border-black"
+                  }`}>
                     <a
                       href={game.webSiteOfThisGame}
                       target="_blank"
@@ -546,7 +550,11 @@ export default function AllCompIntroductionGame({introduction}) {
                 )}
                 {/******************* Official website of the creators **********************/}
                 {game.webSiteOfThisCreator && (
-                  <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl  w-[220px] mx-auto laptop:m-0">
+                  <div className={`font-semibold border-2 py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0 ${
+                    isDarkMode === "true" 
+                      ? "border-white" 
+                      : "border-black"
+                  }`}>
                     <a
                       href={game.webSiteOfThisCreator}
                       target="_blank"

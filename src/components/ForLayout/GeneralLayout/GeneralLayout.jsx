@@ -3,6 +3,7 @@
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import "@/app/styles/background.css";
+import { SessionProvider } from "next-auth/react";
 
 export default function GeneralLayout({ children, backgroundImage }) {
   const hasBackgroundImage = !!backgroundImage;
@@ -20,12 +21,14 @@ export default function GeneralLayout({ children, backgroundImage }) {
     : {};
 
   return (
+    <SessionProvider>
     <section className="flex flex-col h-screen content">
       <Header background={hasBackgroundImage ? "bg-black" : ""} />
       <main className="flex-grow tablet:pt-2 pb-6" style={mainStyle}>
         {children}
       </main>
-      <Footer background={hasBackgroundImage ? "bg-black" : ""} />
-    </section>
+        <Footer background={hasBackgroundImage ? "bg-black" : ""} />
+      </section>
+    </SessionProvider>
   );
 }

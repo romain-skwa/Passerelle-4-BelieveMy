@@ -77,8 +77,8 @@ const UpdateIntro = ({
       setUrlPosterCloudinaryUpdate(game.urlPosterCloudinary);
       initialUrlPosterCloudinaryRef.current = game.urlPosterCloudinary;
     } else {
-      setUrlImageOneCloudinaryUpdate("");
-      initialUrlImageOneRef.current = "";
+      setUrlPosterCloudinaryUpdate("");
+      initialUrlPosterCloudinaryRef.current = "";
     }
     if (game && game.urlPoster) {
       setUrlPosterUpdate(game.urlPoster);
@@ -214,10 +214,55 @@ const UpdateIntro = ({
     return uploadedUrls;
   };
 
+  // Fonction pour extraire l'ID public de l'URL Cloudinary
+  const extractPublicIdFromUrl = (url) => {
+    const uploadIndex = url.indexOf('upload') + 7;
+    const startIndex = url.indexOf('/', uploadIndex) + 1;
+    const endIndex = url.lastIndexOf('.');
+    return url.slice(startIndex, endIndex !== -1 ? endIndex : undefined);
+  };
+
+  // Fonction pour supprimer les anciennes images de Cloudinary
+  const deleteOldImages = async (oldImages) => {
+    const deletePromises = [];
+    
+    for (const [key, oldUrl] of Object.entries(oldImages)) {
+      if (oldUrl && oldUrl.startsWith('http') && oldUrl.includes('cloudinary')) {
+        const publicId = extractPublicIdFromUrl(oldUrl);
+        if (publicId) {
+          const deletePromise = fetch('/api/cloudinary/destroy', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ public_id: publicId, invalidate: true }),
+            cache: "no-store",
+          }).then(response => response.json())
+            .then(result => {
+              if (result.result === "ok") {
+                console.log(`Ancienne image ${key} supprimée avec succès`);
+              } else {
+                console.error(`Erreur suppression ${key}:`, result.error);
+              }
+            })
+            .catch(error => {
+              console.error(`Erreur suppression ${key}:`, error);
+            });
+          
+          deletePromises.push(deletePromise);
+        }
+      }
+    }
+    
+    await Promise.all(deletePromises);
+  };
+
   // Envoyer les données à l'API createIntroduction
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setWeAreUpdatingIntro(true);
+    
+    // Stocker les anciennes URLs pour suppression ultérieure
+    const oldImages = {};
+    
     try {
       if (comparaison.isNameOfGameChanged) {
         const gameToCheck = encodeURIComponent(nameOfGameUpdate);
@@ -239,14 +284,44 @@ const UpdateIntro = ({
       } else console.log("Le nom du jeu n'a pas été changé");
 
       if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {setWeAreUpdatingIntro(false);return toast.error("Vous devez sélectionner un fichier image");}
-      if (urlPosterCloudinaryUpdate && !urlPosterCloudinaryUpdate.match(/\.(jpg|jpeg|png)$/i)) {
-        setWeAreUpdatingIntro(false);
-        return toast.error("L'image doit être au format jpg, jpeg ou png");
+      
+      // Vérifier les nouveaux fichiers sélectionnés (pas les URLs)
+      if (filesToSend.posterGlimpseFile) {
+        const fileName = filesToSend.posterGlimpseFile.name;
+        if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
+          setWeAreUpdatingIntro(false);
+          return toast.error("L'affiche doit être au format jpg, jpeg ou png");
+        }
       }
-      if (urlPosterUpdate && !urlPosterUpdate.match(/\.(jpg|jpeg|png)$/i)) {
-        setWeAreUpdatingIntro(false);
-        return toast.error("L'image doit être au format jpg, jpeg ou png");
+      if (filesToSend.imageOneGlimpseFile) {
+        const fileName = filesToSend.imageOneGlimpseFile.name;
+        if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
+          setWeAreUpdatingIntro(false);
+          return toast.error("L'image d'illustration n°1 doit être au format jpg, jpeg ou png");
+        }
       }
+      if (filesToSend.imageTwoGlimpseFile) {
+        const fileName = filesToSend.imageTwoGlimpseFile.name;
+        if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
+          setWeAreUpdatingIntro(false);
+          return toast.error("L'image d'illustration n°2 doit être au format jpg, jpeg ou png");
+        }
+      }
+      if (filesToSend.imageThreeGlimpseFile) {
+        const fileName = filesToSend.imageThreeGlimpseFile.name;
+        if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
+          setWeAreUpdatingIntro(false);
+          return toast.error("L'image d'illustration n°3 doit être au format jpg, jpeg ou png");
+        }
+      }
+      if (filesToSend.backgroundGlimpseFile) {
+        const fileName = filesToSend.backgroundGlimpseFile.name;
+        if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
+          setWeAreUpdatingIntro(false);
+          return toast.error("L'image d'arrière-plan doit être au format jpg, jpeg ou png");
+        }
+      }
+      
       if (!selectedAgePegiUpdate) {
         setWeAreUpdatingIntro(false);
         return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
@@ -316,30 +391,57 @@ const UpdateIntro = ({
       if (epicGamesLinkUpdate) formData.append("epicGamesLink", epicGamesLinkUpdate);
       if (webSiteOfThisGameUpdate) formData.append("webSiteOfThisGame", webSiteOfThisGameUpdate);
       if (webSiteOfThisCreatorUpdate) formData.append("webSiteOfThisCreator", webSiteOfThisCreatorUpdate);
+      
       // Utiliser les nouvelles URLs uploadées ou les existantes
       if (uploadedUrls.posterGlimpseFile || urlPosterCloudinaryUpdate) {
         formData.append("urlPosterCloudinary", uploadedUrls.posterGlimpseFile || urlPosterCloudinaryUpdate);
+        // Si une nouvelle image a été uploadée, marquer l'ancienne pour suppression
+        if (uploadedUrls.posterGlimpseFile && initialUrlPosterCloudinaryRef.current) {
+          oldImages.poster = initialUrlPosterCloudinaryRef.current;
+        }
       }
       if (uploadedUrls.imageOneGlimpseFile || urlImageOneCloudinaryUpdate) {
         formData.append("urlImageOneCloudinary", uploadedUrls.imageOneGlimpseFile || urlImageOneCloudinaryUpdate);
+        if (uploadedUrls.imageOneGlimpseFile && initialUrlImageOneRef.current) {
+          oldImages.imageOne = initialUrlImageOneRef.current;
+        }
       }
       if (uploadedUrls.imageTwoGlimpseFile || urlImageTwoCloudinaryUpdate) {
         formData.append("urlImageTwoCloudinary", uploadedUrls.imageTwoGlimpseFile || urlImageTwoCloudinaryUpdate);
+        if (uploadedUrls.imageTwoGlimpseFile && initialUrlImageTwoRef.current) {
+          oldImages.imageTwo = initialUrlImageTwoRef.current;
+        }
       }
       if (uploadedUrls.imageThreeGlimpseFile || urlImageThreeCloudinaryUpdate) {
         formData.append("urlImageThreeCloudinary", uploadedUrls.imageThreeGlimpseFile || urlImageThreeCloudinaryUpdate);
+        if (uploadedUrls.imageThreeGlimpseFile && initialUrlImageThreeRef.current) {
+          oldImages.imageThree = initialUrlImageThreeRef.current;
+        }
       }
       if (uploadedUrls.backgroundGlimpseFile || urlBackgroundCloudinaryUpdate) {
         formData.append("urlBackgroundCloudinary", uploadedUrls.backgroundGlimpseFile || urlBackgroundCloudinaryUpdate);
+        if (uploadedUrls.backgroundGlimpseFile && initialUrlBackgroundRef.current) {
+          oldImages.background = initialUrlBackgroundRef.current;
+        }
       }
+      
       //console.log("Form data:", formData);
+      
+      // Mettre à jour la présentation dans la base de données
       await updateIntroduction(formData);
+      
+      // SUPPRIMER les anciennes images APRÈS la mise à jour réussie
+      if (Object.keys(oldImages).length > 0) {
+        await deleteOldImages(oldImages);
+      }
+
       toast.success("Présentation du jeu a été mise à jour !");
       setWeAreUpdatingIntro(false);
       setLoading(true);
       fetchgameData();
       router.replace(`/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}?nameofgame=${encodeURIComponent(nameOfGameUpdate)}`);
     } catch (error) {
+      setWeAreUpdatingIntro(false);
       return toast.error(error.message);
     }
   };

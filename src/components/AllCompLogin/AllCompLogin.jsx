@@ -19,18 +19,44 @@ export default function AllCompLogin() {
   const [focused, setFocused] = useState({ email: false, password: false });
 
   // -----------------------------
+  /**
+   * Handles the focus event on input fields
+   * Updates the focused state to track which field is currently active
+   * This enables visual feedback and animations for better UX
+   * @param {Event} event - The focus event object
+   */
   const handleFocus = (event) => {
+    // Update the focused state by spreading previous state and setting the current field to true
+    // event.target.name will be either 'email' or 'password'
     setFocused((prevFocused) => ({
       ...prevFocused,
       [event.target.name]: true,
     }));
   };
 
+  // Create refs to directly access the DOM elements of input fields
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
+  /**
+   * Handles click events on labels to focus the corresponding input field
+   * This improves UX by providing a larger clickable area and better accessibility
+   * @param {React.RefObject} ref - Reference to the input field to focus
+   */
   const handleLabelClick = (ref) => {
+    // Programmatically focus the input field when its label is clicked
+    // This creates a more intuitive user experience
     ref.current.focus();
+  };
+
+  /**
+   * Converts input value to lowercase in real-time
+   * This ensures email addresses are always in lowercase format
+   * @param {Event} event - The change event object
+   */
+  const handleEmailChange = (event) => {
+    // Convert the input value to lowercase
+    event.target.value = event.target.value.toLowerCase();
   };
 
   // Function
@@ -80,6 +106,7 @@ export default function AllCompLogin() {
           name="email"
           required
           onFocus={handleFocus}
+          onChange={handleEmailChange}
           ref={emailInputRef}
           className={
             focused.email
