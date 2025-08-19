@@ -1,6 +1,7 @@
 // Component used  with listOfYourGames, props : usernameEncoded, usernameDecoded, setHowManyGame
 "use client";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,6 +12,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
   const [games, setGames] = useState([]); //console.log(games);
   const [loading, setLoading] = useState(true);
   const [oneGameOr, setOneGameOr] = useState("Aucun jeu n'a été présenté par ");
+  const { data: session } = useSession();
  
   const fetchgameData = async () => {
     try {
@@ -56,7 +58,7 @@ export default function MadeByThisCreator({ user, usernameEncoded, usernameDecod
 
   useEffect(() => {
     fetchgameData(); // Appel de la fonction pour récupérer les données 
-  }, [user, usernameEncoded, language]); 
+  }, [session, user, usernameEncoded, language]); 
 
   return (
     <div>

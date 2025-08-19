@@ -310,6 +310,20 @@ export default function AllCompIntroductionGame({introduction}) {
         },
       };
     
+      // Ajouter la condition de chargement ici, juste avant le return principal
+      if (loading || !game?.username) {
+        return (
+          <GeneralLayout>
+            <div className="flex justify-center items-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
+                <p className="mt-4 text-lg">Chargement...</p>
+              </div>
+            </div>
+          </GeneralLayout>
+        );
+      }
+      
     return(weAreDeleting ? (
         <WeAreDeleting /> // Loading while we are deleting the introduction
       ) : (

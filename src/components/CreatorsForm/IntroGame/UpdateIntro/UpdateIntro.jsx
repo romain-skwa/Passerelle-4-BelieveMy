@@ -239,9 +239,7 @@ const UpdateIntro = ({
             .then(result => {
               if (result.result === "ok") {
                 console.log(`Ancienne image ${key} supprimée avec succès`);
-              } else {
-                console.error(`Erreur suppression ${key}:`, result.error);
-              }
+              } 
             })
             .catch(error => {
               console.error(`Erreur suppression ${key}:`, error);

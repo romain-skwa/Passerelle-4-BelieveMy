@@ -57,8 +57,10 @@ export default function Header({ background }) {
   };
 
   const handleLogout = async () => {
-    await signOut({ redirect: false }); // Se déconnecter
-    router.replace("/"); // Rediriger vers la page d'accueil
+    await signOut({ 
+      redirect: true,
+      callbackUrl: "/" 
+    }); // Se déconnecter et rediriger automatiquement
   };
   return (
     <header className={`text-white pb-2 ${background}`}>
