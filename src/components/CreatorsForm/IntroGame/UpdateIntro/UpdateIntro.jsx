@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import he from "he";
 import { toast } from "react-toastify";
 import MyEditor from "@/components/TinyMceEditor/TinyMceEditor";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 const UpdateIntro = ({
   game,
@@ -48,6 +49,7 @@ const UpdateIntro = ({
   const [isIntroOfYourselfUpdate, setIsIntroOfYourselfUpdate] = useState(false);
   const [upDateIntro, setUpDateIntro] = useState(false);
   const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
+  const { language } = useLanguage();
 
   // Get data about this game
   useEffect(() => {
@@ -742,7 +744,7 @@ const UpdateIntro = ({
             onClick={() => setUpDateIntro(true)}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
           >
-            Je veux modifier cette présentation
+            {language === "fr" ? "Je veux modifier cette présentation" : "I want to modify this presentation"}
           </button>
         </div>
       )}

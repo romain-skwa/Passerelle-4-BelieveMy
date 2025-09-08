@@ -29,7 +29,7 @@ const DeleteIntro = ({ game, setWeAreDeleting }) => {
     try {
       setWeAreDeleting(true);
       await handleEraseAllImages(game);
-      await deleteIntroduction(gameId, nameOfGame);
+      await deleteIntroduction(gameId, nameOfGame, language);
     } catch (error) {
       return toast.error(error.message);
     }

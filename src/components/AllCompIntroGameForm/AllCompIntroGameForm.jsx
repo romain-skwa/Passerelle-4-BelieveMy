@@ -18,6 +18,7 @@ import WeAreSendingData from "@/components/WeAreSendingData/WeAreSendingData";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { processPaymentSuccess } from "@/actions/process-payment-success";
+import { useLanguage } from "@/components/ForLayout/LanguageContext/LanguageContext";
 
 // FORMULARY used by a the creator to introduce one game
 const pressStart2P = Press_Start_2P({
@@ -31,6 +32,7 @@ export default function AllCompIntroGameForm() {
   // Variable
   const { data: session } = useSession();
   const router = useRouter();
+  const { language } = useLanguage();
 
   // State
   const [user, setUser] = useState({});
@@ -158,16 +160,24 @@ export default function AllCompIntroGameForm() {
         uploadedUrls,
       };
 
-      const result = await processPaymentSuccess(dataToProcess);
+      const result = await processPaymentSuccess(dataToProcess, language);
 
       // Nettoyer le sessionStorage et l'état
       sessionStorage.removeItem("validatedGameData");
       setValidatedFiles(null);
-      toast.success("Présentation créée avec succès !");
+      toast.success(
+        language === "fr" 
+          ? "Présentation créée avec succès !" 
+          : "Presentation created successfully!"
+      );
       router.push("/");
     } catch (error) {
       console.error("Erreur lors du traitement après paiement:", error);
-      toast.error("Erreur lors de la création de la présentation");
+      toast.error(
+        language === "fr" 
+          ? "Erreur lors de la création de la présentation" 
+          : "Error creating presentation"
+      );
     } 
   };
 

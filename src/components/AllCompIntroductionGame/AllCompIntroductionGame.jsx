@@ -210,12 +210,14 @@ export default function AllCompIntroductionGame({introduction}) {
         // if (isDarkMode === "false") or undefined
         isDarkClass = "text-black bg-white";
       }
-    
-      // Check if videoLink exists and modify it if necessary
-      if (game.videoLink && game.videoLink.includes("watch?v=")) {
-        game.videoLink = game.videoLink.replace("watch?v=", "embed/");
+
+      if (game.videoLink) {
+        // Check if videoLink exists and modify it if necessary
+        if (game.videoLink.includes('youtube.com') && game.videoLink.includes('watch?v=')) {
+          game.videoLink = game.videoLink.replace('watch?v=', 'embed/');
+        }
       }
-    
+
       // Convert selectedAdditionalPegi to array
       if (game.selectedAdditionalPegi) {
         // Check if it's a string before splitting
@@ -378,8 +380,9 @@ export default function AllCompIntroductionGame({introduction}) {
                       title={pegiImage.title}
                       width={50}
                       height={50}
+                      priority={true} 
+                      quality={90}
                       className="w-[50px] h-[50px]"
-                      unoptimized={true}
                     />
                   )}
     
@@ -596,8 +599,9 @@ export default function AllCompIntroductionGame({introduction}) {
                         width={50}
                         height={50}
                         className="w-[50px] h-[50px] hover:scale-105 transition duration-300"
-                        alt="Steam"
-                        unoptimized={true}
+                        alt="Accéder à la page Steam du jeu"
+                        loading="lazy"
+                        quality={85}
                       />
                     </a>
                   </>
@@ -631,7 +635,8 @@ export default function AllCompIntroductionGame({introduction}) {
                     className="w-[275px] h-[154px] py-3 inline-block"
                     width={275}
                     height={154}
-                    unoptimized={true}
+                    loading="lazy"
+                    quality={75}
                     alt={`urlImageOne - ${game.nameofgame}`}
                     onClick={() => openModal(game.urlImageOneCloudinary)}
                   />
@@ -642,7 +647,8 @@ export default function AllCompIntroductionGame({introduction}) {
                     className="w-[275px] h-[154px] py-3 inline-block"
                     width={275}
                     height={154}
-                    unoptimized={true}
+                    loading="lazy"
+                    quality={75}
                     alt={`${game.nameofgame}`}
                     onClick={() => openModal(game.urlImageTwoCloudinary)}
                   />
@@ -653,7 +659,8 @@ export default function AllCompIntroductionGame({introduction}) {
                     className="w-[275px] h-[154px] py-3 inline-block"
                     width={275}
                     height={154}
-                    unoptimized={true}
+                    loading="lazy"
+                    quality={75}
                     alt={`${game.nameofgame}`}
                     onClick={() => openModal(game.urlImageThreeCloudinary)}
                   />

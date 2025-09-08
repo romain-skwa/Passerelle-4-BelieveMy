@@ -66,12 +66,20 @@ export default function AllCompLogin() {
 
     // if a field is empty
     if (!email || !password) {
-      return toast.error("Veuillez remplir tous les champs du formulaire");
+      return toast.error(
+        language === "fr" 
+          ? "Veuillez remplir tous les champs du formulaire" 
+          : "Please fill in all form fields"
+      );
     }
 
     // Check if the email is valid
     if (!checkEmail(email)) {
-      return toast.error("Veuillez entrer un courriel valide");
+      return toast.error(
+        language === "fr" 
+          ? "Veuillez entrer un courriel valide" 
+          : "Please enter a valid email"
+      );
     }
 
     // Connect the user
@@ -93,7 +101,11 @@ export default function AllCompLogin() {
     }
 
     // Success
-    toast.success("Vous êtes connecté");
+    toast.success(
+      language === "fr" 
+        ? "Vous êtes connecté" 
+        : "You are logged in"
+    );
 
     // Redirect
     router.replace("/");

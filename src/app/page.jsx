@@ -4,6 +4,7 @@ import Loading from "@/components/ForLayout/Loading/Loading";
 import ToastNotification from "@/components/ToastNotification/ToastNotification"; // I mportez le ToastNotification
 import Image from "next/image";
 import Link from "next/link";
+import LoadMoreButton from "@/components/ForLayout/LoadMoreButton/LoadMoreButton";
 
 export const metadata = {
   title: "This is my game",
@@ -61,8 +62,7 @@ export default async function Index({ searchParams }) {
   const { introductionsImages, error } = await fetchImages(count);
   
   return (
-    <>
-    
+    <>    
     <GeneralLayout>
       {error && <ToastNotification message={error} type="error" />}
 
@@ -70,7 +70,7 @@ export default async function Index({ searchParams }) {
         <Loading />
       ) : (
         <section className="flex flex-wrap tablet:gap-4 gap-2 justify-center w-[95%] lg:w-2/3 mx-auto">
-          {introductionsImages.map((post) => (
+          {introductionsImages.map((post, index) => (
             <div
               key={post._id}
               className="rounded mt-2 relative overflow-hidden tablet:shadow-xl bg-black/70 hover:bg-black/80 duration-300"
@@ -92,7 +92,8 @@ export default async function Index({ searchParams }) {
                     className="w-[146px] h-[240px] lg:w-[192px] lg:h-[311px] hover:scale-105 transition duration-300"
                     alt={`${post.nameofgame}`}
                     title={decodeURIComponent(post.nameofgame)}
-                    unoptimized={true}
+                    loading="lazy"
+                    quality={85}
                   />
                 </div>
               </Link>
@@ -105,14 +106,7 @@ export default async function Index({ searchParams }) {
           ))}
         </section>
       )}
-      <div className="flex justify-center mt-4">
-        <Link
-          href={`?count=${count + 10}#bottom`}
-          className=" rounded-2xl text-white border bg-black/70 px-4 py-2 "
-        >
-          Voir plus de jeux
-        </Link>
-      </div>
+      <LoadMoreButton count={count} />
       <div id="bottom" />
     </GeneralLayout>
     </>

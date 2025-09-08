@@ -4,12 +4,29 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { MongoClient } from "mongodb";
 
-export const processPaymentSuccess = async (validatedData) => {
+export const processPaymentSuccess = async (validatedData, language = "fr") => {
   const session = await getServerSession(authOptions);
+
+  // Traductions
+  const translations = {
+    fr: {
+      notConnected: "Vous devez être connecté",
+      successMessage: "Présentation créée avec succès",
+      errorMessage: "Une erreur est survenue lors de la création de la présentation."
+    },
+    en: {
+      notConnected: "You must be logged in",
+      successMessage: "Presentation created successfully",
+      errorMessage: "An error occurred while creating the presentation."
+    }
+  };
+
+  // When the language is not french, use english
+  const t = language === "fr" ? translations.fr : translations.en;
 
   // Si l'utilisateur n'est pas connecté
   if (!session?.user) {
-    throw new Error("Vous devez être connecté");
+    throw new Error(t.notConnected);
   }
 
   let client;
@@ -65,14 +82,12 @@ export const processPaymentSuccess = async (validatedData) => {
 
     return {
       success: true,
-      message: "Présentation créée avec succès",
+      message: t.successMessage,
       introductionId: result.insertedId.toString(),
     };
   } catch (error) {
     console.error("Erreur lors du traitement après paiement:", error);
-    throw new Error(
-      "Une erreur est survenue lors de la création de la présentation."
-    );
+    throw new Error(t.errorMessage);
   } finally {
     if (client) {
       await client.close();

@@ -1,6 +1,6 @@
 // actions/sendReportEmail.js
 "use server";
-
+// I am a french webmaster so I do not translate the email.
 import { Resend } from "resend";
 
 export const sendReportEmail = async ({ gameId, nameOfGame, username, pathname }) => {
@@ -11,7 +11,7 @@ export const sendReportEmail = async ({ gameId, nameOfGame, username, pathname }
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: [process.env.MY_ADRESS_MAIL],
-      subject: `Contenu signalé : ${nameOfGame}`,
+      subject: `Contenu signalé : ${decodedNameOfGame}`,
       html: `
         <p style="text-align: center;">This is my game.com</p>
         <br>

@@ -3,10 +3,41 @@ import { MongoClient } from "mongodb";
 import { Resend } from "resend";
 
 export async function POST(req) {
-  const { email } = await req.json();
+  const { email, language = "fr" } = await req.json();
+
+  // Traductions
+  const translations = {
+    fr: {
+      subject: 'Réinitialisation de mot de passe',
+      content: `
+        <p><b>${username}</b>,</p>
+        <p>Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous :</p>
+        <p><a href="${resetLink}">${resetLink}</a></p>
+      `,
+      emailSent: "Un email a été envoyé pour réinitialiser votre mot de passe.",
+      emailError: 'Erreur lors de l\'envoi de l\'email.',
+      missingEmail: "Email manquant.",
+      userNotFound: "Cet utilisateur n'existe pas"
+    },
+    en: {
+      subject: 'Password Reset',
+      content: `
+        <p><b>${username}</b>,</p>
+        <p>To reset your password, click on the link below:</p>
+        <p><a href="${resetLink}">${resetLink}</a></p>
+      `,
+      emailSent: "An email has been sent to reset your password.",
+      emailError: 'Error sending email.',
+      missingEmail: "Missing email.",
+      userNotFound: "This user does not exist"
+    }
+  };
+
+  // When the language is not french, use english
+  const t = language === "fr" ? translations.fr : translations.en;
 
   if (!email) {
-    return NextResponse.json({ success: false, message: "Email manquant." }, { status: 400 });
+    return NextResponse.json({ success: false, message: t.missingEmail }, { status: 400 });
   }
 
   let client;
@@ -25,7 +56,7 @@ export async function POST(req) {
 
     // Chef if user exist
     if (user.length === 0) {
-      throw new Error("Cet utilisateur n'existe pas");
+      throw new Error(t.userNotFound);
     }
 
     // Get the username from the data
@@ -50,27 +81,16 @@ export async function POST(req) {
     const { data, error } = await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>',
       to: [email],
-      subject: 'Réinitialisation de mot de passe',
-      html: `
-        <p style="text-align: center;">This is my game.com</p>
-        <p><b>${username}</b>,</p>
-        <p>Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous :</p>
-        <p><a href="${resetLink}">${resetLink}</a></p>
-        <p>Maintenant, on a toutes les pages.Avec le bon lien, c'est mieux.</p>
-        <p>En fait, il manquait une partie de l'url.</p>
-        <p>Avec searchParams, et un changement encore dans l'url</p>
-        <p>Cette fois, on a ajouté la création du token dans la base de donnée avant de l'envoyer. Pour ça n'a pas été fait depuis le départ ?</p>
-        <p>On y est presque</p>
-        <p>J'ai changé la mise à jour. La façon dont on cherche la donnée à changer</p>
-      `,
+      subject: t.subject,
+      html: `<p style="text-align: center;">This is my game.com</p>${t.content}`,
     });
 
     if (error) {
       console.error({ error });
-      return NextResponse.json({ success: false, message: 'Erreur lors de l\'envoi de l\'email.' }, { status: 500 });
+      return NextResponse.json({ success: false, message: t.emailError }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, message: "Un email a été envoyé pour réinitialiser votre mot de passe." });
+    return NextResponse.json({ success: true, message: t.emailSent });
   } catch (error) {
     console.error('Erreur lors de la récupération de l\'utilisateur ou de l\'envoi de l\'email:', error);
     if (client) {

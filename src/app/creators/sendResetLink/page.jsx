@@ -17,17 +17,21 @@ export default function ResetPassword() {
     event.preventDefault();
 
     if (!email) {
-      return toast.error("Veuillez entrer votre courriel");
+      return toast.error(
+        language === "fr"
+        ? "Veuillez entrer votre courriel"
+        : "Please enter your email"
+      );
     }
 
-    // Logique pour envoyer un e-mail de réinitialisation de mot de passe 
+    // Logic to send a reset password email
     try {
       await fetch("/api/sendResetLink", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, language }),
       });
 
       toast.success(
@@ -36,7 +40,11 @@ export default function ResetPassword() {
           : "A reset email has been sent to your address."
       );
     } catch (error) {
-      toast.error("Erreur lors de l'envoi de l'e-mail");
+      toast.error(
+        language === "fr"
+        ? "Erreur lors de l'envoi de l'e-mail"
+        : "Error sending email"
+      );
     }
   };
 
