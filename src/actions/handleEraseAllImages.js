@@ -2,7 +2,7 @@
 import { toast } from "react-toastify";
 
 // Function to delete all images
-const handleDeleteAllImages = async (game) => {
+const handleDeleteAllImages = async (game, language = "fr") => {
    console.log(`Dans handleDeleteAllImages, la fonction qui doit effacer toutes les images : `, game);
   // Function to extract public ID from Cloudinary URL
   const extractPublicIdFromUrl = (url) => {
@@ -36,9 +36,17 @@ const handleDeleteAllImages = async (game) => {
 
   // Display a toast message
   if (deleteSuccess) {
-    toast.success("Toutes les images ont été supprimées avec succès !");
+    toast.success(
+      language === "fr" 
+        ? "Toutes les images ont été supprimées avec succès !" 
+        : "All images have been successfully deleted!"
+    );
   } else {
-    toast.error("Une ou plusieurs images n'ont pas pu être supprimées.");
+    toast.error(
+      language === "fr" 
+        ? "Une ou plusieurs images n'ont pas pu être supprimées." 
+        : "One or more images could not be deleted."
+    );
   }
 };
 

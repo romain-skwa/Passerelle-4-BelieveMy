@@ -25,7 +25,7 @@ export const createIntroduction = async (formData) => {
     const introductionData = {
       email: session.user.email,
       username: session.user.username,
-      nameofgame: formData.get("nameOfGame"),
+      nameofgame: encodeURIComponent(formData.get("nameOfGame")),
       releaseDate: formData.get("releaseDate"),
       shortIntroduction: formData.get("shortIntroduction"),
       content: formData.get("introductionOfTheGame"),

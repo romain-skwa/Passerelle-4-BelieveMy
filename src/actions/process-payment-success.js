@@ -42,7 +42,7 @@ export const processPaymentSuccess = async (validatedData, language = "fr") => {
     const introductionData = {
       email: session.user.email,
       username: session.user.username,
-      nameofgame: validatedData.nameOfGame,
+      nameofgame: encodeURIComponent(validatedData.nameOfGame),
       releaseDate: validatedData.releaseDate,
       shortIntroduction: validatedData.shortIntroduction,
       content: validatedData.introductionOfTheGame,

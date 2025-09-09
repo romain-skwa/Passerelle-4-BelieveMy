@@ -50,14 +50,14 @@ const UpdateIntro = ({
   const [upDateIntro, setUpDateIntro] = useState(false);
   const [nameOfGameUpdate, setNameOfGameUpdate] = useState();
   const { language } = useLanguage();
-
+  console.log("nameOfGameUpdate : ", nameOfGameUpdate);
   // Get data about this game
   useEffect(() => {
     if (game && game._id) setGameId(game._id);
     if (!upDateIntro) return;
     if (game && game.email) setEmail(game.email);
-    if (game && game.nameofgame) {
-      const decodedNameOfGame = decodeURIComponent(game.nameofgame);
+    if (game && game.nameofgame) {console.log("game.nameofgame : ", game.nameofgame);
+      const decodedNameOfGame = decodeURIComponent(game.nameofgame); console.log("decodedNameOfGame : ", decodedNameOfGame);
       setNameOfGameUpdate(decodedNameOfGame);
       initialNameOfGameRef.current = decodedNameOfGame;
     }
@@ -105,7 +105,11 @@ const UpdateIntro = ({
         initialReleaseDateRef.current = date;
       } else {
         console.error("Date invalide :", game.releaseDate);
-        toast.error("La date de sortie est invalide.");
+        toast.error(
+          language === "fr" 
+            ? "La date de sortie est invalide." 
+            : "The release date is invalid."
+        );
       }
     }
   }, [game, upDateIntro]);
@@ -273,95 +277,172 @@ const UpdateIntro = ({
           cache: "no-store",
         });
         if (!response.ok)
-          throw new Error("Erreur lors de la vérification du jeu");
+          throw new Error(
+            language === "fr" 
+              ? "Erreur lors de la vérification du jeu" 
+              : "Error while checking the game"
+          );
         const data = await response.json();
         if (data.exists) {
           setWeAreUpdatingIntro(false);
           return toast.error(
-            "Ce nom de jeu existe déjà dans la base de données."
+            language === "fr" 
+              ? "Ce nom de jeu existe déjà dans la base de données." 
+              : "This game name already exists in the database."
           );
         }
-      } else console.log("Le nom du jeu n'a pas été changé");
+      } else console.log(
+        language === "fr" 
+          ? "Le nom du jeu n'a pas été changé" 
+          : "The game name has not been changed"
+      );
 
-      if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {setWeAreUpdatingIntro(false);return toast.error("Vous devez sélectionner un fichier image");}
+      if (!urlPosterCloudinaryUpdate && !urlPosterUpdate) {
+        setWeAreUpdatingIntro(false);
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner un fichier image" 
+            : "You must select an image file"
+        );
+      }
       
       // Vérifier les nouveaux fichiers sélectionnés (pas les URLs)
       if (filesToSend.posterGlimpseFile) {
         const fileName = filesToSend.posterGlimpseFile.name;
         if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
           setWeAreUpdatingIntro(false);
-          return toast.error("L'affiche doit être au format jpg, jpeg ou png");
+          return toast.error(
+            language === "fr" 
+              ? "L'affiche doit être au format jpg, jpeg ou png" 
+              : "The poster must be in jpg, jpeg or png format"
+          );
         }
       }
       if (filesToSend.imageOneGlimpseFile) {
         const fileName = filesToSend.imageOneGlimpseFile.name;
         if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
           setWeAreUpdatingIntro(false);
-          return toast.error("L'image d'illustration n°1 doit être au format jpg, jpeg ou png");
+          return toast.error(
+            language === "fr" 
+              ? "L'image d'illustration n°1 doit être au format jpg, jpeg ou png" 
+              : "Illustration image #1 must be in jpg, jpeg or png format"
+          );
         }
       }
       if (filesToSend.imageTwoGlimpseFile) {
         const fileName = filesToSend.imageTwoGlimpseFile.name;
         if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
           setWeAreUpdatingIntro(false);
-          return toast.error("L'image d'illustration n°2 doit être au format jpg, jpeg ou png");
+          return toast.error(
+            language === "fr" 
+              ? "L'image d'illustration n°2 doit être au format jpg, jpeg ou png" 
+              : "Illustration image #2 must be in jpg, jpeg or png format"
+          );
         }
       }
       if (filesToSend.imageThreeGlimpseFile) {
         const fileName = filesToSend.imageThreeGlimpseFile.name;
         if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
           setWeAreUpdatingIntro(false);
-          return toast.error("L'image d'illustration n°3 doit être au format jpg, jpeg ou png");
+          return toast.error(
+            language === "fr" 
+              ? "L'image d'illustration n°3 doit être au format jpg, jpeg ou png" 
+              : "Illustration image #3 must be in jpg, jpeg or png format"
+          );
         }
       }
       if (filesToSend.backgroundGlimpseFile) {
         const fileName = filesToSend.backgroundGlimpseFile.name;
         if (!fileName.match(/\.(jpg|jpeg|png)$/i)) {
           setWeAreUpdatingIntro(false);
-          return toast.error("L'image d'arrière-plan doit être au format jpg, jpeg ou png");
+          return toast.error(
+            language === "fr" 
+              ? "L'image d'arrière-plan doit être au format jpg, jpeg ou png" 
+              : "The background image must be in jpg, jpeg or png format"
+          );
         }
       }
       
       if (!selectedAgePegiUpdate) {
         setWeAreUpdatingIntro(false);
-        return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner un âge parmi les options disponibles." 
+            : "You must select an age from the available options."
+        );
       }
       if (shortIntroductionUpdate.length > 400) {
         setWeAreUpdatingIntro(false);
-        return toast.error("L'introduction doit comporter 400 caractères maximum.");
+        return toast.error(
+          language === "fr" 
+            ? "L'introduction doit comporter 400 caractères maximum." 
+            : "The introduction must be 400 characters maximum."
+        );
       }
       if (introductionOfTheGameUpdate.length > 10000) {
         setWeAreUpdatingIntro(false);
-        return toast.error("La présentation doit comporter 10 000 caractères maximum.");
+        return toast.error(
+          language === "fr" 
+            ? "La présentation doit comporter 10 000 caractères maximum." 
+            : "The presentation must be 10,000 characters maximum."
+        );
       }
       if (platformUpdate.length === 0) {
         setWeAreUpdatingIntro(false);
-        return toast.error("Vous devez sélectionner au moins une plateforme.");
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner au moins une plateforme." 
+            : "You must select at least one platform."
+        );
       }
       if (webSiteOfThisGameUpdate && !webSiteOfThisGameUpdate.startsWith("https://")) {
         setWeAreUpdatingIntro(false);
-        return toast.error("Le lien du site officiel doit commencer par 'https://'");
+        return toast.error(
+          language === "fr" 
+            ? "Le lien du site officiel doit commencer par 'https://'" 
+            : "The official website link must start with 'https://'"
+        );
       }
       if (webSiteOfThisCreatorUpdate && !webSiteOfThisCreatorUpdate.startsWith("https://")) {
         setWeAreUpdatingIntro(false);
-        return toast.error("Le lien du site officiel doit commencer par 'https://'");
+        return toast.error(
+          language === "fr" 
+            ? "Le lien du site officiel des créateurs doit commencer par 'https://'" 
+            : "The creators' official website link must start with 'https://'"
+        );
       }
       if (!(releaseDateUpdate instanceof Date) || isNaN(releaseDateUpdate.getTime())) {
         setWeAreUpdatingIntro(false);
-        return toast.error("Vous devez sélectionner une date de sortie.");
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner une date de sortie." 
+            : "You must select a release date."
+        );
       }
       if (releaseDateUpdate) {
         const releaseDateUpdateString = releaseDateUpdate.toLocaleDateString("fr-FR");
         const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
         if (!datePattern.test(releaseDateUpdateString)) {
           setWeAreUpdatingIntro(false);
-          return toast.error("La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)");
+          return toast.error(
+            language === "fr" 
+              ? "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)" 
+              : "The release date must be in dd/mm/yyyy format (ex: 17/05/2025)"
+          );
         }
       } 
-      else return toast.error("Vous devez sélectionner une date de sortie.");
+      else return toast.error(
+        language === "fr" 
+          ? "Vous devez sélectionner une date de sortie." 
+          : "You must select a release date."
+      );
       if (steamLinkUpdate && (!steamLinkUpdate.startsWith("https://") || !steamLinkUpdate.includes("steam"))) {
         setWeAreUpdatingIntro(false);
-        return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
+        return toast.error(
+          language === "fr" 
+            ? "Le lien vers Steam doit commencer par 'https://' et inclure steam" 
+            : "The Steam link must start with 'https://' and include steam"
+        );
       }
 
       // Upload des images vers Cloudinary si nécessaire
@@ -435,14 +516,22 @@ const UpdateIntro = ({
         await deleteOldImages(oldImages);
       }
 
-      toast.success("Présentation du jeu a été mise à jour !");
+      toast.success(
+        language === "fr" 
+          ? "Présentation du jeu a été mise à jour !" 
+          : "Game presentation has been updated!"
+      );
       setWeAreUpdatingIntro(false);
       setLoading(true);
       fetchgameData();
       router.replace(`/dynamic/introduction/${encodeURIComponent(nameOfGameUpdate)}?nameofgame=${encodeURIComponent(nameOfGameUpdate)}`);
     } catch (error) {
       setWeAreUpdatingIntro(false);
-      return toast.error(error.message);
+      return toast.error(
+        language === "fr" 
+          ? "Une erreur est survenue lors de la mise à jour" 
+          : "An error occurred during the update"
+      );
     }
   };
 
@@ -457,7 +546,11 @@ const UpdateIntro = ({
           {/* Fond noir et Texte blanc */}
           <section className="flex justify-center">
             <div className="py-2 px-4 bg-black text-white ml-2 tablet:inline-flex align-middle my-3 rounded-xl border">
-              <span>Mode Sombre : Texte blanc sur fond noir</span>
+              <span>
+                {language === "fr" 
+                  ? "Mode Sombre : Texte blanc sur fond noir" 
+                  : "Dark Mode: White text on black background"}
+              </span>
               <div className="ml-4">
                 <label>
                   <input
@@ -467,7 +560,7 @@ const UpdateIntro = ({
                     checked={isDarkModeUpdate === "true"}
                     onChange={() => setIsDarkModeUpdate("true")}
                   />
-                  Oui
+                  {language === "fr" ? "Oui" : "Yes"}
                 </label>
                 <label className="ml-4">
                   <input
@@ -477,7 +570,7 @@ const UpdateIntro = ({
                     checked={isDarkModeUpdate === "false"}
                     onChange={() => setIsDarkModeUpdate("false")}
                   />
-                  Non
+                  {language === "fr" ? "Non" : "No"}
                 </label>
               </div>
             </div>
@@ -501,7 +594,9 @@ const UpdateIntro = ({
               className="text-white text-center font-bold mb-3"
               style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
             >
-              Cette introduction courte sera affichée en gras
+              {language === "fr" 
+                ? "Cette introduction courte sera affichée en gras" 
+                : "This short introduction will be displayed in bold"}
             </p>
             <textarea
               name="shortIntroductionUpdate"
@@ -525,7 +620,7 @@ const UpdateIntro = ({
               className="text-white font-bold mr-2"
               style={{ textShadow: "2px 2px 7px rgba(0, 0, 0, 1)" }}
             >
-              Date de sortie :
+              {language === "fr" ? "Date de sortie :" : "Release date :"}
             </p>
             <DatePicker
               className="pl-2"
@@ -553,12 +648,16 @@ const UpdateIntro = ({
 
           {/* Affiche [encadré] */}
           <div className="w-[95%] tablet:w-[380px] p-4 mt-4 border grasFondBleu mx-auto">
-            <p className="text-center">Choisissez l'affiche du jeu</p>
+            <p className="text-center">
+              {language === "fr" 
+                ? "Choisissez l'affiche du jeu" 
+                : "Choose the game's poster"}
+            </p>
             <ImageCloudinaryUpdate
               name="posterGlimpseFile"
               urlCloudinary={urlPosterCloudinaryUpdate || ""}
               setUrlCloudinary={setUrlPosterCloudinaryUpdate}
-              buttonText="Télécharger Affiche"
+              buttonText={language === "fr" ? "Télécharger Affiche" : "Upload Poster"}
               setFilesToSend={setFilesToSend}
             />
           </div>
@@ -567,13 +666,15 @@ const UpdateIntro = ({
             {/* Image d'illustration n°1 [encadré] */}
             <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
               <p className="text-center">
-                Choisissez l'image d'illustration n°1
+                {language === "fr" 
+                  ? "Choisissez l'image d'illustration n°1" 
+                  : "Choose illustration image #1"}
               </p>
               <ImageCloudinaryUpdate
                 name="imageOneGlimpseFile"
                 urlCloudinary={urlImageOneCloudinaryUpdate || ""}
                 setUrlCloudinary={setUrlImageOneCloudinaryUpdate}
-                buttonText="Télécharger l'image n°1"
+                buttonText={language === "fr" ? "Télécharger l'image n°1" : "Upload image #1"}
                 setFilesToSend={setFilesToSend}
               />
             </div>
@@ -581,13 +682,15 @@ const UpdateIntro = ({
             {/* Image d'illustration n°2 [encadré] */}
             <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
               <p className="text-center tablet:inline-block">
-                Choisissez l'image d'illustration n°2
+                {language === "fr" 
+                  ? "Choisissez l'image d'illustration n°2" 
+                  : "Choose illustration image #2"}
               </p>
               <ImageCloudinaryUpdate
                 name="imageTwoGlimpseFile"
                 urlCloudinary={urlImageTwoCloudinaryUpdate || ""}
                 setUrlCloudinary={setUrlImageTwoCloudinaryUpdate}
-                buttonText="Télécharger l'image n°2"
+                buttonText={language === "fr" ? "Télécharger l'image n°2" : "Upload image #2"}
                 setFilesToSend={setFilesToSend}
               />
             </div>
@@ -595,13 +698,15 @@ const UpdateIntro = ({
             {/* Image d'illustration n°3 [encadré] */}
             <div className="w-[95%] tablet:w-[30%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col">
               <p className="text-center tablet:inline-block">
-                Choisissez l'image d'illustration n°3
+                {language === "fr" 
+                  ? "Choisissez l'image d'illustration n°3" 
+                  : "Choose illustration image #3"}
               </p>
               <ImageCloudinaryUpdate
                 name="imageThreeGlimpseFile"
                 urlCloudinary={urlImageThreeCloudinaryUpdate || ""}
                 setUrlCloudinary={setUrlImageThreeCloudinaryUpdate}
-                buttonText="Télécharger l'image n°3"
+                buttonText={language === "fr" ? "Télécharger l'image n°3" : "Upload image #3"}
                 setFilesToSend={setFilesToSend}
               />
             </div>
@@ -610,24 +715,26 @@ const UpdateIntro = ({
           {/* Arrière plan [encadré] */}
           <div className="w-[95%] tablet:w-[40%] p-1 pl-2 mt-4 border grasFondBleu flex flex-col item-center mx-auto">
             <p className="text-center tablet:inline-block">
-              Choisissez une image pour l'arrière plan
+              {language === "fr" 
+                ? "Choisissez une image pour l'arrière plan" 
+                : "Choose an image for the background"}
             </p>
             <ImageCloudinaryUpdate
               name="backgroundGlimpseFile"
               urlCloudinary={urlBackgroundCloudinaryUpdate || ""}
               setUrlCloudinary={setUrlBackgroundCloudinaryUpdate}
-              buttonText="Télécharger Background"
+              buttonText={language === "fr" ? "Télécharger Background" : "Upload Background"}
               setFilesToSend={setFilesToSend}
             />
           </div>
 
           {/* Lien vidéo Youtube [encadré] */}
           <section className="flex flex-col justify-center items-center border rounded-md my-4 py-4">
-            <p>Lien Vidéo Youtube</p>
+            <p>{language === "fr" ? "Lien Vidéo Youtube" : "YouTube Video Link"}</p>
             <input
               type="url"
               name="videoLinkUpdate"
-              placeholder="Lien YouTube de la vidéo"
+              placeholder={language === "fr" ? "Lien YouTube de la vidéo" : "YouTube link of the video"}
               className="block w-[95%] tablet:w-[60%] p-1 pl-2 m-2 text-black"
               value={videoLinkUpdate || ""}
               onChange={(e) => setVideoLinkUpdate(e.target.value)}
@@ -651,7 +758,7 @@ const UpdateIntro = ({
             <input
               type="url"
               name="webSiteOfThisGameUpdate"
-              placeholder="Lien vers le site officiel du jeu"
+              placeholder={language === "fr" ? "Lien vers le site officiel du jeu" : "Link to the official game website"}
               className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
               value={webSiteOfThisGameUpdate || ""}
               onChange={(e) => setWebSiteOfThisGameUpdate(e.target.value)}
@@ -660,7 +767,7 @@ const UpdateIntro = ({
             <input
               type="url"
               name="webSiteOfThisCreatorUpdate"
-              placeholder="Lien vers le site officiel du/des créateur(s)"
+              placeholder={language === "fr" ? "Lien vers le site officiel du/des créateur(s)" : "Link to the official website of the creator(s)"}
               className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
               value={webSiteOfThisCreatorUpdate || ""}
               onChange={(e) => setWebSiteOfThisCreatorUpdate(e.target.value)}
@@ -669,7 +776,7 @@ const UpdateIntro = ({
             <input
               type="url"
               name="steamLinkUpdate"
-              placeholder="Lien vers le site Steam"
+              placeholder={language === "fr" ? "Lien vers le site Steam" : "Link to the Steam page"}
               className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
               value={steamLinkUpdate || ""}
               onChange={(e) => setSteamLinkUpdate(e.target.value)}
@@ -678,7 +785,7 @@ const UpdateIntro = ({
             <input
               type="url"
               name="epicGamesLinkUpdate"
-              placeholder="Lien vers le site Epic Games"
+              placeholder={language === "fr" ? "Lien vers le site Epic Games" : "Link to the Epic Games site"}
               className="block w-[95%] tablet:w-[60%] p-1 pl-2 text-black"
               value={epicGamesLinkUpdate || ""}
               onChange={(e) => setEpicGamesLinkUpdate(e.target.value)}
@@ -694,8 +801,9 @@ const UpdateIntro = ({
           {/* Ajout de la biographie du créateur [encadré] */}
           <div className="flex justify-center">
             <div className="grasFondBleuborder border-black p-2 inline-block mt-3 mb-3 rounded-md font-bold text-white cursor-pointer">
-              Souhaitez-vous ajouter la présentation de vous-même ou de votre
-              équipe ?
+              {language === "fr" 
+                ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?" 
+                : "Would you like to add a presentation of yourself or your team ?"}
               <div className="flex justify-center mt-2 w-full">
                 <label className="flex items-center mr-4">
                   <input
@@ -704,7 +812,7 @@ const UpdateIntro = ({
                     onChange={() => setIsIntroOfYourselfUpdate("true")}
                     className="mr-2"
                   />
-                  Oui
+                  {language === "fr" ? "Oui" : "Yes"}
                 </label>
                 <label className="flex items-center">
                   <input
@@ -713,7 +821,7 @@ const UpdateIntro = ({
                     onChange={() => setIsIntroOfYourselfUpdate("false")}
                     className="mr-2"
                   />
-                  Non
+                  {language === "fr" ? "Non" : "No"}
                 </label>
               </div>
             </div>
@@ -734,7 +842,7 @@ const UpdateIntro = ({
                 urlPosterCloudinaryUpdate === ""
               }
             >
-              Mettre à jour la présentation
+              {language === "fr" ? "Mettre à jour la présentation" : "Update the presentation"}
             </button>
           </div>
         </form>

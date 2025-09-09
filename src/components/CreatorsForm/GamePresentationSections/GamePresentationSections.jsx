@@ -84,8 +84,8 @@ const GamePresentationSections = ({
 
     try {
       /***** Check if the name already exists *********************************************************** */
-      const gameToCheck = encodeURIComponent(nameOfGame); // Assurez-vous que le nom du jeu est correctement encodé
-      console.log(`gameToCheck : `, gameToCheck);
+      const gameToCheck = encodeURIComponent(nameOfGame); // Be sure to encode the name of the game before to check if it exists
+        console.log(`gameToCheck : `, gameToCheck);
       const response = await fetch("/api/checkIfGameExists", {
         method: "POST",
         headers: {
@@ -96,46 +96,82 @@ const GamePresentationSections = ({
       });
 
       if (!response.ok) {
-        throw new Error("Erreur lors de la vérification du jeu");
+        throw new Error(
+          language === "fr" 
+            ? "Erreur lors de la vérification du jeu" 
+            : "Error while checking the game"
+        );
       }
 
       const data = await response.json();
       if (data.exists) {
         setWeAreSendingData(false);
-        return toast.error("Ce nom de jeu existe déjà dans la base de données. GamePresentationSections");
+        return toast.error(
+          language === "fr" 
+            ? "Ce nom de jeu existe déjà dans la base de données." 
+            : "This game name already exists in the database."
+        );
       }
       /************************************************************************** */
 
       if (!filesToSend || filesToSend.length === 0) {
-        return toast.error("Vous devez sélectionner au moins un fichier image");
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner au moins un fichier image" 
+            : "You must select at least one image file"
+        );
       }
 
       if (!selectedAgePegi) {
-        return toast.error("Vous devez sélectionner un âge parmi les options disponibles.");
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner un âge parmi les options disponibles." 
+            : "You must select an age from the available options."
+        );
       }
 
       //Vérifiez le nombre de caractères de l'introduction détaillée.
       if (shortIntroduction.length > 1000) {
-        return toast.error("L'introduction doit comporter 1000 caractères maximum.");
+        return toast.error(
+          language === "fr" 
+            ? "L'introduction doit comporter 1000 caractères maximum." 
+            : "The introduction must be 1000 characters maximum."
+        );
       }
 
       //Vérifiez le nombre de caractères de la présentation détaillée.
       if (introductionOfTheGame.length > 10000) {
-        return toast.error("La présentation doit comporter 10 000 caractères maximum.");
+        return toast.error(
+          language === "fr" 
+            ? "La présentation doit comporter 10 000 caractères maximum." 
+            : "The presentation must be 10,000 characters maximum."
+        );
       }
       // Vérifiez si au moins une plateforme est sélectionnée
       if (platform.length === 0) {
-        return toast.error("Vous devez sélectionner au moins une plateforme.");
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner au moins une plateforme." 
+            : "You must select at least one platform."
+        );
       }
 
       // Vérifiez si le site du jeu commence par "https://"
       if (webSiteOfThisGame && !webSiteOfThisGame.startsWith("https://")) {
-        return toast.error("Le lien du site officiel doit commencer par 'https://'");
+        return toast.error(
+          language === "fr" 
+            ? "Le lien du site officiel doit commencer par 'https://'" 
+            : "The official website link must start with 'https://'"
+        );
       }
 
       // Vérifiez si le site des créateurs commence par "https://"
       if (webSiteOfThisCreator && !webSiteOfThisCreator.startsWith("https://")) {
-        return toast.error("Le lien du site officiel doit commencer par 'https://'");
+        return toast.error(
+          language === "fr" 
+            ? "Le lien du site officiel des créateurs doit commencer par 'https://'" 
+            : "The creators' official website link must start with 'https://'"
+        );
       }
 
       // Vérification du format de la date de sortie
@@ -146,12 +182,18 @@ const GamePresentationSections = ({
         if (!datePattern.test(releaseDateString)) {
           setWeAreSendingData(false);
           return toast.error(
-            "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)"
+            language === "fr" 
+              ? "La date de sortie doit être au format jj/mm/aaaa (ex: 17/05/2025)" 
+              : "The release date must be in dd/mm/yyyy format (ex: 17/05/2025)"
           );
         }
       } else {
         setWeAreSendingData(false);
-        return toast.error("Vous devez sélectionner une date de sortie.");
+        return toast.error(
+          language === "fr" 
+            ? "Vous devez sélectionner une date de sortie." 
+            : "You must select a release date."
+        );
       }
 
       // Vérifiez si le site Steam commence par "https://"
@@ -160,12 +202,20 @@ const GamePresentationSections = ({
         (!steamLink.startsWith("https://") || !steamLink.includes("steam"))
       ) {
         setWeAreSendingData(false);
-        return toast.error("Le lien vers Steam doit commencer par 'https://' et inclure steam");
+        return toast.error(
+          language === "fr" 
+            ? "Le lien vers Steam doit commencer par 'https://' et inclure steam" 
+            : "The Steam link must start with 'https://' and include steam"
+        );
       }
 
       // Si toutes les validations sont passées, on peut procéder au paiement
       // Les images seront uploadées seulement après paiement réussi
-      console.log("Toutes les validations sont passées, on peut procéder au paiement");
+      console.log(
+        language === "fr" 
+          ? "Toutes les validations sont passées, on peut procéder au paiement" 
+          : "All validations passed, we can proceed to payment"
+      );
 
       // Créer un objet temporaire avec toutes les données validées (sans les fichiers)
       const validatedData = {
@@ -199,7 +249,11 @@ const GamePresentationSections = ({
     } catch (error) {
       console.log(error);
       setWeAreSendingData(false);
-      return toast.error(error.message);
+      return toast.error(
+        language === "fr" 
+          ? "Une erreur est survenue lors de l'envoi des données" 
+          : "An error occurred while sending data"
+      );
     }
   };
 
@@ -213,7 +267,9 @@ const GamePresentationSections = ({
         <input
           type="text"
           name="nameOfGame"
-          placeholder="Nom du jeu entièrement en minuscule"
+          placeholder={language == "fr"
+            ? "Nom du jeu entièrement en minuscule"
+            : "Game name entirely in lowercase."}
           className={`px-3 py-2 rounded-md w-[92%] tablet:w-[100%] mx-4 mt-4 text-white ${formularyCss.neuphormismUndergroung}`}
           maxLength={80}
           size={80}
@@ -234,7 +290,9 @@ const GamePresentationSections = ({
         </p>
         <textarea
           name={`${formularyCss.shortIntroduction}`}
-          placeholder="Cette introduction courte sera affichée en gras"
+          placeholder={language == "fr"
+            ? "Cette introduction courte sera affichée en gras"
+            : "This short introduction will be displayed in bold."}
           value={shortIntroduction}
           onChange={(e) => setShortIntroduction(e.target.value)}
           className={`${formularyCss.shortIntroduction} ${formularyCss.neuphormismUndergroung}`}
@@ -429,15 +487,13 @@ const GamePresentationSections = ({
       </section>
 
       {/**************** Ajout de la biographie du créateur [encadré] ***************************** */}
-      <div className="flex flex-col justify-center items-center mx-auto">
         <div
-          className={`${componentsCss.grasFondBleu} border p-2 flex justify-center mt-3 mb-3 font-bold text-white rounded-3xl py-2 w-[320px] tablet:w-[620px]`}
+          className={`${componentsCss.grasFondBleu} border p-2 pl-4 flex flex-col laptop:flex-row items-center mt-3 mb-3 mx-auto font-bold text-white rounded-3xl py-2 w-[330px] tablet:w-full laptop:w-[750px]`}
         >
           {language == "fr"
             ? "Souhaitez-vous ajouter la présentation de vous-même ou de votre équipe ?"
             : "Would you like to add a presentation of yourself or your team ?"}
-        </div>
-        <div className="flex justify-center mt-2 w-full">
+        <div className="flex justify-center mt-2 w-[150px] items-center -translate-y-1">
           <label className="flex items-center mr-4">
             <input
               type="radio"
@@ -445,7 +501,7 @@ const GamePresentationSections = ({
               checked={isIntroOfYourself === "true"}
               onChange={() => setIsIntroOfYourself("true")}
               className="mr-2"
-            />
+              />
             Oui
           </label>
           <label className="flex items-center">
@@ -455,11 +511,11 @@ const GamePresentationSections = ({
               checked={isIntroOfYourself === "false"}
               onChange={() => setIsIntroOfYourself("false")}
               className="mr-2"
-            />
+              />
             Non
           </label>
+          </div>
         </div>
-      </div>
 
       {/******************* Paiement ********************************** */}
 

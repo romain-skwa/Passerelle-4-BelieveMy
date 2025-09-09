@@ -311,20 +311,6 @@ export default function AllCompIntroductionGame({introduction}) {
           false: "Solo",
         },
       };
-    
-      // Ajouter la condition de chargement ici, juste avant le return principal
-      if (loading || !game?.username) {
-        return (
-          <GeneralLayout>
-            <div className="flex justify-center items-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-                <p className="mt-4 text-lg">Chargement...</p>
-              </div>
-            </div>
-          </GeneralLayout>
-        );
-      }
       
     return(weAreDeleting ? (
         <WeAreDeleting /> // Loading while we are deleting the introduction
@@ -338,7 +324,7 @@ export default function AllCompIntroductionGame({introduction}) {
             <section
               className={`${isDarkClass} w-[95vw] md:w-[75vw] xl:w-[50vw] mx-auto rounded-md p-4 ${formularyCss.neuphormism} mt-4`}
             >
-              <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center">
+              <h1 className="p-4 min-h-[50px] text-3xl font-bold text-center capitalize">
                 {decodeURIComponent(game.nameofgame)}{" "}
               </h1>
               {/**************** Displaying PC and Console platforms ********************/}
@@ -549,11 +535,10 @@ export default function AllCompIntroductionGame({introduction}) {
               <section className="mt-4 flex flex-col laptop:flex-row laptop:justify-center gap-6">
                 {/******************* Official game website **********************/}
                 {game.webSiteOfThisGame && (
-                  <div className={`font-semibold border-2 py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0 ${
-                    isDarkMode === "true" 
-                      ? "border-white" 
-                      : "border-black"
-                  }`}>
+                  <div className={`font-semibold border-2 py-2 px-4 rounded-3xl  mx-auto laptop:m-0 
+                    ${ isDarkMode === "true" ? "border-white" : "border-black" }
+                    ${ language === "fr" ? "w-[170px]" : "w-[245px]"}
+                  `}>
                     <a
                       href={game.webSiteOfThisGame}
                       target="_blank"
@@ -567,11 +552,10 @@ export default function AllCompIntroductionGame({introduction}) {
                 )}
                 {/******************* Official website of the creators **********************/}
                 {game.webSiteOfThisCreator && (
-                  <div className={`font-semibold border-2 py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0 ${
-                    isDarkMode === "true" 
-                      ? "border-white" 
-                      : "border-black"
-                  }`}>
+                  <div className={`font-semibold border-2 py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0 
+                    ${ isDarkMode === "true" ? "border-white" : "border-black" }
+                    ${ language === "fr" ? "w-[170px]" : "w-[285px]"}
+                    `}>
                     <a
                       href={game.webSiteOfThisCreator}
                       target="_blank"

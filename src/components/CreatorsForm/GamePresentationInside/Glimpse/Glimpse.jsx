@@ -188,7 +188,7 @@ const ApercuFormulaire = ({
                 }}
                 className={`inline-flex items-center rounded-md 
                   ${
-                    isDarkMode == true
+                    isDarkMode === true
                       ? "border border-white"
                       : "border-2 border-gray-700 "
                   } 
@@ -266,25 +266,35 @@ const ApercuFormulaire = ({
         <section className="mt-4 flex flex-col laptop:flex-row laptop:justify-center gap-6">
           {/******************* Site officiel du jeu **********************/}
           {webSiteOfThisGame && (
-            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[170px] mx-auto laptop:m-0">
+            <div className={`font-semibold border-2 py-2 px-4 rounded-3xl  mx-auto laptop:m-0 
+              ${ isDarkMode === true ? "border-white" : "border-black" }
+              ${ language === "fr" ? "w-[170px]" : "w-[245px]"}
+            `}>
               <a
                 href={webSiteOfThisGame}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Site officiel du jeu
+                {language === "fr"
+                  ? "Site officiel du jeu"
+                  : "Official website of this game"}
               </a>
             </div>
           )}
           {/******************* Site officiel des créateurs **********************/}
           {webSiteOfThisCreator && (
-            <div className="font-semibold border-2 border-black py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0">
+            <div className={`font-semibold border-2 py-2 px-4 rounded-3xl w-[220px] mx-auto laptop:m-0 
+              ${ isDarkMode === true ? "border-white" : "border-black" }
+              ${ language === "fr" ? "w-[170px]" : "w-[285px]"}
+              `}>
               <a
                 href={webSiteOfThisCreator}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Site officiel des créateurs
+                {language === "fr"
+                  ? "Site officiel des créateurs"
+                  : "Official website of the developers"}
               </a>
             </div>
           )}

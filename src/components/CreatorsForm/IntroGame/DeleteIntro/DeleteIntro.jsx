@@ -23,17 +23,29 @@ const DeleteIntro = ({ game, setWeAreDeleting }) => {
   //console.log(`gameId de la présentation à supprimer dans le composant DeleteIntro: `, gameId);
 
   const handleDelete = async () => {
-    if (!confirm("Voulez vraiment supprimer la présentation de votre jeu ?"))
+    if (!confirm(
+      language === "fr" 
+        ? "Voulez vraiment supprimer la présentation de votre jeu ?" 
+        : "Do you really want to delete your game's presentation?"
+    ))
       return;
 
     try {
       setWeAreDeleting(true);
-      await handleEraseAllImages(game);
+      await handleEraseAllImages(game, language);
       await deleteIntroduction(gameId, nameOfGame, language);
     } catch (error) {
-      return toast.error(error.message);
+      return toast.error(
+        language === "fr" 
+          ? "Une erreur est survenue lors de la suppression" 
+          : "An error occurred during deletion"
+      );
     }
-    toast.success("La présentation vient d'être supprimée.");
+    toast.success(
+      language === "fr" 
+        ? "La présentation vient d'être supprimée." 
+        : "The presentation has been deleted."
+    );
     router.push("/");
   };
 
